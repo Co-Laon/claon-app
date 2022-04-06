@@ -1,0 +1,10 @@
+{
+  "compilerOptions": {
+    "baseUrl": "./packages",
+    "paths": {
+      "climbing-web/*": ["climbing-web/*"],
+      "climbingApp/*": ["climbingApp/*"]
+    }
+  },
+  "include": ["**/*.ts", "**/*.tsx", "**/*.js"]
+}
