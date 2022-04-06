@@ -1,0 +1,21 @@
+{
+  "root": true,
+  "extends": ["airbnb-typescript"],
+  "plugins": ["@typescript-eslint", "prettier"],
+  "parser": "@typescript-eslint/parser",
+  "parserOptions": {
+    "project": "./tsconfig.json",
+    "ecmaVersion": 12,
+    "ecmaFeatures": {
+      "jsx": true
+    },
+    "sourceType": "module"
+  },
+  "rules": {
+    "import/no-extraneous-dependencies": 0,
+    "import/extensions": ["off"],
+    "@typescript-eslint/indent": "off",
+    "@typescript-eslint/comma-dangle": "off",
+    "react/jsx-filename-extension": "off"
+  }
+}
