@@ -17,5 +17,8 @@
     "@typescript-eslint/indent": "off",
     "@typescript-eslint/comma-dangle": "off",
     "react/jsx-filename-extension": "off"
+  },
+  "env": {
+    "jest": true
   }
 }
