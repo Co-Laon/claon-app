@@ -1,7 +1,4 @@
 # CLAON-Front
-<<<<<<< HEAD
-=======
-
 클라이밍 커뮤니티 서비스 "클라온"의 모바일, 웹 클라이언트입니다. 서비스의 클라이
 언트 관련 기능 및 이슈를 모두 이 레포지토리를 통하여 관리하는 것을 목표합니다.
 
@@ -30,4 +27,3 @@
   ```bash
     - yarn workspace cimbingweb run dev
   ```
->>>>>>> efe90d6 (docs: write readme)
