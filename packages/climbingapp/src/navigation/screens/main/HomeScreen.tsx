@@ -1,10 +1,10 @@
+import CustomWebView from 'climbingapp/src/component/CustomWebView';
 import React from 'react';
-import { SafeAreaView, Text } from 'react-native';
 
 function HomeScreen() {
-    return (<SafeAreaView>
-        <Text>Home</Text>
-    </SafeAreaView>);
+    return (
+        <CustomWebView url="https://www.google.com/" />
+    );
 }
 
 export default HomeScreen;
