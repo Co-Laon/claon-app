@@ -1,0 +1,18 @@
+export const colorStyles = {
+    White: '#FFFFFF',
+    Black: '#121212',
+    Gray100: '#FAFAFA',
+    Gray200: '#F2F2F2',
+    Gray300: '#E6E6E6',
+    Gray400: '#BFBFBF',
+    Gray500: '#808080',
+    Gray600: '#666666',
+    Gray700: '#404040',
+    Gray800: '#333333',
+    Gray900: '#000000',
+    Orange500: '#FC7544',
+    Red500: '#FF4838',
+    Purple500: '#5953FF',
+    Purple600: '#433FBF',
+    Yellow500: '#FFDE3B',
+};
