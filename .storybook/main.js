@@ -19,4 +19,20 @@ module.exports = {
     }
   ],
   framework: '@storybook/react',
+  /* babel: async (options) => {
+    options.plugins.push("babel-plugin-inline-react-svg");
+    return options;
+  }, */
+  webpackFinal: async config => {
+    config.module.rules.unshift({ 
+      test: /\.svg$/,
+      use: [{
+        loader: '@svgr/webpack',
+        options: {
+          native: true,
+        },
+      }],
+    });
+    return config;
+  },
 };
