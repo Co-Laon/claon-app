@@ -9,7 +9,6 @@ module.exports = {
     "@storybook/addon-links",
     "@storybook/addon-essentials",
     "@storybook/addon-react-native-web",
-    "storybook-addon-styled-component-theme/dist/preset",
     {
       name: "@storybook/addon-postcss",
       options: {
