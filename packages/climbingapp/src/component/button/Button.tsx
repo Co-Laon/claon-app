@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components/native';
-import { colorStyles } from '../styles';
+import { colorStyles } from '../../styles';
 import { LargeGrayIcon, LargeLine, LargePurple, LargeLineIcon, MediumGray, MediumLine, MediumLineIcon, MediumPurple } from './buttonProps';
 interface ButtonProps {
     bgColor: string;

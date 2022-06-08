@@ -1,6 +1,6 @@
-import { colorStyles } from '../styles';
-import AppleLogo from '../assets/icon/ic_24_apple.svg';
-import GoogleLogo from '../assets/icon/ic_24_google.svg';
+import { colorStyles } from '../../styles';
+import AppleLogo from '../../assets/icon/ic_24_apple.svg';
+import GoogleLogo from '../../assets/icon/ic_24_google.svg';
 
 export const LargeGrayIcon = {
   bgColor: colorStyles.Gray800,
