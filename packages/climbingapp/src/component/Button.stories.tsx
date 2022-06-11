@@ -2,11 +2,8 @@ import { DefaultButton } from './Button';
 import React from 'react';
 import { ComponentStory, ComponentMeta } from '@storybook/react';
 import { colorStyles } from '../styles';
-import { SvgXml } from 'react-native-svg';
-
-const testSVG = `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">
-<path fill-rule="evenodd" clip-rule="evenodd" d="M2.39859 6.21967C2.69149 5.92678 3.16636 5.92678 3.45925 6.21967L9.99999 12.7604L16.5407 6.21967C16.8336 5.92678 17.3085 5.92678 17.6014 6.21967C17.8943 6.51256 17.8943 6.98744 17.6014 7.28033L10.5303 14.3514C10.2374 14.6443 9.76256 14.6443 9.46966 14.3514L2.39859 7.28033C2.1057 6.98744 2.1057 6.51256 2.39859 6.21967Z" fill="#BFBFBF"/>
-</svg>`;
+import AppleLogo from '../assets/icon/ic_24_apple.svg';
+import GoogleLogo from '../assets/icon/ic_24_google.svg';
 
 const colors = Object.values(colorStyles);
 
@@ -41,13 +38,105 @@ export default {
                 ]
             }
         }
-    }
+    },
 } as ComponentMeta<typeof DefaultButton>;
 
-export const Default: ComponentStory<typeof DefaultButton> = (args) => <DefaultButton {...args}><SvgXml xml={testSVG} /></DefaultButton>;
-Default.args = {
-    bgColor: 'black',
-    width: '100px',
+export const Template: ComponentStory<typeof DefaultButton> = (args) => <DefaultButton {...args} />;
+
+export const LargeGrayIconButton = Template.bind({});
+LargeGrayIconButton.args = {
+    bgColor: colorStyles.Gray800,
+    width: '109px',
+    color: 'white',
     onPress: () => { },
-    height: '40px',
+    height: '56px',
+    icon: <AppleLogo />,
+    text: '  버튼명',
+    disabled: false,
+    underlayColor: colorStyles.Black,
+};
+export const LargePurpleButton = Template.bind({});
+LargePurpleButton.args = {
+    bgColor: colorStyles.Purple500,
+    width: '109px',
+    color: 'white',
+    onPress: () => { },
+    height: '56px',
+    text: '버튼명',
+    disabled: false,
+    underlayColor: colorStyles.Purple600,
+};
+
+export const MediumGrayButton = Template.bind({});
+MediumGrayButton.args = {
+    bgColor: colorStyles.Gray800,
+    width: '71px',
+    color: 'white',
+    onPress: () => { },
+    height: '52px',
+    text: '버튼명',
+    disabled: false,
+    underlayColor: colorStyles.Black,
+};
+
+export const MediumPurpleButton = Template.bind({});
+MediumPurpleButton.args = {
+    bgColor: colorStyles.Purple500,
+    width: '71px',
+    color: 'black',
+    onPress: () => { },
+    height: '52px',
+    text: '버튼명',
+    disabled: false,
+    underlayColor: colorStyles.Purple600,
+};
+
+export const LargeLineIconButton = Template.bind({});
+LargeLineIconButton.args = {
+    bgColor: colorStyles.White,
+    width: '109px',
+    color: 'black',
+    onPress: () => { },
+    height: '56px',
+    icon: <GoogleLogo />,
+    text: '  버튼명',
+    disabled: false,
+    underlayColor: colorStyles.Gray100,
+};
+
+export const LargeLineButton = Template.bind({});
+LargeLineButton.args = {
+    bgColor: colorStyles.White,
+    width: '77px',
+    color: 'black',
+    onPress: () => { },
+    height: '56px',
+    text: '버튼명',
+    disabled: false,
+    underlayColor: colorStyles.Gray100,
+};
+
+export const MediumLineIconButton = Template.bind({});
+MediumLineIconButton.args = {
+    bgColor: colorStyles.White,
+    width: '103px',
+    color: 'black',
+    onPress: () => { },
+    height: '52px',
+    icon: <GoogleLogo />,
+    text: '  버튼명',
+    disabled: false,
+    underlayColor: colorStyles.Gray100,
+};
+
+export const MediumLineButton = Template.bind({});
+MediumLineButton.args = {
+    bgColor: colorStyles.White,
+    width: '71px',
+    color: 'black',
+    onPress: () => { },
+    height: '52px',
+    text: '버튼명',
+    disabled: false,
+    underlayColor: colorStyles.Gray100,
 };

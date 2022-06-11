@@ -1,5 +1,5 @@
-const path = require("path");
 
+const path = require("path");
 module.exports = {
   stories: [
     "../packages/climbingapp/**/*.stories.@(js|jsx|ts|tsx|mdx)",
@@ -9,6 +9,7 @@ module.exports = {
     "@storybook/addon-links",
     "@storybook/addon-essentials",
     "@storybook/addon-react-native-web",
+    "storybook-addon-styled-component-theme/dist/preset",
     {
       name: "@storybook/addon-postcss",
       options: {
@@ -24,15 +25,12 @@ module.exports = {
     return options;
   }, */
   webpackFinal: async config => {
+    const fileLoaderRule = config.module.rules.find(rule => rule.test && rule.test.test('.svg'));
+    fileLoaderRule.exclude = /\.svg$/;
     config.module.rules.unshift({ 
       test: /\.svg$/,
-      use: [{
-        loader: '@svgr/webpack',
-        options: {
-          native: true,
-        },
-      }],
+      use: ['@svgr/webpack'],
     });
     return config;
   },
-};
+}; 

@@ -1,5 +1,4 @@
 import 'styled-components';
-
 // and extend them!
 declare module 'styled-components' {
   export interface DefaultTheme {
@@ -8,5 +7,7 @@ declare module 'styled-components' {
       text: string;
       mainBg: string;
     };
+    name: string;
+    textColor: string;
   }
 }

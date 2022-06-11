@@ -5,6 +5,8 @@ export const light: DefaultTheme = {
     text: '#000000',
     mainBg: '#ffffff',
   },
+  name: 'light',
+  textColor: '#ffff00',
 };
 
 export const dark: DefaultTheme = {
@@ -13,4 +15,6 @@ export const dark: DefaultTheme = {
     text: '#ffffff',
     mainBg: '#000000',
   },
+  name: 'dark',
+  textColor: '#000000',
 };
