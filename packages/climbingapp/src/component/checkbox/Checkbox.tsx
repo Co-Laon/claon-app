@@ -1,26 +1,44 @@
 import React from 'react';
 import styled from 'styled-components/native';
-import { FaceProps, LineProps } from './CheckboxProps';
-interface DefaultCheckBoxProps {
-    check: boolean,
-    setCheck: (check: boolean) => boolean,
-    checkedLogo: JSX.Element,
-    enabledLogo: JSX.Element,
+import FaceChecked from '../../assets/icon/checkbox/ic_24_checkbox_face_checked.svg';
+import FaceEnabled from '../../assets/icon/checkbox/ic_24_checkbox_face_enabled.svg';
+import LineChecked from '../../assets/icon/checkbox/ic_24_checkbox_line_checked.svg';
+import LineEnabled from '../../assets/icon/checkbox/ic_24_checkbox_line_enabled.svg';
+
+export interface DefaultCheckBoxProps {
+    checked: boolean | (({ }: any) => boolean);
+    onPress: ({ }: any) => void;
+    checkIcon:
+    | 'face'
+    | 'line';
 }
 
-export const CheckBox = styled.Pressable`
+export const Container = styled.Pressable`
     width: 24px;
     height: 24px;
 `;
 
-export const Default = ({ check, setCheck, checkedLogo, enabledLogo }: DefaultCheckBoxProps) => {
+export const CheckBox = ({ checked, onPress, checkIcon }: DefaultCheckBoxProps) => {
+    const IconList = {
+        'face': {
+            checked: <FaceChecked />,
+            enabled: <FaceEnabled />
+        },
+        'line': {
+            checked: <LineChecked />,
+            enabled: <LineEnabled />
+        },
+    };
+
+    const checkedLogo = IconList[`${checkIcon}`].checked;
+    const enabledLogo = IconList[`${checkIcon}`].enabled;
+
     return (
-        <CheckBox
-            onPress={() => setCheck(!check)}
-        >{check ? checkedLogo : enabledLogo}</CheckBox>
+        <Container
+            onPress={onPress}
+        >
+            {checked ? checkedLogo : enabledLogo}
+        </Container>
     );
 };
-
-export const FaceCheckBox = () => <Default {...FaceProps} />;
-export const LineCheckBox = () => <Default {...LineProps} />;
 

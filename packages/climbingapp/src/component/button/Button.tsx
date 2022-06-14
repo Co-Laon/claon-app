@@ -1,7 +1,6 @@
 import React from 'react';
 import styled from 'styled-components/native';
 import { colorStyles } from '../../styles';
-import { LargeGrayIcon, LargeLine, LargePurple, LargeLineIcon, MediumGray, MediumLine, MediumLineIcon, MediumPurple } from './buttonProps';
 interface ButtonProps {
     bgColor: string;
     color: string;
@@ -23,8 +22,11 @@ const Default = styled.TouchableHighlight<ButtonProps>`
     border-radius: 8px;
     font-size: 16px;
     font-style: normal;
-    font-weight: 700;
+    font-weight: 700px;
     flex: 1;
+    border-color: #E6E6E6;
+    border-width: 1px;
+    margin-bottom: 8px;
 `;
 
 interface TextProps {
@@ -32,24 +34,24 @@ interface TextProps {
 }
 
 const ButtonText = styled.Text<TextProps>`
-    flex: 1;
     color: ${props => props.color};
-    display: flex;
-    align-items: center;
+    text-align: center;
+`;
+const TextContainer = styled.View`
+    flex-direction: row;
+    text-align: center;
     justify-content: center;
+    align-items: center;
 `;
 
 
-
 export const DefaultButton = (props: ButtonProps) => {
-    return <Default {...props} underlayColor={props.underlayColor} disabled={props.disabled}><ButtonText color={props.color}>{props.icon} {props.text}</ButtonText></Default>;
+    return (
+        <Default {...props} underlayColor={props.underlayColor} disabled={props.disabled}>
+            <TextContainer>
+                {props.icon}
+                <ButtonText color={props.color}>{props.text}</ButtonText>
+            </TextContainer>
+        </Default>
+    );
 };
-
-export const LargeGrayIconButton = <DefaultButton {...LargeGrayIcon} />;
-export const LargePurpleButton = <DefaultButton {...LargePurple} />;
-export const MediumGrayButton = <DefaultButton {...MediumGray} />;
-export const MediumPurpleButton = <DefaultButton {...MediumPurple} />;
-export const LargeLineButton = <DefaultButton {...LargeLine} />;
-export const LargeLineIconButton = <DefaultButton {...LargeLineIcon} />;
-export const MediumLineIconButton = <DefaultButton {...MediumLineIcon} />;
-export const MediumLineButton = <DefaultButton {...MediumLine} />;

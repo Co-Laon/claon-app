@@ -18,7 +18,7 @@ const App = () => {
         <ThemeProvider theme={light}>
           <BottomSheetModalProvider>
             <NavigationContainer>
-              {isLoggedIn ? <MainNavigator /> : <LoginNavigator />}
+              {!isLoggedIn ? <MainNavigator /> : <LoginNavigator />}
             </NavigationContainer>
           </BottomSheetModalProvider>
         </ThemeProvider>

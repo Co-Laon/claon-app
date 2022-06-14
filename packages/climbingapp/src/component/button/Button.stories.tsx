@@ -2,7 +2,7 @@ import { DefaultButton } from './Button';
 import React from 'react';
 import { ComponentStory, ComponentMeta } from '@storybook/react';
 import { colorStyles } from '../../styles';
-import { LargeGrayIcon, LargeLine, LargePurple, LargeLineIcon, MediumGray, MediumLine, MediumLineIcon, MediumPurple } from './buttonProps';
+import { LargeGrayIcon, LargeLine, LargePurple, LargeLineIcon, MediumGray, MediumLine, MediumLineIcon, MediumPurple, Kakao } from './buttonProps';
 
 const colors = Object.values(colorStyles);
 
@@ -65,3 +65,6 @@ MediumLineIconButton.args = MediumLineIcon;
 
 export const MediumLineButton = Template.bind({});
 MediumLineButton.args = MediumLine;
+
+export const KakaoButton = Template.bind({});
+KakaoButton.args = Kakao;

@@ -13,7 +13,6 @@ interface DropDownProps {
 export const DropDown = styled.View`
     width: 156px;
     height: 52px;
-    display: flex;
     align-items: center;
     border-radius: 8px;
     gap: 16px;
