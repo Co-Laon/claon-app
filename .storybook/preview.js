@@ -22,4 +22,7 @@ export const parameters = {
     viewports: INITIAL_VIEWPORTS,
     defaultViewport: 'galaxys5',
   },
+  backgrounds: {
+    values: [{name: 'default', value: '#fffff4'}, {name: 'black', value: '#000000'}],
+  }
 };

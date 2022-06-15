@@ -1,7 +1,7 @@
 import { DefaultButton } from './Button';
 import React from 'react';
 import { ComponentStory, ComponentMeta } from '@storybook/react';
-import { colorStyles } from '../styles';
+import { colorStyles } from '../../styles';
 import { LargeGrayIcon, LargeLine, LargePurple, LargeLineIcon, MediumGray, MediumLine, MediumLineIcon, MediumPurple } from './buttonProps';
 
 const colors = Object.values(colorStyles);

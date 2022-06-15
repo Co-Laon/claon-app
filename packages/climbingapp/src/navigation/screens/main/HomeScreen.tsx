@@ -1,4 +1,4 @@
-import CustomWebView from 'climbingapp/src/component/CustomWebView';
+import CustomWebView from 'climbingapp/src/component/webview/CustomWebView';
 import React from 'react';
 
 function HomeScreen() {
