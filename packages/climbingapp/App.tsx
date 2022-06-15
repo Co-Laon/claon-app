@@ -8,7 +8,7 @@ import { Provider } from 'react-redux';
 
 import MainNavigator from './src/navigation/MainNavigator';
 import LoginNavigator from './src/navigation/LoginNavigator';
-
+import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
 const isLoggedIn = true;
 
 const App = () => {
@@ -16,9 +16,11 @@ const App = () => {
     <Provider store={store}>
       <SafeAreaProvider>
         <ThemeProvider theme={light}>
-          <NavigationContainer>
-            {isLoggedIn ? <MainNavigator /> : <LoginNavigator />}
-          </NavigationContainer>
+          <BottomSheetModalProvider>
+            <NavigationContainer>
+              {isLoggedIn ? <MainNavigator /> : <LoginNavigator />}
+            </NavigationContainer>
+          </BottomSheetModalProvider>
         </ThemeProvider>
       </SafeAreaProvider>
     </Provider>
