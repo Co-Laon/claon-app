@@ -1,5 +1,5 @@
-const path = require("path");
 
+const path = require("path");
 module.exports = {
   stories: [
     "../packages/climbingapp/**/*.stories.@(js|jsx|ts|tsx|mdx)",
@@ -19,4 +19,17 @@ module.exports = {
     }
   ],
   framework: '@storybook/react',
-};
+  /* babel: async (options) => {
+    options.plugins.push("babel-plugin-inline-react-svg");
+    return options;
+  }, */
+  webpackFinal: async config => {
+    const fileLoaderRule = config.module.rules.find(rule => rule.test && rule.test.test('.svg'));
+    fileLoaderRule.exclude = /\.svg$/;
+    config.module.rules.unshift({ 
+      test: /\.svg$/,
+      use: ['@svgr/webpack'],
+    });
+    return config;
+  },
+}; 
