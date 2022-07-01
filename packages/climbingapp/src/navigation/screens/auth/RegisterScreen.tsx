@@ -1,6 +1,4 @@
 import { AppBar } from 'climbingapp/src/component/appBar/AppBar';
-import { DefaultButton } from 'climbingapp/src/component/button/Button';
-import { LargePurple } from 'climbingapp/src/component/button/buttonProps';
 import { ScreenView } from 'climbingapp/src/component/view/ScreenView';
 import { colorStyles } from 'climbingapp/src/styles';
 import React, { useCallback, useState } from 'react';
@@ -10,20 +8,8 @@ import { TouchableHighlight, View } from 'react-native';
 import { CheckBox } from 'climbingapp/src/component/checkbox/Checkbox';
 import { useNavigation } from '@react-navigation/native';
 import { LoginScreenProp } from './type';
-
-const TitleContainer = styled.View`
-    justify-content: center;
-    margin-top: 10;
-    flex: 1;
-`;
-
-const Title = styled.Text`
-    font-style: normal;
-    font-weight: 700;
-    font-size: 28;
-    line-height: 30;
-    color: ${colorStyles.Gray800};
-`;
+import { Title, TitleContainer } from 'climbingapp/src/component/text/AuthTitle';
+import { NextButton } from 'climbingapp/src/component/button/Button';
 
 const CheckListItem = styled.View`
     flex-direction: row;
@@ -57,10 +43,6 @@ const CheckHeader = ({ checked, onPress }: { checked: boolean | (({ }: any) => b
             <InnerText style={{ fontWeight: 'bold', marginLeft: 8 }}>모두 동의</InnerText>
         </CheckListItem>
     );
-};
-
-const NextButton = ({ onPress }: { onPress: ({ }: any) => void }) => {
-    return <DefaultButton {...LargePurple} onPress={onPress} />;
 };
 
 function RegisterScreen() {
@@ -113,9 +95,6 @@ function RegisterScreen() {
         const values = checkList.map(x => x.key === check.key ? { ...x, checked: !x.checked } : x);
         setCheckList(values);
     };
-
-
-
 
     return (<ScreenView color='white'>
         <AppBar />

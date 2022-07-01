@@ -6,6 +6,8 @@ type LoginStackkParamList = {
   agreeInfo: undefined;
   essentialInfo: undefined;
   optionalInfo: undefined;
+  connectInsta: undefined;
+  welcome: undefined;
 };
 
 type LoginScreenProp = NativeStackNavigationProp<LoginStackkParamList>;

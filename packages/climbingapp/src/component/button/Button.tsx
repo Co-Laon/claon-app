@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components/native';
 import { colorStyles } from '../../styles';
+import { LargePurple } from './buttonProps';
 interface ButtonProps {
     bgColor: string;
     color: string;
@@ -54,4 +55,8 @@ export const DefaultButton = (props: ButtonProps) => {
             </TextContainer>
         </Default>
     );
+};
+
+export const NextButton = ({ onPress }: { onPress: ({ }: any) => void }) => {
+    return <DefaultButton {...LargePurple} onPress={onPress} />;
 };

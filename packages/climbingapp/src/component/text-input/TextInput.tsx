@@ -10,6 +10,8 @@ const Container = styled.TextInput`
     border-color: ${colorStyles.Gray300};
     height: 52px;
     padding: 16px;
+    font-size: 14px;
+    color: ${colorStyles.Black};
 `;
 
 interface TextInputProps {
@@ -18,5 +20,5 @@ interface TextInputProps {
 
 export const MyTextInput = ({ placeholder }: TextInputProps) => {
 
-    return <Container placeholder={placeholder} />;
+    return <Container placeholder={placeholder} placeholderTextColor={colorStyles.Gray400} />;
 };
