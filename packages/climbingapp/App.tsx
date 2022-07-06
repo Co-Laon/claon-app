@@ -5,20 +5,18 @@ import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { NavigationContainer } from '@react-navigation/native';
 import store from './src/store';
 import { Provider } from 'react-redux';
-
-import MainNavigator from './src/navigation/MainNavigator';
-import LoginNavigator from './src/navigation/LoginNavigator';
 import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
-const isLoggedIn = true;
+import { RootNavigator } from './src/navigation';
 
 const App = () => {
+
   return (
     <Provider store={store}>
       <SafeAreaProvider>
         <ThemeProvider theme={light}>
           <BottomSheetModalProvider>
             <NavigationContainer>
-              {isLoggedIn ? <MainNavigator /> : <LoginNavigator />}
+              <RootNavigator />
             </NavigationContainer>
           </BottomSheetModalProvider>
         </ThemeProvider>

@@ -6,20 +6,16 @@ import ArrowDown from '../../assets/icon/ic_20_arrow_down_gray400.svg';
 
 interface DropDownProps {
     placeholder: string | undefined;
-    value: string;
+    value?: string;
     onPress: ({ }: any) => void;
 }
 
-export const DropDown = styled.View`
-    width: 156px;
+export const Container = styled.View`
+    width: 49%;
     height: 52px;
-    display: flex;
     align-items: center;
     border-radius: 8px;
-    gap: 16px;
     border: 1px solid ${colorStyles.Gray300};
-    background-color: ${colorStyles.White};
-    position: absolute;
 `;
 
 const Input = styled.TextInput`
@@ -34,15 +30,15 @@ const DropInput = styled.View`
 `;
 
 
-export const AreaDropDown = ({ value, placeholder, onPress }: DropDownProps) => {
+export const DropDown = ({ value, placeholder, onPress }: DropDownProps) => {
     return (
-        <DropDown>
+        <Container>
             <DropInput>
                 <Input placeholder={placeholder} value={value} editable={false} placeholderTextColor={colorStyles.Gray400} />
                 <Pressable onPress={onPress}>
-                    <ArrowDown />
+                    <ArrowDown style={{ width: 20, height: 20 }} />
                 </Pressable>
             </DropInput>
-        </DropDown>
+        </Container>
     );
 };

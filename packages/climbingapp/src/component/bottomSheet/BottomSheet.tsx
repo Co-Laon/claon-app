@@ -15,12 +15,6 @@ const MyBottomSheet = React.forwardRef<BottomSheetModalMethods, BottomSheetProps
     const snapPoints = useMemo(() => ['25%', '50%'], []);
 
     const styles = StyleSheet.create({
-        container: {
-            flex: 1,
-            padding: 24,
-            justifyContent: 'center',
-            backgroundColor: 'grey',
-        },
         contentContainer: {
             flex: 1,
             paddingLeft: 20,
@@ -48,7 +42,7 @@ const MyBottomSheet = React.forwardRef<BottomSheetModalMethods, BottomSheetProps
     const renderItem = useCallback(
         ({ item }) => (
             <Pressable style={styles.itemContainer} onPress={onEachItemPress}>
-                <Text>{item}</Text>
+                <Text style={{ fontSize: 14, color: `${colorStyles.Black}` }}>{item}</Text>
             </Pressable>
         ),
         []

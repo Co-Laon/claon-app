@@ -2,7 +2,7 @@ import { DefaultButton } from './Button';
 import React from 'react';
 import { ComponentStory, ComponentMeta } from '@storybook/react';
 import { colorStyles } from '../../styles';
-import { LargeGrayIcon, LargeLine, LargePurple, LargeLineIcon, MediumGray, MediumLine, MediumLineIcon, MediumPurple } from './buttonProps';
+import { Apple, LargeLine, LargePurple, Google, MediumGray, MediumLine, MediumLineIcon, MediumPurple, Kakao } from './buttonProps';
 
 const colors = Object.values(colorStyles);
 
@@ -43,7 +43,7 @@ export default {
 export const Template: ComponentStory<typeof DefaultButton> = (args) => <DefaultButton {...args} />;
 
 export const LargeGrayIconButton = Template.bind({});
-LargeGrayIconButton.args = LargeGrayIcon;
+LargeGrayIconButton.args = Apple;
 
 export const LargePurpleButton = Template.bind({});
 LargePurpleButton.args = LargePurple;
@@ -55,7 +55,7 @@ export const MediumPurpleButton = Template.bind({});
 MediumPurpleButton.args = MediumPurple;
 
 export const LargeLineIconButton = Template.bind({});
-LargeLineIconButton.args = LargeLineIcon;
+LargeLineIconButton.args = Google;
 
 export const LargeLineButton = Template.bind({});
 LargeLineButton.args = LargeLine;
@@ -65,3 +65,6 @@ MediumLineIconButton.args = MediumLineIcon;
 
 export const MediumLineButton = Template.bind({});
 MediumLineButton.args = MediumLine;
+
+export const KakaoButton = Template.bind({});
+KakaoButton.args = Kakao;

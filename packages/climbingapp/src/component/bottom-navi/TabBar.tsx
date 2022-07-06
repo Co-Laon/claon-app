@@ -7,7 +7,6 @@ import styled from 'styled-components/native';
 export const Tabs = styled.View`
     background-color: white;
     flex-direction: row;
-    display: flex;
     align-content: center;
     justify-content: space-between;
     padding: 0 20px 0 20px;
@@ -19,7 +18,6 @@ export const Tabs = styled.View`
 
 export const Tab = styled.Pressable`
     width: auto;
-    display: flex;
     justify-content: center;
     align-items: center;
 `;

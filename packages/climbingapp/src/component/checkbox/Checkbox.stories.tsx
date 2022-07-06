@@ -1,15 +1,23 @@
-import { Default } from './Checkbox';
 import { ComponentMeta, ComponentStory } from '@storybook/react';
-import { FaceProps, LineProps } from './CheckboxProps';
+import { CheckBox } from './Checkbox';
+
 
 export default {
-    title: 'App/Default',
-    component: Default,
-} as ComponentMeta<typeof Default>;
+    title: 'App/Checkbox',
+    component: CheckBox,
+} as ComponentMeta<typeof CheckBox>;
 
-export const Template: ComponentStory<typeof Default> = (args) => <Default {...args} />;
+export const Template: ComponentStory<typeof CheckBox> = (args) => <CheckBox {...args} />;
 
 export const FaceCheckBox = Template.bind({});
-FaceCheckBox.args = FaceProps;
+FaceCheckBox.args = {
+    checked: true,
+    onPress: () => { },
+    checkIcon: 'face'
+};
 export const LineCheckBox = Template.bind({});
-FaceCheckBox.args = LineProps;
+LineCheckBox.args = {
+    checked: true,
+    onPress: () => { },
+    checkIcon: 'line',
+};

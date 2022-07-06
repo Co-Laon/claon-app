@@ -1,10 +1,10 @@
 import React from 'react';
 import { SafeAreaView, Text } from 'react-native';
 
-function CrewScreen() {
+function MyScreen() {
     return (<SafeAreaView>
-        <Text>Crew</Text>
+        <Text>Setting</Text>
     </SafeAreaView>);
 }
 
-export default CrewScreen;
+export default MyScreen;
