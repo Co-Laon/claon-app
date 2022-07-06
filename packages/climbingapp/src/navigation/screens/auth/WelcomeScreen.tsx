@@ -6,7 +6,7 @@ import styled from 'styled-components/native';
 import { colorStyles } from 'climbingapp/src/styles';
 import { Title } from 'climbingapp/src/component/text/AuthTitle';
 import { TouchableHighlight } from 'react-native';
-import { useAuth } from 'climbingapp/src/hooks/useAuth';
+import { authorize } from 'climbingapp/src/store/slices/auth';
 import { User } from 'climbingapp/src/store/slices/auth';
 
 const Container = styled.View`
@@ -24,10 +24,8 @@ const Text = styled.Text`
 
 function WelcomeScreen() {
     const name = '닉네임';
-    const { authorize } = useAuth();
     const user: User = {
-        id: 1,
-        username: 'test',
+        token: 'test',
     };
 
     return (<ScreenView color='white'>

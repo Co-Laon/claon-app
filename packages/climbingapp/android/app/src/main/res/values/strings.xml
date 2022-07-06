@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">클라온</string>
+    <string name="kakao_app_key">ad830fcccec917096765f5d8adc9bd8f</string>
 </resources>

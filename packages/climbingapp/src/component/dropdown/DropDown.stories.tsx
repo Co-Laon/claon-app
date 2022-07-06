@@ -1,10 +1,10 @@
 import { ComponentMeta } from '@storybook/react';
-import { AreaDropDown } from './DropDown';
+import { DropDown } from './DropDown';
 
 export default {
     title: 'App/DropDown',
-    component: AreaDropDown,
-} as ComponentMeta<typeof AreaDropDown>;
+    component: DropDown,
+} as ComponentMeta<typeof DropDown>;
 
-export const FirtDropDown = () => <AreaDropDown placeholder='도·시' value='' onPress={() => { }} />;
-export const SecondDropDown = () => <AreaDropDown placeholder='시·군·구' value='' onPress={() => { }} />;
+export const FirtDropDown = () => <DropDown placeholder='도·시' value='' onPress={() => { }} />;
+export const SecondDropDown = () => <DropDown placeholder='시·군·구' value='' onPress={() => { }} />;
