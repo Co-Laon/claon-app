@@ -44,13 +44,13 @@ const GoogleButton = ({ onPress }: { onPress: ({ }: any) => void }) => {
 function LoginScreen() {
     const navigation = useNavigation<LoginScreenProp>();
 
-    const { KakaoLogin } = useAuth();
+    const { KakaoLogin, GoogleLogin } = useAuth();
 
     const handleSignApple = () => {
         navigation.navigate('register');
     };
-    const handleSignGoogle = () => {
-        navigation.navigate('register');
+    const handleSignGoogle = async () => {
+        await GoogleLogin();
     };
     const handleSignKakao = async () => {
         await KakaoLogin();

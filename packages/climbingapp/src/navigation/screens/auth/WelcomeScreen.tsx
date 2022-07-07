@@ -26,6 +26,7 @@ function WelcomeScreen() {
     const name = '닉네임';
     const user: User = {
         token: 'test',
+        platform: 'apple',
     };
 
     return (<ScreenView color='white'>
