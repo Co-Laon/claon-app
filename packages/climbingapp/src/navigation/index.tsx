@@ -8,7 +8,7 @@ export function RootNavigator() {
 
     return (
         <>
-            {user ? <MainNavigator /> : <LoginNavigator />}
+            {user?.token ? <MainNavigator /> : <LoginNavigator />}
         </>
     );
 }

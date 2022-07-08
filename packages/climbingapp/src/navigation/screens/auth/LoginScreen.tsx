@@ -7,6 +7,7 @@ import React from 'react';
 import { Platform } from 'react-native';
 import styled from 'styled-components/native';
 import { LoginScreenProp } from './type';
+import { useAuth } from 'climbingapp/src/hooks/useAuth';
 
 const EmptyConatiner = styled.View`
     flex: 0.5;
@@ -34,17 +35,27 @@ const KakaoButton = ({ onPress }: { onPress: ({ }: any) => void }) => {
     return <DefaultButton {...Kakao} onPress={onPress} />;
 };
 
-const AppleButton = () => {
-    return (<DefaultButton {...Apple} onPress={() => { }} />);
+const AppleButton = ({ onPress }: { onPress: ({ }: any) => void }) => {
+    return (<DefaultButton {...Apple} onPress={onPress} />);
 };
-const GoogleButton = () => {
-    return (<DefaultButton {...Google} onPress={() => { }} />);
+const GoogleButton = ({ onPress }: { onPress: ({ }: any) => void }) => {
+    return (<DefaultButton {...Google} onPress={onPress} />);
 };
 function LoginScreen() {
     const navigation = useNavigation<LoginScreenProp>();
-    const handleSignKakao = () => {
+
+    const { KakaoLogin } = useAuth();
+
+    const handleSignApple = () => {
         navigation.navigate('register');
     };
+    const handleSignGoogle = () => {
+        navigation.navigate('register');
+    };
+    const handleSignKakao = async () => {
+        await KakaoLogin();
+    };
+
     return (<ScreenView color="white">
         <EmptyConatiner />
         <TitleContainer>
@@ -53,8 +64,8 @@ function LoginScreen() {
         </TitleContainer>
         <ButtonContainer>
             <KakaoButton onPress={handleSignKakao} />
-            {Platform.OS === 'ios' && <AppleButton />}
-            <GoogleButton />
+            {Platform.OS === 'ios' && <AppleButton onPress={handleSignApple} />}
+            <GoogleButton onPress={handleSignGoogle} />
         </ButtonContainer>
         <EmptyConatiner />
     </ScreenView >);

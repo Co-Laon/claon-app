@@ -12,9 +12,10 @@
 		13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.m */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
+		780CA66A287595B200B9B32C /* Pods_climbingApp.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 06F063580CF1EC812649C210 /* Pods_climbingApp.framework */; };
 		7889B613284D2EE000615BC2 /* Fonts in Resources */ = {isa = PBXBuildFile; fileRef = 7889B612284D2EDF00615BC2 /* Fonts */; };
+		78FC7D9328757E0C00DE4E77 /* libswiftWebKit.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 78FC7D9228757E0C00DE4E77 /* libswiftWebKit.tbd */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
-		E0D32C3B804C304329B5A03C /* Pods_climbingApp.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 06F063580CF1EC812649C210 /* Pods_climbingApp.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -42,6 +43,8 @@
 		6C97AB639B58BBB4B15BBE30 /* Pods-climbingApp-climbingAppTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-climbingApp-climbingAppTests.debug.xcconfig"; path = "Target Support Files/Pods-climbingApp-climbingAppTests/Pods-climbingApp-climbingAppTests.debug.xcconfig"; sourceTree = "<group>"; };
 		6E129FDB020CC7B9BE72C253 /* Pods_climbingApp_climbingAppTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_climbingApp_climbingAppTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		7889B612284D2EDF00615BC2 /* Fonts */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Fonts; sourceTree = "<group>"; };
+		789C0FFF28759B3B00313653 /* climbingApp-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "climbingApp-Bridging-Header.h"; sourceTree = "<group>"; };
+		78FC7D9228757E0C00DE4E77 /* libswiftWebKit.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libswiftWebKit.tbd; path = usr/lib/swift/libswiftWebKit.tbd; sourceTree = SDKROOT; };
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = climbingApp/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		C0A881CF5CF3F2B244570E2A /* Pods-climbingApp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-climbingApp.debug.xcconfig"; path = "Target Support Files/Pods-climbingApp/Pods-climbingApp.debug.xcconfig"; sourceTree = "<group>"; };
 		D00AAFFCFCFDA5787532823F /* Pods-climbingApp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-climbingApp.release.xcconfig"; path = "Target Support Files/Pods-climbingApp/Pods-climbingApp.release.xcconfig"; sourceTree = "<group>"; };
@@ -61,7 +64,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E0D32C3B804C304329B5A03C /* Pods_climbingApp.framework in Frameworks */,
+				78FC7D9328757E0C00DE4E77 /* libswiftWebKit.tbd in Frameworks */,
+				780CA66A287595B200B9B32C /* Pods_climbingApp.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -101,6 +105,7 @@
 		2D16E6871FA4F8E400B85C8A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				78FC7D9228757E0C00DE4E77 /* libswiftWebKit.tbd */,
 				ED297162215061F000B7C4FE /* JavaScriptCore.framework */,
 				06F063580CF1EC812649C210 /* Pods_climbingApp.framework */,
 				6E129FDB020CC7B9BE72C253 /* Pods_climbingApp_climbingAppTests.framework */,
@@ -118,6 +123,7 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
+				789C0FFF28759B3B00313653 /* climbingApp-Bridging-Header.h */,
 				7889B612284D2EDF00615BC2 /* Fonts */,
 				13B07FAE1A68108700A75B9A /* climbingApp */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
@@ -208,7 +214,7 @@
 						TestTargetID = 13B07F861A680F5B00A75B9A;
 					};
 					13B07F861A680F5B00A75B9A = {
-						LastSwiftMigration = 1120;
+						LastSwiftMigration = 1340;
 					};
 				};
 			};
@@ -458,13 +464,19 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(SDKROOT)/usr/lib/swift",
+				);
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
+				PRODUCT_BUNDLE_IDENTIFIER = com.climbingapp;
 				PRODUCT_NAME = climbingApp;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_OBJC_BRIDGING_HEADER = "climbingApp-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
@@ -483,13 +495,20 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(SDKROOT)/usr/lib/swift",
+				);
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
+				PRODUCT_BUNDLE_IDENTIFIER = com.climbingapp;
 				PRODUCT_NAME = climbingApp;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_OBJC_BRIDGING_HEADER = "climbingApp-Bridging-Header.h";
+				"SWIFT_OBJC_BRIDGING_HEADER[arch=*]" = "climbingApp-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
