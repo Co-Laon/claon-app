@@ -1,6 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 export interface User {
   token: any;
+  platform: 'kakao' | 'google' | 'apple';
 }
 
 interface AuthState {
