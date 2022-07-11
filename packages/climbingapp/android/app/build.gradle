@@ -1,5 +1,5 @@
 apply plugin: "com.android.application"
-
+apply from: project(':react-native-config').projectDir.getPath() + "/dotenv.gradle"
 import com.android.build.OutputFile
 
 /**
@@ -134,6 +134,7 @@ android {
     compileSdkVersion rootProject.ext.compileSdkVersion
 
     defaultConfig {
+        resValue "string", "build_config_package", "climbingapp_IN_ANDROIDMANIFEST_XML"
         applicationId "com.climbingapp"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion

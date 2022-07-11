@@ -1,0 +1,11 @@
+//
+//  Config.xcconfig
+//  climbingApp
+//
+//  Created by 배진우 on 2022/07/11.
+//
+
+// Configuration settings file format documentation can be found at:
+// https://help.apple.com/xcode/#/dev745c5c974
+
+#include? "tmp.xcconfig"

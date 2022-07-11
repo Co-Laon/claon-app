@@ -2,6 +2,11 @@
 #
 .DS_Store
 
+# react-native-config file, codegen
+.env
+ios/tmp.xcconfig
+
+
 # Xcode
 #
 build/

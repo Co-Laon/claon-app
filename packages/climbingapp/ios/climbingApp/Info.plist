@@ -27,7 +27,7 @@
 			<string>Editor</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>kakaoa002566de6de5eb897675125db22996d</string>
+				<string>${KAKAO_API_KEY}</string>
 			</array>
 		</dict>
 		<dict>
@@ -35,14 +35,14 @@
 			<string>Editor</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>com.googleusercontent.apps.163596591416-462nelg5u8mnsoiilcktnc2b9tbajiq1</string>
+				<string>${GOOGLE_IOS_URL_SCHEMA}</string>
 			</array>
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
 	<string>1</string>
 	<key>KAKAO_APP_KEY</key>
-	<string>a002566de6de5eb897675125db22996d</string>
+	<string>${KAKAO_APP_KEY}</string>
 	<key>LSApplicationQueriesSchemes</key>
 	<array>
 		<string>kakaokompassauth</string>

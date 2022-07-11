@@ -44,6 +44,7 @@
 		6E129FDB020CC7B9BE72C253 /* Pods_climbingApp_climbingAppTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_climbingApp_climbingAppTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		7889B612284D2EDF00615BC2 /* Fonts */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Fonts; sourceTree = "<group>"; };
 		789C0FFF28759B3B00313653 /* climbingApp-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "climbingApp-Bridging-Header.h"; sourceTree = "<group>"; };
+		78E803E4287BD9EE00AB9FB7 /* Config.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Config.xcconfig; sourceTree = "<group>"; };
 		78FC7D9228757E0C00DE4E77 /* libswiftWebKit.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libswiftWebKit.tbd; path = usr/lib/swift/libswiftWebKit.tbd; sourceTree = SDKROOT; };
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = climbingApp/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		C0A881CF5CF3F2B244570E2A /* Pods-climbingApp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-climbingApp.debug.xcconfig"; path = "Target Support Files/Pods-climbingApp/Pods-climbingApp.debug.xcconfig"; sourceTree = "<group>"; };
@@ -123,6 +124,7 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
+				78E803E4287BD9EE00AB9FB7 /* Config.xcconfig */,
 				789C0FFF28759B3B00313653 /* climbingApp-Bridging-Header.h */,
 				7889B612284D2EDF00615BC2 /* Fonts */,
 				13B07FAE1A68108700A75B9A /* climbingApp */,
@@ -516,6 +518,7 @@
 		};
 		83CBBA201A601CBA00E9B192 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 78E803E4287BD9EE00AB9FB7 /* Config.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
