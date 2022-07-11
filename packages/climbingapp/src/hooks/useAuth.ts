@@ -4,6 +4,7 @@ import { authorize, logout } from 'climbingapp/src/store/slices/auth';
 import { useSelector, useDispatch } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
+import Config from 'react-native-config';
 
 const useUser = () => {
   return useSelector((state: RootState) => state.auth.user);
@@ -27,10 +28,8 @@ export const useAuth = () => {
 
   const GoogleLogin = async () => {
     GoogleSignin.configure({
-      webClientId:
-        '163596591416-lr6paol0hmspl6ccium1ghs13at5ivuh.apps.googleusercontent.com',
-      iosClientId:
-        '163596591416-462nelg5u8mnsoiilcktnc2b9tbajiq1.apps.googleusercontent.com',
+      webClientId: Config.GOOGLE_WEB_CLIENT_ID,
+      iosClientId: Config.GOOGLE_IOS_CLIENT_ID,
     });
     try {
       await GoogleSignin.hasPlayServices();
