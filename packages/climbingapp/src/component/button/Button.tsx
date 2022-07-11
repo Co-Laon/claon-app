@@ -10,7 +10,7 @@ interface ButtonProps {
     height: string;
     text: string;
     icon?: JSX.Element;
-    disabled: boolean;
+    disabled?: boolean;
     onPress: ({ }: any) => void;
 }
 
@@ -57,8 +57,6 @@ export const DefaultButton = (props: ButtonProps) => {
     );
 };
 
-export const NextButton = ({ onPress, disabled }: { onPress: ({ }: any) => void, disabled: () => boolean }) => {
-    const disable = disabled && disabled();
-
-    return <DefaultButton {...LargePurple} onPress={onPress} disabled={disable} />;
+export const NextButton = ({ onPress, disabled }: { onPress: ({ }: any) => void, disabled?: boolean }) => {
+    return <DefaultButton {...LargePurple} onPress={onPress} disabled={disabled} />;
 };

@@ -4,7 +4,7 @@ import { NextButton } from 'climbingapp/src/component/button/Button';
 import { Title, TitleContainer } from 'climbingapp/src/component/text/AuthTitle';
 import { ScreenView } from 'climbingapp/src/component/view/ScreenView';
 import { colorStyles } from 'climbingapp/src/styles';
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
 import styled from 'styled-components/native';
 import { LoginScreenProp } from './type';
 import { Text } from 'react-native';
@@ -43,11 +43,21 @@ const SubText = styled.Text`
     line-height: 20px;
 `;
 
+interface Info {
+    nickname: string;
+    area: string;
+    detail_area: string;
+}
+
 function EssentialInfoScreen() {
     const navigation = useNavigation<LoginScreenProp>();
     const BSMref = useRef<BottomSheetModal>(null);
+    const [essentialInfo, setEssentialInfo] = useState<Info>();
+    const [bottomSheetList, setBottomSheetList] = useState<string[]>([]);
+    const areaList = ['서울 특별시'];
+    const detailAreaList = [''];
 
-    const data = ['서울 특별시', '부산 광역시', '서울 특별시', '부산 광역시', '서울 특별시', '부산 광역시'];
+
     const handleRef = () => {
         BSMref.current?.present();
     };
@@ -80,7 +90,7 @@ function EssentialInfoScreen() {
         <ButtonContainer>
             <NextButton onPress={() => navigation.navigate('connectInsta')} />
         </ButtonContainer>
-        <MyBottomSheet ref={BSMref} data={data} onEachItemPress={handleChoiceItem} />
+        <MyBottomSheet ref={BSMref} data={bottomSheetList} onEachItemPress={handleChoiceItem} />
     </ScreenView>);
 }
 
