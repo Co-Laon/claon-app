@@ -12,7 +12,6 @@ export const Apple = {
   height: '56px',
   icon: <AppleLogo />,
   text: '  Apple로 계속하기',
-  disabled: false,
   underlayColor: colorStyles.Black,
 };
 export const LargePurple = {
@@ -21,7 +20,6 @@ export const LargePurple = {
   color: 'white',
   height: '56px',
   text: '다음',
-  disabled: false,
   underlayColor: colorStyles.Purple600,
 };
 export const MediumGray = {
@@ -30,7 +28,6 @@ export const MediumGray = {
   color: 'white',
   height: '52px',
   text: '버튼명',
-  disabled: false,
   underlayColor: colorStyles.Black,
 };
 export const MediumPurple = {
@@ -39,7 +36,6 @@ export const MediumPurple = {
   color: 'white',
   height: '52px',
   text: '버튼명',
-  disabled: false,
   underlayColor: colorStyles.Purple600,
 };
 export const LargeLine = {
@@ -49,7 +45,6 @@ export const LargeLine = {
   height: '56px',
   icon: <GoogleLogo />,
   text: '  버튼명',
-  disabled: false,
   underlayColor: colorStyles.Gray100,
 };
 export const Google = {
@@ -59,7 +54,6 @@ export const Google = {
   height: '56px',
   icon: <GoogleLogo />,
   text: '  Google로 계속하기',
-  disabled: false,
   underlayColor: colorStyles.Gray100,
 };
 export const MediumLineIcon = {
@@ -69,7 +63,6 @@ export const MediumLineIcon = {
   height: '52px',
   icon: <GoogleLogo />,
   text: '  버튼명',
-  disabled: false,
   underlayColor: colorStyles.Gray100,
 };
 export const MediumLine = {
@@ -78,7 +71,6 @@ export const MediumLine = {
   color: 'black',
   height: '52px',
   text: '버튼명',
-  disabled: false,
   underlayColor: colorStyles.Gray100,
 };
 export const Kakao = {
@@ -88,7 +80,6 @@ export const Kakao = {
   height: '52px',
   icon: <KakaoLogo />,
   text: '  카카오톡으로 계속하기',
-  disabled: false,
   underlayColor: '#ffcd00',
 };
 
@@ -99,6 +90,5 @@ export const Instagram = {
   height: '56px',
   icon: <InstagramLogo />,
   text: '  인스타그램 연결',
-  disabled: false,
   underlayColor: colorStyles.Gray100,
 };

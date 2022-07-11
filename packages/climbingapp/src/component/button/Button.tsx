@@ -57,6 +57,8 @@ export const DefaultButton = (props: ButtonProps) => {
     );
 };
 
-export const NextButton = ({ onPress }: { onPress: ({ }: any) => void }) => {
-    return <DefaultButton {...LargePurple} onPress={onPress} />;
+export const NextButton = ({ onPress, disabled }: { onPress: ({ }: any) => void, disabled: () => boolean }) => {
+    const disable = disabled && disabled();
+
+    return <DefaultButton {...LargePurple} onPress={onPress} disabled={disable} />;
 };
