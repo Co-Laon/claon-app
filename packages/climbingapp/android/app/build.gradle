@@ -134,7 +134,7 @@ android {
     compileSdkVersion rootProject.ext.compileSdkVersion
 
     defaultConfig {
-        resValue "string", "build_config_package", "climbingapp_IN_ANDROIDMANIFEST_XML"
+        resValue "string", "build_config_package", "com.climbingapp"
         applicationId "com.climbingapp"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
