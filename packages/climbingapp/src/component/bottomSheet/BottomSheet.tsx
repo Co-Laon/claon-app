@@ -38,10 +38,9 @@ const MyBottomSheet = React.forwardRef<BottomSheetModalMethods, BottomSheetProps
         background-color: ${colorStyles.Gray300};
         height: 1px;
     `;
-
     const renderItem = useCallback(
         ({ item }) => (
-            <Pressable style={styles.itemContainer} onPress={onEachItemPress}>
+            <Pressable style={styles.itemContainer} onPress={() => onEachItemPress({ item })}>
                 <Text style={{ fontSize: 14, color: `${colorStyles.Black}` }}>{item}</Text>
             </Pressable>
         ),

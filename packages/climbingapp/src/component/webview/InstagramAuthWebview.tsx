@@ -2,15 +2,17 @@ import React from 'react';
 import WebView from 'react-native-webview';
 import qs from 'querystring';
 import axios from 'axios';
+import Config from 'react-native-config';
 
-interface InstaAuthProps {
-    appId: string;
-    appSecret: string;
-    scope: string;
-    redirectUrl: string;
-}
-
-export function InstagramAuthWebView({ appId, appSecret, scope, redirectUrl }: InstaAuthProps) {
+export const InstagramAuthWebView = () => {
+    const instagramState = {
+        appId: Config.INSTAGRAM_APP_ID,
+        appSecret: Config.INSTAGRAM_APP_SECRET_CODE,
+        scope: 'user_profile,user_media',
+        redirectUrl: Config.REDIRECT_URI
+    };
+    const { appId, appSecret, scope, redirectUrl } = instagramState;
+    console.log(instagramState);
     const url = `https://api.instagram.com/oauth/authorize?client_id=${appId}&redirect_uri=${redirectUrl}&scope=${scope}&response_type=code`;
 
     const getAccessToken = async (code: string) => {
@@ -18,9 +20,21 @@ export function InstagramAuthWebView({ appId, appSecret, scope, redirectUrl }: I
         form.append('client_id', appId);
         form.append('client_secret', appSecret);
         form.append('grant_type', 'authorization_code');
-        form.append('code', code);
         form.append('redirect_uri', redirectUrl);
-        await axios.post('https://api.instagram.com/oauth/access_token', form);
+        form.append('code', code);
+        try {
+            await axios({
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                    'Accept': 'Accept-Encoding',
+                },
+                url: 'https://api.instagram.com/oauth/access_token',
+                method: 'post',
+                data: form,
+            });
+        } catch (err) {
+            console.log(err);
+        }
     };
 
     return (
@@ -33,9 +47,10 @@ export function InstagramAuthWebView({ appId, appSecret, scope, redirectUrl }: I
                 console.log(code);
                 if (code) {
                     await getAccessToken(code)
-                        .then(res => console.log(res));
+                        .then(res => console.log('access token: ', res));
                 }
             }}
         />
     );
-} 
+};
+export default InstagramAuthWebView;
