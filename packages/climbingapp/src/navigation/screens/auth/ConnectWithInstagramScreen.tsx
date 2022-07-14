@@ -9,7 +9,6 @@ import { colorStyles } from 'climbingapp/src/styles';
 import React from 'react';
 import styled from 'styled-components/native';
 import { LoginScreenProp } from './type';
-import Config from 'react-native-config';
 
 const ButtonContainer = styled.View`
     flex: 0.3;

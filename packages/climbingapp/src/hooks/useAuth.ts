@@ -1,5 +1,9 @@
 import { RootState } from './../store/slices/index';
-import { KakaoOAuthToken, login } from '@react-native-seoul/kakao-login';
+import {
+  getProfile,
+  KakaoOAuthToken,
+  login,
+} from '@react-native-seoul/kakao-login';
 import { authorize, logout } from 'climbingapp/src/store/slices/auth';
 import { useSelector, useDispatch } from 'react-redux';
 import { bindActionCreators } from 'redux';
@@ -24,10 +28,14 @@ export const useAuth = () => {
     console.log('token', token);
     auth.authorize({ platform: 'kakao', token });
     console.log(user);
+    const profile = await getProfile();
+    console.log(profile);
   };
 
   const GoogleLogin = async () => {
     GoogleSignin.configure({
+      offlineAccess: true,
+      hostedDomain: '',
       webClientId: Config.GOOGLE_WEB_CLIENT_ID,
       iosClientId: Config.GOOGLE_IOS_CLIENT_ID,
     });

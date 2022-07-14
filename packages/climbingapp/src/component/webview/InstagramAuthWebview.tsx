@@ -16,27 +16,25 @@ export const InstagramAuthWebView = () => {
     const url = `https://api.instagram.com/oauth/authorize?client_id=${appId}&redirect_uri=${redirectUrl}&scope=${scope}&response_type=code`;
 
     const getAccessToken = async (code: string) => {
-        const form = new URLSearchParams();
+        let headers = { 'Content-Type': 'application/x-www-form-urlencoded' };
+        let http = axios.create({
+            baseURL: 'https://api.instagram.com/oauth/access_token',
+            headers: headers,
+        });
+        let form = new URLSearchParams();
         form.append('client_id', appId);
         form.append('client_secret', appSecret);
         form.append('grant_type', 'authorization_code');
         form.append('redirect_uri', redirectUrl);
         form.append('code', code);
-        try {
-            await axios({
-                headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded',
-                    'Accept': 'Accept-Encoding',
-                },
-                url: 'https://api.instagram.com/oauth/access_token',
-                method: 'post',
-                data: form,
-            });
-        } catch (err) {
-            console.log(err);
-        }
+        let res = await http.post('/', form).catch((error) => {
+            console.log(error.response); return false;
+        });
+        if (res)
+            console.log(res);
+        else
+            console.debug(res);
     };
-
     return (
         <WebView
             source={{ uri: url }}
@@ -47,7 +45,8 @@ export const InstagramAuthWebView = () => {
                 console.log(code);
                 if (code) {
                     await getAccessToken(code)
-                        .then(res => console.log('access token: ', res));
+                        .then(res => console.log('access token: ', res))
+                        .catch(err => err.response);
                 }
             }}
         />
