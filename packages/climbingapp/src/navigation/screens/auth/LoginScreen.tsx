@@ -4,7 +4,7 @@ import { Kakao, Apple, Google } from 'climbingapp/src/component/button/buttonPro
 import { ScreenView } from 'climbingapp/src/component/view/ScreenView';
 import { colorStyles } from 'climbingapp/src/styles';
 import React from 'react';
-import { Platform } from 'react-native';
+//import { Platform } from 'react-native';
 import styled from 'styled-components/native';
 import { LoginScreenProp } from './type';
 import { useAuth } from 'climbingapp/src/hooks/useAuth';
@@ -64,7 +64,8 @@ function LoginScreen() {
         </TitleContainer>
         <ButtonContainer>
             <KakaoButton onPress={handleSignKakao} />
-            {Platform.OS === 'ios' && <AppleButton onPress={handleSignApple} />}
+            {/* {Platform.OS === 'ios' && <AppleButton onPress={handleSignApple} />} */}
+            <AppleButton onPress={handleSignApple} />
             <GoogleButton onPress={handleSignGoogle} />
         </ButtonContainer>
         <EmptyConatiner />

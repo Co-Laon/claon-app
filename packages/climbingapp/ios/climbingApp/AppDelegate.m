@@ -3,7 +3,7 @@
 #import <React/RCTBridge.h>
 #import <React/RCTBundleURLProvider.h>
 #import <React/RCTRootView.h>
-#import <RNKakaoLogins.h>
+#import "WithKakaoSDK.h"
 #import <RNGoogleSignin/RNGoogleSignin.h>
 
 #ifdef FB_SONARKIT_ENABLED
@@ -56,8 +56,8 @@ static void InitializeFlipper(UIApplication *application) {
 - (BOOL)application:(UIApplication *)app
      openURL:(NSURL *)url
      options:(NSDictionary<UIApplicationOpenURLOptionsKey,id> *)options {
- if([RNKakaoLogins isKakaoTalkLoginUrl:url]) {
-   return [RNKakaoLogins handleOpenUrl: url] || [RNGoogleSignin application:app openURL:url options:options];
+ if([WithKakaoSDK isKakaoTalkLoginUrl:url]) {
+   return [WithKakaoSDK handleOpenUrl: url] || [RNGoogleSignin application:app openURL:url options:options];
  }
 
  return NO;
