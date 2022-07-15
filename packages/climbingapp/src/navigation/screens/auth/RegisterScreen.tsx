@@ -96,6 +96,8 @@ function RegisterScreen() {
         setCheckList(values);
     };
 
+    const isDisabled = () => !checkList.filter(({ isEssential }) => isEssential).every(({ checked }) => checked);
+
     return (<ScreenView color='white'>
         <AppBar />
         <TitleContainer>
@@ -116,7 +118,7 @@ function RegisterScreen() {
             </CheckListItem>)}
         </CheckListContainer>
         <ButtonContainer>
-            <NextButton onPress={() => navigation.navigate('essentialInfo')} />
+            <NextButton onPress={() => navigation.navigate('essentialInfo')} disabled={isDisabled} />
         </ButtonContainer>
     </ScreenView>);
 }

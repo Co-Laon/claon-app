@@ -16,9 +16,11 @@ const Container = styled.TextInput`
 
 interface TextInputProps {
     placeholder: string;
+    value: string;
+    onChangeText: ({ }: any) => void;
 }
 
-export const MyTextInput = ({ placeholder }: TextInputProps) => {
+export const MyTextInput = ({ placeholder, value, onChangeText }: TextInputProps) => {
 
-    return <Container placeholder={placeholder} placeholderTextColor={colorStyles.Gray400} />;
+    return <Container value={value} onChangeText={onChangeText} placeholder={placeholder} placeholderTextColor={colorStyles.Gray400} />;
 };
