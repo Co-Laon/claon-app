@@ -11,7 +11,7 @@ const Tab = createBottomTabNavigator();
 
 const MainNavigator = () => {
     return (
-        <Tab.Navigator tabBar={props => <TabBar {...props} tab={tabIcons} />}>
+        <Tab.Navigator screenOptions={{ headerShown: false }} tabBar={props => <TabBar {...props} tab={tabIcons} />}>
             <Tab.Screen name="home" component={HomeScreen} />
             <Tab.Screen name="search" component={SearchScreen} />
             < Tab.Screen name="center" component={CenterScreen} />
