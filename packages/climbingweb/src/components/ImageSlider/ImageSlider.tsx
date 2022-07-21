@@ -20,7 +20,7 @@ const ImageSlider = ({
   console.dir(selectedImageIndex);
   return (
     <div
-      className={`bg-black relative w-full h-[360px] overflow-hidden`}
+      className={'bg-black relative w-full h-[360px] overflow-hidden'}
       onTouchStart={onTouchStart}
       onTouchMove={onTouchMove}
       onTouchEnd={onTouchEnd}
@@ -35,33 +35,29 @@ const ImageSlider = ({
             <Image
               key={`sectorInfo${index}`}
               src={index == 0 ? defaultProfileImg : pencilImg}
-              width={`360px`}
-              height={`360px`}
+              width={'360px'}
+              height={'360px'}
+              alt={'sliderImage'}
             />
           ) : (
-            <div className={`w-[360px] h-[360px]`}>
+            <div className={'w-[360px] h-[360px]'}>
               <div
-                className={`border-t-transparent
-      animate-spin
-      inline-block
-      w-8
-      h-8
-      border-4
-      rounded-full
-    `}
+                className={
+                  'border-t-transparent animate-spin inline-block w-8 h-8 border-4 rounded-full'
+                }
               />
             </div>
           )
         )}
       </div>
       <div
-        className={`flex w-full my-4 absolute left-0 bottom-0 justify-center`}
+        className={'flex w-full my-4 absolute left-0 bottom-0 justify-center'}
       >
         {imageList.map((value, index) => (
           <div
             key={`justDot${index}`}
             className={`w-2 h-2 m-1 rounded-full bg-white ${
-              selectedImageIndex === index ? `opacity-100` : `opacity-40`
+              selectedImageIndex === index ? 'opacity-100' : 'opacity-40'
             }`}
           />
         ))}

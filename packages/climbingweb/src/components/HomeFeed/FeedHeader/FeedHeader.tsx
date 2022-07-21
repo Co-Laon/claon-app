@@ -13,19 +13,19 @@ const FeedHeader = ({
   userLocation: string;
 }) => {
   return (
-    <header className={`flex w-[360px] h-[56px] my-1 justify-between`}>
-      <div className={`flex`}>
+    <header className={'flex w-[360px] h-[56px] my-1 justify-between'}>
+      <div className={'flex'}>
         <Image
           src={userImage ? userImage : defaultProfileImg}
-          className={`w-[40px] h-[40px] m-2`}
+          className={'w-[40px] h-[40px] m-2'}
           alt="UserProfile"
         />
         <div>
-          <p className={`text-sm`}>{userName}</p>
-          <p className={`text-sm text-gray-600`}>{userLocation}</p>
+          <p className={'text-sm'}>{userName}</p>
+          <p className={'text-sm text-gray-600'}>{userLocation}</p>
         </div>
       </div>
-      <button className={`w-[24px] h-[24px] self-center`}>
+      <button className={'w-[24px] h-[24px] self-center'}>
         <Image src={optionDotImg} alt="..." />
       </button>
     </header>

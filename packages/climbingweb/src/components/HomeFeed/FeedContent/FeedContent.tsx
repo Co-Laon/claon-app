@@ -1,4 +1,4 @@
-import React, { TouchEvent, useState } from 'react';
+import React, { useState } from 'react';
 import solidHeart from '../../../assets/heart_solid_red500.svg';
 import lineHeart from '../../../assets/heart_line_gray800.svg';
 import Image from 'next/image';
@@ -27,25 +27,24 @@ const FeedContent = ({
 
   return (
     <section>
-      <div className={`flex justify-between`}>
-        <span className={`flex`}>
+      <div className={'flex justify-between'}>
+        <span className={'flex'}>
           <Image
-            className={`${isLiked ? `animate-larger` : `animate-none`}`}
+            className={`${isLiked ? 'animate-larger' : 'animate-none'}`}
             src={isLiked ? solidHeart : lineHeart}
-            width={`32px`}
-            height={`32px`}
+            width={'32px'}
+            height={'32px'}
             onTouchEnd={() => onTouchHeartIcon()}
+            alt={'heartIcon'}
           />
           {`${likeCount} 명이 좋아해요`}
         </span>
-        <span>{postTime === 0 ? `방금 전` : `${postTime}시간 전`}</span>
+        <span>{postTime === 0 ? '방금 전' : `${postTime}시간 전`}</span>
       </div>
       {content.length > 50 && !moreRead ? (
         <>
-          <p className={`h-8 truncate`}>{content}</p>
-          <p className={``} onTouchEnd={onTouchMoreRead}>
-            더보기
-          </p>
+          <p className={'h-8 truncate'}>{content}</p>
+          <p onTouchEnd={onTouchMoreRead}>더보기</p>
         </>
       ) : (
         <p>{content}</p>

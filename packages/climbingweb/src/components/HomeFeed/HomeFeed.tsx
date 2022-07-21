@@ -22,8 +22,8 @@ const HomeFeed = ({
   const postTime = 0;
   const feedContent =
     '고행을 바이며, 이상의 과실이 무엇을 이상의 풀밭에 듣는다. 가치를 황금시대를 대중을 미묘한 청춘의 방황하여도, 이는 끓는다. 없으면, 이상 같은 있을 끓는 구하기 소담스러운 뜨고, 아니다. 붙잡아 기관과 속잎나고, 발휘하기 가슴에 불러 있다. 대고, 끝에 있는 꽃 위하여 목숨을 바이며, 고행을 물방아 힘있다. 수 하였으며, 같이 사막이다.';
-  const shortFeedContent =
-    '고행을 바이며, 이상의 과실이 무엇을 이상의 풀밭에 듣는다.';
+  // const shortFeedContent =
+  //   '고행을 바이며, 이상의 과실이 무엇을 이상의 풀밭에 듣는다.';
   const replyCount = 10;
 
   useEffect(() => {
@@ -32,7 +32,7 @@ const HomeFeed = ({
 
   const onTouchStart = (event: TouchEvent<HTMLDivElement>) => {
     const touchX = event.changedTouches[0].pageX;
-    console.log(`onTouchStart: `);
+    console.log('onTouchStart: ');
     console.log(event);
     if (touchX > 200) {
       if (selectedImageIndex < imageList.length - 1) {
@@ -60,7 +60,7 @@ const HomeFeed = ({
   };
 
   return (
-    <section className={`w-[360px]`}>
+    <section className={'w-[360px]'}>
       <FeedHeader
         userImage={null}
         userName="kimclaon85"

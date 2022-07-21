@@ -1,8 +1,9 @@
 import CustomWebView from 'climbingapp/src/component/webview/CustomWebView';
 import React from 'react';
+import Config from 'react-native-config';
 
 function HomeScreen() {
-  return <CustomWebView url="http://127.0.0.1:3000/" />;
+  return <CustomWebView url={Config.URL} />;
 }
 
 export default HomeScreen;
