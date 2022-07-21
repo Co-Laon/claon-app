@@ -34,17 +34,19 @@ const Commment = ({
     const isReply = replies ? true : false;
 
     return (
-        <div>
+        <div className='w-screen flex flex-row'>
             <div className='flex flex-row py-4 gap-2'>
                 <div className='h-10 w-10 relative'>
                     <Image className='rounded-full' layout="fill" objectFit='cover' src={writerProfileImage} alt="comment" />
                 </div>
-                <div className='w-full gap-2'>
-                    <div className='h-10 truncate'>
+                <div className='w-screen gap-2'>
+                    <div className='h-10'>
                         <p className='text-sm font-bold'>{writerNickName}</p>
                         <p className='text-gray-400 '>{updateAt ? updateAt : createAt} {isReply && <span className='hover:text-black' onClick={() => { }}>·답댓글 달기</span>}</p>
                     </div>
-                    <p>{isDeleted ? '삭제된 게시글 입니다' : content}</p>
+                    <div className='w-screen'>
+                        <p className='text-sm line-clamp-3 '>{isDeleted ? '삭제된 게시글 입니다' : content}</p>
+                    </div>
                 </div>
             </div>
         </div >
