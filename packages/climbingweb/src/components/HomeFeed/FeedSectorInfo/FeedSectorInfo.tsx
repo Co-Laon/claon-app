@@ -6,7 +6,12 @@ import Hold from 'climbingweb/src/interface/Hold';
 const FeedHoldIcon = ({ index, value }: { index: number; value: Hold }) => (
   <>
     <div key={`hold${index}`} className={'m-1'}>
-      <Image src={defaultPencilImg} width={'16px'} height={'16px'} />
+      <Image
+        src={defaultPencilImg}
+        width={'16px'}
+        height={'16px'}
+        alt={'holdIcon'}
+      />
     </div>
     {value.count}
   </>
