@@ -1,10 +1,9 @@
 import CustomWebView from 'climbingapp/src/component/webview/CustomWebView';
 import React from 'react';
+import Config from 'react-native-config';
 
 function HomeScreen() {
-    return (
-        <CustomWebView url="https://www.google.com/" />
-    );
+  return <CustomWebView url={Config.URL} />;
 }
 
 export default HomeScreen;
