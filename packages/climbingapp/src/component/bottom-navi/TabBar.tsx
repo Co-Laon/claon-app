@@ -33,7 +33,12 @@ interface TabBarProps {
     }
 }
 
-export const TabBar = ({ state, navigation, tab }: BottomTabBarProps & TabBarProps) => {
+export const TabBar = ({ state, navigation, tab, descriptors }: BottomTabBarProps & TabBarProps) => {
+    const focusedOptions: any = descriptors[state.routes[state.index].key].options;
+    if (focusedOptions.tabBarStyle?.display === 'none') {
+        return null;
+    }
+
     return (
         <Tabs>
             {state.routes.map((route, index) => {
