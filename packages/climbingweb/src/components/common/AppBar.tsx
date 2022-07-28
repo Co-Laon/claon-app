@@ -12,7 +12,7 @@ export function AppBar({ title, rightNode }: Props) {
         <div className='flex flex-row justify-between p-4'>
             <Image src={ArrowBack} alt="back" />
             <h1>{title}</h1>
-            <div className='w-6 h-6'>
+            <div>
                 {rightNode}
             </div>
         </div>
