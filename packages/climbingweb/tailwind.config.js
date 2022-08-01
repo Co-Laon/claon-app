@@ -44,9 +44,13 @@ module.exports = {
           500: '#FFDE3B',
         }
       },
+      minWidth: {
+        20: '5rem',
+      }
     },
   },
   plugins: [
     require('@tailwindcss/line-clamp'),
+    require('tailwind-scrollbar-hide'),
   ],
 };
