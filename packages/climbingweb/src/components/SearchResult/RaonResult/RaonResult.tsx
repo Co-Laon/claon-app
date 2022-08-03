@@ -4,7 +4,7 @@ import DefaultRaonImage from 'climbingweb/src/assets/icon/ic_72_profile_gray400.
 
 const RaonResult = ({ image, name }: { image?: string; name: string }) => {
   return (
-    <div className="relative flex flex-col items-center text-center w-[75px] h-[110px] rounded-[4px] border-gray-400 border-2 text-[8px]">
+    <div className="relative flex flex-col items-center text-center w-[75px] h-[110px] rounded-[4px] border-gray-400 border-2 text-[8px] mr-[15px]">
       <Image
         className="rounded-full my-1"
         src={image ?? DefaultRaonImage}
