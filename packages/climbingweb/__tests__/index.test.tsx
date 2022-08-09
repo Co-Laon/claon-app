@@ -1,16 +1,14 @@
 // __tests__/index.test.jsx
 
 import { render, screen } from '@testing-library/react';
-import Home from '../pages/index';
+import { AppBar } from 'climbingweb/src/components/common/AppBar';
 
 describe('Home', () => {
     it('renders a heading', () => {
-        render(<Home />);
-
+        render(<AppBar title='title' />);
         const heading = screen.getByRole('heading', {
-            name: /welcome to next\.js!/i,
+            name: 'title',
         });
-
         expect(heading).toBeInTheDocument();
     });
 });
