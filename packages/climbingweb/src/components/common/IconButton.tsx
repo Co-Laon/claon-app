@@ -38,3 +38,7 @@ export const BookMarkButton = ({ onClick, isBookMarked }: BookMark) => {
 export const OptionButton = ({ onClick }: ButtonProps) => {
     return < Image src={Option} onClick={onClick} alt="option" />;
 };
+
+export const Empty = () => {
+    return <div className='w-6 h-6' />;
+};
