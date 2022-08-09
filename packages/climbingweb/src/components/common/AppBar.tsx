@@ -1,20 +1,16 @@
-import ArrowBack from 'climbingweb/src/assets/icon/ic_24_appbar_back_gray800.svg';
-import Image from 'next/image';
-
 interface Props {
-    title: string;
+    title?: string;
+    leftNode?: JSX.Element
     rightNode?: JSX.Element;
 }
 
-export function AppBar({ title, rightNode }: Props) {
+export function AppBar({ title, leftNode, rightNode }: Props) {
 
     return (
-        <div className='flex flex-row justify-between p-4'>
-            <Image src={ArrowBack} alt="back" />
+        <header className='flex flex-row justify-between p-4'>
+            {leftNode}
             <h1>{title}</h1>
-            <div>
-                {rightNode}
-            </div>
-        </div>
+            {rightNode}
+        </header>
     );
 }

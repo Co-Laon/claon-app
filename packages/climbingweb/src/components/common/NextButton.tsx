@@ -1,7 +1,7 @@
 import { Dispatch, SetStateAction, useCallback } from 'react';
 
 
-export const AppBarRightNode = ({ pageState, setPageState }: { pageState: string, setPageState: Dispatch<SetStateAction<string>> }) => {
+export const NextButton = ({ pageState, setPageState }: { pageState: string, setPageState: Dispatch<SetStateAction<string>> }) => {
 
     const handleNextButton = useCallback(() => {
         if (pageState === 'first') {
