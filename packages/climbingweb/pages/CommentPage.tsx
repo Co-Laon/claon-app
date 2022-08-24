@@ -1,3 +1,4 @@
+import { CommentInput } from 'climbingweb/src/components/Comments/CommentInput';
 import { Comments } from 'climbingweb/src/components/Comments/Comments';
 import { AppBar } from 'climbingweb/src/components/common/AppBar';
 import { sendReactNativeMessage } from 'climbingweb/src/utils/reactNativeMessage';
@@ -86,9 +87,7 @@ export default function CommentPage() {
                 ))}
                 <div className='h-24 w-full'></div>
             </div>
-            <div className='bg-gray-100 w-full h-24 flex flex-col p-4' style={{ position: 'fixed', bottom: 0 }} >
-                <input className="w-full rounded-lg p-4 bg-white" type="text" placeholder='댓글을 입력해 주세요.' />
-            </div>
+            <CommentInput />
         </div >
     );
 }
