@@ -1,4 +1,4 @@
-import CenterResult from 'climbingweb/src/components/SearchResult/CenterResult/CenterResult';
+import CenterResult from 'climbingweb/src/components/common/CenterResult/CenterResult';
 import RaonResult from 'climbingweb/src/components/SearchResult/RaonResult/RaonResult';
 import SearchBar from 'climbingweb/src/components/SearchResult/SearchBar/SearchBar';
 import React, { useEffect } from 'react';
