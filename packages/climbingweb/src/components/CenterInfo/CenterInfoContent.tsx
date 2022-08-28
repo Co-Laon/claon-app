@@ -1,13 +1,15 @@
 import { ImageList } from '../common/ImageList';
 import { TabBar } from '../common/TabBar';
 
-export const CenterInfoContent = () => {
+interface ContentProps {
+  imageList: string[];
+}
 
-
-    return (
-        <div>
-            <ImageList />
-            <TabBar />
-        </div>
-    );
+export const CenterInfoContent = ({ imageList }: ContentProps) => {
+  return (
+    <div>
+      <ImageList imageList={imageList} />
+      <TabBar />
+    </div>
+  );
 };
