@@ -46,6 +46,7 @@ module.exports = {
       },
       minWidth: {
         20: '5rem',
+        40: '10rem',
       },
       spacing: {
         'footer': '5rem',
