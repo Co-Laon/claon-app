@@ -13,7 +13,7 @@ const list = [img, img, img, img, img, img, img, img];
 export default function CenterDetailPage({ title }: DetailPageProps) {
     title = '더클라이밍 마곡';
     return (
-        <section className='mb-footer'>
+        <section className='mb-footer overflow-auto scrollbar-hide'>
             <AppBar
                 leftNode={<AppLogo />}
                 rightNode={<div className='flex flex-row gap-x-3'><BookMarkButton /> <OptionButton /></div>}
