@@ -1,10 +1,10 @@
+import CustomWebView from 'climbingapp/src/component/webview/CustomWebView';
 import React from 'react';
-import { SafeAreaView, Text } from 'react-native';
+import Config from 'react-native-config';
 
 function MapScreen() {
-    return (<SafeAreaView>
-        <Text>Map</Text>
-    </SafeAreaView>);
+    const CenterPage = '/CenterPage';
+    return <CustomWebView url={Config.URL + CenterPage} />;
 }
 
 export default MapScreen;

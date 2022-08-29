@@ -1,14 +1,15 @@
 import React from 'react';
 import { useAuth } from '../hooks/useAuth';
 import LoginNavigator from './LoginNavigator';
-import MainNavigator from './MainNavigator';
+import HomeScreen from './screens/main/HomeScreen';
+//import MainNavigator from './MainNavigator';
 
 export function RootNavigator() {
     const { user } = useAuth();
 
     return (
         <>
-            {user?.token ? <MainNavigator /> : <LoginNavigator />}
+            {user?.token ? <HomeScreen /> : <LoginNavigator />}
         </>
     );
 }
