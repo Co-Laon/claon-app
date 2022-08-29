@@ -13,7 +13,7 @@ const FeedHeader = ({
   userLocation: string;
 }) => {
   return (
-    <header className={'flex w-[360px] h-[56px] my-1 justify-between'}>
+    <header className={'flex w-full h-[56px] my-1 justify-between'}>
       <div className={'flex'}>
         <Image
           src={userImage ? userImage : defaultProfileImg}

@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import solidHeart from '../../../assets/heart_solid_red500.svg';
 import lineHeart from '../../../assets/heart_line_gray800.svg';
 import Image from 'next/image';
+import { useRouter } from 'next/router';
 
 const FeedContent = ({
   isLiked,
@@ -25,10 +26,12 @@ const FeedContent = ({
     setMoreRead(true);
   };
 
+  const router = useRouter();
+
   return (
-    <section>
+    <section className='px-5 pt-7 text-sm'>
       <div className={'flex justify-between'}>
-        <span className={'flex'}>
+        <span className={'flex font-medium'}>
           <Image
             className={`${isLiked ? 'animate-larger' : 'animate-none'}`}
             src={isLiked ? solidHeart : lineHeart}
@@ -37,19 +40,19 @@ const FeedContent = ({
             onTouchEnd={() => onTouchHeartIcon()}
             alt={'heartIcon'}
           />
-          {`${likeCount} 명이 좋아해요`}
+          {`${likeCount}명이 좋아해요`}
         </span>
-        <span>{postTime === 0 ? '방금 전' : `${postTime}시간 전`}</span>
+        <span className='font-medium text-gray-400'>{postTime === 0 ? '방금 전' : `${postTime}시간 전`}</span>
       </div>
       {content.length > 50 && !moreRead ? (
-        <>
-          <p className={'h-8 truncate'}>{content}</p>
-          <p onTouchEnd={onTouchMoreRead}>더보기</p>
-        </>
+        <div className='h-10'>
+          <span className={'line-clamp-2 inline'}>{content}</span>
+          <span className='text-gray-400 inline float-right' onTouchEnd={onTouchMoreRead}>더보기</span>
+        </div>
       ) : (
-        <p>{content}</p>
+        <p className='py-2 font-medium'>{content}</p>
       )}
-      {replyCount ? <p>{`댓글 ${replyCount}개 더 보기`}</p> : null}
+      {replyCount ? <p onTouchEnd={() => router.push('/CommentPage')} className='font-medium text-gray-400'>{`댓글 ${replyCount}개 더 보기`}</p> : null}
     </section>
   );
 };

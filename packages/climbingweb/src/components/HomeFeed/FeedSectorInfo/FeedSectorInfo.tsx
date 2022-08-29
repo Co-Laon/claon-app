@@ -24,9 +24,9 @@ const FeedSectorInfo = ({
   holdList: Hold[];
 }) => {
   return (
-    <div className={'flex flex-col w-full border-b-[1px] border-gray-300'}>
+    <div className={'flex flex-col w-full border-b border-gray-300'}>
       <div className={'flex mx-5 mt-5'}>
-        <div className={'mr-5'}>홀드</div>
+        <div className={'mr-5 font-medium text-gray-600'}>홀드</div>
         {holdList.map((value, index) => (
           <FeedHoldIcon
             key={`feedHoldIcon${value}${index}`}

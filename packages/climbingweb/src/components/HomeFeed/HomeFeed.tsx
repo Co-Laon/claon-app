@@ -60,7 +60,7 @@ const HomeFeed = ({
   };
 
   return (
-    <section className={'w-[360px]'}>
+    <section className={'w-full mb-footer'}>
       <FeedHeader
         userImage={null}
         userName="kimclaon85"
