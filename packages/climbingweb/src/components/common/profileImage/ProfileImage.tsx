@@ -10,7 +10,7 @@ interface ProfileProps {
 
 export const ProfileImage = ({ src, icon }: ProfileProps) => {
   return (
-    <div className="w-16 h-16 relative">
+    <div className="w-16 relative">
       <div className="w-15 h-15 rounded-xl relative">
         <Image src={src ? src : ProfileSkeleton} alt="profile" />
       </div>
@@ -19,7 +19,7 @@ export const ProfileImage = ({ src, icon }: ProfileProps) => {
           <Image src={CameraIcon} alt="cameraIcon" />
         </div>
       ) : (
-        <div className="absolute">
+        <div className="absolute bottom-0 right-0">
           <Image src={InstaIcon} alt="instaIcon" />
         </div>
       )}
