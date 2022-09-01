@@ -8,6 +8,7 @@ interface Center {
   name: string;
   image?: string;
   star: number;
+  id: string;
 }
 
 interface Raon {
@@ -16,8 +17,8 @@ interface Raon {
 }
 
 const centerListExample = [
-  { name: '더클라이밍 마곡', star: 4.5 },
-  { name: '더클라이밍 홍대점', star: 4.5 },
+  { name: '더클라이밍 마곡', star: 4.5, id: '1' },
+  { name: '더클라이밍 홍대점', star: 4.5, id: '2' },
 ];
 
 const raonListExample = [
@@ -35,7 +36,7 @@ const SearchPage = () => {
     setRaonList(raonListExample);
   }, []);
   return (
-    <div className="w-full flex flex-col item-center">
+    <div className="w-full flex flex-col item-center 'mb-footer overflow-auto scrollbar-hide'">
       <SearchBar />
       <div className="flex flex-col ml-[20px]">
         <span className="mb-3">암장</span>
@@ -46,6 +47,7 @@ const SearchPage = () => {
               star={value.star}
               image={value.image}
               name={value.name}
+              id={value.id}
             />
           ))}
         </div>
