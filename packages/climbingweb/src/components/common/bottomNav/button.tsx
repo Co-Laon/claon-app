@@ -12,26 +12,26 @@ const navButtons = [
   {
     label: '홈',
     path: '/',
-    icon: <Image src={HomeLogo} alt='home' />,
-    activedIcon: <Image src={HomeActivedLogo} alt='home-actived' />
+    icon: <Image src={HomeLogo} alt="home" />,
+    activedIcon: <Image src={HomeActivedLogo} alt="home-actived" />,
   },
   {
     label: '검색',
     path: '/search',
-    icon: <Image src={SearchLogo} alt='search' />,
-    activedIcon: <Image src={SearchActivedLogo} alt='search-actived' />
+    icon: <Image src={SearchLogo} alt="search" />,
+    activedIcon: <Image src={SearchActivedLogo} alt="search-actived" />,
   },
   {
     label: '암장',
     path: '/center',
-    icon: <Image src={MapLogo} alt='center' />,
-    activedIcon: <Image src={MapActivedLogo} alt='center-actived' />
+    icon: <Image src={MapLogo} alt="center" />,
+    activedIcon: <Image src={MapActivedLogo} alt="center-actived" />,
   },
   {
     label: '마이',
-    path: '/setting',
-    icon: <Image src={MyLogo} alt='setting' />,
-    activedIcon: <Image src={MyActivedLogo} alt='setting-actived' />
+    path: '/my',
+    icon: <Image src={MyLogo} alt="setting" />,
+    activedIcon: <Image src={MyActivedLogo} alt="setting-actived" />,
   },
 ];
 

@@ -29,7 +29,7 @@ const Home: NextPage = () => {
   };
 
   return (
-    <div>
+    <div className="mb-footer overflow-auto scrollbar-hide">
       <AppBar
         leftNode={<AppLogo />}
         rightNode={<ModifiedButton onClick={onCreateFeed} />}
