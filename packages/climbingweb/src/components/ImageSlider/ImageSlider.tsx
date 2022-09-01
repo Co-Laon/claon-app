@@ -17,7 +17,6 @@ const ImageSlider = ({
   onTouchMove: (event: TouchEvent<HTMLDivElement>) => void;
   onTouchEnd: (event: TouchEvent<HTMLDivElement>) => void;
 }) => {
-  console.dir(selectedImageIndex);
   return (
     <div
       className={'bg-black relative w-full h-[360px] overflow-hidden'}
@@ -40,7 +39,7 @@ const ImageSlider = ({
               alt={'sliderImage'}
             />
           ) : (
-            <div className={'w-[360px] h-[360px]'}>
+            <div key={`sectorInfo${index}`} className={'w-[360px] h-[360px]'}>
               <div
                 className={
                   'border-t-transparent animate-spin inline-block w-8 h-8 border-4 rounded-full'
