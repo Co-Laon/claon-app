@@ -45,15 +45,21 @@ module.exports = {
         }
       },
       minWidth: {
+        10: '2.5rem',
         20: '5rem',
+        40: '10rem',
       },
       spacing: {
         'footer': '5rem',
       },
     },
+    daisyui: {
+      themes: ['light', 'dark'],
+    },
   },
   plugins: [
     require('@tailwindcss/line-clamp'),
     require('tailwind-scrollbar-hide'),
+    require('daisyui'),
   ],
 };
