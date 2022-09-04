@@ -31,6 +31,7 @@ const uiSlice = createSlice({
       action: PayloadAction<React.ReactNode[] | React.ReactNode | null>
     ) {
       state.btSheet.sheet = action.payload;
+      console.log(state.btSheet.sheet);
     },
   },
 });

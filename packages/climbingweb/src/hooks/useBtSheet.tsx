@@ -33,7 +33,11 @@ export const useBTSheet = (): UseBTSheetResult => {
   } = useBTSheetActions();
 
   const renderSheet = () => {
-    return <BottomSheet open={isOpen}>{sheet}</BottomSheet>;
+    return (
+      <BottomSheet open={isOpen} onDismiss={closeBTS}>
+        {sheet}
+      </BottomSheet>
+    );
   };
 
   return { isOpen, openBTS, closeBTS, setBTS, renderSheet };

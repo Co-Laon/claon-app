@@ -1,10 +1,6 @@
 module.exports = {
   mode: 'jit',
-  content: [
-    "./pages/**/*.{js,ts,jsx,tsx}",
-    "./src/**/*.{js,ts,jsx,tsx}",
-  ],
-  darkmode: 'class',
+  content: ['./pages/**/*.{js,ts,jsx,tsx}', './src/**/*.{js,ts,jsx,tsx}'],
   theme: {
     extend: {
       animation: {
@@ -42,7 +38,7 @@ module.exports = {
         },
         yellow: {
           500: '#FFDE3B',
-        }
+        },
       },
       minWidth: {
         10: '2.5rem',
@@ -50,7 +46,7 @@ module.exports = {
         40: '10rem',
       },
       spacing: {
-        'footer': '5rem',
+        footer: '5rem',
       },
     },
     daisyui: {

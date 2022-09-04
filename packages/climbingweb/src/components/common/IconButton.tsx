@@ -8,37 +8,43 @@ import BookMarkYellow from 'climbingweb/src/assets/icon/ic_24_bookmark_yellow.sv
 import Option from 'climbingweb/src/assets/icon/ic_24_option_gray800.svg';
 
 interface ButtonProps {
-    onClick?: ({ }: any) => void;
+  onClick?: ({}: any) => void;
 }
 
 interface BookMark extends ButtonProps {
-    isBookMarked?: boolean;
+  isBookMarked?: boolean;
 }
 
 export const BackButton = ({ onClick }: ButtonProps) => {
-    return < Image src={ArrowBack} onClick={onClick} alt="back" />;
+  return <Image src={ArrowBack} onClick={onClick} alt="back" />;
 };
 
 export const ModifiedButton = ({ onClick }: ButtonProps) => {
-    return < Image src={Pencil} onClick={onClick} alt="modified" />;
+  return <Image src={Pencil} onClick={onClick} alt="modified" />;
 };
 
 export const AppLogo = ({ onClick }: ButtonProps) => {
-    return < Image src={Logo} onClick={onClick} alt="logo" />;
+  return <Image src={Logo} onClick={onClick} alt="logo" />;
 };
 
 export const SettingButton = ({ onClick }: ButtonProps) => {
-    return < Image src={Setting} onClick={onClick} alt="setting" />;
+  return <Image src={Setting} onClick={onClick} alt="setting" />;
 };
 
 export const BookMarkButton = ({ onClick, isBookMarked }: BookMark) => {
-    return < Image src={isBookMarked ? BookMarkYellow : BookMarkWhite} onClick={onClick} alt="bookmark" />;
+  return (
+    <Image
+      src={isBookMarked ? BookMarkYellow : BookMarkWhite}
+      onClick={onClick}
+      alt="bookmark"
+    />
+  );
 };
 
 export const OptionButton = ({ onClick }: ButtonProps) => {
-    return < Image src={Option} onClick={onClick} alt="option" />;
+  return <Image src={Option} onClick={onClick} alt="option" />;
 };
 
 export const Empty = () => {
-    return <div className='w-6 h-6' />;
+  return <div className="w-6 h-6" />;
 };
