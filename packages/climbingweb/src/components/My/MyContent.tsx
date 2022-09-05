@@ -3,6 +3,7 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/css';
 import 'swiper/css/pagination';
 import { Pagination } from 'swiper';
+import { Divder } from '../common/divder/Divder';
 
 interface ContentProps {
   imageList: string[];
@@ -10,8 +11,12 @@ interface ContentProps {
 
 export const MyContent = ({ imageList }: ContentProps) => {
   return (
-    <>
+    <div className="mt-6 flex flex-col gap-2">
+      <div className="px-4">
+        <Divder />
+      </div>
       <Swiper
+        className="w-full"
         pagination={{
           dynamicBullets: true,
         }}
@@ -39,6 +44,6 @@ export const MyContent = ({ imageList }: ContentProps) => {
         </SwiperSlide>
       </Swiper>
       <ImageGridList imageList={imageList} />
-    </>
+    </div>
   );
 };

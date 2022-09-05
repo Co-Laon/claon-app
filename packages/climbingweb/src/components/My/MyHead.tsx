@@ -1,4 +1,3 @@
-import { Divder } from '../common/divder/Divder';
 import { ProfileImage } from '../common/profileImage/ProfileImage';
 
 interface HeaderProps {
@@ -46,7 +45,6 @@ export const MyHead = ({ height, armReach, apeIndex }: HeaderProps) => {
           </p>
           <p>Ape Index + {apeIndex}</p>
         </div>
-        <Divder/>
       </div>
     </>
   );
