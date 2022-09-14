@@ -10,10 +10,10 @@ import navButtons from 'climbingweb/src/components/common/bottomNav/button';
 function MyApp({ Component, pageProps }: AppProps) {
   return (
     <Provider store={store}>
-      {/* <ThemeProvider attribute="class"> */}
-      <Component {...pageProps} />
-      <NavBar navButtons={navButtons} />
-      {/* </ThemeProvider> */}
+      <ThemeProvider attribute="class">
+        <Component {...pageProps} />
+        <NavBar navButtons={navButtons} />
+      </ThemeProvider>
     </Provider>
   );
 }
