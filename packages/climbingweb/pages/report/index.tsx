@@ -27,7 +27,10 @@ export default function ReportPage({}) {
       <div className="px-5 flex flex-col gap-4">
         <div className="flex flex-col gap-2.5">
           <h2 className="text-lg font-extrabold leading-6">신고 사유</h2>
-          <DropDown onSheetOpen={handleOpen} />
+          <DropDown
+            onSheetOpen={handleOpen}
+            placeholder="신고 사유를 선택해주세요"
+          />
         </div>
         <div className="flex flex-col gap-2.5">
           <h2 className="text-lg font-extrabold leading-6">신고 내용</h2>

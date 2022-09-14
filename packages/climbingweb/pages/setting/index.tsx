@@ -8,6 +8,8 @@ import { VersionInfo } from 'climbingweb/src/components/SettingInfo/VersionInfo'
 import { SettingList } from 'climbingweb/src/components/SettingInfo/SettingList';
 import { EditMyInfo } from 'climbingweb/src/components/SettingInfo/EditMyInfo';
 import { NotificationList } from 'climbingweb/src/components/SettingInfo/Notification/NotificationList';
+import { BottomSheet } from 'react-spring-bottom-sheet';
+import { LeaveSheet } from 'climbingweb/src/components/common/BottomSheetContents/LeaveSheet';
 
 export default function SettingPage() {
   const titleList: string[] = [
@@ -23,7 +25,19 @@ export default function SettingPage() {
   ];
   const defaultTitle = '설정';
   const [titleName, setTitleName] = useState<string>(defaultTitle);
+  const [sheetKey, setSheetKey] = useState<string>();
+  const [openSheet, setOpenSheet] = useState<boolean>(false);
   const handleClick = (choice: string) => {
+    if (choice === '로그아웃') {
+      setSheetKey('logout');
+      setOpenSheet(true);
+      return;
+    }
+    if (choice === '탈퇴하기') {
+      setSheetKey('leave');
+      setOpenSheet(true);
+      return;
+    }
     if (choice !== 'titleName') setTitleName(choice);
   };
   const handleGoToBack = () => {
@@ -37,6 +51,10 @@ export default function SettingPage() {
       '클라온 앱 공지사항 입니다. 확인을 해주세요~ 전기통신사업법 제22조 5 제1항에 따라 불법촬영물등의 유통방지 및 이용자보호를 위한 다음의 기술적, 관리적 조치가 시행될 에정임을 안내 드립니다.',
   };
   const notiList = [testNoti, testNoti, testNoti];
+
+  const onDismiss = () => {
+    setOpenSheet(false);
+  };
 
   return (
     <div className="h-screen flex flex-col">
@@ -60,6 +78,17 @@ export default function SettingPage() {
         {titleName === '이용 약관' && <>이용 약관</>}
         {titleName === '개인정보 처리 방침' && <>개인정보 처리 방침</>}
       </div>
+      <BottomSheet open={openSheet} onDismiss={onDismiss}>
+        <LeaveSheet
+          text={
+            sheetKey === 'leave'
+              ? 'CLAON에서 하강하시겠습니까?'
+              : sheetKey === 'logout'
+              ? '로그아웃 하시겠습니까?'
+              : ''
+          }
+        />
+      </BottomSheet>
     </div>
   );
 }

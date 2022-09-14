@@ -7,10 +7,12 @@ const FeedHeader = ({
   userImage,
   userName,
   userLocation,
+  onEdit,
 }: {
   userImage: string | null | undefined;
   userName: string;
   userLocation: string;
+  onEdit: ({}: any) => void;
 }) => {
   return (
     <header className={'flex w-full h-[56px] my-1 justify-between'}>
@@ -26,7 +28,7 @@ const FeedHeader = ({
         </div>
       </div>
       <button className={'w-[24px] h-[24px] self-center'}>
-        <Image src={optionDotImg} alt="..." />
+        <Image src={optionDotImg} alt="..." onTouchEnd={onEdit} />
       </button>
     </header>
   );

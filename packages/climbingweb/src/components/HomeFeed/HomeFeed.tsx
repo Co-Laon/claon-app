@@ -9,9 +9,11 @@ import ImageSlider from '../ImageSlider/ImageSlider';
 const HomeFeed = ({
   imageList,
   holdList,
+  onEdit,
 }: {
   imageList: string[];
   holdList: Hold[];
+  onEdit: ({}: any) => void;
 }) => {
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
 
@@ -65,6 +67,7 @@ const HomeFeed = ({
         userImage={null}
         userName="kimclaon85"
         userLocation="비블럭 클라이밍 강남점"
+        onEdit={onEdit}
       />
       <ImageSlider
         imageList={imageList}

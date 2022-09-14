@@ -4,9 +4,10 @@ import Image from 'next/image';
 
 interface DropDownProps {
   onSheetOpen?: ({}: any) => void;
+  placeholder?: string;
 }
 
-export const DropDown = ({ onSheetOpen }: DropDownProps) => {
+export const DropDown = ({ onSheetOpen, placeholder }: DropDownProps) => {
   const [value, setValue] = useState('');
   const handleChangeValue = (e: ChangeEvent<HTMLInputElement>) => {
     setValue(e.target.value);
@@ -19,6 +20,7 @@ export const DropDown = ({ onSheetOpen }: DropDownProps) => {
         disabled
         onChange={(e) => handleChangeValue(e)}
         className="h-full w-full outline-0 disabled:bg-white"
+        placeholder={placeholder}
       />
       <Image src={ArrowDown} onClick={onSheetOpen} alt="arrow_down" />
     </div>
