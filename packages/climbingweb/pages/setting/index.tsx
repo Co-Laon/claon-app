@@ -10,6 +10,7 @@ import { EditMyInfo } from 'climbingweb/src/components/SettingInfo/EditMyInfo';
 import { NotificationList } from 'climbingweb/src/components/SettingInfo/Notification/NotificationList';
 import { BottomSheet } from 'react-spring-bottom-sheet';
 import { LeaveSheet } from 'climbingweb/src/components/common/BottomSheetContents/LeaveSheet';
+import { BanList } from 'climbingweb/src/components/SettingInfo/BanList';
 
 export default function SettingPage() {
   const titleList: string[] = [
@@ -72,7 +73,7 @@ export default function SettingPage() {
         )}
         {titleName === '프로필 비공개' && <>프로필비공개</>}
         {titleName === '개인 정보 수정' && <EditMyInfo />}
-        {titleName === '차단 리스트' && <>차단 리스트</>}
+        {titleName === '차단 리스트' && <BanList />}
         {titleName === '공지 사항' && <NotificationList notiList={notiList} />}
         {titleName === '버전 정보' && <VersionInfo />}
         {titleName === '이용 약관' && <>이용 약관</>}
