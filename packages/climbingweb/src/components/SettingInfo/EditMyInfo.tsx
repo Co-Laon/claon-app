@@ -2,14 +2,13 @@ import { useState } from 'react';
 import { BottomSheet } from 'react-spring-bottom-sheet';
 import { DropDown } from '../common/DropDown';
 import 'react-spring-bottom-sheet/dist/style.css';
-import { AreaSheet } from '../common/BottomSheetContents/areaSheet/AreaSheet';
+import { ListSheet } from '../common/BottomSheetContents/ListSheet/ListSheet';
 import { Input } from '../common/Input';
 import { StringCount } from '../common/Input/StringCount';
 import { ProfileImage } from '../common/profileImage/ProfileImage';
 import { NormalButton, SmmallNodeButton } from '../common/button/Button';
 import InstaIcon from 'climbingweb/src/assets/icon/ic_24_instagram.svg';
 import Image from 'next/image';
-
 
 interface InfoProps {
   instagramId?: string;
@@ -67,9 +66,9 @@ export const EditMyInfo = ({ instagramId }: InfoProps) => {
       </div>
       <div className="flex flex-col gap-2">
         <h2 className="font-bold text-gray-800">인스타그램 계정</h2>
-        <div className='flex flex-row items-center justify-between'>
-          <div className='flex flex-row items-center font-bold gap-1'>
-            <Image src={InstaIcon} alt='instagram' />
+        <div className="flex flex-row items-center justify-between">
+          <div className="flex flex-row items-center font-bold gap-1">
+            <Image src={InstaIcon} alt="instagram" />
             {instagramId}
           </div>
           <SmmallNodeButton>변경</SmmallNodeButton>
@@ -84,7 +83,7 @@ export const EditMyInfo = ({ instagramId }: InfoProps) => {
         onDismiss={onDismiss}
         defaultSnap={({ maxHeight }) => maxHeight}
       >
-        <AreaSheet headerTitle={headerTitle} areaList={areaList} />
+        <ListSheet headerTitle={headerTitle} list={areaList} />
       </BottomSheet>
     </div>
   );

@@ -1,16 +1,16 @@
-import { AreaSheetHeader } from './AreaSheetHeader';
+import { SheetHeader } from './SheetHeader';
 
 interface SheetProps {
   headerTitle: string;
-  areaList: string[];
+  list: string[];
 }
 
-export const AreaSheet = ({ headerTitle, areaList }: SheetProps) => {
+export const ListSheet = ({ headerTitle, list }: SheetProps) => {
   return (
     <div className="flex flex-col p-4 gap-6">
-      <AreaSheetHeader headerTitle={headerTitle} />
+      <SheetHeader headerTitle={headerTitle} />
       <div className="flex flex-col gap-6 text-black">
-        {areaList?.map((area) => (
+        {list?.map((area) => (
           <p key={`areaKey${area}`}>{area}</p>
         ))}
       </div>
