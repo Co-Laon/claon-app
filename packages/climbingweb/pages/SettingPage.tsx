@@ -7,6 +7,7 @@ import { useState } from 'react';
 import { VersionInfo } from 'climbingweb/src/components/SettingInfo/VersionInfo';
 import { SettingList } from 'climbingweb/src/components/SettingInfo/SettingList';
 import { EditMyInfo } from 'climbingweb/src/components/SettingInfo/EditMyInfo';
+import { NotificationList } from 'climbingweb/src/components/SettingInfo/Notification/NotificationList';
 
 export default function SettingPage() {
   const titleList: string[] = [
@@ -28,6 +29,14 @@ export default function SettingPage() {
   const handleGoToBack = () => {
     setTitleName('설정');
   };
+  const testNoti = {
+    title:
+      '[앱 공지사항] 공지사항 테스트 긴글 테스트 12345678 9 길게 길게 적어봅시다.',
+    date: '22.01.23',
+    content:
+      '클라온 앱 공지사항 입니다. 확인을 해주세요~ 전기통신사업법 제22조 5 제1항에 따라 불법촬영물등의 유통방지 및 이용자보호를 위한 다음의 기술적, 관리적 조치가 시행될 에정임을 안내 드립니다.',
+  };
+  const notiList = [testNoti, testNoti, testNoti];
 
   return (
     <div className="h-screen flex flex-col">
@@ -46,7 +55,7 @@ export default function SettingPage() {
         {titleName === '프로필 비공개' && <>프로필비공개</>}
         {titleName === '개인 정보 수정' && <EditMyInfo />}
         {titleName === '차단 리스트' && <>차단 리스트</>}
-        {titleName === '공지 사항' && <>공지 사항</>}
+        {titleName === '공지 사항' && <NotificationList notiList={notiList} />}
         {titleName === '버전 정보' && <VersionInfo />}
         {titleName === '이용 약관' && <>이용 약관</>}
         {titleName === '개인정보 처리 방침' && <>개인정보 처리 방침</>}
