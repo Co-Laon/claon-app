@@ -30,7 +30,7 @@ export default function CreatePostPage() {
   };
   let test: string[] = ['test', 'testest', 'tttt'];
   return (
-    <>
+    <div className="mb-footer overflow-auto scrollbar-hide">
       <AppBar
         title="새 게시물"
         leftNode={<BackButton />}
@@ -52,6 +52,6 @@ export default function CreatePostPage() {
           </>
         )}
       </div>
-    </>
+    </div>
   );
 }

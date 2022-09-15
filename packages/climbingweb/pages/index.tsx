@@ -6,6 +6,7 @@ import {
   ModifiedButton,
   AppLogo,
 } from 'climbingweb/src/components/common/IconButton';
+import { useRouter } from 'next/router';
 
 interface Feed {
   imageList: string[];
@@ -22,10 +23,17 @@ const Home: NextPage = () => {
     { imageList: TestimageList, holdList: TestholdList },
     { imageList: TestimageList, holdList: TestholdList },
   ];
+  const router = useRouter();
+  const onCreateFeed = () => {
+    router.push('/feed/create');
+  };
 
   return (
-    <div>
-      <AppBar leftNode={<AppLogo />} rightNode={<ModifiedButton />} />
+    <div className="mb-footer overflow-auto scrollbar-hide">
+      <AppBar
+        leftNode={<AppLogo />}
+        rightNode={<ModifiedButton onClick={onCreateFeed} />}
+      />
       {FeedList?.map(({ imageList, holdList }, idx) => (
         <HomeFeed key={`key${idx}`} imageList={imageList} holdList={holdList} />
       ))}
