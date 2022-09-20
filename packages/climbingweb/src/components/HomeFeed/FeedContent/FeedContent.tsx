@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
-import solidHeart from '../../../assets/heart_solid_red500.svg';
-import lineHeart from '../../../assets/heart_line_gray800.svg';
-import Image from 'next/image';
+import SolidHeart from 'climbingweb/src/assets/heart_solid_red500.svg';
+import LineHeart from 'climbingweb/src/assets/heart_line_gray800.svg';
 import { useRouter } from 'next/router';
 
 const FeedContent = ({
@@ -32,14 +31,17 @@ const FeedContent = ({
     <section className="px-5 pt-7 text-sm">
       <div className={'flex justify-between'}>
         <span className={'flex font-medium'}>
-          <Image
-            className={`${isLiked ? 'animate-larger' : 'animate-none'}`}
-            src={isLiked ? solidHeart : lineHeart}
-            width={'32px'}
-            height={'32px'}
-            onTouchEnd={() => onTouchHeartIcon()}
-            alt={'heartIcon'}
-          />
+          {isLiked ? (
+            <SolidHeart
+              onTouchEnd={() => onTouchHeartIcon()}
+              className="animate-larger"
+            />
+          ) : (
+            <LineHeart
+              onTouchEnd={() => onTouchHeartIcon()}
+              className="animate-none"
+            />
+          )}
           {`${likeCount}명이 좋아해요`}
         </span>
         <span className="font-medium text-gray-400">
