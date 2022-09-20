@@ -1,7 +1,10 @@
 import { AppBar } from 'climbingweb/src/components/common/AppBar';
 import CenterResultList from 'climbingweb/src/components/common/CenterResult/CenterResultList';
 import { CenterProps } from 'climbingweb/src/components/common/CenterResult/type';
-import { AppLogo, Empty } from 'climbingweb/src/components/common/IconButton';
+import {
+  AppLogo,
+  Empty,
+} from 'climbingweb/src/components/common/AppBar/IconButton';
 
 export default function CenterPage({}) {
   const centerListExample: CenterProps[] = [

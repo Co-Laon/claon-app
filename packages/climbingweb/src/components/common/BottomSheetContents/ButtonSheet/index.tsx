@@ -1,7 +1,7 @@
-import { NormalButton, WhiteButton } from '../button/Button';
-import { ConfirmSheetProps } from './type';
+import { NormalButton, WhiteButton } from '../../button/Button';
+import { ConfirmSheetProps } from '../type';
 
-export const LeaveSheet = ({
+export const ButtonSheet = ({
   onConfirm,
   onCancel,
   text,

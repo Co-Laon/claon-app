@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { LeaveSheet } from './LeaveSheet';
+import { ButtonSheet } from './ButtonSheet';
 import { ListSheet } from './ListSheet/ListSheet';
 import { ConfirmSheetProps } from './type';
 
@@ -18,7 +18,7 @@ export const FeedEditSheet = ({ onCancel, onConfirm }: ConfirmSheetProps) => {
   return (
     <>
       {selectDelete ? (
-        <LeaveSheet
+        <ButtonSheet
           onCancel={onCancel}
           onConfirm={onConfirm}
           text="게시글을 삭제하시겠습니까?"

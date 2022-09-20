@@ -3,7 +3,7 @@ import { NormalButton } from 'climbingweb/src/components/common/button/Button';
 import {
   BackButton,
   Empty,
-} from 'climbingweb/src/components/common/IconButton';
+} from 'climbingweb/src/components/common/AppBar/IconButton';
 import { StarRating } from 'climbingweb/src/components/common/StarRating';
 import TextArea from 'climbingweb/src/components/common/TextArea/TextArea';
 import 'react-spring-bottom-sheet/dist/style.css';
