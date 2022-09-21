@@ -8,7 +8,6 @@ import { StringCount } from '../common/Input/StringCount';
 import { ProfileImage } from '../common/profileImage/ProfileImage';
 import { NormalButton, SmmallNodeButton } from '../common/button/Button';
 import InstaIcon from 'climbingweb/src/assets/icon/ic_24_instagram.svg';
-import Image from 'next/image';
 
 interface InfoProps {
   instagramId?: string;
@@ -68,7 +67,7 @@ export const EditMyInfo = ({ instagramId }: InfoProps) => {
         <h2 className="font-bold text-gray-800">인스타그램 계정</h2>
         <div className="flex flex-row items-center justify-between">
           <div className="flex flex-row items-center font-bold gap-1">
-            <Image src={InstaIcon} alt="instagram" />
+            <InstaIcon alt="instagram" />
             {instagramId}
           </div>
           <SmmallNodeButton>변경</SmmallNodeButton>

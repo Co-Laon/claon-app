@@ -1,7 +1,7 @@
 import Image from 'next/image';
 import React from 'react';
-import defaultProfileImg from '../../assets/profile_gray400.svg';
-import pencilImg from '../../assets/pencil_gray800.svg';
+import DefaultProfileImg from 'climbingweb/src/assets/profile_gray400.svg';
+import PencilImg from 'climbingweb/src/assets/pencil_gray800.svg';
 import { TouchEvent } from 'react';
 
 const ImageSlider = ({
@@ -33,7 +33,7 @@ const ImageSlider = ({
           value ? (
             <Image
               key={`sectorInfo${index}`}
-              src={index == 0 ? defaultProfileImg : pencilImg}
+              src={index == 0 ? DefaultProfileImg : PencilImg}
               width={'360px'}
               height={'360px'}
               alt={'sliderImage'}

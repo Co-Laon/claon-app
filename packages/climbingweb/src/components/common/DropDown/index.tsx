@@ -1,6 +1,5 @@
 import { ChangeEvent, useState } from 'react';
 import ArrowDown from 'climbingweb/src/assets/icon/ic_20_arrow_down_gray400.svg';
-import Image from 'next/image';
 
 interface DropDownProps {
   onSheetOpen?: ({}: any) => void;
@@ -22,7 +21,7 @@ export const DropDown = ({ onSheetOpen, placeholder }: DropDownProps) => {
         className="h-full w-full outline-0 disabled:bg-white"
         placeholder={placeholder}
       />
-      <Image src={ArrowDown} onClick={onSheetOpen} alt="arrow_down" />
+      <ArrowDown onClick={onSheetOpen} alt="arrow_down" />
     </div>
   );
 };

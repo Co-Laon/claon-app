@@ -1,9 +1,9 @@
-import Image from 'next/image';
 import React from 'react';
-import StarIcon from 'climbingweb/src/assets/icon/ic_10_rate_black.svg';
-import DefaultCenterImage from 'climbingweb/src/assets/default_image.svg';
+import StarIcon from 'climbingweb/src/assets/icon/ic_12_rate_black.svg';
 import { CenterProps } from './type';
 import { useRouter } from 'next/router';
+import Image from 'next/image';
+const DefaultCenterImage = '/assets/default_image.svg';
 
 const CenterResult = ({ star, image, name, id }: CenterProps) => {
   const router = useRouter();
@@ -16,8 +16,8 @@ const CenterResult = ({ star, image, name, id }: CenterProps) => {
       onTouchEnd={handleGoToCenterDetail}
       className="relative min-w-[150px] min-h-[120px] rounded-lg bg-gray-800 mr-[5px]"
     >
-      <div className="m-1 px-2 py-[2px] z-10 absolute bg-yellow-500 rounded-full text-xs font-bold">
-        <Image src={StarIcon} alt={'starIcon'} />
+      <div className="flex items-center justify-between m-1 px-2 py-[2px] z-10 gap-1 absolute bg-yellow-500 rounded-lg text-xs font-bold">
+        <StarIcon />
         {star}
       </div>
       <Image
