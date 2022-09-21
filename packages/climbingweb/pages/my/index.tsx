@@ -4,7 +4,7 @@ import {
   AppLogo,
   ModifiedButton,
   SettingButton,
-} from 'climbingweb/src/components/common/IconButton';
+} from 'climbingweb/src/components/common/AppBar/IconButton';
 import { MyContent } from 'climbingweb/src/components/My/MyContent';
 import { MyHead } from 'climbingweb/src/components/My/MyHead';
 import { useRouter } from 'next/router';

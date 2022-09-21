@@ -5,7 +5,7 @@ import { DropDown } from 'climbingweb/src/components/common/DropDown';
 import {
   BackButton,
   Empty,
-} from 'climbingweb/src/components/common/IconButton';
+} from 'climbingweb/src/components/common/AppBar/IconButton';
 import TextArea from 'climbingweb/src/components/common/TextArea/TextArea';
 import { useState } from 'react';
 import { BottomSheet } from 'react-spring-bottom-sheet';

@@ -5,7 +5,7 @@ import TextArea from 'climbingweb/src/components/common/TextArea/TextArea';
 import { PostData } from 'climbingweb/src/components/CreateFeed/type';
 import { UploadImageList } from 'climbingweb/src/components/CreateFeed/UploadImageList/';
 import { useState } from 'react';
-import { BackButton } from 'climbingweb/src/components/common/IconButton';
+import { BackButton } from 'climbingweb/src/components/common/AppBar/IconButton';
 
 export default function CreatePostPage() {
   const [page, setPage] = useState<string>('first');

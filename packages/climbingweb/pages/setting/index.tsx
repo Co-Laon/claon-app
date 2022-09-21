@@ -2,14 +2,14 @@ import { AppBar } from 'climbingweb/src/components/common/AppBar';
 import {
   BackButton,
   Empty,
-} from 'climbingweb/src/components/common/IconButton';
+} from 'climbingweb/src/components/common/AppBar/IconButton';
 import { useState } from 'react';
 import { VersionInfo } from 'climbingweb/src/components/SettingInfo/VersionInfo';
 import { SettingList } from 'climbingweb/src/components/SettingInfo/SettingList';
 import { EditMyInfo } from 'climbingweb/src/components/SettingInfo/EditMyInfo';
 import { NotificationList } from 'climbingweb/src/components/SettingInfo/Notification/NotificationList';
 import { BottomSheet } from 'react-spring-bottom-sheet';
-import { LeaveSheet } from 'climbingweb/src/components/common/BottomSheetContents/LeaveSheet';
+import { ButtonSheet } from 'climbingweb/src/components/common/BottomSheetContents/ButtonSheet';
 import { BanList } from 'climbingweb/src/components/SettingInfo/BanList';
 
 export default function SettingPage() {
@@ -80,7 +80,7 @@ export default function SettingPage() {
         {titleName === '개인정보 처리 방침' && <>개인정보 처리 방침</>}
       </div>
       <BottomSheet open={openSheet} onDismiss={onDismiss}>
-        <LeaveSheet
+        <ButtonSheet
           text={
             sheetKey === 'leave'
               ? 'CLAON에서 하강하시겠습니까?'

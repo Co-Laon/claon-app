@@ -5,7 +5,7 @@ import {
   AppLogo,
   BookMarkButton,
   OptionButton,
-} from 'climbingweb/src/components/common/IconButton';
+} from 'climbingweb/src/components/common/AppBar/IconButton';
 
 interface DetailPageProps {
   title: string;

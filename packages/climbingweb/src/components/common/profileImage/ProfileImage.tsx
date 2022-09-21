@@ -12,7 +12,18 @@ export const ProfileImage = ({ src, icon }: ProfileProps) => {
   return (
     <div className="w-16 relative">
       <div className="w-15 h-15 rounded-xl relative">
-        {src ? <Image src={src} alt="profile" /> : <ProfileSkeleton />}
+        {src ? (
+          <div className="w-16 h-16">
+            <Image
+              className="relative rounded-full"
+              src={src}
+              layout="fill"
+              alt="profile"
+            />
+          </div>
+        ) : (
+          <ProfileSkeleton />
+        )}
       </div>
       {icon === 'default' ? (
         <div className="absolute bottom-0 right-0">

@@ -5,7 +5,7 @@ import { AppBar } from 'climbingweb/src/components/common/AppBar';
 import {
   ModifiedButton,
   AppLogo,
-} from 'climbingweb/src/components/common/IconButton';
+} from 'climbingweb/src/components/common/AppBar/IconButton';
 import { useRouter } from 'next/router';
 import { BottomSheet } from 'react-spring-bottom-sheet';
 import { useState } from 'react';
