@@ -79,6 +79,7 @@ export const EditMyInfo = ({ instagramId }: InfoProps) => {
       </div>
       {/*bottomSheet  */}
       <BottomSheet
+        className=" z-[60]"
         open={sheetOpen}
         onDismiss={onDismiss}
         defaultSnap={({ maxHeight }) => maxHeight}

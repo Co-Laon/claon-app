@@ -35,7 +35,10 @@ export default function ReportPage({}) {
       <div className="px-5 flex flex-col gap-4">
         <div className="flex flex-col gap-2.5">
           <h2 className="text-lg font-extrabold leading-6">요청 부분</h2>
-          <DropDown onSheetOpen={handleOpen} />
+          <DropDown
+            onSheetOpen={handleOpen}
+            placeholder="요청 부분을 선택해주세요"
+          />
         </div>
         <div className="flex flex-col gap-2.5">
           <h2 className="text-lg font-extrabold leading-6">요청 내용</h2>

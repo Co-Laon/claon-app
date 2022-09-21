@@ -4,7 +4,7 @@ module.exports = {
     "./pages/**/*.{js,ts,jsx,tsx}",
     "./src/**/*.{js,ts,jsx,tsx}",
   ],
-  darkmode: 'class',
+  darkMode: 'class',
   theme: {
     extend: {
       animation: {
@@ -52,9 +52,6 @@ module.exports = {
       spacing: {
         'footer': '5rem',
       },
-    },
-    daisyui: {
-      themes: ['light', 'dark'],
     },
   },
   plugins: [

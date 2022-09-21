@@ -1,6 +1,8 @@
 import { combineReducers } from 'redux';
-
-const rootReducer = combineReducers({});
+import ui from './uiSlice';
+const rootReducer = combineReducers({
+  ui,
+});
 
 export type RootState = ReturnType<typeof rootReducer>;
 

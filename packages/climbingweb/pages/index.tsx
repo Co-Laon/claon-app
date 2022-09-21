@@ -7,13 +7,29 @@ import {
   AppLogo,
 } from 'climbingweb/src/components/common/IconButton';
 import { useRouter } from 'next/router';
-
+import { BottomSheet } from 'react-spring-bottom-sheet';
+import { useState } from 'react';
+import 'react-spring-bottom-sheet/dist/style.css';
+import { FeedEditSheet } from 'climbingweb/src/components/common/BottomSheetContents/FeedEditSheet';
 interface Feed {
   imageList: string[];
   holdList: Hold[];
 }
 
 const Home: NextPage = () => {
+  const [openSheet, setOpenSheet] = useState<boolean>(false);
+  const handleCancelDeleteSheet = () => {
+    setOpenSheet(false);
+  };
+
+  const handleConfirmDeleteSheet = () => {
+    setOpenSheet(true);
+  };
+
+  const onEdit = () => {
+    setOpenSheet(true);
+  };
+
   const TestimageList = [''];
   const TestholdList: Hold[] = [{ url: '', count: 1 }];
 
@@ -35,8 +51,19 @@ const Home: NextPage = () => {
         rightNode={<ModifiedButton onClick={onCreateFeed} />}
       />
       {FeedList?.map(({ imageList, holdList }, idx) => (
-        <HomeFeed key={`key${idx}`} imageList={imageList} holdList={holdList} />
+        <HomeFeed
+          key={`key${idx}`}
+          imageList={imageList}
+          holdList={holdList}
+          onEdit={onEdit}
+        />
       ))}
+      <BottomSheet open={openSheet}>
+        <FeedEditSheet
+          onCancel={handleCancelDeleteSheet}
+          onConfirm={handleConfirmDeleteSheet}
+        />
+      </BottomSheet>
     </div>
   );
 };

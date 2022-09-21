@@ -1,20 +1,18 @@
+import { NormalButton, WhiteButton } from '../button/Button';
+import { ConfirmSheetProps } from './type';
 
-
-
-interface ButtonProps {
-    onClick: ({ }: any) => void;
-}
-
-export const LeaveSheet = ({ onClick }: ButtonProps) => {
-
-    return (
-        <div className='flex flex-col gap-6 mb-4'>
-            <p className='text-sm text-gray-600 font-normal'>CLAON에서 하강 하시겠습니까?</p>
-            <div className='flex flex-row justify-center text-center text-base font-bold'>
-                <p className='w-6/12'>아니오</p>
-                <p className='text-gray-300'> | </p>
-                <p className='w-6/12' onClick={onClick}> 예</p>
-            </div>
-        </div>
-    );
+export const LeaveSheet = ({
+  onConfirm,
+  onCancel,
+  text,
+}: ConfirmSheetProps) => {
+  return (
+    <div className="flex flex-col gap-6 mb-4 p-4">
+      <p className="text-base text-gray-600 font-normal text-center">{text}</p>
+      <div className="flex flex-row justify-center text-center text-base font-bold px-4 gap-4">
+        <WhiteButton onClick={onCancel}>취소</WhiteButton>
+        <NormalButton onClick={onConfirm}>확인</NormalButton>
+      </div>
+    </div>
+  );
 };

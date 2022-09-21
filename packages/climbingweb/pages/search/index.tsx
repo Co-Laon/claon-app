@@ -1,6 +1,7 @@
 import CenterResult from 'climbingweb/src/components/common/CenterResult/CenterResult';
 import RaonResult from 'climbingweb/src/components/SearchResult/RaonResult/RaonResult';
 import SearchBar from 'climbingweb/src/components/SearchResult/SearchBar/SearchBar';
+import { useBTSheet } from 'climbingweb/src/hooks/useBtSheet';
 import React, { useEffect } from 'react';
 import { useState } from 'react';
 
@@ -29,6 +30,7 @@ const raonListExample = [
 ];
 
 const SearchPage = () => {
+  const { renderSheet } = useBTSheet();
   const [centerList, setCenterList] = useState<Center[]>([]);
   const [raonList, setRaonList] = useState<Raon[]>([]);
   useEffect(() => {
@@ -61,6 +63,7 @@ const SearchPage = () => {
           ))}
         </div>
       </div>
+      {renderSheet()}
     </div>
   );
 };
