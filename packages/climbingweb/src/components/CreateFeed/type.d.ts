@@ -1,6 +1,6 @@
 export interface PostData {
   centerId: string;
-  climbingHistories?: ClimbingHistories[];
+  climbingHistories: ClimbingHistories[];
   content: string;
   contentsList: { url: string }[];
 }
