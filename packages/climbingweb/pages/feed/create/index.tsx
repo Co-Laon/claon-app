@@ -1,5 +1,4 @@
 import { AppBar } from 'climbingweb/src/components/common/AppBar';
-import CenterSearchBar from 'climbingweb/src/components/CreateFeed/CenterSearchBar';
 import TextArea from 'climbingweb/src/components/common/TextArea/TextArea';
 import {
   ClimbingHistories,
@@ -12,6 +11,7 @@ import HoldListModal from 'climbingweb/src/components/CreateFeed/SelectHoldList/
 import Hold from 'climbingweb/src/interface/Hold';
 import PageSubTitle from 'climbingweb/src/components/common/PageSubTitle/PageSubTitle';
 import { NextButton } from 'climbingweb/src/components/common/AppBar/NextButton';
+import { Input } from 'climbingweb/src/components/common/Input';
 
 const holdListExample: Hold[] = [
   {
@@ -35,6 +35,20 @@ const holdListExample: Hold[] = [
     name: '3번홀드',
     count: 0,
   },
+  {
+    id: '4',
+    image:
+      'https://claon-server.s3.ap-northeast-2.amazonaws.com/center/seoul/theclimb_magok/hold/green.png',
+    name: '4번홀드',
+    count: 0,
+  },
+  {
+    id: '5',
+    image:
+      'https://claon-server.s3.ap-northeast-2.amazonaws.com/center/seoul/theclimb_magok/hold/red.png',
+    name: '5번홀드',
+    count: 0,
+  },
 ];
 
 export default function CreatePostPage() {
@@ -55,16 +69,23 @@ export default function CreatePostPage() {
     ],
   });
 
+  /**
+   * 내용 입력 핸들링 함수
+   * @param content
+   */
   const handleContentInput = (content: string) => {
     setPostData({ ...postData, content });
   };
 
+  /**
+   * 홀드 입력 핸들링 함수
+   * @param climbingHistories postData 중 hold 에 관한 정보를 담는 객체
+   */
   const handleClimbingHistoriesInput = (
     climbingHistories: ClimbingHistories[]
   ) => {
     setPostData({ ...postData, climbingHistories });
   };
-  let test: string[] = ['test', 'testest', 'tttt'];
   return (
     <div className="mb-footer overflow-auto scrollbar-hide">
       <AppBar
@@ -87,7 +108,7 @@ export default function CreatePostPage() {
         ) : (
           <div className="flex flex-col gap-4">
             <PageSubTitle title={'암장 이름'} />
-            <CenterSearchBar searchedCenter={test} />
+            <Input />
             <PageSubTitle title={'완등 횟수'} />
             <HoldListModal
               maxCount={10}

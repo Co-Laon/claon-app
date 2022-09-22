@@ -123,40 +123,44 @@ const HoldListModal = ({
   }, [indexHoldList]);
   return (
     <>
-      <label htmlFor="my-modal">
-        <div className="w-full flex flex-row gap-2 overflow-x-auto scrollbar-hide">
+      <div className="w-full flex flex-row gap-2 overflow-x-auto scrollbar-hide">
+        <label htmlFor="my-modal">
           <HoldImageButton count={totalHoldCount} maxCount={maxCount} />
-          {climbingHistoriesToHold(climbingHistories).map((item) =>
-            item.count !== 0 ? (
-              <HoldImage
-                key={`HoldListModal_Hold${item.id}`}
-                indexHold={item}
-                count={item.count}
-              />
-            ) : null
-          )}
-        </div>
-      </label>
+        </label>
+        {climbingHistoriesToHold(climbingHistories).map((item) =>
+          item.count !== 0 ? (
+            <HoldImage
+              key={`HoldListModal_Hold${item.id}`}
+              indexHold={item}
+              count={item.count}
+            />
+          ) : null
+        )}
+      </div>
       <input type="checkbox" id="my-modal" className="modal-toggle" />
       <div className="modal">
         <div className="modal-box">
-          <div className="flex">
+          <div className="w-full grid grid-cols-3 gap-y-4">
             {selectedHold.map((item) => (
-              <HoldImage
+              <div
                 key={`HoldListModal_Hold${item.id}`}
-                indexHold={item}
-                count={item.count}
-                handleSeletHold={() => handleSelectHold(item)}
-                handleDeleteHold={
-                  item.count > 0 ? () => handleDeleteHold(item) : null
-                }
-              />
+                className="w-full flex justify-center"
+              >
+                <HoldImage
+                  indexHold={item}
+                  count={item.count}
+                  handleSeletHold={() => handleSelectHold(item)}
+                  handleDeleteHold={
+                    item.count > 0 ? () => handleDeleteHold(item) : null
+                  }
+                />
+              </div>
             ))}
           </div>
 
           <label htmlFor="my-modal">
             <div
-              className="relative -mb-6 -mx-6 py-2 bg-purple-500 text-center text-white"
+              className="relative -mb-6 -mx-6 mt-6 py-2 bg-purple-500 text-center text-white"
               onClick={() => handleModalSelectBtn()}
             >
               선택
