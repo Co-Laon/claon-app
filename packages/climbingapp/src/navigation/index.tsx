@@ -5,12 +5,7 @@ import HomeScreen from './screens/main/HomeScreen';
 //import MainNavigator from './MainNavigator';
 
 export function RootNavigator() {
-    const { user } = useAuth();
-
-    return (
-        <>
-            {user?.token ? <HomeScreen /> : <LoginNavigator />}
-        </>
-    );
+  const { user } = useAuth();
+  const isLoggedIn = user ? user.accessToken && user.isCompletedSignUp : false;
+  return <>{isLoggedIn ? <HomeScreen /> : <LoginNavigator />}</>;
 }
-

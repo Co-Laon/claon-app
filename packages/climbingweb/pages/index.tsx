@@ -31,13 +31,12 @@ const Home: NextPage = () => {
   };
 
   const TestimageList = [''];
-  const TestholdList: Hold[] = [{ url: '', count: 1 }];
 
   const FeedList: Feed[] = [
-    { imageList: TestimageList, holdList: TestholdList },
-    { imageList: TestimageList, holdList: TestholdList },
-    { imageList: TestimageList, holdList: TestholdList },
-    { imageList: TestimageList, holdList: TestholdList },
+    { imageList: TestimageList, holdList: [] },
+    { imageList: TestimageList, holdList: [] },
+    { imageList: TestimageList, holdList: [] },
+    { imageList: TestimageList, holdList: [] },
   ];
   const router = useRouter();
   const onCreateFeed = () => {

@@ -1,8 +1,6 @@
 import { CommentInput } from 'climbingweb/src/components/Comments/CommentInput';
 import { Comments } from 'climbingweb/src/components/Comments/Comments';
 import { AppBar } from 'climbingweb/src/components/common/AppBar';
-import { sendReactNativeMessage } from 'climbingweb/src/utils/reactNativeMessage';
-import { useEffect } from 'react';
 
 const comments = [
   {
@@ -62,14 +60,6 @@ const comments = [
 ];
 
 export default function CommentPage() {
-  useEffect(() => {
-    sendReactNativeMessage({ type: 'ui', payload: 'bottom_navi_off' });
-    const inputHeight = window.innerHeight;
-    console.log(inputHeight);
-    return () => {
-      sendReactNativeMessage({ type: 'ui', payload: 'bottom_navi_on' });
-    };
-  }, []);
   return (
     <div className="mb-footer overflow-auto scrollbar-hide">
       <div>

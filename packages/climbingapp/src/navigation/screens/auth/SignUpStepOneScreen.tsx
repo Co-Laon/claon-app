@@ -7,7 +7,7 @@ import {
 } from 'climbingapp/src/component/text/AuthTitle';
 import { ScreenView } from 'climbingapp/src/component/view/ScreenView';
 import { colorStyles } from 'climbingapp/src/styles';
-import React, { useEffect } from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components/native';
 import { LoginScreenProp } from './type';
 import { Text } from 'react-native';
@@ -16,7 +16,10 @@ import { ProfileImage } from 'climbingapp/src/component/profile-image/ProfileIma
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from 'climbingapp/src/store/slices';
 import { setNickName } from 'climbingapp/src/store/slices/authInfo';
+import { debounce } from 'lodash';
+import { api } from 'climbingapp/src/utils/constants';
 
+import axios from 'axios';
 const ButtonContainer = styled.View`
   flex: 0.5;
   margin-bottom: 24;
@@ -36,18 +39,47 @@ const SubText = styled.Text`
   font-weight: 700;
   line-height: 20px;
 `;
+const ErrorText = styled.Text`
+  margin: 5px;
+  color: ${colorStyles.Red500};
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 20px;
+`;
+
 function SignUpStepOneScreen() {
   const navigation = useNavigation<LoginScreenProp>();
   const userInfo = useSelector((state: RootState) => state.authInfo.userInfo);
+  const [isDuplicated, setIsDuplicated] = useState<boolean>(false);
+  const [isErrorNickName, setIsErrorNickName] = useState<string>('');
   const dispatch = useDispatch();
+
+  const handleCheckDuplicated = debounce((nick: string) => {
+    axios
+      .get(api + `/auth/nickname/${nick}/duplicate-check`)
+      .then((res) => setIsDuplicated(res.data.result));
+  }, 800);
+
+  const handleNickNameErrorMessage = debounce(
+    ({ nick, duplicated }: { nick: string; duplicated: boolean }) => {
+      let errorMessage = '';
+      if (!/^[0-9a-zA-Z가-힣]{2,10}$/gi.test(nick))
+        errorMessage = '닉네임 규칙을 지켜주세요';
+      else if (duplicated) {
+        errorMessage = '닉네임이 중복되었습니다!';
+      }
+      setIsErrorNickName(errorMessage);
+    },
+    800
+  );
+
+  const isCorrectName = !'' && isErrorNickName === '' && isDuplicated === false;
 
   const handleChangeNickName = (nick: string) => {
     dispatch(setNickName(nick));
+    handleCheckDuplicated(nick);
+    handleNickNameErrorMessage({ nick, duplicated: isDuplicated });
   };
-
-  useEffect(() => {
-    console.log(userInfo);
-  }, [userInfo]);
 
   return (
     <ScreenView color={colorStyles.White}>
@@ -69,9 +101,13 @@ function SignUpStepOneScreen() {
           onChangeText={handleChangeNickName}
           placeholder="한글, 영문, 숫자 포함 2-20자"
         />
+        <ErrorText>{isErrorNickName}</ErrorText>
       </NickNameContainer>
       <ButtonContainer>
-        <NextButton onPress={() => navigation.navigate('signUpStepTwo')} />
+        <NextButton
+          disabled={() => !isCorrectName}
+          onPress={() => navigation.navigate('signUpStepTwo')}
+        />
       </ButtonContainer>
     </ScreenView>
   );

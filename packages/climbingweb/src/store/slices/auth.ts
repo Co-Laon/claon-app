@@ -1,8 +1,18 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-export interface User {
+interface Instagram {
+  instagramOAuthId?: string;
+  instagramUserName?: string;
+}
+interface Token {
   accessToken: string;
   refreshToken: string;
-  isCompletedSignUp: boolean;
+}
+
+export interface User extends Instagram, Token {
+  armReach: string;
+  height: string;
+  imagePath: string;
+  nickname: string;
 }
 
 interface AuthState {
@@ -20,11 +30,8 @@ const authSlice = createSlice({
     authorize(state, action: PayloadAction<User>) {
       state.user = action.payload;
     },
-    logout(state) {
-      state.user = null;
-    },
   },
 });
 
 export default authSlice.reducer;
-export const { authorize, logout } = authSlice.actions;
+export const { authorize } = authSlice.actions;
