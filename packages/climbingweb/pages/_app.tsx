@@ -1,8 +1,9 @@
 import '../styles/globals.css';
 import type { AppProps } from 'next/app';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import store from '../src/store';
 import { Provider } from 'react-redux';
+import { QueryClient, QueryClientProvider } from 'react-query';
 import NavBar from 'climbingweb/src/components/common/bottomNav/NavBar';
 import navButtons from 'climbingweb/src/components/common/bottomNav/button';
 import axios from 'axios';
@@ -27,10 +28,13 @@ function MyApp({ Component, pageProps }: AppProps) {
       return response;
     });
   });
+  const [queryClient] = useState(() => new QueryClient());
   return (
     <Provider store={store}>
-      <Component {...pageProps} />
-      <NavBar navButtons={navButtons} />
+      <QueryClientProvider client={queryClient}>
+        <Component {...pageProps} />
+        <NavBar navButtons={navButtons} />
+      </QueryClientProvider>
     </Provider>
   );
 }
