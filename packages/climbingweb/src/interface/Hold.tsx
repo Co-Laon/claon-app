@@ -10,4 +10,5 @@ export default interface Hold {
   image: string;
   name: string;
   count: number;
+  crayonImage: string;
 }
