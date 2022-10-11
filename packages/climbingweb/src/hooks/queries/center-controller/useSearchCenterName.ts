@@ -1,11 +1,13 @@
+import _ from 'lodash';
 import { useQuery } from 'react-query';
 import makeMasterTokenInstance from '../../mocks/makeMasterTokenInstance';
 
-const searchCenterName = async (centerName: string) => {
+const searchCenterName = _.debounce(async (centerName: string) => {
   const axiosInstance = makeMasterTokenInstance();
+  console.dir(centerName);
   const { data } = await axiosInstance.get(`/centers/name/${centerName}`);
   return data;
-};
+}, 300);
 
 /**
  * 위 함수의 Mock 함수

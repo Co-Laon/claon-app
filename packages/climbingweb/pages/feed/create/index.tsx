@@ -30,6 +30,8 @@ export default function CreatePostPage() {
     ],
   });
   const [searchInput, setSearchInput] = useState<string>('');
+  //searchInput 으로 인한 centerList 중 선택 된 것이 있는지 여부
+  const [selected, setSelected] = useState(false);
 
   /**
    * 사진 추가 핸들링 함수
@@ -108,6 +110,8 @@ export default function CreatePostPage() {
           <div className="flex flex-col gap-4">
             <PageSubTitle title={'암장 이름'} />
             <CenterSearchInput
+              selected={selected}
+              setSelected={setSelected}
               setData={handleCenterIdInput}
               inputValue={searchInput}
               setInputValue={setSearchInput}

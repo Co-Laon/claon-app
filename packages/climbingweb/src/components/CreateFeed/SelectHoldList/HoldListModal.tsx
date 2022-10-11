@@ -26,18 +26,20 @@ const HoldListModal = ({
   setData,
 }: ModalProps) => {
   //기준이 되는 hold 리스트 state
-  const { isLoading, isError, data, error } = useFindHoldInfoByCenter(
-    centerId,
-    {
-      select: (response: any) =>
-        response.map((val: any) => {
-          return { ...val, count: 0 };
-        }),
-      onError: (e: any) => {
-        console.log(e);
-      },
-    }
-  );
+  const {
+    isLoading,
+    isError,
+    data: holdList,
+    error,
+  } = useFindHoldInfoByCenter(centerId, {
+    select: (response: any) =>
+      response.map((val: any) => {
+        return { ...val, count: 0 };
+      }),
+    onError: (e: any) => {
+      console.log(e);
+    },
+  });
 
   /**
    * ClimbingHistories 를 HoldList 로 변환해주는 함수
@@ -52,11 +54,16 @@ const HoldListModal = ({
         );
         return {
           id: outerItem.holdId,
-          image: tempHold !== undefined ? tempHold.image : 'altImage',
+          image:
+            tempHold !== undefined
+              ? tempHold.image
+              : 'https://claon-server.s3.ap-northeast-2.amazonaws.com/center/seoul/damjang/hold/black.svg',
           name: tempHold !== undefined ? tempHold.name : 'altName',
           count: outerItem.climbingCount,
           crayonImage:
-            tempHold !== undefined ? tempHold.crayonImage : 'altCrayonImage',
+            tempHold !== undefined
+              ? tempHold.crayonImage
+              : 'https://claon-server.s3.ap-northeast-2.amazonaws.com/center/seoul/damjang/crayon/black.svg',
         };
       });
     },
@@ -136,7 +143,7 @@ const HoldListModal = ({
    * onMount 시 작동할 로직이 들어가는 부분
    */
   useEffect(() => {
-    const convertedHold = climbingHistoriesToHold(climbingHistories, data);
+    const convertedHold = climbingHistoriesToHold(climbingHistories, holdList);
     //선택된 홀드 총 갯수 계산
     const convertedHoldCount = convertedHold.reduce(
       (prev: number, curr: Hold) => {
@@ -145,8 +152,19 @@ const HoldListModal = ({
       0
     );
     setTotalHoldCount(convertedHoldCount);
-    setSelectedHold(convertedHoldCount === 0 ? data : convertedHold);
-  }, [data, climbingHistories, climbingHistoriesToHold, centerId]);
+    setSelectedHold(convertedHoldCount === 0 ? holdList : convertedHold);
+  }, [holdList, climbingHistories, climbingHistoriesToHold]);
+
+  useEffect(() => {
+    if (centerId === '') {
+      setData([
+        {
+          climbingCount: 0,
+          holdId: '',
+        },
+      ]);
+    }
+  }, [centerId]);
 
   return isLoading ? (
     <div>로딩 중</div>
@@ -158,7 +176,7 @@ const HoldListModal = ({
         <label htmlFor="my-modal">
           <HoldImageButton count={totalHoldCount} maxCount={maxCount} />
         </label>
-        {climbingHistoriesToHold(climbingHistories, data).map((item) =>
+        {climbingHistoriesToHold(climbingHistories, holdList).map((item) =>
           item.count !== 0 ? (
             <HoldImage
               key={`HoldListModal_Hold${item.id}`}
