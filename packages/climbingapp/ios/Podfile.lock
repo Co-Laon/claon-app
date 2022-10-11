@@ -345,6 +345,8 @@ PODS:
     - KakaoSDK (= 2.5.0)
     - React
     - React-Core
+  - RNCAsyncStorage (1.17.10):
+    - React-Core
   - RNCMaskedView (0.2.6):
     - React-Core
   - RNGestureHandler (2.4.2):
@@ -426,6 +428,7 @@ DEPENDENCIES:
   - React-runtimeexecutor (from `../../../node_modules/react-native/ReactCommon/runtimeexecutor`)
   - ReactCommon/turbomodule/core (from `../../../node_modules/react-native/ReactCommon`)
   - "RNAKakaoSDK (from `../../../node_modules/@actbase/react-kakaosdk`)"
+  - "RNCAsyncStorage (from `../../../node_modules/@react-native-async-storage/async-storage`)"
   - "RNCMaskedView (from `../../../node_modules/@react-native-masked-view/masked-view`)"
   - RNGestureHandler (from `../../../node_modules/react-native-gesture-handler`)
   - "RNGoogleSignin (from `../../../node_modules/@react-native-google-signin/google-signin`)"
@@ -527,6 +530,8 @@ EXTERNAL SOURCES:
     :path: "../../../node_modules/react-native/ReactCommon"
   RNAKakaoSDK:
     :path: "../../../node_modules/@actbase/react-kakaosdk"
+  RNCAsyncStorage:
+    :path: "../../../node_modules/@react-native-async-storage/async-storage"
   RNCMaskedView:
     :path: "../../../node_modules/@react-native-masked-view/masked-view"
   RNGestureHandler:
@@ -595,6 +600,7 @@ SPEC CHECKSUMS:
   React-runtimeexecutor: a9d3c82ddf7ffdad9fbe6a81c6d6f8c06385464d
   ReactCommon: 07d0c460b9ba9af3eaf1b8f5abe7daaad28c9c4e
   RNAKakaoSDK: 1a28a28f40940de4890858a4ea6b1c578c457e39
+  RNCAsyncStorage: 0c357f3156fcb16c8589ede67cc036330b6698ca
   RNCMaskedView: c298b644a10c0c142055b3ae24d83879ecb13ccd
   RNGestureHandler: 61628a2c859172551aa2100d3e73d1e57878392f
   RNGoogleSignin: b2179ba653c759b936404a7746fc5302f9de6a5a

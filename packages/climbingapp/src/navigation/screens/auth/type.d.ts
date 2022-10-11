@@ -4,7 +4,8 @@ type LoginStackkParamList = {
   login: undefined;
   register: undefined;
   agreeInfo: undefined;
-  essentialInfo: undefined;
+  signUpStepOne: undefined;
+  signUpStepTwo: undefined;
   optionalInfo: undefined;
   connectInsta: undefined;
   welcome: undefined;

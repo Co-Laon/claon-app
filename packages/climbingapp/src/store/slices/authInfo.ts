@@ -1,10 +1,14 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-export interface UserInfo {
-  basicLocalActiveArea: string;
+
+interface Instagram {
+  instagramOAuthId?: string;
+  instagramUserName?: string;
+}
+
+export interface UserInfo extends Instagram {
+  armReach: string;
+  height: string;
   imagePath: string;
-  instagramOAuthId: string;
-  instagramUserName: string;
-  metropolitanActiveArea: string;
   nickname: string;
 }
 
@@ -14,11 +18,11 @@ interface AuthInfoState {
 
 const initialState: AuthInfoState = {
   userInfo: {
-    basicLocalActiveArea: '',
+    armReach: '',
+    height: '',
     imagePath: '',
     instagramOAuthId: '',
     instagramUserName: '',
-    metropolitanActiveArea: '',
     nickname: '',
   },
 };
@@ -27,11 +31,15 @@ const authInfoSlice = createSlice({
   name: 'authInfo',
   initialState,
   reducers: {
-    setBasicArea(state, action: PayloadAction<string>) {
-      state.userInfo.basicLocalActiveArea = action.payload;
+    setArmReach(state, action: PayloadAction<string>) {
+      state.userInfo.armReach = action.payload;
     },
-    setMetroPolitanArea(state, action: PayloadAction<string>) {
-      state.userInfo.metropolitanActiveArea = action.payload;
+    setHeight(state, action: PayloadAction<string>) {
+      state.userInfo.height = action.payload;
+    },
+    setInstagram(state, action: PayloadAction<Instagram>) {
+      state.userInfo.instagramOAuthId = action.payload.instagramOAuthId;
+      state.userInfo.instagramUserName = action.payload.instagramUserName;
     },
     setNickName(state, action: PayloadAction<string>) {
       state.userInfo.nickname = action.payload;
@@ -43,5 +51,10 @@ const authInfoSlice = createSlice({
 });
 
 export default authInfoSlice.reducer;
-export const { setBasicArea, setImagePath, setMetroPolitanArea, setNickName } =
-  authInfoSlice.actions;
+export const {
+  setArmReach,
+  setHeight,
+  setInstagram,
+  setImagePath,
+  setNickName,
+} = authInfoSlice.actions;
