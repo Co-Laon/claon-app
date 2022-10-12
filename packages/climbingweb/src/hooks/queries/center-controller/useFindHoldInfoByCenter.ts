@@ -1,5 +1,5 @@
+import axios from 'axios';
 import { useQuery } from 'react-query';
-import makeMasterTokenInstance from '../../mocks/makeMasterTokenInstance';
 
 /**
  * /centers/${centerId}/hold api 의 axios response 함수
@@ -8,8 +8,7 @@ import makeMasterTokenInstance from '../../mocks/makeMasterTokenInstance';
  * @returns /centers/${centerId}/hold api 의 axios.get 프로미스 값
  */
 const findHoldInfoByCenter = async (centerId?: string) => {
-  const axiosInstance = makeMasterTokenInstance();
-  const { data } = await axiosInstance.get(`/centers/${centerId}/hold`);
+  const { data } = await axios.get(`/centers/${centerId}/hold`);
   return data;
 };
 
