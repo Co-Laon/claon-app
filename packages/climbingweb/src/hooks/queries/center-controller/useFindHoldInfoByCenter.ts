@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { useQuery } from 'react-query';
+import { useQuery, UseQueryOptions } from 'react-query';
 
 /**
  * /centers/${centerId}/hold api 의 axios response 함수
@@ -7,7 +7,7 @@ import { useQuery } from 'react-query';
  * @param centerId /centers/${centerId}/hold api 의 centerId 에 해당하는 검색 값
  * @returns /centers/${centerId}/hold api 의 axios.get 프로미스 값
  */
-const findHoldInfoByCenter = async (centerId?: string) => {
+const findHoldInfoByCenter = async (centerId: string) => {
   const { data } = await axios.get(`/centers/${centerId}/hold`);
   return data;
 };
@@ -81,7 +81,13 @@ const findHoldInfoByCenterMock = async (centerId?: string) => {
  * @param options useQuery 추가 옵션, retry: 0, enabled: !!centerId 적용 중
  * @returns /centers/${centerId}/hold api 의 useQuery return 값
  */
-export const useFindHoldInfoByCenter = (centerId?: string, options?: any) => {
+export const useFindHoldInfoByCenter = (
+  centerId: string,
+  options?: Omit<
+    UseQueryOptions<any, unknown, any, string[]>,
+    'queryKey' | 'queryFn'
+  >
+) => {
   return useQuery(
     ['centerId', centerId],
     () => findHoldInfoByCenter(centerId),
@@ -103,7 +109,10 @@ export const useFindHoldInfoByCenter = (centerId?: string, options?: any) => {
  */
 export const useFindHoldInfoByCenterMock = (
   centerId: string,
-  options?: any
+  options?: Omit<
+    UseQueryOptions<unknown, unknown, unknown, string[]>,
+    'queryKey' | 'queryFn'
+  >
 ) => {
   return useQuery(
     ['centerId', centerId],

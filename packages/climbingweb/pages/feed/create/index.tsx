@@ -11,6 +11,7 @@ import HoldListModal from 'climbingweb/src/components/CreateFeed/SelectHoldList/
 import PageSubTitle from 'climbingweb/src/components/common/PageSubTitle/PageSubTitle';
 import { NextButton } from 'climbingweb/src/components/common/AppBar/NextButton';
 import { CenterSearchInput } from 'climbingweb/src/components/CreateFeed/CenterSearchInput';
+import { useCreatePost } from 'climbingweb/src/hooks/queries/center-controller/useCreatePost';
 
 export default function CreatePostPage() {
   const [page, setPage] = useState<string>('first');
@@ -32,6 +33,8 @@ export default function CreatePostPage() {
   const [searchInput, setSearchInput] = useState<string>('');
   //searchInput 으로 인한 centerList 중 선택 된 것이 있는지 여부
   const [selected, setSelected] = useState(false);
+
+  const { mutate, isSuccess, error } = useCreatePost(postData);
 
   /**
    * 사진 추가 핸들링 함수
@@ -78,8 +81,13 @@ export default function CreatePostPage() {
    * 포스트 입력 완료 핸들링 함수
    */
   const handlePostDataSubmit = useCallback(() => {
-    console.dir(postData);
-  }, [postData]);
+    mutate();
+    if (isSuccess) {
+      alert('입력 완료 되었습니다.');
+    } else {
+      alert(error);
+    }
+  }, [mutate, isSuccess, error]);
 
   return (
     <div className="mb-footer overflow-auto scrollbar-hide">

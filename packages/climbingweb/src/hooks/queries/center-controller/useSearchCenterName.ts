@@ -1,6 +1,6 @@
 import axios from 'axios';
 import _ from 'lodash';
-import { useQuery } from 'react-query';
+import { useQuery, UseQueryOptions } from 'react-query';
 
 const searchCenterName = _.debounce(async (centerName: string) => {
   const { data } = await axios.get(`/centers/name/${centerName}`);
@@ -44,7 +44,13 @@ const searchCenterNameMock = async (centerName: string) => {
  * @param options useQuery 추가 옵션, retry: 0, enabled: !!centerName 적용 중
  * @returns /centers/name/${centerName} api 의 useQuery 를 return
  */
-export const useSearchCenterName = (centerName: string, options?: any) => {
+export const useSearchCenterName = (
+  centerName: string,
+  options?: Omit<
+    UseQueryOptions<any, unknown, any, string[]>,
+    'queryKey' | 'queryFn'
+  >
+) => {
   return useQuery(
     ['centerName', centerName],
     () => searchCenterName(centerName),
@@ -57,7 +63,13 @@ export const useSearchCenterName = (centerName: string, options?: any) => {
   );
 };
 
-export const useSearchCenterNameMock = (centerName: string, options?: any) => {
+export const useSearchCenterNameMock = (
+  centerName: string,
+  options?: Omit<
+    UseQueryOptions<unknown, unknown, unknown, string[]>,
+    'queryKey' | 'queryFn'
+  >
+) => {
   return useQuery(
     ['centerName', centerName],
     () => searchCenterNameMock(centerName),
