@@ -1,27 +1,28 @@
-import { ChangeEvent, useState } from 'react';
 import ArrowDown from 'climbingweb/src/assets/icon/ic_20_arrow_down_gray400.svg';
 
 interface DropDownProps {
+  value: string;
   onSheetOpen?: ({}: any) => void;
   placeholder?: string;
 }
 
-export const DropDown = ({ onSheetOpen, placeholder }: DropDownProps) => {
-  const [value, setValue] = useState('');
-  const handleChangeValue = (e: ChangeEvent<HTMLInputElement>) => {
-    setValue(e.target.value);
-  };
-
+export const DropDown = ({
+  value,
+  onSheetOpen,
+  placeholder,
+}: DropDownProps) => {
   return (
-    <div className="border-2 border-gray-300 h-12 w-full bg-white rounded-lg relative flex flex-row items-center justify-between px-4">
+    <div
+      className="border-2 border-gray-300 h-12 w-full bg-white rounded-lg relative flex flex-row items-center justify-between px-4"
+      onClick={onSheetOpen}
+    >
       <input
         value={value}
         disabled
-        onChange={(e) => handleChangeValue(e)}
         className="h-full w-full outline-0 disabled:bg-white"
         placeholder={placeholder}
       />
-      <ArrowDown onClick={onSheetOpen} alt="arrow_down" />
+      <ArrowDown alt="arrow_down" />
     </div>
   );
 };

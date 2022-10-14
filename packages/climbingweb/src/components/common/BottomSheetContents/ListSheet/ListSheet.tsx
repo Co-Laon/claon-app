@@ -7,7 +7,7 @@ export const ListSheet = ({ headerTitle, list, onSelect }: ListSheetProps) => {
       <SheetHeader headerTitle={headerTitle} />
       <div className="flex flex-col gap-6 text-black">
         {list?.map((area) => (
-          <p onTouchEnd={onSelect} key={`areaKey${area}`}>
+          <p onTouchEnd={() => onSelect(area)} key={`areaKey${area}`}>
             {area}
           </p>
         ))}
