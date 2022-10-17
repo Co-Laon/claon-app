@@ -1,7 +1,7 @@
 export interface ListSheetProps {
   headerTitle: string;
   list: string[];
-  onSelect?: ({}: any) => void;
+  onSelect: ({}: any) => void;
 }
 
 export interface ConfirmSheetProps {
