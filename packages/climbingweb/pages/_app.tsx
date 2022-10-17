@@ -11,8 +11,17 @@ import {
   getReactNativeMessage,
   sendReactNativeMessage,
 } from 'climbingweb/src/utils/reactNativeMessage';
+import { isDesktop } from 'react-device-detect';
 
 function MyApp({ Component, pageProps }: AppProps) {
+  axios.defaults.baseURL = '' + process.env.NEXT_PUBLIC_API;
+  if (isDesktop) {
+    axios.defaults.headers.common['access-token'] =
+      '' + process.env.NEXT_PUBLIC_ACCESS_TOKEN;
+    axios.defaults.headers.common['refresh-token'] =
+      '' + process.env.NEXT_PUBLIC_REFRESH_TOKEN;
+  }
+
   useEffect(() => {
     getReactNativeMessage();
     axios.interceptors.response.use(function (response) {
