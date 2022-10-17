@@ -5,51 +5,13 @@ import {
   PostData,
 } from 'climbingweb/src/components/CreateFeed/type';
 import { UploadImageList } from 'climbingweb/src/components/CreateFeed/UploadImageList/';
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 import { BackButton } from 'climbingweb/src/components/common/AppBar/IconButton';
 import HoldListModal from 'climbingweb/src/components/CreateFeed/SelectHoldList/HoldListModal';
-import Hold from 'climbingweb/src/interface/Hold';
 import PageSubTitle from 'climbingweb/src/components/common/PageSubTitle/PageSubTitle';
 import { NextButton } from 'climbingweb/src/components/common/AppBar/NextButton';
-import { Input } from 'climbingweb/src/components/common/Input';
-
-const holdListExample: Hold[] = [
-  {
-    id: '1',
-    image:
-      'https://claon-server.s3.ap-northeast-2.amazonaws.com/center/seoul/theclimb_magok/hold/white.png',
-    name: '1번홀드',
-    count: 0,
-  },
-  {
-    id: '2',
-    image:
-      'https://claon-server.s3.ap-northeast-2.amazonaws.com/center/seoul/theclimb_magok/hold/yellow.png',
-    name: '2번홀드',
-    count: 0,
-  },
-  {
-    id: '3',
-    image:
-      'https://claon-server.s3.ap-northeast-2.amazonaws.com/center/seoul/theclimb_magok/hold/blue.png',
-    name: '3번홀드',
-    count: 0,
-  },
-  {
-    id: '4',
-    image:
-      'https://claon-server.s3.ap-northeast-2.amazonaws.com/center/seoul/theclimb_magok/hold/green.png',
-    name: '4번홀드',
-    count: 0,
-  },
-  {
-    id: '5',
-    image:
-      'https://claon-server.s3.ap-northeast-2.amazonaws.com/center/seoul/theclimb_magok/hold/red.png',
-    name: '5번홀드',
-    count: 0,
-  },
-];
+import { CenterSearchInput } from 'climbingweb/src/components/CreateFeed/CenterSearchInput';
+import { useCreatePost } from 'climbingweb/src/hooks/queries/center-controller/useCreatePost';
 
 export default function CreatePostPage() {
   const [page, setPage] = useState<string>('first');
@@ -68,30 +30,77 @@ export default function CreatePostPage() {
       },
     ],
   });
+  const [searchInput, setSearchInput] = useState<string>('');
+  //searchInput 으로 인한 centerList 중 선택 된 것이 있는지 여부
+  const [selected, setSelected] = useState(false);
+
+  const { mutate, isSuccess, error } = useCreatePost(postData);
+
+  /**
+   * 사진 추가 핸들링 함수
+   * @param contentsList
+   */
+  // const handleContentsListInput = (contentsList: { url: string }[]) => {
+  //   setPostData({ ...postData, contentsList });
+  // };
 
   /**
    * 내용 입력 핸들링 함수
    * @param content
    */
-  const handleContentInput = (content: string) => {
-    setPostData({ ...postData, content });
-  };
+  const handleContentInput = useCallback(
+    (content: string) => {
+      setPostData({ ...postData, content });
+    },
+    [postData]
+  );
+
+  /**
+   * 암장 입력 핸들링 함수
+   * @param centerId
+   */
+  const handleCenterIdInput = useCallback(
+    (centerId: string) => {
+      setPostData({ ...postData, centerId });
+    },
+    [postData]
+  );
 
   /**
    * 홀드 입력 핸들링 함수
    * @param climbingHistories postData 중 hold 에 관한 정보를 담는 객체
    */
-  const handleClimbingHistoriesInput = (
-    climbingHistories: ClimbingHistories[]
-  ) => {
-    setPostData({ ...postData, climbingHistories });
-  };
+  const handleClimbingHistoriesInput = useCallback(
+    (climbingHistories: ClimbingHistories[]) => {
+      setPostData({ ...postData, climbingHistories });
+    },
+    [postData]
+  );
+
+  /**
+   * 포스트 입력 완료 핸들링 함수
+   */
+  const handlePostDataSubmit = useCallback(() => {
+    mutate();
+    if (isSuccess) {
+      alert('입력 완료 되었습니다.');
+    } else {
+      alert(error);
+    }
+  }, [mutate, isSuccess, error]);
+
   return (
     <div className="mb-footer overflow-auto scrollbar-hide">
       <AppBar
         title="새 게시물"
         leftNode={<BackButton onClick={() => setPage('first')} />}
-        rightNode={<NextButton pageState={page} setPageState={setPage} />}
+        rightNode={
+          <NextButton
+            pageState={page}
+            setPageState={setPage}
+            onSubmit={handlePostDataSubmit}
+          />
+        }
       />
       <div className="p-4">
         {page === 'first' ? (
@@ -108,11 +117,17 @@ export default function CreatePostPage() {
         ) : (
           <div className="flex flex-col gap-4">
             <PageSubTitle title={'암장 이름'} />
-            <Input />
+            <CenterSearchInput
+              selected={selected}
+              setSelected={setSelected}
+              setData={handleCenterIdInput}
+              inputValue={searchInput}
+              setInputValue={setSearchInput}
+            />
             <PageSubTitle title={'완등 횟수'} />
             <HoldListModal
               maxCount={10}
-              indexHoldList={holdListExample}
+              centerId={postData.centerId}
               climbingHistories={postData.climbingHistories}
               setData={handleClimbingHistoriesInput}
             />

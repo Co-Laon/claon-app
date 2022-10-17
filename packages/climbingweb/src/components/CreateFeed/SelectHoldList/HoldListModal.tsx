@@ -1,3 +1,4 @@
+import { useFindHoldInfoByCenter } from 'climbingweb/src/hooks/queries/center-controller/useFindHoldInfoByCenter';
 import Hold from 'climbingweb/src/interface/Hold';
 import React, { useCallback, useEffect, useState } from 'react';
 import { ClimbingHistories } from '../type';
@@ -7,44 +8,67 @@ import HoldImageButton from './HoldImageButton';
 /**
  * 홀드 선택하는 모달의 props
  * @param maxCount 제한할 홀드 최대 개수
- * @param indexHoldList 모달이 팝업 되기 전 페이지에 반영된 홀드 리스트, 이를 통해 모달이 팝업 될 때 홀드의 종류 및 각 개수를 띄워준다.
- * @param selectHoldList 모달이 팝업 된 후 홀드 리스트 상태, 변경 될 수 있다.
+ * @param centerId 입력받을 centerId
+ * @param climbingHistories 게시물에서 이미 선택된 hold 정보
+ * @param setData postData를 set 하는 함수
  */
 interface ModalProps {
   maxCount: number;
-  indexHoldList: Hold[];
+  centerId?: string;
   climbingHistories: ClimbingHistories[];
   setData: any;
 }
 
 const HoldListModal = ({
   maxCount,
-  indexHoldList,
+  centerId,
   climbingHistories,
   setData,
 }: ModalProps) => {
+  //기준이 되는 hold 리스트 state
+  const {
+    isLoading,
+    isError,
+    data: holdList,
+    error,
+  } = useFindHoldInfoByCenter(centerId, {
+    select: (response: any) =>
+      response.map((val: any) => {
+        return { ...val, count: 0 };
+      }),
+    onError: (e: any) => {
+      console.log(e);
+    },
+  });
+
   /**
    * ClimbingHistories 를 HoldList 로 변환해주는 함수
    * @param toConvertValue 변환하고 싶은 ClimbingHistories 객체
    * @returns 변환된 HoldList
    */
-  const climbingHistoriesToHold = (
-    toConvertValue: ClimbingHistories[]
-  ): Hold[] => {
-    return toConvertValue
-      ? toConvertValue.map((outerItem) => {
-          const tempHold = indexHoldList.find(
-            (innerItem) => innerItem.id === outerItem.holdId
-          );
-          return {
-            id: outerItem.holdId,
-            image: tempHold !== undefined ? tempHold.image : 'altImage',
-            name: tempHold !== undefined ? tempHold.name : 'altName',
-            count: outerItem.climbingCount,
-          };
-        })
-      : indexHoldList;
-  };
+  const climbingHistoriesToHold = useCallback(
+    (toConvertValue: ClimbingHistories[], standardArray: Hold[]): Hold[] => {
+      return toConvertValue.map((outerItem) => {
+        const tempHold = standardArray.find(
+          (innerItem) => innerItem.id === outerItem.holdId
+        );
+        return {
+          id: outerItem.holdId,
+          image:
+            tempHold !== undefined
+              ? tempHold.image
+              : 'https://claon-server.s3.ap-northeast-2.amazonaws.com/center/seoul/damjang/hold/black.svg',
+          name: tempHold !== undefined ? tempHold.name : 'altName',
+          count: outerItem.climbingCount,
+          crayonImage:
+            tempHold !== undefined
+              ? tempHold.crayonImage
+              : 'https://claon-server.s3.ap-northeast-2.amazonaws.com/center/seoul/damjang/crayon/black.svg',
+        };
+      });
+    },
+    []
+  );
 
   /**
    * HoldList 를 ClimbingHistories 로 변환해주는 함수
@@ -53,13 +77,11 @@ const HoldListModal = ({
    */
   const holdToClimbingHistories = useCallback(
     (toConvertValue: Hold[]): ClimbingHistories[] => {
-      return toConvertValue
-        ? toConvertValue.map((item) => {
-            return { holdId: item.id, climbingCount: item.count };
-          })
-        : climbingHistories;
+      return toConvertValue.map((item) => {
+        return { holdId: item.id, climbingCount: item.count };
+      });
     },
-    [climbingHistories]
+    []
   );
 
   // 전체 count
@@ -79,6 +101,7 @@ const HoldListModal = ({
     setData(holdToClimbingHistories(selectedHold));
     setSelectedHold(selectedHold);
   }, [selectedHold, holdToClimbingHistories, setData]);
+
   /**
    * 다이얼로그 내 HoldImage 를 클릭 시, hold 숫자를 늘려주는 함수
    * @param indexHold 다이얼로그 내에서 선택하는 홀드의 수
@@ -101,6 +124,7 @@ const HoldListModal = ({
     },
     [selectedHold, maxCount]
   );
+
   /**
    * 다이얼로그 내 - 버튼 클릭 시, hold 숫자를 줄여주는 함수
    * @param indexHold 다이얼로그 내에서 선택하는 홀드의 수
@@ -114,20 +138,45 @@ const HoldListModal = ({
     },
     [selectedHold]
   );
+
   /**
    * onMount 시 작동할 로직이 들어가는 부분
    */
   useEffect(() => {
-    setTotalHoldCount(0);
-    setSelectedHold(indexHoldList);
-  }, [indexHoldList]);
-  return (
+    const convertedHold = climbingHistoriesToHold(climbingHistories, holdList);
+    //선택된 홀드 총 갯수 계산
+    const convertedHoldCount = convertedHold.reduce(
+      (prev: number, curr: Hold) => {
+        return prev + curr.count;
+      },
+      0
+    );
+    setTotalHoldCount(convertedHoldCount);
+    setSelectedHold(convertedHoldCount === 0 ? holdList : convertedHold);
+  }, [holdList, climbingHistories, climbingHistoriesToHold]);
+
+  useEffect(() => {
+    if (centerId === '') {
+      setData([
+        {
+          climbingCount: 0,
+          holdId: '',
+        },
+      ]);
+    }
+  }, [centerId]);
+
+  return isLoading ? (
+    <div>로딩 중</div>
+  ) : isError ? (
+    <div>`에러 : ${error}`</div>
+  ) : (
     <>
       <div className="w-full flex flex-row gap-2 overflow-x-auto scrollbar-hide">
         <label htmlFor="my-modal">
           <HoldImageButton count={totalHoldCount} maxCount={maxCount} />
         </label>
-        {climbingHistoriesToHold(climbingHistories).map((item) =>
+        {climbingHistoriesToHold(climbingHistories, holdList).map((item) =>
           item.count !== 0 ? (
             <HoldImage
               key={`HoldListModal_Hold${item.id}`}
@@ -140,24 +189,27 @@ const HoldListModal = ({
       <input type="checkbox" id="my-modal" className="modal-toggle" />
       <div className="modal">
         <div className="modal-box">
-          <div className="w-full grid grid-cols-3 gap-y-4">
-            {selectedHold.map((item) => (
-              <div
-                key={`HoldListModal_Hold${item.id}`}
-                className="w-full flex justify-center"
-              >
-                <HoldImage
-                  indexHold={item}
-                  count={item.count}
-                  handleSeletHold={() => handleSelectHold(item)}
-                  handleDeleteHold={
-                    item.count > 0 ? () => handleDeleteHold(item) : null
-                  }
-                />
-              </div>
-            ))}
-          </div>
-
+          {centerId ? (
+            <div className="w-full grid grid-cols-3 gap-y-4">
+              {selectedHold.map((item) => (
+                <div
+                  key={`HoldListModal_Hold${item.id}`}
+                  className="w-full flex justify-center"
+                >
+                  <HoldImage
+                    indexHold={item}
+                    count={item.count}
+                    handleSeletHold={() => handleSelectHold(item)}
+                    handleDeleteHold={
+                      item.count > 0 ? () => handleDeleteHold(item) : null
+                    }
+                  />
+                </div>
+              ))}
+            </div>
+          ) : (
+            <div>암장 정보가 정확하지 않습니다.</div>
+          )}
           <label htmlFor="my-modal">
             <div
               className="relative -mb-6 -mx-6 mt-6 py-2 bg-purple-500 text-center text-white"
