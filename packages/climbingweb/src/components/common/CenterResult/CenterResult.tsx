@@ -1,27 +1,39 @@
 import React from 'react';
 import StarIcon from 'climbingweb/src/assets/icon/ic_12_rate_black.svg';
-import { CenterProps } from './type';
 import { useRouter } from 'next/router';
 import Image from 'next/image';
-const DefaultCenterImage = '/assets/default_image.svg';
 
-const CenterResult = ({ star, image, name, id }: CenterProps) => {
+interface CenterProps {
+  id: string;
+  name: string;
+  thumbnailUrl: string;
+  reviewRank: number;
+}
+
+/**
+ * search page 에서 암장 썸네일과 별점, 이름을 표시 해주는 컴포넌트
+ * 해당 컴포넌트를 클릭하면, 암장 소개 페이지로 넘어간다.
+ */
+const CenterResult = ({ id, name, thumbnailUrl, reviewRank }: CenterProps) => {
   const router = useRouter();
+
+  //컴포넌트 터치 핸들링 함수
   const handleGoToCenterDetail = () => {
     router.push(`/center/${id}`);
   };
 
   return (
     <div
-      onTouchEnd={handleGoToCenterDetail}
-      className="relative min-w-[150px] min-h-[120px] rounded-lg bg-gray-800 mr-[5px]"
+      onClick={handleGoToCenterDetail}
+      className="relative min-w-[150px] min-h-[120px] bg-transparent mr-[5px]"
     >
-      <div className="flex items-center justify-between m-1 px-2 py-[2px] z-10 gap-1 absolute bg-yellow-500 rounded-lg text-xs font-bold">
+      <div className="flex items-center justify-between m-1 px-2 py-[2px] z-10 gap-1 absolute bg-yellow-500 rounded-full text-xs font-bold">
         <StarIcon />
-        {star}
+        {reviewRank}
       </div>
       <Image
-        src={image ?? DefaultCenterImage}
+        className="rounded-xl"
+        src={thumbnailUrl}
         alt={'centerImage'}
         layout="fill"
       />
