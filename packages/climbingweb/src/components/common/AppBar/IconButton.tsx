@@ -5,6 +5,7 @@ import Setting from 'climbingweb/src/assets/icon/ic_24_setting_gray_800.svg';
 import BookMarkWhite from 'climbingweb/src/assets/icon/ic_24_bookmark_white.svg';
 import BookMarkYellow from 'climbingweb/src/assets/icon/ic_24_bookmark_yellow.svg';
 import Option from 'climbingweb/src/assets/icon/ic_24_option_gray800.svg';
+import { useRouter } from 'next/router';
 
 interface ButtonProps {
   onClick?: ({}: any) => void;
@@ -22,8 +23,12 @@ export const ModifiedButton = ({ onClick }: ButtonProps) => {
   return <Pencil onClick={onClick} alt="modified" />;
 };
 
-export const AppLogo = ({ onClick }: ButtonProps) => {
-  return <Logo onClick={onClick} alt="logo" />;
+export const AppLogo = () => {
+  const router = useRouter();
+  const handleLogoTouch = () => {
+    router.push('/');
+  };
+  return <Logo onClick={handleLogoTouch} alt="logo" />;
 };
 
 export const SettingButton = ({ onClick }: ButtonProps) => {
