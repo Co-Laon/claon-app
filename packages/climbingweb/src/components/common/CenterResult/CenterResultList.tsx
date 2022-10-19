@@ -1,15 +1,19 @@
 import CenterResult from './CenterResult';
-import { CenterListProps } from './type';
+import { CenterProps } from './CenterResult';
+
+interface CenterListProps {
+  centerList: CenterProps[];
+}
 
 const CenterResultList = ({ centerList }: CenterListProps) => {
   return (
     <div className="w-full flex flex-row gap-1 overflow-x-auto scrollbar-hide">
-      {centerList?.map(({ name, star, image, id }) => (
+      {centerList.map(({ id, name, thumbnailUrl, reviewRank }) => (
         <CenterResult
           key={name}
           name={name}
-          image={image}
-          star={star}
+          thumbnailUrl={thumbnailUrl}
+          reviewRank={reviewRank}
           id={id}
         />
       ))}
