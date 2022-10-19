@@ -2,25 +2,34 @@ import Image from 'next/image';
 import { useState } from 'react';
 import { StarRating } from '../common/StarRating';
 
-interface Props {
-  commentId?: string;
+// interface ReviewCommmentProps {
+//   commentId?: string;
+//   content: string;
+//   isDeleted: boolean;
+//   postId?: string;
+//   writerNickName: string;
+//   writerProfileImage: string;
+//   createAt?: string;
+//   updateAt?: string;
+// }
+
+interface ReviewCommentProps {
   content: string;
-  isDeleted: boolean;
-  postId?: string;
-  writerNickName: string;
-  writerProfileImage: string;
-  createAt?: string;
-  updateAt?: string;
+  createdAt: string;
+  rank: number;
+  reviewerNickname: string;
+  reviewerProfileImage: string;
+  updatedAt: string;
 }
 
-export const ReviewCommment = ({
+export const ReviewComment = ({
   content,
-  isDeleted,
-  writerNickName,
-  writerProfileImage,
-  createAt,
-  updateAt,
-}: Props) => {
+  createdAt,
+  rank,
+  reviewerNickname,
+  reviewerProfileImage,
+  updatedAt,
+}: ReviewCommentProps) => {
   const [readMore, setReadMore] = useState(false);
 
   return (
@@ -31,23 +40,28 @@ export const ReviewCommment = ({
             className="rounded-full"
             layout="fill"
             objectFit="cover"
-            src={writerProfileImage}
+            src={reviewerProfileImage}
             alt="comment"
           />
         </div>
         <div className=" gap-2">
           <div className="h-10 flex flex-row justify-between items-center">
             <div>
-              <p className="text-sm font-bold">{writerNickName}</p>
+              <p className="text-sm font-bold">{reviewerNickname}</p>
               <p className="text-gray-400 text-sm">
-                {updateAt ? updateAt : createAt}{' '}
+                {updatedAt ? updatedAt : createdAt}{' '}
               </p>
             </div>
-            <StarRating readOnly={true} size="sm" count={5} initialValue={4} />
+            <StarRating
+              readOnly={true}
+              size="sm"
+              count={rank}
+              initialValue={4}
+            />
           </div>
           <div className="">
             <p className={`text-sm ${readMore ? '' : 'line-clamp-3'}`}>
-              {isDeleted ? '삭제된 게시글 입니다' : content}
+              {content}
             </p>
             <span
               className="text-gray-400 inline float-right text-sm"

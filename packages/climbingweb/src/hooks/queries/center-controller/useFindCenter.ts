@@ -1,41 +1,41 @@
 import { useQuery, UseQueryOptions } from 'react-query';
 import axios from 'axios';
 
-interface CenterDetailChargeElement {
+export interface CenterDetailChargeElement {
   fee: string;
   name: string;
 }
 
-interface CenterDetailCharge {
+export interface CenterDetailCharge {
   chargeList: CenterDetailChargeElement[];
   image: string;
 }
 
-interface HoldInfoResponse {
+export interface HoldInfoResponse {
   crayonImage: string;
   id: string;
   image: string;
   name: string;
 }
 
-interface CenterImg {
+export interface CenterImg {
   url: string;
 }
 
-interface OperatingTime {
+export interface OperatingTime {
   day: string;
   end: string;
   start: string;
 }
 
-interface SectorInfoResponse {
+export interface SectorInfoResponse {
   end: string;
   id: string;
   name: string;
   start: string;
 }
 
-interface CenterDetailResponse {
+export interface CenterDetailResponse {
   address: string;
   chargeList: CenterDetailCharge[];
   facilities: string;
@@ -55,11 +55,24 @@ interface CenterDetailResponse {
   youtubeUrl: string;
 }
 
+/**
+ * GET /centers/{centerId} api 의 query 함수
+ *
+ * @param centerId 검색할 암장의 centerId
+ * @returns axiosReponse.data
+ */
 const findCenter = async (centerId: string) => {
   const { data } = await axios.get<CenterDetailResponse>(`centers/${centerId}`);
   return data;
 };
 
+/**
+ * findCenter api 의 useQuery hooks
+ *
+ * @param centerId 검색할 암장의 cenerId
+ * @param options findCenter api 의 useQuery 추가 옵션
+ * @returns findCenter api 의 useQuery return 값
+ */
 export const useFindCenter = (
   centerId: string,
   options?: Omit<
