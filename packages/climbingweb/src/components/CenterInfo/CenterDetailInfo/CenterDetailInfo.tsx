@@ -1,16 +1,32 @@
+import { CenterDetailResponse } from 'climbingweb/src/hooks/queries/center-controller/useFindCenter';
+import CenterCharge from './CenterCharge';
+import CenterFacilities from './CenterFacilities';
+import CenterHoldList from './CenterHoldList';
+import CenterOperatingTime from './CenterOperatingTime';
+import CenterSectorList from './CenterSectorList';
 
+interface CenterDetailInfoProps {
+  data: CenterDetailResponse;
+}
 
-export const CenterDetailInfo = ({ }) => {
-    const CenterInfoTitleList = ['운영시간', '편의시설', '이용 요금', '홀드 정보', '섹터 정보'];
+export const CenterDetailInfo = ({ data }: CenterDetailInfoProps) => {
+  const {
+    operatingTimeList,
+    facilities,
+    //chargeList 의 경우 안에 chargeList 와 image 가 있음
+    chargeList,
+    holdInfoList,
+    holdInfoImg,
+    sectorInfoList,
+  } = data;
 
-    return (
-        <div className='flex flex-col px-7'>
-            {CenterInfoTitleList.map(title => (
-                <div key={title} className='flex flex-col gap-2'>
-                    <h2 className='font-semibold text-sm'>{title}</h2>
-                    <div className=' '></div>
-                </div>
-            ))}
-        </div>
-    );
+  return (
+    <div className="flex flex-col p-7 gap-8">
+      <CenterOperatingTime operatingTimeList={operatingTimeList} />
+      <CenterFacilities facilities={facilities} />
+      <CenterCharge chargeList={chargeList} />
+      <CenterHoldList holdInfoList={holdInfoList} holdInfoImg={holdInfoImg} />
+      <CenterSectorList sectorInfoList={sectorInfoList} />
+    </div>
+  );
 };

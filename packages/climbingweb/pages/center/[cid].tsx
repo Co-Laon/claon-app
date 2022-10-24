@@ -6,18 +6,28 @@ import {
   BookMarkButton,
   OptionButton,
 } from 'climbingweb/src/components/common/AppBar/IconButton';
+import { useFindCenter } from 'climbingweb/src/hooks/queries/center-controller/useFindCenter';
+import { useRouter } from 'next/router';
 
-interface DetailPageProps {
-  title: string;
-}
+export default function CenterDetailPage() {
+  const router = useRouter();
+  const { cid } = router.query;
+  //cid string 거르는 로직, useRouter 에 대해 자세히 보고 추후 반드시 변경 해야함
+  const centerId = cid ? (Array.isArray(cid) ? cid[0] : cid) : '';
 
-const img =
-  'https://images.unsplash.com/photo-1491528323818-fdd1faba62cc?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80';
-const list = [img, img, img, img, img, img, img, img];
+  //암장 상세 정보 useQuery state
+  const {
+    isLoading: isCenterDetailLoading,
+    data: CenterDetailData,
+    isError: isCenterDetailError,
+    error: CenterDetailerror,
+  } = useFindCenter(centerId);
 
-export default function CenterDetailPage({ title }: DetailPageProps) {
-  title = '더클라이밍 마곡';
-  return (
+  return isCenterDetailLoading ? (
+    <div>로딩 중</div>
+  ) : isCenterDetailError ? (
+    <div>{CenterDetailerror}</div>
+  ) : CenterDetailData ? (
     <section className="mb-footer overflow-auto scrollbar-hide">
       <AppBar
         leftNode={<AppLogo />}
@@ -28,10 +38,14 @@ export default function CenterDetailPage({ title }: DetailPageProps) {
         }
       />
       <CenterInfoHead
-        title={title}
-        address="서울특별시 강서구 마곡동 796-3 마곡사이언스타워 7층"
+        name={CenterDetailData.name}
+        address={CenterDetailData.address}
+        tel={CenterDetailData.tel}
+        instagramUrl={CenterDetailData.instagramUrl}
+        webUrl={CenterDetailData.webUrl}
+        youtubeUrl={CenterDetailData.youtubeUrl}
       />
-      <CenterInfoContent imageList={list} />
+      <CenterInfoContent data={CenterDetailData} />
     </section>
-  );
+  ) : null;
 }
