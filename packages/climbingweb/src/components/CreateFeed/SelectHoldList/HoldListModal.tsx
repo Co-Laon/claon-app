@@ -1,7 +1,7 @@
 import { useFindHoldInfoByCenter } from 'climbingweb/src/hooks/queries/center-controller/useFindHoldInfoByCenter';
 import Hold from 'climbingweb/src/interface/Hold';
+import { ClimbingHistoryRequest } from 'climbingweb/types/request/post';
 import React, { useCallback, useEffect, useState } from 'react';
-import { ClimbingHistories } from '../type';
 import HoldImage from './HoldImage';
 import HoldImageButton from './HoldImageButton';
 
@@ -9,20 +9,20 @@ import HoldImageButton from './HoldImageButton';
  * 홀드 선택하는 모달의 props
  * @param maxCount 제한할 홀드 최대 개수
  * @param centerId 입력받을 centerId
- * @param climbingHistories 게시물에서 이미 선택된 hold 정보
+ * @param preSelectedHoldList 게시물에서 이미 선택된 hold 정보
  * @param setData postData를 set 하는 함수
  */
 interface ModalProps {
   maxCount: number;
   centerId?: string;
-  climbingHistories: ClimbingHistories[];
+  preSelectedHoldList?: ClimbingHistoryRequest[];
   setData: any;
 }
 
 const HoldListModal = ({
   maxCount,
   centerId,
-  climbingHistories,
+  preSelectedHoldList,
   setData,
 }: ModalProps) => {
   //기준이 되는 hold 리스트 state
@@ -31,25 +31,25 @@ const HoldListModal = ({
     isError,
     data: holdList,
     error,
-  } = useFindHoldInfoByCenter(centerId, {
-    select: (response: any) =>
-      response.map((val: any) => {
+  } = useFindHoldInfoByCenter<Hold>(centerId, {
+    select: (response) =>
+      response.map((val) => {
         return { ...val, count: 0 };
       }),
-    onError: (e: any) => {
-      console.log(e);
-    },
   });
 
   /**
-   * ClimbingHistories 를 HoldList 로 변환해주는 함수
+   * ClimbingHistoryRequest 를 HoldList 로 변환해주는 함수
    * @param toConvertValue 변환하고 싶은 ClimbingHistories 객체
    * @returns 변환된 HoldList
    */
   const climbingHistoriesToHold = useCallback(
-    (toConvertValue: ClimbingHistories[], standardArray: Hold[]): Hold[] => {
+    (
+      toConvertValue: ClimbingHistoryRequest[],
+      standardArray?: Hold[]
+    ): Hold[] => {
       return toConvertValue.map((outerItem) => {
-        const tempHold = standardArray.find(
+        const tempHold = standardArray?.find(
           (innerItem) => innerItem.id === outerItem.holdId
         );
         return {
@@ -76,7 +76,7 @@ const HoldListModal = ({
    * @returns 변환된 ClimbingHistories
    */
   const holdToClimbingHistories = useCallback(
-    (toConvertValue: Hold[]): ClimbingHistories[] => {
+    (toConvertValue: Hold[]): ClimbingHistoryRequest[] => {
       return toConvertValue.map((item) => {
         return { holdId: item.id, climbingCount: item.count };
       });
@@ -143,17 +143,29 @@ const HoldListModal = ({
    * onMount 시 작동할 로직이 들어가는 부분
    */
   useEffect(() => {
-    const convertedHold = climbingHistoriesToHold(climbingHistories, holdList);
-    //선택된 홀드 총 갯수 계산
-    const convertedHoldCount = convertedHold.reduce(
-      (prev: number, curr: Hold) => {
-        return prev + curr.count;
-      },
-      0
-    );
-    setTotalHoldCount(convertedHoldCount);
-    setSelectedHold(convertedHoldCount === 0 ? holdList : convertedHold);
-  }, [holdList, climbingHistories, climbingHistoriesToHold]);
+    //먼저 선택한 홀드 정보가 있으면
+    if (preSelectedHoldList !== undefined) {
+      const convertedHold = climbingHistoriesToHold(
+        preSelectedHoldList,
+        holdList
+      );
+      //선택된 홀드 총 갯수 계산
+      const convertedHoldCount = convertedHold.reduce(
+        (prev: number, curr: Hold) => {
+          return prev + curr.count;
+        },
+        0
+      );
+      setTotalHoldCount(convertedHoldCount);
+      setSelectedHold(
+        convertedHoldCount === 0
+          ? holdList === undefined
+            ? []
+            : holdList
+          : convertedHold
+      );
+    }
+  }, [holdList, preSelectedHoldList, climbingHistoriesToHold]);
 
   useEffect(() => {
     if (centerId === '') {
@@ -176,15 +188,17 @@ const HoldListModal = ({
         <label htmlFor="my-modal">
           <HoldImageButton count={totalHoldCount} maxCount={maxCount} />
         </label>
-        {climbingHistoriesToHold(climbingHistories, holdList).map((item) =>
-          item.count !== 0 ? (
-            <HoldImage
-              key={`HoldListModal_Hold${item.id}`}
-              indexHold={item}
-              count={item.count}
-            />
-          ) : null
-        )}
+        {preSelectedHoldList !== undefined
+          ? climbingHistoriesToHold(preSelectedHoldList, holdList).map((item) =>
+              item.count !== 0 ? (
+                <HoldImage
+                  key={`HoldListModal_Hold${item.id}`}
+                  indexHold={item}
+                  count={item.count}
+                />
+              ) : null
+            )
+          : null}
       </div>
       <input type="checkbox" id="my-modal" className="modal-toggle" />
       <div className="modal">

@@ -1,9 +1,5 @@
 import { AppBar } from 'climbingweb/src/components/common/AppBar';
 import TextArea from 'climbingweb/src/components/common/TextArea/TextArea';
-import {
-  ClimbingHistories,
-  PostData,
-} from 'climbingweb/src/components/CreateFeed/type';
 import { UploadImageList } from 'climbingweb/src/components/CreateFeed/UploadImageList/';
 import { useCallback, useState } from 'react';
 import { BackButton } from 'climbingweb/src/components/common/AppBar/IconButton';
@@ -11,11 +7,15 @@ import HoldListModal from 'climbingweb/src/components/CreateFeed/SelectHoldList/
 import PageSubTitle from 'climbingweb/src/components/common/PageSubTitle/PageSubTitle';
 import { NextButton } from 'climbingweb/src/components/common/AppBar/NextButton';
 import { CenterSearchInput } from 'climbingweb/src/components/CreateFeed/CenterSearchInput';
-import { useCreatePost } from 'climbingweb/src/hooks/queries/center-controller/useCreatePost';
+import { useCreatePost } from 'climbingweb/src/hooks/queries/post-controller/useCreatePost';
+import {
+  ClimbingHistoryRequest,
+  PostCreateRequest,
+} from 'climbingweb/types/request/post';
 
 export default function CreatePostPage() {
   const [page, setPage] = useState<string>('first');
-  const [postData, setPostData] = useState<PostData>({
+  const [postData, setPostData] = useState<PostCreateRequest>({
     centerId: '',
     climbingHistories: [
       {
@@ -71,7 +71,7 @@ export default function CreatePostPage() {
    * @param climbingHistories postData 중 hold 에 관한 정보를 담는 객체
    */
   const handleClimbingHistoriesInput = useCallback(
-    (climbingHistories: ClimbingHistories[]) => {
+    (climbingHistories: ClimbingHistoryRequest[]) => {
       setPostData({ ...postData, climbingHistories });
     },
     [postData]
@@ -128,7 +128,7 @@ export default function CreatePostPage() {
             <HoldListModal
               maxCount={10}
               centerId={postData.centerId}
-              climbingHistories={postData.climbingHistories}
+              preSelectedHoldList={postData.climbingHistories}
               setData={handleClimbingHistoriesInput}
             />
           </div>

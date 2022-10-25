@@ -1,29 +1,6 @@
-import { useQuery, UseQueryOptions } from 'react-query';
+import { QueryKey, useQuery, UseQueryOptions } from 'react-query';
 import axios from 'axios';
-
-interface CenterPreview {
-  id: string;
-  name: string;
-  thumbnailUrl: string;
-  reviewRank: number;
-}
-
-interface CenterPreviewResponse {
-  nextPageNum: number;
-  previousPageNum: number;
-  results: CenterPreview[];
-  totalCount: number;
-}
-
-// getCenterList api option 의 enum 값 정의를 위한 상수
-const GET_CENTER_OPTION = {
-  BOOKMARK: 'bookmark',
-  NEW_SETTING: 'new_setting',
-  NEWLY_REGISTERED: 'newly_registered',
-} as const;
-
-// getCenterList api option 의 enum 값
-type GetCenterOption = typeof GET_CENTER_OPTION[keyof typeof GET_CENTER_OPTION];
+import { CenterPreviewResponse } from 'climbingweb/types/response/center';
 
 /**
  * GET /centers api 의 query 함수
@@ -31,7 +8,9 @@ type GetCenterOption = typeof GET_CENTER_OPTION[keyof typeof GET_CENTER_OPTION];
  * @param option getCenterList api option 값
  * @returns axiosResponse.data
  */
-const getCenterList = async (option: GetCenterOption) => {
+const getCenterList = async (
+  option: 'bookmark' | 'new_setting' | 'newly_registered'
+) => {
   const { data } = await axios.get<CenterPreviewResponse>('/centers', {
     params: {
       option: option,
@@ -48,20 +27,24 @@ const getCenterList = async (option: GetCenterOption) => {
  * @returns useQuery return 값
  */
 export const useGetCenterList = (
-  option: GetCenterOption,
+  option: 'bookmark' | 'new_setting' | 'newly_registered',
   options?: Omit<
     UseQueryOptions<
       CenterPreviewResponse,
       unknown,
       CenterPreviewResponse,
-      string[]
+      QueryKey
     >,
     'queryKey' | 'queryFn'
   >
 ) => {
-  return useQuery(['getCenterList', option], () => getCenterList(option), {
-    retry: 0,
-    enabled: !!option,
-    ...options,
-  });
+  return useQuery<CenterPreviewResponse>(
+    ['getCenterList', option],
+    () => getCenterList(option),
+    {
+      retry: 0,
+      enabled: !!option,
+      ...options,
+    }
+  );
 };

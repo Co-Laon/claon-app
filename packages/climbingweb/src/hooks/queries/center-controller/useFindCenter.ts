@@ -1,59 +1,6 @@
-import { useQuery, UseQueryOptions } from 'react-query';
+import { useQuery, UseQueryOptions, QueryKey } from 'react-query';
 import axios from 'axios';
-
-export interface CenterDetailChargeElement {
-  fee: string;
-  name: string;
-}
-
-export interface CenterDetailCharge {
-  chargeList: CenterDetailChargeElement[];
-  image: string;
-}
-
-export interface HoldInfoResponse {
-  crayonImage: string;
-  id: string;
-  image: string;
-  name: string;
-}
-
-export interface CenterImg {
-  url: string;
-}
-
-export interface OperatingTime {
-  day: string;
-  end: string;
-  start: string;
-}
-
-export interface SectorInfoResponse {
-  end: string;
-  id: string;
-  name: string;
-  start: string;
-}
-
-export interface CenterDetailResponse {
-  address: string;
-  chargeList: CenterDetailCharge[];
-  facilities: string;
-  holdInfoImg: string;
-  holdInfoList: HoldInfoResponse[];
-  id: string;
-  imgList: CenterImg[];
-  instagramUrl: string;
-  isBookmarked: boolean;
-  name: string;
-  operatingTimeList: OperatingTime[];
-  postCount: number;
-  reviewCount: number;
-  sectorInfoList: SectorInfoResponse[];
-  tel: string;
-  webUrl: string;
-  youtubeUrl: string;
-}
+import { CenterDetailResponse } from 'climbingweb/types/response/center';
 
 /**
  * GET /centers/{centerId} api 의 query 함수
@@ -80,14 +27,18 @@ export const useFindCenter = (
       CenterDetailResponse,
       unknown,
       CenterDetailResponse,
-      string[]
+      QueryKey
     >,
     'queryKey' | 'queryFn'
   >
 ) => {
-  return useQuery(['findCenter', centerId], () => findCenter(centerId), {
-    retry: 0,
-    enabled: !!centerId,
-    ...options,
-  });
+  return useQuery<CenterDetailResponse>(
+    ['findCenter', centerId],
+    () => findCenter(centerId),
+    {
+      retry: 0,
+      enabled: !!centerId,
+      ...options,
+    }
+  );
 };

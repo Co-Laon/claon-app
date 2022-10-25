@@ -1,44 +1,26 @@
 import axios from 'axios';
+import { CenterNameResponse } from 'climbingweb/types/response/center';
 import _ from 'lodash';
-import { useQuery, UseQueryOptions } from 'react-query';
-
-const searchCenterName = _.debounce(async (centerName: string) => {
-  const { data } = await axios.get(`/centers/name/${centerName}`);
-  return data;
-}, 300);
+import { QueryKey, useQuery, UseQueryOptions } from 'react-query';
 
 /**
- * 위 함수의 Mock 함수
- *
+ * GET /centers/name/${centerName} api query 함수
+ * @param centerName 암장 이름 검색 input 값
+ * @returns axiosResponse.data
  */
-const searchCenterNameMock = async (centerName: string) => {
-  return new Promise((resolve, reject) => {
-    console.dir(centerName);
-    setTimeout(() => {
-      const response = {
-        data: [
-          {
-            id: '402888908377aaed018377ab6105013a',
-            name: 'v10클라이밍 장안점',
-          },
-          {
-            id: '402888908377aaed018377ab6042012e',
-            name: 'v10클라이밍 천호본점',
-          },
-          {
-            id: '402888908377aaed018377ab6bdf01e7',
-            name: '강동클라이밍짐',
-          },
-        ],
-      };
-      resolve(response);
-      reject('error');
-    }, 1);
-  });
-};
+const searchCenterName = _.debounce(
+  async (centerName: string) => {
+    const { data } = await axios.get<CenterNameResponse[]>(
+      `/centers/name/${centerName}`
+    );
+    return data;
+  },
+  300,
+  { leading: true }
+);
 
 /**
- * /centers/name/${centerName} api 를 통해 center 이름 리스트를 가지고 오는 useQuery hooks
+ * GET /centers/name/${centerName} api 를 통해 center 이름 리스트를 가지고 오는 useQuery hooks
  *
  * @param centerName /centers/name/${centerName} api 의 centerName 에 해당하는 검색 값
  * @param options useQuery 추가 옵션, retry: 0, enabled: !!centerName 적용 중
@@ -47,32 +29,18 @@ const searchCenterNameMock = async (centerName: string) => {
 export const useSearchCenterName = (
   centerName: string,
   options?: Omit<
-    UseQueryOptions<any, unknown, any, string[]>,
+    UseQueryOptions<
+      CenterNameResponse[],
+      unknown,
+      CenterNameResponse[],
+      QueryKey
+    >,
     'queryKey' | 'queryFn'
   >
 ) => {
-  return useQuery(
+  return useQuery<CenterNameResponse[]>(
     ['centerName', centerName],
     () => searchCenterName(centerName),
-    {
-      initialData: [],
-      retry: 0,
-      enabled: !!centerName,
-      ...options,
-    }
-  );
-};
-
-export const useSearchCenterNameMock = (
-  centerName: string,
-  options?: Omit<
-    UseQueryOptions<unknown, unknown, unknown, string[]>,
-    'queryKey' | 'queryFn'
-  >
-) => {
-  return useQuery(
-    ['centerName', centerName],
-    () => searchCenterNameMock(centerName),
     {
       initialData: [],
       retry: 0,

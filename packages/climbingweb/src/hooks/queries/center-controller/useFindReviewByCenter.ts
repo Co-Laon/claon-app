@@ -1,26 +1,6 @@
 import { QueryKey, useQuery, UseQueryOptions } from 'react-query';
 import axios from 'axios';
-
-interface CenterReview {
-  content: string;
-  createdAt: string;
-  rank: number;
-  reviewId: string;
-  reviewerNickname: string;
-  reviewerProfileImage: string;
-  updatedAt: string;
-}
-
-interface CenterReviewResponse {
-  centerId: string;
-  rank: number;
-  reviewFindResponseDtoPagination: {
-    nextPageNum: number;
-    previousPageNum: number;
-    results: CenterReview[];
-    totalCount: 0;
-  };
-}
+import { ReviewListFindResponse } from 'climbingweb/types/response/center';
 
 /**
  * GET /centers/{centerId}/review api 의 query 함수
@@ -29,7 +9,7 @@ interface CenterReviewResponse {
  * @returns axiosResponse.data
  */
 const findReviewByCenter = async (centerId: string) => {
-  const { data } = await axios.get<CenterReviewResponse>(
+  const { data } = await axios.get<ReviewListFindResponse>(
     `/centers/${centerId}/review`
   );
   return data;
@@ -46,15 +26,15 @@ export const useFindReviewByCenter = (
   centerId: string,
   options?: Omit<
     UseQueryOptions<
-      CenterReviewResponse,
+      ReviewListFindResponse,
       unknown,
-      CenterReviewResponse,
+      ReviewListFindResponse,
       QueryKey
     >,
     'queryKey' | 'queryFn'
   >
 ) => {
-  return useQuery<CenterReviewResponse>(
+  return useQuery<ReviewListFindResponse>(
     ['findReviewByCenter', centerId],
     () => findReviewByCenter(centerId),
     { retry: 0, enabled: !!centerId, ...options }
