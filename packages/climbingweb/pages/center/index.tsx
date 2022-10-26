@@ -4,7 +4,7 @@ import {
   AppLogo,
   Empty,
 } from 'climbingweb/src/components/common/AppBar/IconButton';
-import { useGetCenterList } from 'climbingweb/src/hooks/queries/center-controller/useGetCenterList';
+import { useGetCenterList } from 'climbingweb/src/hooks/queries/center/useGetCenterList';
 
 export default function CenterPage({}) {
   //새로운 세팅 리스트 useQuery state

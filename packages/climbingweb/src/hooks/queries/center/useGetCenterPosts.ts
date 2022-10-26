@@ -1,17 +1,6 @@
 import { useQuery, UseQueryOptions, QueryKey } from 'react-query';
 import axios from 'axios';
-
-export interface CenterPostThumbnail {
-  postId: string;
-  thumbnailUrl: string;
-}
-
-export interface CenterPostThumbnailResponse {
-  nextPageNum: number;
-  previousPageNum: number;
-  results: CenterPostThumbnail[];
-  totalCount: number;
-}
+import { CenterPostThumbnailResponse } from 'climbingweb/types/response/center';
 
 /**
  * GET /centers/{centerId}/posts api 의 query 함수

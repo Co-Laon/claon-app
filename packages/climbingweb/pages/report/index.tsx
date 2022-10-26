@@ -11,7 +11,7 @@ import { useState } from 'react';
 import { BottomSheet } from 'react-spring-bottom-sheet';
 import 'react-spring-bottom-sheet/dist/style.css';
 import ReportData from 'climbingweb/src/interface/ReportData';
-import { useCreateReport } from 'climbingweb/src/hooks/queries/useCreateReport';
+import { useCreateReport } from 'climbingweb/src/hooks/queries/post/useCreateReport';
 
 const REPORT_LIST = ['부적절한 게시글', '부적절한 닉네임', '잘못된 암장 선택'];
 

@@ -1,21 +1,8 @@
+import { UserPreviewResponse } from './../../../../types/response/user/index.d';
 import axios from 'axios';
+import { Pagination } from 'climbingweb/types/common';
 import { debounce } from 'lodash';
 import { QueryKey, useQuery, UseQueryOptions } from 'react-query';
-
-//searchUser api 의 user 관련 정보 interface
-interface User {
-  imagePath: string;
-  isLaon: boolean;
-  nickname: string;
-}
-
-//searchUser api 의 response 관련 정보 interface
-interface UserData {
-  nextPageNum: number;
-  previousPageNum: number;
-  totalCount: number;
-  results: User[];
-}
 
 /**
  * GET user/search api 의 query 함수
@@ -25,11 +12,14 @@ interface UserData {
  */
 const searchUser = debounce(
   async (searchUserName: string) => {
-    const { data } = await axios.get<UserData>('/users/search', {
-      params: {
-        nickname: searchUserName,
-      },
-    });
+    const { data } = await axios.get<Pagination<UserPreviewResponse>>(
+      '/users/search',
+      {
+        params: {
+          nickname: searchUserName,
+        },
+      }
+    );
     return data;
   },
   300,
@@ -46,11 +36,16 @@ const searchUser = debounce(
 export const useSearchUser = (
   searchUserName: string,
   options?: Omit<
-    UseQueryOptions<UserData, unknown, UserData, QueryKey>,
+    UseQueryOptions<
+      Pagination<UserPreviewResponse>,
+      unknown,
+      Pagination<UserPreviewResponse>,
+      QueryKey
+    >,
     'queryKey' | 'queryFn'
   >
 ) => {
-  return useQuery<UserData>(
+  return useQuery<Pagination<UserPreviewResponse>>(
     ['searchUserName', searchUserName],
     () => searchUser(searchUserName),
     {

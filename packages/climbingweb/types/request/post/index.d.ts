@@ -1,5 +1,15 @@
 import { PostContents } from '../../response/post';
 
+/**
+ * POST /api/v1/posts api
+ */
+export interface PostCreateRequest {
+  centerId: string;
+  climbingHistories?: ClimbingHistoryRequest[];
+  content?: string;
+  contentsList: PostContents[];
+}
+
 export interface PostRequest {
   centerId: string;
   climbingHistories?: ClimbingHistoryRequest[];

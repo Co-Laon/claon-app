@@ -1,5 +1,19 @@
 import { Pagination } from 'climbingweb/types/common';
 
+export interface PostResponse {
+  centerId: string;
+  centerName: string;
+  climbingHistories: ClimbingHistoryResponse[];
+  content: string;
+  contentsList: string[];
+  createdAt: string;
+  isDeleted: boolean;
+  likeCount: number;
+  postId: string;
+  userNickname: string;
+  userProfile: string;
+}
+
 export interface PostDetailResponse {
   centerId: string;
   centerName: string;
@@ -65,7 +79,7 @@ export interface CommentResponse {
   postId: string;
 }
 
-export interface PostReportResponseDto {
+export interface PostReportResponse {
   content: string;
   postId: string;
   reportType: '부적절한 게시글' | '부적절한 닉네임' | '잘못된 암장 선택';

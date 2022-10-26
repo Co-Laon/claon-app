@@ -1,5 +1,3 @@
-export type ReportType = typeof REPORT_TYPE[keyof typeof REPORT_TYPE];
-
 import { Pagination } from '../../common/index';
 /**
  * 작성자: 윤웅재
@@ -127,23 +125,23 @@ export interface CenterPostThumbnailResponse {
   thumbnailUrl: string;
 }
 
-// CenterReportCreateRequest 의 reportType enum
-const REPORT_TYPE = {
-  PICTURE: '사진',
-  SECTOR_INFO: '세팅일정',
-  TEL: '연락처',
-  OPERATING_TIME: '운영시간',
-  FEE: '이용요금',
-  FACILITES: '편의시설',
-  HOLD_INFO: '홀드정보',
-} as const;
-
+/**
+ * 작성자: 윤웅재
+ * GET /api​/v1​/centers​/{centerId}​/report
+ */
 export interface CenterReportResponse {
   centerId: string;
   centerName: string;
   content: string;
   id: string;
-  reportType: ReportType;
+  reportType:
+    | '사진'
+    | '세팅일정'
+    | '연락처'
+    | '운영시간'
+    | '이용요금'
+    | '편의시설'
+    | '홀드정보';
   reporterNickname: string;
   reporterProfileImage: string;
 }

@@ -21,10 +21,7 @@ const createLaon = async (nickname: string) => {
  */
 export const useCreateLaon = (
   nickname: string,
-  options?: Omit<
-    UseMutationOptions<unknown, unknown, void, unknown>,
-    'mutationFn'
-  >
+  options?: Omit<UseMutationOptions<void, unknown, void, unknown>, 'mutationFn'>
 ) => {
   return useMutation<void>(() => createLaon(nickname), options);
 };

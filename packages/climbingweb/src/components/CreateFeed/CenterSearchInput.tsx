@@ -31,7 +31,7 @@ export const CenterSearchInput = ({
   //focus 관련 handler
   const handleFocused = () => {
     setBorderColor('border-purple-500');
-    if (centerList.length !== 0) {
+    if (centerList?.length !== 0) {
       setIsOptionOpen(true);
     }
   };

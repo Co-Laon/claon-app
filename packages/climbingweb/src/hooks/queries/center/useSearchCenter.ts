@@ -1,22 +1,8 @@
 import axios from 'axios';
+import { Pagination } from 'climbingweb/types/common';
+import { CenterPreviewResponse } from 'climbingweb/types/response/center';
 import { debounce } from 'lodash';
 import { QueryKey, useQuery, UseQueryOptions } from 'react-query';
-
-//searchCenter api 의 center 관련 정보 interface
-interface Center {
-  id: string;
-  name: string;
-  thumbnailUrl: string;
-  reviewRank: number;
-}
-
-//searchCenter api response 관련 정보 interface
-interface CenterData {
-  nextPageNum: number;
-  previousPageNum: number;
-  totalCount: number;
-  results: Center[];
-}
 
 /**
  * GET /center/search api 의 query 함수
@@ -26,11 +12,14 @@ interface CenterData {
  */
 const searchCenter = debounce(
   async (searchCenterName: string) => {
-    const { data } = await axios.get<CenterData>('/centers/search', {
-      params: {
-        name: searchCenterName,
-      },
-    });
+    const { data } = await axios.get<Pagination<CenterPreviewResponse>>(
+      '/centers/search',
+      {
+        params: {
+          name: searchCenterName,
+        },
+      }
+    );
     return data;
   },
   300,
@@ -48,12 +37,17 @@ export const useSearchCenter = (
   searchCenterName: string,
   options?:
     | Omit<
-        UseQueryOptions<CenterData, unknown, CenterData, QueryKey>,
+        UseQueryOptions<
+          Pagination<CenterPreviewResponse>,
+          unknown,
+          Pagination<CenterPreviewResponse>,
+          QueryKey
+        >,
         'queryKey' | 'queryFn'
       >
     | undefined
 ) => {
-  return useQuery<CenterData>(
+  return useQuery<Pagination<CenterPreviewResponse>>(
     ['searchCenterName', searchCenterName],
     () => searchCenter(searchCenterName),
     {
