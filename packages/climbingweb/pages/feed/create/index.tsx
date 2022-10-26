@@ -7,7 +7,7 @@ import HoldListModal from 'climbingweb/src/components/CreateFeed/SelectHoldList/
 import PageSubTitle from 'climbingweb/src/components/common/PageSubTitle/PageSubTitle';
 import { NextButton } from 'climbingweb/src/components/common/AppBar/NextButton';
 import { CenterSearchInput } from 'climbingweb/src/components/CreateFeed/CenterSearchInput';
-import { useCreatePost } from 'climbingweb/src/hooks/queries/post-controller/useCreatePost';
+import { useCreatePost } from 'climbingweb/src/hooks/queries/post/useCreatePost';
 import {
   ClimbingHistoryRequest,
   PostCreateRequest,

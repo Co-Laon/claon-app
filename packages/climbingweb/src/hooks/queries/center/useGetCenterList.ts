@@ -1,6 +1,7 @@
 import { QueryKey, useQuery, UseQueryOptions } from 'react-query';
 import axios from 'axios';
 import { CenterPreviewResponse } from 'climbingweb/types/response/center';
+import { Pagination } from 'climbingweb/types/common';
 
 /**
  * GET /centers api 의 query 함수
@@ -11,11 +12,14 @@ import { CenterPreviewResponse } from 'climbingweb/types/response/center';
 const getCenterList = async (
   option: 'bookmark' | 'new_setting' | 'newly_registered'
 ) => {
-  const { data } = await axios.get<CenterPreviewResponse>('/centers', {
-    params: {
-      option: option,
-    },
-  });
+  const { data } = await axios.get<Pagination<CenterPreviewResponse>>(
+    '/centers',
+    {
+      params: {
+        option: option,
+      },
+    }
+  );
   return data;
 };
 
@@ -30,15 +34,15 @@ export const useGetCenterList = (
   option: 'bookmark' | 'new_setting' | 'newly_registered',
   options?: Omit<
     UseQueryOptions<
-      CenterPreviewResponse,
+      Pagination<CenterPreviewResponse>,
       unknown,
-      CenterPreviewResponse,
+      Pagination<CenterPreviewResponse>,
       QueryKey
     >,
     'queryKey' | 'queryFn'
   >
 ) => {
-  return useQuery<CenterPreviewResponse>(
+  return useQuery<Pagination<CenterPreviewResponse>>(
     ['getCenterList', option],
     () => getCenterList(option),
     {

@@ -6,7 +6,7 @@ import {
   BookMarkButton,
   OptionButton,
 } from 'climbingweb/src/components/common/AppBar/IconButton';
-import { useFindCenter } from 'climbingweb/src/hooks/queries/center-controller/useFindCenter';
+import { useFindCenter } from 'climbingweb/src/hooks/queries/center/useFindCenter';
 import { useRouter } from 'next/router';
 
 export default function CenterDetailPage() {

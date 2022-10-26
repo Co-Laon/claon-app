@@ -5,8 +5,8 @@ import { useBTSheet } from 'climbingweb/src/hooks/useBtSheet';
 import React from 'react';
 import { useState } from 'react';
 import SearchIcon from 'climbingweb/src/assets/icon/ic_24_search_gray800.svg';
-import { useSearchCenter } from 'climbingweb/src/hooks/queries/center-controller/useSearchCenter';
-import { useSearchUser } from 'climbingweb/src/hooks/queries/user-controller/useSearchUser';
+import { useSearchCenter } from 'climbingweb/src/hooks/queries/center/useSearchCenter';
+import { useSearchUser } from 'climbingweb/src/hooks/queries/user/useSearchUser';
 import { AppBar } from 'climbingweb/src/components/common/AppBar';
 import { AppLogo } from 'climbingweb/src/components/common/AppBar/IconButton';
 
