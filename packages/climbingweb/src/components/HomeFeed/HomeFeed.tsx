@@ -8,6 +8,7 @@ import { useCreateLike } from 'climbingweb/src/hooks/queries/post/useCreateLike'
 import { useDeleteLike } from 'climbingweb/src/hooks/queries/post/useDeleteLike';
 import { useGetPost } from 'climbingweb/src/hooks/queries/post/useGetPost';
 import { useFindAllParentCommentAndThreeChildComment } from 'climbingweb/src/hooks/queries/post/useFindAllParentCommentAndThreeChildComment';
+import Router from 'next/router';
 
 interface HomeFeedProps {
   postId: string;
@@ -42,12 +43,18 @@ const HomeFeed = ({ postId }: HomeFeedProps) => {
     onSuccess: () => setIsLiked(!isLiked),
   });
 
+  //좋아요 아이콘 클릭 핸들러
   const handleLikeButtonClick = () => {
     if (isLiked) {
       deleteLikeMutate();
     } else {
       createLikeMutate();
     }
+  };
+
+  //댓글 더보기 클릭 핸들러
+  const handleMoreCommentClick = (feedId: string) => {
+    Router.push(`/feed/${feedId}/comments`);
   };
 
   if (isPostError) return <div>{postError}</div>;
@@ -69,7 +76,8 @@ const HomeFeed = ({ postId }: HomeFeedProps) => {
           createdAt={postData.createdAt}
           content={postData.content}
           replyCount={commentData.totalCount}
-          onTouchHeartIcon={handleLikeButtonClick}
+          onClickHeartIcon={handleLikeButtonClick}
+          onClickMoreComment={() => handleMoreCommentClick(postId)}
         ></FeedContent>
       </section>
     );
