@@ -6,14 +6,14 @@ import { useRouter } from 'next/router';
 const FeedContent = ({
   isLiked,
   likeCount,
-  postTime,
+  createdAt,
   content,
   replyCount,
   onTouchHeartIcon,
 }: {
   isLiked: boolean;
   likeCount: number;
-  postTime: number;
+  createdAt: string;
   content: string;
   replyCount: number;
   onTouchHeartIcon: () => void;
@@ -44,9 +44,7 @@ const FeedContent = ({
           )}
           {`${likeCount}명이 좋아해요`}
         </span>
-        <span className="font-medium text-gray-400">
-          {postTime === 0 ? '방금 전' : `${postTime}시간 전`}
-        </span>
+        <span className="font-medium text-gray-400">{createdAt}</span>
       </div>
       {content.length > 50 && !moreRead ? (
         <div className="h-10">
