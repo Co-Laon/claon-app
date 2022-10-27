@@ -1,4 +1,4 @@
-import { OperatingTime } from 'climbingweb/src/hooks/queries/center-controller/useFindCenter';
+import { OperatingTime } from 'climbingweb/types/response/center';
 import React from 'react';
 
 interface CenterOperatingTimeProps {

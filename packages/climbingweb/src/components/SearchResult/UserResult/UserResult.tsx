@@ -1,4 +1,4 @@
-import { useCreateLaon } from 'climbingweb/src/hooks/queries/laon-controller/useCreateLaon';
+import { useCreateLaon } from 'climbingweb/src/hooks/queries/laon/useCreateLaon';
 import Image from 'next/image';
 import React from 'react';
 

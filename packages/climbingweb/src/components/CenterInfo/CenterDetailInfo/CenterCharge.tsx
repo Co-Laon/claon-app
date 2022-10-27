@@ -1,8 +1,8 @@
-import { CenterDetailCharge } from 'climbingweb/src/hooks/queries/center-controller/useFindCenter';
+import { Charge } from 'climbingweb/types/response/center';
 import React from 'react';
 
 interface CenterChargeProps {
-  chargeList: CenterDetailCharge[];
+  chargeList: Charge[];
 }
 
 const CenterCharge = ({ chargeList }: CenterChargeProps) => {

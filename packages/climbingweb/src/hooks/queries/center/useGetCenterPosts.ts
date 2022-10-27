@@ -1,3 +1,4 @@
+import { Pagination } from 'climbingweb/types/common';
 import { useQuery, UseQueryOptions, QueryKey } from 'react-query';
 import axios from 'axios';
 import { CenterPostThumbnailResponse } from 'climbingweb/types/response/center';
@@ -9,7 +10,7 @@ import { CenterPostThumbnailResponse } from 'climbingweb/types/response/center';
  * @returns axiosReponse.data
  */
 const getCenterPosts = async (centerId: string) => {
-  const { data } = await axios.get<CenterPostThumbnailResponse>(
+  const { data } = await axios.get<Pagination<CenterPostThumbnailResponse>>(
     `/centers/${centerId}/posts`
   );
   return data;
@@ -26,15 +27,15 @@ export const useGetCenterPosts = (
   centerId: string,
   options?: Omit<
     UseQueryOptions<
-      CenterPostThumbnailResponse,
+      Pagination<CenterPostThumbnailResponse>,
       unknown,
-      CenterPostThumbnailResponse,
+      Pagination<CenterPostThumbnailResponse>,
       QueryKey
     >,
     'queryKey' | 'queryFn'
   >
 ) => {
-  return useQuery<CenterPostThumbnailResponse>(
+  return useQuery<Pagination<CenterPostThumbnailResponse>>(
     ['getCenterPosts', centerId],
     () => getCenterPosts(centerId),
     { retry: 0, enabled: !!centerId, ...options }

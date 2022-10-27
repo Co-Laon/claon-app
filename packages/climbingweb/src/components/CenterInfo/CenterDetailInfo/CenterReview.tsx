@@ -1,4 +1,4 @@
-import { useFindReviewByCenter } from 'climbingweb/src/hooks/queries/center-controller/useFindReviewByCenter';
+import { useFindReviewByCenter } from 'climbingweb/src/hooks/queries/center/useFindReviewByCenter';
 import { ReviewComment } from '../../Comments/ReviewComment';
 import { StarRating } from '../../common/StarRating';
 
