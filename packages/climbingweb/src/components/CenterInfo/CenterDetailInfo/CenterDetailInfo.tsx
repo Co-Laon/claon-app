@@ -1,4 +1,4 @@
-import { CenterDetailResponse } from 'climbingweb/src/hooks/queries/center-controller/useFindCenter';
+import { CenterDetailResponse } from 'climbingweb/types/response/center';
 import CenterCharge from './CenterCharge';
 import CenterFacilities from './CenterFacilities';
 import CenterHoldList from './CenterHoldList';

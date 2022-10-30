@@ -1,4 +1,4 @@
-import { useFindHoldInfoByCenter } from 'climbingweb/src/hooks/queries/center-controller/useFindHoldInfoByCenter';
+import { useFindHoldInfoByCenter } from 'climbingweb/src/hooks/queries/center/useFindHoldInfoByCenter';
 import Hold from 'climbingweb/src/interface/Hold';
 import { ClimbingHistoryRequest } from 'climbingweb/types/request/post';
 import React, { useCallback, useEffect, useState } from 'react';

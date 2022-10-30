@@ -1,4 +1,4 @@
-import { HoldInfoResponse } from 'climbingweb/src/hooks/queries/center-controller/useFindCenter';
+import { HoldInfoResponse } from 'climbingweb/types/response/center';
 import Image from 'next/image';
 import React from 'react';
 

@@ -1,4 +1,4 @@
-import { SectorInfoResponse } from 'climbingweb/src/hooks/queries/center-controller/useFindCenter';
+import { SectorInfoResponse } from 'climbingweb/types/response/center';
 import React from 'react';
 
 interface CenterSectorListProps {

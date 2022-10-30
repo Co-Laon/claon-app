@@ -1,4 +1,4 @@
-import { useSearchCenterName } from 'climbingweb/src/hooks/queries/center-controller/useSearchCenterName';
+import { useSearchCenterName } from 'climbingweb/src/hooks/queries/center/useSearchCenterName';
 import CenterName from 'climbingweb/src/interface/CenterName';
 import { ChangeEvent, useState, useEffect, useRef } from 'react';
 

@@ -1,31 +1,29 @@
 import React, { useState } from 'react';
 import SolidHeart from 'climbingweb/src/assets/heart_solid_red500.svg';
 import LineHeart from 'climbingweb/src/assets/heart_line_gray800.svg';
-import { useRouter } from 'next/router';
 
 const FeedContent = ({
   isLiked,
   likeCount,
-  postTime,
+  createdAt,
   content,
   replyCount,
-  onTouchHeartIcon,
+  onClickHeartIcon,
+  onClickMoreComment,
 }: {
   isLiked: boolean;
   likeCount: number;
-  postTime: number;
+  createdAt: string;
   content: string;
   replyCount: number;
-  onTouchHeartIcon: () => void;
+  onClickHeartIcon: () => void;
+  onClickMoreComment: () => void;
 }) => {
   const [moreRead, setMoreRead] = useState(false);
 
   const onTouchMoreRead = () => {
-    console.log('onTouchMoreRead');
     setMoreRead(true);
   };
-
-  const router = useRouter();
 
   return (
     <section className="px-5 pt-7 text-sm">
@@ -33,20 +31,15 @@ const FeedContent = ({
         <span className={'flex font-medium'}>
           {isLiked ? (
             <SolidHeart
-              onTouchEnd={() => onTouchHeartIcon()}
+              onTouchEnd={onClickHeartIcon}
               className="animate-larger"
             />
           ) : (
-            <LineHeart
-              onTouchEnd={() => onTouchHeartIcon()}
-              className="animate-none"
-            />
+            <LineHeart onTouchEnd={onClickHeartIcon} className="animate-none" />
           )}
           {`${likeCount}명이 좋아해요`}
         </span>
-        <span className="font-medium text-gray-400">
-          {postTime === 0 ? '방금 전' : `${postTime}시간 전`}
-        </span>
+        <span className="font-medium text-gray-400">{createdAt}</span>
       </div>
       {content.length > 50 && !moreRead ? (
         <div className="h-10">
@@ -63,7 +56,7 @@ const FeedContent = ({
       )}
       {replyCount ? (
         <p
-          onTouchEnd={() => router.push('feed/1/comments')}
+          onTouchEnd={onClickMoreComment}
           className="font-medium text-gray-400"
         >{`댓글 ${replyCount}개 더 보기`}</p>
       ) : null}

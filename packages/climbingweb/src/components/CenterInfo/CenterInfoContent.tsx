@@ -4,7 +4,7 @@ import { CenterDetailInfo } from './CenterDetailInfo/CenterDetailInfo';
 import { CenterReview } from './CenterDetailInfo/CenterReview';
 import { CenterPost } from './CenterDetailInfo/CenterPost';
 import { Tab } from '../common/TabBar/type';
-import { CenterDetailResponse } from 'climbingweb/src/hooks/queries/center-controller/useFindCenter';
+import { CenterDetailResponse } from 'climbingweb/types/response/center';
 
 interface ContentProps {
   data: CenterDetailResponse;

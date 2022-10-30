@@ -1,22 +1,46 @@
 import Image from 'next/image';
-import React from 'react';
+import React, { useState } from 'react';
 import DefaultProfileImg from 'climbingweb/src/assets/profile_gray400.svg';
 import PencilImg from 'climbingweb/src/assets/pencil_gray800.svg';
 import { TouchEvent } from 'react';
 
 const ImageSlider = ({
   imageList,
-  selectedImageIndex,
-  onTouchStart,
-  onTouchMove,
-  onTouchEnd,
 }: {
   imageList: (string | null | undefined)[];
-  selectedImageIndex: number;
-  onTouchStart: (event: TouchEvent<HTMLDivElement>) => void;
-  onTouchMove: (event: TouchEvent<HTMLDivElement>) => void;
-  onTouchEnd: (event: TouchEvent<HTMLDivElement>) => void;
 }) => {
+  //피드에서 현재 보여질 이미지 index
+  const [selectedImageIndex, setSelectedImageIndex] = useState(0);
+
+  const onTouchStart = (event: TouchEvent<HTMLDivElement>) => {
+    const touchX = event.changedTouches[0].pageX;
+    console.log('onTouchStart: ');
+    console.log(event);
+    if (touchX > 200) {
+      if (selectedImageIndex < imageList.length - 1) {
+        setSelectedImageIndex(selectedImageIndex + 1);
+      }
+    } else {
+      if (selectedImageIndex > 0) setSelectedImageIndex(selectedImageIndex - 1);
+    }
+  };
+
+  const onTouchMove = (event: TouchEvent<HTMLDivElement>) => {
+    console.log(`onTouchMove: ${event.changedTouches}`);
+  };
+
+  const onTouchEnd = (event: TouchEvent<HTMLDivElement>) => {
+    const touchX = event.changedTouches[0].pageX;
+    console.log(`onTouchEnd: ${event.changedTouches}`);
+    if (touchX > 200) {
+      if (selectedImageIndex < imageList.length - 1) {
+        setSelectedImageIndex(selectedImageIndex + 1);
+      }
+    } else {
+      if (selectedImageIndex > 0) setSelectedImageIndex(selectedImageIndex - 1);
+    }
+  };
+
   return (
     <div
       className={'bg-black relative w-full h-[360px] overflow-hidden'}

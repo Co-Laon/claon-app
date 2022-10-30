@@ -7,13 +7,14 @@ const FeedHeader = ({
   userImage,
   userName,
   userLocation,
-  onEdit,
 }: {
   userImage: string | null | undefined;
   userName: string;
   userLocation: string;
-  onEdit: ({}: any) => void;
 }) => {
+  // 헤더 도트 옵션 클릭 시 핸들러
+  const handleOptionDotClick = () => {};
+
   return (
     <header className={'flex w-full h-[56px] my-1 justify-between'}>
       <div className={'flex items-center'}>
@@ -32,7 +33,7 @@ const FeedHeader = ({
         </div>
       </div>
       <button className={'w-[24px] h-[24px] self-center'}>
-        <OptionDotImg onTouchEnd={onEdit} />
+        <OptionDotImg onClick={handleOptionDotClick} />
       </button>
     </header>
   );

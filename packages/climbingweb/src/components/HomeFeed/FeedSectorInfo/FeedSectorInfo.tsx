@@ -1,13 +1,19 @@
 import DefaultPencilImg from 'climbingweb/src/assets/pencil_gray800.svg';
 import React from 'react';
-import Hold from 'climbingweb/src/interface/Hold';
+import { ClimbingHistoryResponse } from 'climbingweb/types/response/post';
 
-const FeedHoldIcon = ({ index, value }: { index: number; value: Hold }) => (
+const FeedHoldIcon = ({
+  index,
+  value,
+}: {
+  index: number;
+  value: ClimbingHistoryResponse;
+}) => (
   <>
     <div key={`hold${index}`} className={'m-1'}>
       <DefaultPencilImg />
     </div>
-    {value.count}
+    {value.climbingCount}
   </>
 );
 
@@ -15,7 +21,7 @@ const FeedSectorInfo = ({
   holdList,
 }: {
   //나중에 interface 로 변경 예정
-  holdList: Hold[];
+  holdList: ClimbingHistoryResponse[];
 }) => {
   return (
     <div className={'flex flex-col w-full border-b border-gray-300'}>
