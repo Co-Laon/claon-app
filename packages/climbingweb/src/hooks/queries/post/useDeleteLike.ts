@@ -9,7 +9,7 @@ import { useMutation, UseMutationOptions } from 'react-query';
  * @returns axiosResponse.data
  */
 const deleteLike = async (postId: string) => {
-  const { data } = await axios.post<LikeResponse>(`/posts/${postId}/like`);
+  const { data } = await axios.delete<LikeResponse>(`/posts/${postId}/like`);
   return data;
 };
 

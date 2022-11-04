@@ -37,7 +37,18 @@ function MyApp({ Component, pageProps }: AppProps) {
       return response;
     });
   });
-  const [queryClient] = useState(() => new QueryClient());
+  const [queryClient] = useState(
+    () =>
+      new QueryClient({
+        defaultOptions: {
+          queries: {
+            refetchOnWindowFocus: false,
+            refetchOnMount: false,
+            retry: false,
+          },
+        },
+      })
+  );
   return (
     <Provider store={store}>
       <QueryClientProvider client={queryClient}>
