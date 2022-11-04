@@ -10,7 +10,6 @@ import { Pagination } from 'climbingweb/types/common';
  * @returns axiosResponse.data
  */
 const getPosts = async ({ pageParam = 0 }) => {
-  console.dir(`getPosts: ${pageParam}`);
   const { data } = await axios.get<Pagination<PostDetailResponse>>('/posts', {
     params: {
       size: 1,

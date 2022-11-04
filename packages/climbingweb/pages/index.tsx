@@ -32,8 +32,6 @@ const Home: NextPage = () => {
     hasNextPage: hasNextPosts,
   } = useGetPosts();
 
-  console.dir(`${isFetchingLaonPosts} ${isFetchingPosts}`);
-
   //피드 추가 버튼 클릭 핸들러
   const onClickCreateFeed = () => {
     Router.push('/feed/create');
