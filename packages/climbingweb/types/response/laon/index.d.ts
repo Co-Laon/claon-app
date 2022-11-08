@@ -34,6 +34,7 @@ export interface UserPostDetailResponse {
   content: string;
   contentsList: string[];
   createdAt: string;
+  isLike: boolean;
   likeCount: number;
   postId: string;
   userNickname: string;

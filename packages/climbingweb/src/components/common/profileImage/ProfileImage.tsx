@@ -5,7 +5,7 @@ import ProfileSkeleton from 'climbingweb/src/assets/icon/ic_72_profile_gray400.s
 
 interface ProfileProps {
   src?: string;
-  icon: 'default' | 'insta';
+  icon?: 'default' | 'insta';
 }
 
 export const ProfileImage = ({ src, icon }: ProfileProps) => {
@@ -25,15 +25,17 @@ export const ProfileImage = ({ src, icon }: ProfileProps) => {
           <ProfileSkeleton />
         )}
       </div>
-      {icon === 'default' ? (
-        <div className="absolute bottom-0 right-0">
-          <CameraIcon alt="cameraIcon" />
-        </div>
-      ) : (
-        <div className="absolute bottom-0 right-0">
-          <InstaIcon alt="instaIcon" />
-        </div>
-      )}
+      {icon ? (
+        icon == 'default' ? (
+          <div className="absolute bottom-0 right-0">
+            <CameraIcon alt="cameraIcon" />
+          </div>
+        ) : (
+          <div className="absolute bottom-0 right-0">
+            <InstaIcon alt="instaIcon" />
+          </div>
+        )
+      ) : null}
     </div>
   );
 };

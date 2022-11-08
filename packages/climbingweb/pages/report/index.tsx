@@ -12,10 +12,16 @@ import { BottomSheet } from 'react-spring-bottom-sheet';
 import 'react-spring-bottom-sheet/dist/style.css';
 import ReportData from 'climbingweb/src/interface/ReportData';
 import { useCreateReport } from 'climbingweb/src/hooks/queries/post/useCreateReport';
+import { useRouter } from 'next/router';
 
 const REPORT_LIST = ['부적절한 게시글', '부적절한 닉네임', '잘못된 암장 선택'];
 
 export default function ReportPage({}) {
+  const router = useRouter();
+  const { fid } = router.query;
+  //fid string 거르는 로직, useRouter 에 대해 자세히 보고 추후 반드시 변경 해야함
+  const feedId = fid ? (Array.isArray(fid) ? fid[0] : fid) : '';
+
   const [open, setOpen] = useState(false);
   const [reportData, setReportData] = useState<ReportData>({
     content: '',
@@ -23,7 +29,7 @@ export default function ReportPage({}) {
     reportType: '',
   });
 
-  const { mutate, isSuccess, error } = useCreateReport(reportData);
+  const { mutate, isSuccess, error } = useCreateReport(feedId, reportData);
 
   //바텀 시트 open/ close handler
   const handleOpen = () => {
