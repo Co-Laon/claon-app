@@ -31,9 +31,7 @@ export const CenterSearchInput = ({
   //focus 관련 handler
   const handleFocused = () => {
     setBorderColor('border-purple-500');
-    if (centerList?.length !== 0) {
-      setIsOptionOpen(true);
-    }
+    setIsOptionOpen(centerList?.length !== 0);
   };
   const handleFocusedOut = () => {
     setBorderColor('');
@@ -63,7 +61,7 @@ export const CenterSearchInput = ({
 
   // centerList 가 비어있는 경우 option list 를 닫는 상태로 변경
   useEffect(() => {
-    setIsOptionOpen(centerList?.length !== 0);
+    setIsOptionOpen(!selected && centerList?.length !== 0);
   }, [centerList]);
 
   useEffect(() => {
