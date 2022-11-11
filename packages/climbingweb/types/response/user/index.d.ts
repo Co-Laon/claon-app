@@ -46,7 +46,7 @@ export interface IndividualUserResponse {
 
 export interface CenterClimbingHistoryResponse {
   center: CenterPreviewResponse;
-  ClimbingHistories: ClimbingHistoryResponse[];
+  climbingHistories: ClimbingHistoryResponse[];
 }
 
 export interface UserPreviewResponse {
