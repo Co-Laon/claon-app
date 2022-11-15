@@ -8,3 +8,10 @@ export interface Pagination<T> {
   results: T[];
   totalCount: number;
 }
+
+export interface ServerError {
+  timestamp: string;
+  status: number;
+  error: string;
+  path: string;
+}
