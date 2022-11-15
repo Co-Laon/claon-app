@@ -29,7 +29,7 @@ export interface UserPostThumbnailResponse {
   thumbnailUrl: string;
 }
 
-export interface IndividualUserResponse {
+export interface UserDetailResponse {
   apeIndex: number;
   armReach: number;
   centerClimbingHistories: CenterClimbingHistoryResponse[];

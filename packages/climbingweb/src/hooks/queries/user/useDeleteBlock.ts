@@ -4,10 +4,11 @@ import { useMutation, UseMutationOptions } from 'react-query';
 /**
  * DELETE /users/name/{blockNickname}/block api query 함수
  *
+ * @param blockNickname 차단할 유저의 닉네임
  * @returns axiosResponse.data
  */
 const deleteBlock = async (blockNickname: string) => {
-  const { data } = await axios.delete(`/posts/${blockNickname}/like`);
+  const { data } = await axios.delete<void>(`/posts/${blockNickname}/like`);
   return data;
 };
 
@@ -18,7 +19,7 @@ const deleteBlock = async (blockNickname: string) => {
  */
 export const useDeleteBlock = (
   options?: Omit<
-    UseMutationOptions<any, unknown, string, unknown>,
+    UseMutationOptions<void, unknown, string, unknown>,
     'mutationKey' | 'mutationFn'
   >
 ) => {

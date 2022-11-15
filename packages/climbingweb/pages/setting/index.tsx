@@ -11,7 +11,7 @@ import { BottomSheet } from 'react-spring-bottom-sheet';
 import { ButtonSheet } from 'climbingweb/src/components/common/BottomSheetContents/ButtonSheet';
 import { BanList } from 'climbingweb/src/components/SettingInfo/BanList';
 import { useChangePublicScope } from 'climbingweb/src/hooks/queries/user/useChangePublicScope';
-import { useGetUser } from 'climbingweb/src/hooks/queries/user/useGetUser';
+import { useRetrieveMe } from 'climbingweb/src/hooks/queries/user/useRetrieveMe';
 
 export default function SettingPage() {
   const titleList: string[] = [
@@ -28,6 +28,7 @@ export default function SettingPage() {
   //Setting title 이름의 state
   const [titleName, setTitleName] = useState<string>(defaultTitle);
   const [sheetKey, setSheetKey] = useState<string>();
+  //바텀 시트 on/off state
   const [openSheet, setOpenSheet] = useState<boolean>(false);
 
   //user 개인 data useQuery
@@ -35,7 +36,7 @@ export default function SettingPage() {
     data: userData,
     isError: isUserDataError,
     error: userDataError,
-  } = useGetUser();
+  } = useRetrieveMe();
 
   //프로필 비공개 관련 useMutation
   const { mutate: changePublicScopeMutate } = useChangePublicScope();
@@ -62,7 +63,8 @@ export default function SettingPage() {
 
   //뒤로가기 버튼 클릭 핸들러
   const handleGoToBack = () => {
-    setTitleName('설정');
+    if (titleName !== '설정') setTitleName('설정');
+    else window.history.back();
   };
 
   const onDismiss = () => {

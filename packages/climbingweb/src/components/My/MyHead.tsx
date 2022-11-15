@@ -8,6 +8,7 @@ interface HeaderProps {
   climbCount: number;
   laonCount: number;
   postCount: number;
+  onClickHeaderButton: () => void;
 }
 
 export const MyHead = ({
@@ -18,6 +19,7 @@ export const MyHead = ({
   climbCount,
   laonCount,
   postCount,
+  onClickHeaderButton,
 }: HeaderProps) => {
   const countNameList = [
     { name: '게시글', count: postCount },
@@ -43,7 +45,10 @@ export const MyHead = ({
               </div>
             ))}
           </div>
-          <button className="w-full bg-purple-500 rounded-lg w-30 text-white">
+          <button
+            className="w-full bg-purple-500 rounded-xl w-30 text-white"
+            onClick={onClickHeaderButton}
+          >
             내 라온
           </button>
         </div>
