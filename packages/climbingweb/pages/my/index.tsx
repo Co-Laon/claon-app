@@ -15,14 +15,14 @@ import { useIntersectionObserver } from 'climbingweb/src/hooks/useIntersectionOb
 import { useRouter } from 'next/router';
 
 export default function MyPage({}) {
-  //getUser server state
+  // 개인 유저 정보 server state
   const {
     data: getUserData,
     isError: isGetUserDataError,
     error: getUserDataError,
   } = useGetUser();
 
-  //findPostsByUser server state
+  // 개인이 올린 포스트 server state
   const {
     data: findPostsByUserData,
     isError: isFindPostsByUserDataError,
@@ -103,18 +103,16 @@ export default function MyPage({}) {
         <div className="w-full grid grid-cols-2 mb-footer overflow-auto scrollbar-hide">
           {findPostsByUserData.pages[0].totalCount !== 0 ? (
             <>
-              <>
-                {findPostsByUserData.pages.map((page, pIndex) =>
-                  page.results.map((result, rIndex) => (
-                    <MyFeed
-                      key={`userPost${pIndex}${rIndex}`}
-                      centerName={result.centerName}
-                      image={result.thumbnailUrl}
-                      climbingHistories={result.climbingHistories}
-                    />
-                  ))
-                )}
-              </>
+              {findPostsByUserData.pages.map((page, pIndex) =>
+                page.results.map((result, rIndex) => (
+                  <MyFeed
+                    key={`userPost${pIndex}${rIndex}`}
+                    centerName={result.centerName}
+                    image={result.thumbnailUrl}
+                    climbingHistories={result.climbingHistories}
+                  />
+                ))
+              )}
               {!isFetchingFindPostsByUserDataNextPage ? (
                 <div className="h-[1px]" ref={target}></div>
               ) : (
