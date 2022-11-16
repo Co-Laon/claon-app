@@ -1,3 +1,4 @@
+import { useRouter } from 'next/router';
 import { ProfileImage } from '../common/profileImage/ProfileImage';
 
 interface HeaderProps {
@@ -8,6 +9,7 @@ interface HeaderProps {
   climbCount: number;
   laonCount: number;
   postCount: number;
+  instagramUrl?: string;
   onClickHeaderButton: () => void;
 }
 
@@ -19,6 +21,7 @@ export const MyHead = ({
   climbCount,
   laonCount,
   postCount,
+  instagramUrl,
   onClickHeaderButton,
 }: HeaderProps) => {
   const countNameList = [
@@ -27,11 +30,19 @@ export const MyHead = ({
     { name: '등반', count: climbCount },
   ];
 
+  const router = useRouter();
+
   return (
     <div className="flex flex-col gap-4 px-6 py-4 shadow-sm my-4 rounded-lg">
       <div className="flex flex-row items-center justify-between">
         <div className="w-16 flex flex-col items-center">
-          <ProfileImage src={imagePath} icon="insta" />
+          <ProfileImage
+            src={imagePath}
+            icon={instagramUrl ? 'insta' : 'default'}
+            onClickIcon={() => {
+              if (instagramUrl) router.push(instagramUrl);
+            }}
+          />
         </div>
         <div className="flex flex-col gap-1.5 w-52">
           <div className="flex flex-row justify-between">

@@ -6,9 +6,10 @@ import ProfileSkeleton from 'climbingweb/src/assets/icon/ic_72_profile_gray400.s
 interface ProfileProps {
   src?: string;
   icon?: 'default' | 'insta';
+  onClickIcon?: () => void;
 }
 
-export const ProfileImage = ({ src, icon }: ProfileProps) => {
+export const ProfileImage = ({ src, icon, onClickIcon }: ProfileProps) => {
   return (
     <div className="w-16 relative">
       <div className="w-15 h-15 rounded-xl relative">
@@ -28,11 +29,11 @@ export const ProfileImage = ({ src, icon }: ProfileProps) => {
       {icon ? (
         icon == 'default' ? (
           <div className="absolute bottom-0 right-0">
-            <CameraIcon alt="cameraIcon" />
+            <CameraIcon alt="cameraIcon" onClick={onClickIcon} />
           </div>
         ) : (
           <div className="absolute bottom-0 right-0">
-            <InstaIcon alt="instaIcon" />
+            <InstaIcon alt="instaIcon" onClick={onClickIcon} />
           </div>
         )
       ) : null}
