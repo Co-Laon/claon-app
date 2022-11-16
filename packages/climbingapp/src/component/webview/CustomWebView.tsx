@@ -9,7 +9,7 @@ interface WebInfo {
 
 export default function CustomWebView({ url }: WebInfo) {
   const webviewRef = useRef<WebView>(null);
-  const { user } = useAuth();
+  const { user, logout } = useAuth();
   const sendTokenToWebview = () => {
     if (user) {
       const { accessToken, refreshToken } = user;
@@ -45,6 +45,9 @@ export default function CustomWebView({ url }: WebInfo) {
           const data = JSON.parse(e.nativeEvent.data);
           if (data.type === 'updateToken') {
             handleUpdateToken(data);
+          }
+          if (data.type === 'logout') {
+            logout();
           }
         }}
         javaScriptEnabled={true}
