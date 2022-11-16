@@ -3,6 +3,8 @@ import { useIntersectionObserver } from 'climbingweb/src/hooks/useIntersectionOb
 import { NoticeReponse } from 'climbingweb/types/response/notice';
 import { useState } from 'react';
 import { Divder } from '../../common/divder/Divder';
+import ErrorContent from '../../common/Error/ErrorContent';
+import Loading from '../../common/Loading/Loading';
 import { Notification } from './Notification';
 
 export const NotificationList = () => {
@@ -35,17 +37,18 @@ export const NotificationList = () => {
     { threshold: 1 }
   );
 
-  if (isNoticeListDataError) return <div>{noticeListDataError}</div>;
+  if (isNoticeListDataError)
+    return <ErrorContent error={noticeListDataError} />;
 
   if (detail) return <Notification {...detail} />;
 
   if (noticeListData)
     return (
       <div className="w-full flex flex-col gap-2 overflow-auto scrollbar-hide">
-        {noticeListData.pages.map((value) => {
-          return value.results.map(({ title, createdAt, content }) => (
+        {noticeListData.pages.map((page, pIndex) => {
+          return page.results.map(({ title, createdAt, content }, rindex) => (
             <div
-              key={title}
+              key={`${title}${pIndex}${rindex}`}
               className="w-full flex flex-col gap-2"
               onClick={() => handleGotoDetail({ title, createdAt, content })}
             >
@@ -60,10 +63,10 @@ export const NotificationList = () => {
         {!isFetchingNoticeListDataNextPage ? (
           <div className="h-[1px]" ref={target}></div>
         ) : (
-          <div>로딩 중...</div>
+          <Loading />
         )}
       </div>
     );
 
-  return <div>로딩 중...</div>;
+  return <Loading />;
 };

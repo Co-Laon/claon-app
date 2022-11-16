@@ -1,6 +1,8 @@
 import VersionLogo from 'climbingweb/src/assets/version_logo.svg';
 import { useGetAppVersion } from 'climbingweb/src/hooks/queries/user/useGetAppVersion';
 import { NormalButton } from '../common/button/Button';
+import ErrorContent from '../common/Error/ErrorContent';
+import Loading from '../common/Loading/Loading';
 
 export const VersionInfo = () => {
   // appVersion server state
@@ -13,7 +15,7 @@ export const VersionInfo = () => {
   // appVersion client state
   const clientAppVersion = '1.0.0';
 
-  if (isAppVersionError) return <div>{appVersionError}</div>;
+  if (isAppVersionError) return <ErrorContent error={appVersionError} />;
 
   if (appVersionData)
     return (
@@ -29,5 +31,5 @@ export const VersionInfo = () => {
       </div>
     );
 
-  return <div>로딩 중...</div>;
+  return <Loading />;
 };

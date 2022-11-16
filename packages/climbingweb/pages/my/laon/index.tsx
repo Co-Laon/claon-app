@@ -5,6 +5,7 @@ import {
 } from 'climbingweb/src/components/common/AppBar/IconButton';
 import { SmmallNodeButton } from 'climbingweb/src/components/common/button/Button';
 import { LaonList } from 'climbingweb/src/components/common/LaonList';
+import Loading from 'climbingweb/src/components/common/Loading/Loading';
 import { useDeleteLaon } from 'climbingweb/src/hooks/queries/laon/useDeleteLaon';
 import { useFindAllLaon } from 'climbingweb/src/hooks/queries/laon/useFindAllLaon';
 import { useIntersectionObserver } from 'climbingweb/src/hooks/useIntersectionObserver';
@@ -75,13 +76,13 @@ export const MyLaonList = ({}) => {
           {!isFetchLaonUserDataNextPage ? (
             <div className="h-[1px]" ref={target}></div>
           ) : (
-            <div>로딩 중...</div>
+            <Loading />
           )}
         </div>
       </div>
     );
 
-  return <div>로딩 중...</div>;
+  return <Loading />;
 };
 
 export default MyLaonList;

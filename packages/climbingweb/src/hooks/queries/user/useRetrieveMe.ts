@@ -1,3 +1,4 @@
+import { ServerError } from 'climbingweb/types/common';
 import { useQuery, UseQueryOptions, QueryKey } from 'react-query';
 import { UserDetailResponse } from '../../../../types/response/user';
 import axios from 'axios';
@@ -20,9 +21,18 @@ const retrieveMe = async () => {
  */
 export const useRetrieveMe = (
   options?: Omit<
-    UseQueryOptions<UserDetailResponse, unknown, UserDetailResponse, QueryKey>,
+    UseQueryOptions<
+      UserDetailResponse,
+      ServerError,
+      UserDetailResponse,
+      QueryKey
+    >,
     'queryKey' | 'queryFn'
   >
 ) => {
-  return useQuery<UserDetailResponse>(['getUser'], () => retrieveMe(), options);
+  return useQuery<UserDetailResponse, ServerError>(
+    ['retrieveMe'],
+    () => retrieveMe(),
+    options
+  );
 };

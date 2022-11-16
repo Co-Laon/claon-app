@@ -1,6 +1,6 @@
 import { BlockUserFindResponse } from './../../../../types/response/user/index.d';
 import axios from 'axios';
-import { Pagination } from 'climbingweb/types/common';
+import { Pagination, ServerError } from 'climbingweb/types/common';
 import {
   QueryKey,
   useInfiniteQuery,
@@ -33,7 +33,7 @@ export const useFindBlockUser = (
   options?: Omit<
     UseInfiniteQueryOptions<
       Pagination<BlockUserFindResponse>,
-      unknown,
+      ServerError,
       Pagination<BlockUserFindResponse>,
       Pagination<BlockUserFindResponse>,
       QueryKey
@@ -41,8 +41,8 @@ export const useFindBlockUser = (
     'queryKey' | 'queryFn'
   >
 ) => {
-  return useInfiniteQuery<Pagination<BlockUserFindResponse>>(
-    ['getNoticeList'],
+  return useInfiniteQuery<Pagination<BlockUserFindResponse>, ServerError>(
+    ['findBlockUser'],
     (context) => findBlockUser(context.pageParam),
     {
       staleTime: 3000,

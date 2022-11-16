@@ -4,6 +4,9 @@ import {
   ModifiedButton,
   SettingButton,
 } from 'climbingweb/src/components/common/AppBar/IconButton';
+import EmptyContent from 'climbingweb/src/components/common/EmptyContent/EmptyContent';
+import ErrorContent from 'climbingweb/src/components/common/Error/ErrorContent';
+import Loading from 'climbingweb/src/components/common/Loading/Loading';
 import PageSubTitle from 'climbingweb/src/components/common/PageSubTitle/PageSubTitle';
 import MyFeed from 'climbingweb/src/components/My/MyFeed';
 import { MyHead } from 'climbingweb/src/components/My/MyHead';
@@ -56,8 +59,9 @@ export default function MyPage({}) {
     { threshold: 1 }
   );
 
-  if (isGetUserDataError) return <div>{getUserDataError}</div>;
-  if (isFindPostsByUserDataError) return <div>{findPostsByUserDataError}</div>;
+  if (isGetUserDataError) return <ErrorContent error={getUserDataError} />;
+  if (isFindPostsByUserDataError)
+    return <ErrorContent error={findPostsByUserDataError} />;
 
   if (getUserData && findPostsByUserData) {
     return (
@@ -98,9 +102,7 @@ export default function MyPage({}) {
               />
             ))
           ) : (
-            <div className="w-full text-center leading-[10]">
-              아직 기록이 없습니다.
-            </div>
+            <EmptyContent message="아직 기록이 없습니다." />
           )}
         </div>
 
@@ -120,17 +122,15 @@ export default function MyPage({}) {
             {!isFetchingFindPostsByUserDataNextPage ? (
               <div className="h-[1px]" ref={target}></div>
             ) : (
-              <div>로딩 중...</div>
+              <Loading />
             )}
           </div>
         ) : (
-          <div className="w-full text-center leading-[10]">
-            아직 게시글이 없습니다.
-          </div>
+          <EmptyContent message="아직 게시글이 없습니다." />
         )}
       </section>
     );
   }
 
-  return <div>로딩 중...</div>;
+  return <Loading />;
 }

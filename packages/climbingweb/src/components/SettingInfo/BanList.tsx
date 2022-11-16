@@ -5,7 +5,9 @@ import { useState } from 'react';
 import { BottomSheet } from 'react-spring-bottom-sheet';
 import { ButtonSheet } from '../common/BottomSheetContents/ButtonSheet';
 import { SmmallNodeButton } from '../common/button/Button';
+import ErrorContent from '../common/Error/ErrorContent';
 import { LaonList } from '../common/LaonList';
+import Loading from '../common/Loading/Loading';
 
 export const BanList = ({}) => {
   //바텀 시트 on/off state
@@ -52,7 +54,7 @@ export const BanList = ({}) => {
     { threshold: 1 }
   );
 
-  if (isBlockUserDataError) return <div>{blockUserDataError}</div>;
+  if (isBlockUserDataError) return <ErrorContent error={blockUserDataError} />;
 
   if (blockUserData)
     return (
@@ -80,7 +82,7 @@ export const BanList = ({}) => {
         {!isFetchBlockUserDataNextPage ? (
           <div className="h-[1px]" ref={target}></div>
         ) : (
-          <div>로딩 중...</div>
+          <Loading />
         )}
         <BottomSheet open={openSheet} onDismiss={handleDismiss}>
           <ButtonSheet
@@ -92,5 +94,5 @@ export const BanList = ({}) => {
       </div>
     );
 
-  return <div>로딩 중...</div>;
+  return <Loading />;
 };

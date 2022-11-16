@@ -1,6 +1,7 @@
 import { useQuery, UseQueryOptions } from 'react-query';
 import axios from 'axios';
 import { AppVersionFindResponse } from 'climbingweb/types/response/app-version';
+import { ServerError } from 'climbingweb/types/common';
 
 /**
  * GET /api/v1/app-versions/{storeType} api의 query 함수
@@ -27,7 +28,7 @@ export const useGetAppVersion = (
   options?: Omit<
     UseQueryOptions<
       AppVersionFindResponse,
-      unknown,
+      ServerError,
       AppVersionFindResponse,
       string[]
     >,

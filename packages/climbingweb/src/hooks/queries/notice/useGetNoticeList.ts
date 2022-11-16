@@ -4,7 +4,7 @@ import {
   QueryKey,
 } from 'react-query';
 import axios from 'axios';
-import { Pagination } from 'climbingweb/types/common';
+import { Pagination, ServerError } from 'climbingweb/types/common';
 import { NoticeReponse } from 'climbingweb/types/response/notice';
 
 /**
@@ -30,7 +30,7 @@ export const useGetNoticeList = (
   options?: Omit<
     UseInfiniteQueryOptions<
       Pagination<NoticeReponse>,
-      unknown,
+      ServerError,
       Pagination<NoticeReponse>,
       Pagination<NoticeReponse>,
       QueryKey
@@ -38,7 +38,7 @@ export const useGetNoticeList = (
     'queryKey' | 'queryFn'
   >
 ) => {
-  return useInfiniteQuery<Pagination<NoticeReponse>>(
+  return useInfiniteQuery<Pagination<NoticeReponse>, ServerError>(
     ['getNoticeList'],
     (context) => getNoticeList(context.pageParam),
     {

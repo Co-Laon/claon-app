@@ -5,7 +5,7 @@ import {
 } from 'react-query';
 import { UserPostThumbnailResponse } from './../../../../types/response/user/index.d';
 import axios from 'axios';
-import { Pagination } from 'climbingweb/types/common';
+import { Pagination, ServerError } from 'climbingweb/types/common';
 
 /**
  * GET /users/name/{nickname}/posts api의 query 함수
@@ -35,7 +35,7 @@ export const useFindPostsByUser = (
   options?: Omit<
     UseInfiniteQueryOptions<
       Pagination<UserPostThumbnailResponse>,
-      unknown,
+      ServerError,
       Pagination<UserPostThumbnailResponse>,
       Pagination<UserPostThumbnailResponse>,
       QueryKey
@@ -43,7 +43,7 @@ export const useFindPostsByUser = (
     'queryKey' | 'queryFn'
   >
 ) => {
-  return useInfiniteQuery<Pagination<UserPostThumbnailResponse>>(
+  return useInfiniteQuery<Pagination<UserPostThumbnailResponse>, ServerError>(
     ['findPostsByUser', nickname],
     (context) => findPostsByUser(context.pageParam, nickname),
     {
