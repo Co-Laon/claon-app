@@ -12,6 +12,8 @@ import { ButtonSheet } from 'climbingweb/src/components/common/BottomSheetConten
 import { BanList } from 'climbingweb/src/components/SettingInfo/BanList';
 import { useChangePublicScope } from 'climbingweb/src/hooks/queries/user/useChangePublicScope';
 import { useRetrieveMe } from 'climbingweb/src/hooks/queries/user/useRetrieveMe';
+import { sendReactNativeMessage } from 'climbingweb/src/utils/reactNativeMessage';
+// import { useDeleteUser } from 'climbingweb/src/hooks/queries/user/useDeleteUser';
 
 export default function SettingPage() {
   const titleList: string[] = [
@@ -41,6 +43,9 @@ export default function SettingPage() {
   //프로필 비공개 관련 useMutation
   const { mutate: changePublicScopeMutate } = useChangePublicScope();
 
+  //회원 탈퇴 관련 useMutation
+  // const { mutate: deleteUserMutate } = useDeleteUser();
+
   //프로필 비공개 토글버튼 클릭 핸들러
   const handleToggleClick = () => {
     changePublicScopeMutate();
@@ -67,8 +72,22 @@ export default function SettingPage() {
     else window.history.back();
   };
 
-  const onDismiss = () => {
+  // 바텀 시트 닫기 핸들러
+  const onBottomSheetDismiss = () => {
     setOpenSheet(false);
+  };
+
+  // 바텀 시트 확인 버튼 핸들러
+  const onBottomSheetConfirm = () => {
+    if (sheetKey === 'logout') {
+      //로그아웃
+      sendReactNativeMessage({ type: 'logout' });
+      setOpenSheet(false);
+    } else if (sheetKey === 'leave') {
+      //회원 탈퇴
+      //deleteUserMutate();
+      setOpenSheet(false);
+    }
   };
 
   if (isUserDataError) return <div>{userDataError}</div>;
@@ -113,7 +132,7 @@ export default function SettingPage() {
           {titleName === '이용 약관' && <>이용 약관</>}
           {titleName === '개인정보 처리 방침' && <>개인정보 처리 방침</>}
         </div>
-        <BottomSheet open={openSheet} onDismiss={onDismiss}>
+        <BottomSheet open={openSheet} onDismiss={onBottomSheetDismiss}>
           <ButtonSheet
             text={
               sheetKey === 'leave'
@@ -122,6 +141,8 @@ export default function SettingPage() {
                 ? '로그아웃 하시겠습니까?'
                 : ''
             }
+            onCancel={onBottomSheetDismiss}
+            onConfirm={onBottomSheetConfirm}
           />
         </BottomSheet>
       </div>
