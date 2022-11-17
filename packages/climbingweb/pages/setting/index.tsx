@@ -124,7 +124,7 @@ export default function SettingPage() {
             </ul>
           )}
           {titleName === '개인 정보 수정' && (
-            <EditMyInfo userRequest={userData} />
+            <EditMyInfo userRequest={userData} setTitleName={setTitleName} />
           )}
           {titleName === '차단 리스트' && <BanList />}
           {titleName === '공지 사항' && <NotificationList />}

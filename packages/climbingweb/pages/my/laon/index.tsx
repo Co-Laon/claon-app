@@ -4,6 +4,7 @@ import {
   Empty,
 } from 'climbingweb/src/components/common/AppBar/IconButton';
 import { SmmallNodeButton } from 'climbingweb/src/components/common/button/Button';
+import EmptyContent from 'climbingweb/src/components/common/EmptyContent/EmptyContent';
 import { LaonList } from 'climbingweb/src/components/common/LaonList';
 import Loading from 'climbingweb/src/components/common/Loading/Loading';
 import { useDeleteLaon } from 'climbingweb/src/hooks/queries/laon/useDeleteLaon';
@@ -52,27 +53,31 @@ export const MyLaonList = ({}) => {
           rightNode={<Empty />}
         />
         <div className="p-4 overflow-auto scrollbar-hide">
-          {laonUserData.pages.map((page, pIndex) => {
-            const laonList = page.results.map((value) => {
-              return {
-                laonNickName: value.laonNickname,
-                laonProfileImage: value.laonProfileImage,
-                rightNode: (
-                  <SmmallNodeButton
-                    onClick={() => deleteLaonMutate(value.laonNickname)}
-                  >
-                    취소
-                  </SmmallNodeButton>
-                ),
-              };
-            });
-            return (
-              <LaonList
-                key={`laonUserDataPage_${pIndex}`}
-                laonList={laonList}
-              />
-            );
-          })}
+          {laonUserData.pages[0].totalCount !== 0 ? (
+            laonUserData.pages.map((page, pIndex) => {
+              const laonList = page.results.map((value) => {
+                return {
+                  laonNickName: value.laonNickname,
+                  laonProfileImage: value.laonProfileImage,
+                  rightNode: (
+                    <SmmallNodeButton
+                      onClick={() => deleteLaonMutate(value.laonNickname)}
+                    >
+                      취소
+                    </SmmallNodeButton>
+                  ),
+                };
+              });
+              return (
+                <LaonList
+                  key={`laonUserDataPage_${pIndex}`}
+                  laonList={laonList}
+                />
+              );
+            })
+          ) : (
+            <EmptyContent message="아직 라온이 없습니다." />
+          )}
           {!isFetchLaonUserDataNextPage ? (
             <div className="h-[1px]" ref={target}></div>
           ) : (

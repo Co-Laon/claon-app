@@ -5,6 +5,7 @@ import { useState } from 'react';
 import { BottomSheet } from 'react-spring-bottom-sheet';
 import { ButtonSheet } from '../common/BottomSheetContents/ButtonSheet';
 import { SmmallNodeButton } from '../common/button/Button';
+import EmptyContent from '../common/EmptyContent/EmptyContent';
 import ErrorContent from '../common/Error/ErrorContent';
 import { LaonList } from '../common/LaonList';
 import Loading from '../common/Loading/Loading';
@@ -59,26 +60,33 @@ export const BanList = ({}) => {
   if (blockUserData)
     return (
       <div className="overflow-auto scrollbar-hide">
-        {blockUserData.pages.map((page, pIndex) => {
-          const laonList = page.results.map((value) => {
-            return {
-              laonNickName: value.blockUserNickName,
-              laonProfileImage: value.blockUserProfileImage,
-              rightNode: (
-                <SmmallNodeButton
-                  onClick={() =>
-                    handleDeleteBlockButtonClick(value.blockUserNickName)
-                  }
-                >
-                  취소
-                </SmmallNodeButton>
-              ),
-            };
-          });
-          return (
-            <LaonList key={`blockUserDataPage_${pIndex}`} laonList={laonList} />
-          );
-        })}
+        {blockUserData.pages[0].totalCount !== 0 ? (
+          blockUserData.pages.map((page, pIndex) => {
+            const laonList = page.results.map((value) => {
+              return {
+                laonNickName: value.blockUserNickName,
+                laonProfileImage: value.blockUserProfileImage,
+                rightNode: (
+                  <SmmallNodeButton
+                    onClick={() =>
+                      handleDeleteBlockButtonClick(value.blockUserNickName)
+                    }
+                  >
+                    취소
+                  </SmmallNodeButton>
+                ),
+              };
+            });
+            return (
+              <LaonList
+                key={`blockUserDataPage_${pIndex}`}
+                laonList={laonList}
+              />
+            );
+          })
+        ) : (
+          <EmptyContent message="아직 차단 유저가 없습니다." />
+        )}
         {!isFetchBlockUserDataNextPage ? (
           <div className="h-[1px]" ref={target}></div>
         ) : (

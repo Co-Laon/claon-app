@@ -9,9 +9,11 @@ import { useModifyUser } from 'climbingweb/src/hooks/queries/user/useModifyUser'
 
 interface InfoProps {
   userRequest: UserRequest;
+  setTitleName: React.Dispatch<React.SetStateAction<string>>;
 }
 
-export const EditMyInfo = ({ userRequest }: InfoProps) => {
+// 추후 프로필 사진 변경 기능 추가
+export const EditMyInfo = ({ userRequest, setTitleName }: InfoProps) => {
   // userRequest client state
   const [userRequestData, setUserRequestData] =
     useState<UserRequest>(userRequest);
@@ -45,13 +47,14 @@ export const EditMyInfo = ({ userRequest }: InfoProps) => {
   // 수정 버튼 클릭 핸들러
   const handleModifyButtonClick = () => {
     modifyUserMutate();
+    setTitleName('설정');
   };
 
   return (
     <div className="h-full flex flex-col gap-6">
       <div className="flex flex-col gap-2">
         <h2 className="font-bold text-gray-800">프로필 사진</h2>
-        <ProfileImage icon="default" />
+        <ProfileImage src={userRequest.imagePath} icon="default" />
       </div>
       <div className="flex flex-col gap-2">
         <h2 className="font-bold text-gray-800">닉네임</h2>
