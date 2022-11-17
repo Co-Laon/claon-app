@@ -20,13 +20,18 @@ export const BanList = ({}) => {
     data: blockUserData,
     isError: isBlockUserDataError,
     error: blockUserDataError,
+    refetch: refetchBlockUserData,
     fetchNextPage: fetchBlockUserDataNextPage,
     isFetchingNextPage: isFetchBlockUserDataNextPage,
     hasNextPage: hasBlockUserDataNextPage,
   } = useFindBlockUser();
 
   //Block 유저 취소 useMutation
-  const { mutate: deleteBlockMutate } = useDeleteBlock();
+  const { mutate: deleteBlockMutate } = useDeleteBlock({
+    onSuccess: () => {
+      refetchBlockUserData();
+    },
+  });
 
   //Block 유저 취소 버튼 클릭 핸들러
   const handleDeleteBlockButtonClick = (nickname: string) => {
@@ -37,6 +42,7 @@ export const BanList = ({}) => {
   //Block 유저 취소 바텀 시트 확인 버튼 클릭 핸들러
   const handleDeleteBlockConfirmButtonClick = () => {
     if (selectedUser) deleteBlockMutate(selectedUser);
+    setOpenSheet(false);
   };
 
   //Block 유저 취소 바텀 시트 취소 핸들러

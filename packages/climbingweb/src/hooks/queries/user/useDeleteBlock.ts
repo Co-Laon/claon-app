@@ -8,7 +8,9 @@ import { useMutation, UseMutationOptions } from 'react-query';
  * @returns axiosResponse.data
  */
 const deleteBlock = async (blockNickname: string) => {
-  const { data } = await axios.delete<void>(`/posts/${blockNickname}/like`);
+  const { data } = await axios.delete<void>(
+    `/users/name/${blockNickname}/block`
+  );
   return data;
 };
 
