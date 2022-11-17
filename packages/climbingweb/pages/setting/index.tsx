@@ -13,6 +13,8 @@ import { BanList } from 'climbingweb/src/components/SettingInfo/BanList';
 import { useChangePublicScope } from 'climbingweb/src/hooks/queries/user/useChangePublicScope';
 import { useRetrieveMe } from 'climbingweb/src/hooks/queries/user/useRetrieveMe';
 import { sendReactNativeMessage } from 'climbingweb/src/utils/reactNativeMessage';
+import Loading from 'climbingweb/src/components/common/Loading/Loading';
+import ErrorContent from 'climbingweb/src/components/common/Error/ErrorContent';
 // import { useDeleteUser } from 'climbingweb/src/hooks/queries/user/useDeleteUser';
 
 export default function SettingPage() {
@@ -90,7 +92,7 @@ export default function SettingPage() {
     }
   };
 
-  if (isUserDataError) return <div>{userDataError}</div>;
+  if (isUserDataError) return <ErrorContent error={userDataError} />;
 
   if (userData)
     return (
@@ -148,5 +150,5 @@ export default function SettingPage() {
       </div>
     );
 
-  return <div>로딩 중...</div>;
+  return <Loading />;
 }

@@ -18,17 +18,27 @@ export const MyLaonList = ({}) => {
     data: laonUserData,
     isError: isLaonUserDataError,
     error: laonUserDataError,
+    refetch: refetchLaonUserData,
     fetchNextPage: fetchLaonUserDataNextPage,
     isFetchingNextPage: isFetchLaonUserDataNextPage,
     hasNextPage: hasLaonUserDataNextPage,
   } = useFindAllLaon();
 
   // Laon 유저 취소 useMutation
-  const { mutate: deleteLaonMutate } = useDeleteLaon();
+  const { mutate: deleteLaonMutate } = useDeleteLaon({
+    onSuccess: () => {
+      refetchLaonUserData();
+    },
+  });
 
   // 뒤로 버튼 클릭 핸들러
   const handleGoToBack = () => {
     window.history.back();
+  };
+
+  // 라온 취소 버튼 클릭 핸들러
+  const handleDeleteLaonClick = (nickname: string) => {
+    deleteLaonMutate(nickname);
   };
 
   // InfiniteScroll 을 위한 로직
@@ -61,7 +71,7 @@ export const MyLaonList = ({}) => {
                   laonProfileImage: value.laonProfileImage,
                   rightNode: (
                     <SmmallNodeButton
-                      onClick={() => deleteLaonMutate(value.laonNickname)}
+                      onClick={() => handleDeleteLaonClick(value.laonNickname)}
                     >
                       취소
                     </SmmallNodeButton>

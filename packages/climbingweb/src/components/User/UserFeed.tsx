@@ -3,18 +3,18 @@ import Image from 'next/image';
 import React from 'react';
 import MiniHold from './MiniHold';
 
-interface MyFeedProps {
+interface UserFeedProps {
   centerName: string;
   image: string;
   climbingHistories: ClimbingHistoryResponse[];
 }
 
-const MyFeed = ({ centerName, image, climbingHistories }: MyFeedProps) => {
+const UserFeed = ({ centerName, image, climbingHistories }: UserFeedProps) => {
   return (
     <div className="flex flex-col my-1 mr-2 pb-3 rounded-xl shadow-lg max-w-[160px] h-[200px]">
       <Image
         src={image}
-        alt={'MyFeedImage'}
+        alt={'UserFeedImage'}
         height={160}
         width={160}
         sizes={'(max-width: 160px)'}
@@ -29,4 +29,4 @@ const MyFeed = ({ centerName, image, climbingHistories }: MyFeedProps) => {
   );
 };
 
-export default MyFeed;
+export default UserFeed;

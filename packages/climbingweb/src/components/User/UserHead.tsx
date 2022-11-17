@@ -2,18 +2,21 @@ import { useRouter } from 'next/router';
 import { ProfileImage } from '../common/profileImage/ProfileImage';
 
 interface HeaderProps {
-  height: number;
-  armReach: number;
   apeIndex: number;
-  imagePath: string;
+  armReach: number;
   climbCount: number;
+  height: number;
+  imagePath: string;
+  instagramUrl: string;
   laonCount: number;
   postCount: number;
-  instagramUrl?: string;
+  isPrivate?: boolean;
+  isLaon?: boolean;
   onClickHeaderButton: () => void;
+  isMyPage: boolean;
 }
 
-export const MyHead = ({
+export const UserHead = ({
   height,
   armReach,
   apeIndex,
@@ -22,7 +25,10 @@ export const MyHead = ({
   laonCount,
   postCount,
   instagramUrl,
+  isPrivate,
+  isLaon,
   onClickHeaderButton,
+  isMyPage,
 }: HeaderProps) => {
   const countNameList = [
     { name: '게시글', count: postCount },
@@ -44,7 +50,7 @@ export const MyHead = ({
             }}
           />
         </div>
-        <div className="flex flex-col gap-1.5 w-52">
+        <div className="flex flex-col gap-1.5 w-52 ml-7">
           <div className="flex flex-row justify-between">
             {countNameList.map((value) => (
               <div
@@ -57,27 +63,30 @@ export const MyHead = ({
             ))}
           </div>
           <button
-            className="w-full bg-purple-500 rounded-xl w-30 text-white"
+            className="w-full bg-purple-500 rounded-xl w-30 text-white disabled:bg-slate-300"
             onClick={onClickHeaderButton}
+            disabled={isLaon}
           >
-            내 라온
+            {isMyPage ? '내 라온' : '라온'}
           </button>
         </div>
       </div>
-      <div className="font- text-sm text-gray-500 leading-4 w-[40%]">
-        <p className="flex w-full justify-between">
-          <span>신장</span>
-          <span>{height}cm</span>
-        </p>
-        <p className="flex w-full justify-between">
-          <span>암리치</span>
-          <span>{armReach}cm</span>
-        </p>
-        <p className="flex w-full justify-between">
-          <span>Ape Index</span>
-          <span>+{apeIndex}</span>
-        </p>
-      </div>
+      {!isPrivate ? (
+        <div className="font- text-sm text-gray-500 leading-4 w-[40%]">
+          <p className="flex w-full justify-between">
+            <span>신장</span>
+            <span>{height}cm</span>
+          </p>
+          <p className="flex w-full justify-between">
+            <span>암리치</span>
+            <span>{armReach}cm</span>
+          </p>
+          <p className="flex w-full justify-between">
+            <span>Ape Index</span>
+            <span>+{apeIndex}</span>
+          </p>
+        </div>
+      ) : null}
     </div>
   );
 };

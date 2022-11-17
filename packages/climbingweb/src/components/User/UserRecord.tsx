@@ -3,12 +3,12 @@ import Image from 'next/image';
 import React from 'react';
 import MiniHold from './MiniHold';
 
-interface MyRecordProps extends CenterClimbingHistoryResponse {}
+interface UserRecordProps extends CenterClimbingHistoryResponse {}
 
-const MyRecord = ({
+const UserRecord = ({
   center: { centerName, centerImage },
   climbingHistories,
-}: MyRecordProps) => {
+}: UserRecordProps) => {
   return (
     <div className="rounded-xl p-1 shadow-sm mt-2 mr-3 shadow-gray-300 h-36 min-w-[90px]">
       <Image
@@ -31,4 +31,4 @@ const MyRecord = ({
   );
 };
 
-export default MyRecord;
+export default UserRecord;

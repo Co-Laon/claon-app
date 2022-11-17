@@ -1,5 +1,6 @@
+import { ServerError } from 'climbingweb/types/common';
 import { useQuery, UseQueryOptions, QueryKey } from 'react-query';
-import { IndividualUserResponse } from './../../../../types/response/user/index.d';
+import { UserDetailResponse } from './../../../../types/response/user/index.d';
 import axios from 'axios';
 
 /**
@@ -8,7 +9,7 @@ import axios from 'axios';
  * @returns axiosResponse.data
  */
 const getPublicUser = async (userNickname?: string) => {
-  const { data } = await axios.get<IndividualUserResponse>(
+  const { data } = await axios.get<UserDetailResponse>(
     `/users/name/${userNickname}`
   );
   return data;
@@ -25,15 +26,15 @@ export const useGetPublicUser = (
   userNickname?: string,
   options?: Omit<
     UseQueryOptions<
-      IndividualUserResponse,
-      unknown,
-      IndividualUserResponse,
+      UserDetailResponse,
+      ServerError,
+      UserDetailResponse,
       QueryKey
     >,
     'queryKey' | 'queryFn'
   >
 ) => {
-  return useQuery<IndividualUserResponse>(
+  return useQuery<UserDetailResponse, ServerError>(
     ['getPublicUser', userNickname],
     () => getPublicUser(userNickname),
     {

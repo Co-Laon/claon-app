@@ -9,7 +9,7 @@ interface ContentProps {
   imageList: string[];
 }
 
-export const MyContent = ({ imageList }: ContentProps) => {
+export const UserContent = ({ imageList }: ContentProps) => {
   return (
     <div className="mt-6 flex flex-col gap-2">
       <div className="px-4">
