@@ -85,8 +85,10 @@ export default function UserPage({}) {
 
   // 바텀 시트 리스트 선택 핸들러
   const onBottomSheetSelect = () => {
-    if (getUserData?.isLaon === false) {
+    if (getUserData?.isLaon === true) {
       deleteLaonMutate(getUserData.nickname);
+      createBlockMutate();
+    } else {
       createBlockMutate();
     }
   };
@@ -124,16 +126,7 @@ export default function UserPage({}) {
           }
           userHead={
             <UserHead
-              apeIndex={getUserData.apeIndex}
-              armReach={getUserData.armReach}
-              climbCount={getUserData.climbCount}
-              height={getUserData.height}
-              imagePath={getUserData.imagePath}
-              instagramUrl={getUserData.instagramUrl}
-              laonCount={getUserData.laonCount}
-              postCount={getUserData.postCount}
-              isPrivate={getUserData.isPrivate}
-              isLaon={getUserData.isLaon}
+              userDetailData={getUserData}
               onClickHeaderButton={handleLaonButtonClick}
               isMyPage={false}
             />

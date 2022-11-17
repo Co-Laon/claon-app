@@ -1,35 +1,31 @@
+import { UserDetailResponse } from 'climbingweb/types/response/user';
 import { useRouter } from 'next/router';
 import { ProfileImage } from '../common/profileImage/ProfileImage';
 
 interface HeaderProps {
-  apeIndex: number;
-  armReach: number;
-  climbCount: number;
-  height: number;
-  imagePath: string;
-  instagramUrl: string;
-  laonCount: number;
-  postCount: number;
-  isPrivate?: boolean;
-  isLaon?: boolean;
+  userDetailData: UserDetailResponse;
   onClickHeaderButton: () => void;
   isMyPage: boolean;
 }
 
 export const UserHead = ({
-  height,
-  armReach,
-  apeIndex,
-  imagePath,
-  climbCount,
-  laonCount,
-  postCount,
-  instagramUrl,
-  isPrivate,
-  isLaon,
+  userDetailData,
   onClickHeaderButton,
   isMyPage,
 }: HeaderProps) => {
+  const {
+    height,
+    armReach,
+    apeIndex,
+    imagePath,
+    climbCount,
+    laonCount,
+    postCount,
+    instagramUrl,
+    isPrivate,
+    isLaon,
+  } = userDetailData;
+
   const countNameList = [
     { name: '게시글', count: postCount },
     { name: '라온', count: laonCount },
@@ -71,7 +67,7 @@ export const UserHead = ({
           </button>
         </div>
       </div>
-      {!isPrivate ? (
+      {!isPrivate || isMyPage ? (
         <div className="font- text-sm text-gray-500 leading-4 w-[40%]">
           <p className="flex w-full justify-between">
             <span>신장</span>

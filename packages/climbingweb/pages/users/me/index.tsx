@@ -87,14 +87,7 @@ export default function MyPage({}) {
         }
         userHead={
           <UserHead
-            apeIndex={getUserData.apeIndex}
-            armReach={getUserData.armReach}
-            climbCount={getUserData.climbCount}
-            height={getUserData.height}
-            imagePath={getUserData.imagePath}
-            instagramUrl={getUserData.instagramUrl}
-            laonCount={getUserData.laonCount}
-            postCount={getUserData.postCount}
+            userDetailData={getUserData}
             onClickHeaderButton={handleHeaderButtonClick}
             isMyPage
           />
