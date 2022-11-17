@@ -3,12 +3,12 @@ interface Instagram {
   instagramOAuthId?: string;
   instagramUserName?: string;
 }
-interface Token {
-  accessToken: string;
-  refreshToken: string;
+export interface Token {
+  accessToken: string | number | boolean;
+  refreshToken: string | number | boolean;
 }
 
-export interface User extends Instagram, Token {
+export interface User extends Instagram {
   armReach: string;
   height: string;
   imagePath: string;
@@ -17,21 +17,26 @@ export interface User extends Instagram, Token {
 
 interface AuthState {
   user: User | null;
+  token: Token | null;
 }
 
 const initialState: AuthState = {
   user: null,
+  token: null,
 };
 
 const authSlice = createSlice({
   name: 'auth',
   initialState,
   reducers: {
-    authorize(state, action: PayloadAction<User>) {
+    getUser(state, action: PayloadAction<User>) {
       state.user = action.payload;
+    },
+    getToken(state, action: PayloadAction<Token>) {
+      state.token = action.payload;
     },
   },
 });
 
 export default authSlice.reducer;
-export const { authorize } = authSlice.actions;
+export const { getUser, getToken } = authSlice.actions;
