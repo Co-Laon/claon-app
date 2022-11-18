@@ -4,11 +4,14 @@ import {
   ModifiedButton,
   SettingButton,
 } from 'climbingweb/src/components/common/AppBar/IconButton';
+import EmptyContent from 'climbingweb/src/components/common/EmptyContent/EmptyContent';
 import ErrorContent from 'climbingweb/src/components/common/Error/ErrorContent';
 import Loading from 'climbingweb/src/components/common/Loading/Loading';
 import PageSubTitle from 'climbingweb/src/components/common/PageSubTitle/PageSubTitle';
+import UserFeedList from 'climbingweb/src/components/User/UserFeedList';
 import { UserHead } from 'climbingweb/src/components/User/UserHead';
 import UserPageLayout from 'climbingweb/src/components/User/UserPageLayout';
+import UserRecordList from 'climbingweb/src/components/User/UserRecordList';
 import { useFindPostsByUser } from 'climbingweb/src/hooks/queries/user/useFindPostsByUser';
 import { useRetrieveMe } from 'climbingweb/src/hooks/queries/user/useRetrieveMe';
 import { useIntersectionObserver } from 'climbingweb/src/hooks/useIntersectionObserver';
@@ -92,10 +95,24 @@ export default function MyPage({}) {
             isMyPage
           />
         }
-        userDetailData={getUserData}
-        userPostData={findPostsByUserData}
-        isPostDataHasNextPage={isFetchingFindPostsByUserDataNextPage}
-        infiniteScrollTarget={target}
+        userRecordList={
+          getUserData.centerClimbingHistories.length !== 0 ? (
+            <UserRecordList userDetailData={getUserData} />
+          ) : (
+            <EmptyContent message="아직 기록이 없습니다." />
+          )
+        }
+        userFeedList={
+          findPostsByUserData.pages[0].totalCount !== 0 ? (
+            <UserFeedList
+              userPostData={findPostsByUserData}
+              isPostDataHasNextPage={isFetchingFindPostsByUserDataNextPage}
+              infiniteScrollTarget={target}
+            />
+          ) : (
+            <EmptyContent message="아직 게시글이 없습니다." />
+          )
+        }
       />
     );
   }

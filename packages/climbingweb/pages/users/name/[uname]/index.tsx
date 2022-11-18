@@ -4,11 +4,14 @@ import {
   OptionButton,
 } from 'climbingweb/src/components/common/AppBar/IconButton';
 import { ListSheet } from 'climbingweb/src/components/common/BottomSheetContents/ListSheet/ListSheet';
+import EmptyContent from 'climbingweb/src/components/common/EmptyContent/EmptyContent';
 import ErrorContent from 'climbingweb/src/components/common/Error/ErrorContent';
 import Loading from 'climbingweb/src/components/common/Loading/Loading';
 import PageSubTitle from 'climbingweb/src/components/common/PageSubTitle/PageSubTitle';
+import UserFeedList from 'climbingweb/src/components/User/UserFeedList';
 import { UserHead } from 'climbingweb/src/components/User/UserHead';
 import UserPageLayout from 'climbingweb/src/components/User/UserPageLayout';
+import UserRecordList from 'climbingweb/src/components/User/UserRecordList';
 import { useCreateLaon } from 'climbingweb/src/hooks/queries/laon/useCreateLaon';
 import { useDeleteLaon } from 'climbingweb/src/hooks/queries/laon/useDeleteLaon';
 import { useCreateBlock } from 'climbingweb/src/hooks/queries/user/useCreateBlock';
@@ -53,7 +56,7 @@ export default function UserPage({}) {
   });
 
   // 라온 취소 useMutation
-  const { mutate: deleteLaonMutate } = useDeleteLaon();
+  const { mutate: deleteLaonMutate } = useDeleteLaon(userNickname);
 
   // 차단 useMutation
   const { mutate: createBlockMutate } = useCreateBlock(userNickname, {
@@ -86,7 +89,7 @@ export default function UserPage({}) {
   // 바텀 시트 리스트 선택 핸들러
   const onBottomSheetSelect = () => {
     if (getUserData?.isLaon === true) {
-      deleteLaonMutate(getUserData.nickname);
+      deleteLaonMutate();
       createBlockMutate();
     } else {
       createBlockMutate();
@@ -132,10 +135,24 @@ export default function UserPage({}) {
               isMyPage={false}
             />
           }
-          userDetailData={getUserData}
-          userPostData={findPostsByUserData}
-          isPostDataHasNextPage={isFetchingFindPostsByUserDataNextPage}
-          infiniteScrollTarget={target}
+          userRecordList={
+            getUserData.centerClimbingHistories.length !== 0 ? (
+              <UserRecordList userDetailData={getUserData} />
+            ) : (
+              <EmptyContent message="아직 기록이 없습니다." />
+            )
+          }
+          userFeedList={
+            findPostsByUserData.pages[0].totalCount !== 0 ? (
+              <UserFeedList
+                userPostData={findPostsByUserData}
+                isPostDataHasNextPage={isFetchingFindPostsByUserDataNextPage}
+                infiniteScrollTarget={target}
+              />
+            ) : (
+              <EmptyContent message="아직 게시글이 없습니다." />
+            )
+          }
         />
         <BottomSheet open={openSheet} onDismiss={() => onBottomSheetDismiss()}>
           <ListSheet
