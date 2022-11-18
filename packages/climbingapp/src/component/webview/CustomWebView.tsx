@@ -18,7 +18,7 @@ export default function CustomWebView({ url }: WebInfo) {
         'refresh-token': refreshToken,
       };
       const message = {
-        type: 'messageFromApp',
+        type: 'token',
         payload: token,
       };
 
