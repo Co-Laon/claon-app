@@ -94,9 +94,9 @@ export const EditMyInfo = ({ userRequest, setTitleName }: InfoProps) => {
       <div className="flex flex-col gap-2">
         <h2 className="font-bold text-gray-800">인스타그램 계정</h2>
         <div className="flex flex-row items-center justify-between">
-          <div className="flex flex-row items-center font-bold gap-1">
+          <div className="flex flex-row items-center text-sm font-bold gap-1">
             <InstaIcon alt="instagram" />
-            {instagramUserName}
+            {instagramUserName ? instagramUserName : '연동되지 않았습니다.'}
           </div>
           <SmmallNodeButton onClick={handleInstagramConnectClick}>
             변경
