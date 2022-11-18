@@ -6,7 +6,6 @@ import {
   AppLogo,
 } from 'climbingweb/src/components/common/AppBar/IconButton';
 import Router from 'next/router';
-import 'react-spring-bottom-sheet/dist/style.css';
 import { useGetPosts } from 'climbingweb/src/hooks/queries/post/useGetPosts';
 import { useGetLaonPost } from 'climbingweb/src/hooks/queries/laon/useGetLaonPost';
 import { useIntersectionObserver } from 'climbingweb/src/hooks/useIntersectionObserver';

@@ -6,7 +6,6 @@ import {
 } from 'climbingweb/src/components/common/AppBar/IconButton';
 import { StarRating } from 'climbingweb/src/components/common/StarRating';
 import TextArea from 'climbingweb/src/components/common/TextArea/TextArea';
-import 'react-spring-bottom-sheet/dist/style.css';
 export default function ReportPage({}) {
   return (
     <section className="mb-footer">

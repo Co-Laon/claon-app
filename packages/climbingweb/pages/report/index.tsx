@@ -9,7 +9,6 @@ import {
 import TextArea from 'climbingweb/src/components/common/TextArea/TextArea';
 import { useState } from 'react';
 import { BottomSheet } from 'react-spring-bottom-sheet';
-import 'react-spring-bottom-sheet/dist/style.css';
 import ReportData from 'climbingweb/src/interface/ReportData';
 import { useCreateReport } from 'climbingweb/src/hooks/queries/post/useCreateReport';
 import { useRouter } from 'next/router';
