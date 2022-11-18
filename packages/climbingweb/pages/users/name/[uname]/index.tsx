@@ -56,7 +56,7 @@ export default function UserPage({}) {
   });
 
   // 라온 취소 useMutation
-  const { mutate: deleteLaonMutate } = useDeleteLaon(userNickname);
+  const { mutate: deleteLaonMutate } = useDeleteLaon();
 
   // 차단 useMutation
   const { mutate: createBlockMutate } = useCreateBlock(userNickname, {
@@ -89,7 +89,7 @@ export default function UserPage({}) {
   // 바텀 시트 리스트 선택 핸들러
   const onBottomSheetSelect = () => {
     if (getUserData?.isLaon === true) {
-      deleteLaonMutate();
+      deleteLaonMutate(userNickname);
       createBlockMutate();
     } else {
       createBlockMutate();
