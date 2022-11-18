@@ -39,7 +39,7 @@ export const useFindAllLaon = (
   >
 ) => {
   return useInfiniteQuery<Pagination<LaonFindResponse>>(
-    ['getNoticeList'],
+    ['findAllLaon'],
     (context) => findAllLaon(context.pageParam),
     {
       staleTime: 3000,

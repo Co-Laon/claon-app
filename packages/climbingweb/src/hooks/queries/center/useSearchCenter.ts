@@ -58,13 +58,9 @@ export const useSearchCenter = (
   return useQuery<
     Pagination<CenterPreviewResponse>,
     ServerError | ServerBusinessError
-  >(
-    ['searchCenterName', searchCenterName],
-    () => searchCenter(searchCenterName),
-    {
-      retry: 0,
-      enabled: !!searchCenterName,
-      ...options,
-    }
-  );
+  >(['searchCenter', searchCenterName], () => searchCenter(searchCenterName), {
+    retry: 0,
+    enabled: !!searchCenterName,
+    ...options,
+  });
 };
