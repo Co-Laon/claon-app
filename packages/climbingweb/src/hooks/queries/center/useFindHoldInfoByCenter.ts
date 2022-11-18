@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { ServerBusinessError, ServerError } from 'climbingweb/types/common';
 import { HoldInfoResponse } from 'climbingweb/types/response/center';
 import { QueryKey, useQuery, UseQueryOptions } from 'react-query';
 
@@ -9,10 +10,14 @@ import { QueryKey, useQuery, UseQueryOptions } from 'react-query';
  * @returns axiosResponse.data
  */
 const findHoldInfoByCenter = async (centerId?: string) => {
-  const { data } = await axios.get<HoldInfoResponse[]>(
-    `/centers/${centerId}/hold`
-  );
-  return data;
+  try {
+    const { data } = await axios.get<HoldInfoResponse[]>(
+      `/centers/${centerId}/hold`
+    );
+    return data;
+  } catch (error: any) {
+    throw error.response.data;
+  }
 };
 
 /**
@@ -25,18 +30,24 @@ const findHoldInfoByCenter = async (centerId?: string) => {
 export const useFindHoldInfoByCenter = <T = HoldInfoResponse>(
   centerId?: string,
   options?: Omit<
-    UseQueryOptions<HoldInfoResponse[], unknown, T[], QueryKey>,
+    UseQueryOptions<
+      HoldInfoResponse[],
+      ServerError | ServerBusinessError,
+      T[],
+      QueryKey
+    >,
     'queryKey' | 'queryFn'
   >
 ) => {
-  return useQuery<HoldInfoResponse[], unknown, T[], QueryKey>(
-    ['centerId', centerId],
-    () => findHoldInfoByCenter(centerId),
-    {
-      initialData: [],
-      retry: 0,
-      enabled: !!centerId,
-      ...options,
-    }
-  );
+  return useQuery<
+    HoldInfoResponse[],
+    ServerError | ServerBusinessError,
+    T[],
+    QueryKey
+  >(['centerId', centerId], () => findHoldInfoByCenter(centerId), {
+    initialData: [],
+    retry: 0,
+    enabled: !!centerId,
+    ...options,
+  });
 };

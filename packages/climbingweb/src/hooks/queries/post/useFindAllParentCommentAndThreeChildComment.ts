@@ -1,6 +1,10 @@
 import { QueryKey, useQuery, UseQueryOptions } from 'react-query';
 import axios from 'axios';
-import { Pagination } from 'climbingweb/types/common';
+import {
+  Pagination,
+  ServerError,
+  ServerBusinessError,
+} from 'climbingweb/types/common';
 import { CommentFindResponse } from 'climbingweb/types/response/post';
 
 /**
@@ -10,10 +14,14 @@ import { CommentFindResponse } from 'climbingweb/types/response/post';
  * @returns axiosResponse.data
  */
 const findAllParentCommentAndThreeChildComment = async (postId: string) => {
-  const { data } = await axios.get<Pagination<CommentFindResponse>>(
-    `/posts/${postId}/comment`
-  );
-  return data;
+  try {
+    const { data } = await axios.get<Pagination<CommentFindResponse>>(
+      `/posts/${postId}/comment`
+    );
+    return data;
+  } catch (error: any) {
+    throw error.response.data;
+  }
 };
 
 /**
@@ -28,14 +36,17 @@ export const useFindAllParentCommentAndThreeChildComment = (
   options?: Omit<
     UseQueryOptions<
       Pagination<CommentFindResponse>,
-      unknown,
+      ServerError | ServerBusinessError,
       Pagination<CommentFindResponse>,
       QueryKey
     >,
     'queryKey'
   >
 ) => {
-  return useQuery<Pagination<CommentFindResponse>>(
+  return useQuery<
+    Pagination<CommentFindResponse>,
+    ServerError | ServerBusinessError
+  >(
     ['findAllParentCommentAndThreeChildComment', postId],
     () => findAllParentCommentAndThreeChildComment(postId),
     { retry: 0, enabled: !!postId, ...options }

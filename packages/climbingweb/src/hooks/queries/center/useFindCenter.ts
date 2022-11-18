@@ -1,3 +1,4 @@
+import { ServerBusinessError, ServerError } from 'climbingweb/types/common';
 import { useQuery, UseQueryOptions, QueryKey } from 'react-query';
 import axios from 'axios';
 import { CenterDetailResponse } from 'climbingweb/types/response/center';
@@ -9,8 +10,14 @@ import { CenterDetailResponse } from 'climbingweb/types/response/center';
  * @returns axiosReponse.data
  */
 const findCenter = async (centerId: string) => {
-  const { data } = await axios.get<CenterDetailResponse>(`centers/${centerId}`);
-  return data;
+  try {
+    const { data } = await axios.get<CenterDetailResponse>(
+      `centers/${centerId}`
+    );
+    return data;
+  } catch (error: any) {
+    throw error.response.data;
+  }
 };
 
 /**
@@ -25,14 +32,14 @@ export const useFindCenter = (
   options?: Omit<
     UseQueryOptions<
       CenterDetailResponse,
-      unknown,
+      ServerError | ServerBusinessError,
       CenterDetailResponse,
       QueryKey
     >,
     'queryKey' | 'queryFn'
   >
 ) => {
-  return useQuery<CenterDetailResponse>(
+  return useQuery<CenterDetailResponse, ServerError | ServerBusinessError>(
     ['findCenter', centerId],
     () => findCenter(centerId),
     {

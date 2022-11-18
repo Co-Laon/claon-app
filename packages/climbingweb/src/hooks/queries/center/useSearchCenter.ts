@@ -1,5 +1,9 @@
 import axios from 'axios';
-import { Pagination } from 'climbingweb/types/common';
+import {
+  Pagination,
+  ServerBusinessError,
+  ServerError,
+} from 'climbingweb/types/common';
 import { CenterPreviewResponse } from 'climbingweb/types/response/center';
 import { debounce } from 'lodash';
 import { QueryKey, useQuery, UseQueryOptions } from 'react-query';
@@ -12,15 +16,19 @@ import { QueryKey, useQuery, UseQueryOptions } from 'react-query';
  */
 const searchCenter = debounce(
   async (searchCenterName: string) => {
-    const { data } = await axios.get<Pagination<CenterPreviewResponse>>(
-      '/centers/search',
-      {
-        params: {
-          name: searchCenterName,
-        },
-      }
-    );
-    return data;
+    try {
+      const { data } = await axios.get<Pagination<CenterPreviewResponse>>(
+        '/centers/search',
+        {
+          params: {
+            name: searchCenterName,
+          },
+        }
+      );
+      return data;
+    } catch (error: any) {
+      throw error.response.data;
+    }
   },
   300,
   { leading: true }
@@ -39,7 +47,7 @@ export const useSearchCenter = (
     | Omit<
         UseQueryOptions<
           Pagination<CenterPreviewResponse>,
-          unknown,
+          ServerError | ServerBusinessError,
           Pagination<CenterPreviewResponse>,
           QueryKey
         >,
@@ -47,7 +55,10 @@ export const useSearchCenter = (
       >
     | undefined
 ) => {
-  return useQuery<Pagination<CenterPreviewResponse>>(
+  return useQuery<
+    Pagination<CenterPreviewResponse>,
+    ServerError | ServerBusinessError
+  >(
     ['searchCenterName', searchCenterName],
     () => searchCenter(searchCenterName),
     {
