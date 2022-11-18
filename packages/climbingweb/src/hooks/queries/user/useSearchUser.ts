@@ -1,6 +1,10 @@
 import { UserPreviewResponse } from './../../../../types/response/user/index.d';
 import axios from 'axios';
-import { Pagination } from 'climbingweb/types/common';
+import {
+  Pagination,
+  ServerError,
+  ServerBusinessError,
+} from 'climbingweb/types/common';
 import { debounce } from 'lodash';
 import { QueryKey, useQuery, UseQueryOptions } from 'react-query';
 
@@ -12,15 +16,19 @@ import { QueryKey, useQuery, UseQueryOptions } from 'react-query';
  */
 const searchUser = debounce(
   async (searchUserName: string) => {
-    const { data } = await axios.get<Pagination<UserPreviewResponse>>(
-      '/users/search',
-      {
-        params: {
-          nickname: searchUserName,
-        },
-      }
-    );
-    return data;
+    try {
+      const { data } = await axios.get<Pagination<UserPreviewResponse>>(
+        '/users/search',
+        {
+          params: {
+            nickname: searchUserName,
+          },
+        }
+      );
+      return data;
+    } catch (error: any) {
+      throw error.response.data;
+    }
   },
   300,
   { leading: true }
@@ -38,20 +46,19 @@ export const useSearchUser = (
   options?: Omit<
     UseQueryOptions<
       Pagination<UserPreviewResponse>,
-      unknown,
+      ServerError | ServerBusinessError,
       Pagination<UserPreviewResponse>,
       QueryKey
     >,
     'queryKey' | 'queryFn'
   >
 ) => {
-  return useQuery<Pagination<UserPreviewResponse>>(
-    ['searchUserName', searchUserName],
-    () => searchUser(searchUserName),
-    {
-      retry: 0,
-      enabled: !!searchUserName,
-      ...options,
-    }
-  );
+  return useQuery<
+    Pagination<UserPreviewResponse>,
+    ServerError | ServerBusinessError
+  >(['searchUserName', searchUserName], () => searchUser(searchUserName), {
+    retry: 0,
+    enabled: !!searchUserName,
+    ...options,
+  });
 };

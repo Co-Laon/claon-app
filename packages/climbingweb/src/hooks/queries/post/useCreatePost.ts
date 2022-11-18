@@ -1,3 +1,4 @@
+import { ServerBusinessError, ServerError } from 'climbingweb/types/common';
 import axios from 'axios';
 import { PostCreateRequest } from 'climbingweb/types/request/post';
 import { PostResponse } from 'climbingweb/types/response/post';
@@ -9,8 +10,15 @@ import { useMutation, UseMutationOptions } from 'react-query';
  * @returns axiosResponse.data
  */
 const createPost = async (postCreateRequest: PostCreateRequest) => {
-  const { data } = await axios.post<PostResponse>('/posts', postCreateRequest);
-  return data;
+  try {
+    const { data } = await axios.post<PostResponse>(
+      '/posts',
+      postCreateRequest
+    );
+    return data;
+  } catch (error: any) {
+    throw error.response.data;
+  }
 };
 
 /**
@@ -22,7 +30,12 @@ const createPost = async (postCreateRequest: PostCreateRequest) => {
 export const useCreatePost = (
   postCreateRequest: PostCreateRequest,
   options?: Omit<
-    UseMutationOptions<PostResponse, unknown, void, unknown>,
+    UseMutationOptions<
+      PostResponse,
+      ServerError | ServerBusinessError,
+      void,
+      unknown
+    >,
     'mutationFn'
   >
 ) => {

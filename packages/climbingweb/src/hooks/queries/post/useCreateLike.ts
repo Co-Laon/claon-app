@@ -1,3 +1,4 @@
+import { ServerError, ServerBusinessError } from 'climbingweb/types/common';
 import axios from 'axios';
 import { LikeResponse } from 'climbingweb/types/response/post';
 import { useMutation, UseMutationOptions } from 'react-query';
@@ -9,8 +10,12 @@ import { useMutation, UseMutationOptions } from 'react-query';
  * @returns axiosResponse.data
  */
 const createLike = async (postId: string) => {
-  const { data } = await axios.post<LikeResponse>(`/posts/${postId}/like`);
-  return data;
+  try {
+    const { data } = await axios.post<LikeResponse>(`/posts/${postId}/like`);
+    return data;
+  } catch (error: any) {
+    throw error.response.data;
+  }
 };
 
 /**
@@ -23,7 +28,12 @@ const createLike = async (postId: string) => {
 export const useCreateLike = (
   postId: string,
   options?: Omit<
-    UseMutationOptions<LikeResponse, unknown, void, unknown>,
+    UseMutationOptions<
+      LikeResponse,
+      ServerError | ServerBusinessError,
+      void,
+      unknown
+    >,
     'mutationKey' | 'mutationFn'
   >
 ) => {

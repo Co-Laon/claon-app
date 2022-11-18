@@ -1,3 +1,4 @@
+import { ServerError, ServerBusinessError } from 'climbingweb/types/common';
 import { QueryKey, useQuery, UseQueryOptions } from 'react-query';
 import axios from 'axios';
 import { PostDetailResponse } from 'climbingweb/types/response/post';
@@ -9,8 +10,12 @@ import { PostDetailResponse } from 'climbingweb/types/response/post';
  * @returns axiosResponse.data
  */
 const getPost = async (postId: string) => {
-  const { data } = await axios.get<PostDetailResponse>(`/posts/${postId}`);
-  return data;
+  try {
+    const { data } = await axios.get<PostDetailResponse>(`/posts/${postId}`);
+    return data;
+  } catch (error: any) {
+    throw error.response.data;
+  }
 };
 
 /**
@@ -23,11 +28,16 @@ const getPost = async (postId: string) => {
 export const useGetPost = (
   postId: string,
   options?: Omit<
-    UseQueryOptions<PostDetailResponse, unknown, PostDetailResponse, QueryKey>,
+    UseQueryOptions<
+      PostDetailResponse,
+      ServerError | ServerBusinessError,
+      PostDetailResponse,
+      QueryKey
+    >,
     'queryKey' | 'queryFn'
   >
 ) => {
-  return useQuery<PostDetailResponse>(
+  return useQuery<PostDetailResponse, ServerError | ServerBusinessError>(
     ['getPost', postId],
     () => getPost(postId),
     {

@@ -1,7 +1,11 @@
 import { useInfiniteQuery } from 'react-query';
 import axios from 'axios';
 import { PostDetailResponse } from 'climbingweb/types/response/post';
-import { Pagination } from 'climbingweb/types/common';
+import {
+  Pagination,
+  ServerError,
+  ServerBusinessError,
+} from 'climbingweb/types/common';
 
 /**
  * GET /api/v1/posts api query 함수
@@ -10,13 +14,17 @@ import { Pagination } from 'climbingweb/types/common';
  * @returns axiosResponse.data
  */
 const getPosts = async ({ pageParam = 0 }) => {
-  const { data } = await axios.get<Pagination<PostDetailResponse>>('/posts', {
-    params: {
-      size: 1,
-      page: pageParam,
-    },
-  });
-  return data;
+  try {
+    const { data } = await axios.get<Pagination<PostDetailResponse>>('/posts', {
+      params: {
+        size: 1,
+        page: pageParam,
+      },
+    });
+    return data;
+  } catch (error: any) {
+    throw error.response.data;
+  }
 };
 
 /**
@@ -26,16 +34,15 @@ const getPosts = async ({ pageParam = 0 }) => {
  * @returns GET /api/v1/posts api 의 useInfiniteQuery return 값
  */
 export const useGetPosts = () => {
-  return useInfiniteQuery<Pagination<PostDetailResponse>>(
-    ['getPosts'],
-    getPosts,
-    {
-      staleTime: 3000,
-      getNextPageParam: (lastPageData: Pagination<PostDetailResponse>) => {
-        return lastPageData.nextPageNum < 0
-          ? undefined
-          : lastPageData.nextPageNum;
-      },
-    }
-  );
+  return useInfiniteQuery<
+    Pagination<PostDetailResponse>,
+    ServerError | ServerBusinessError
+  >(['getPosts'], getPosts, {
+    staleTime: 3000,
+    getNextPageParam: (lastPageData: Pagination<PostDetailResponse>) => {
+      return lastPageData.nextPageNum < 0
+        ? undefined
+        : lastPageData.nextPageNum;
+    },
+  });
 };

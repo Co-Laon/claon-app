@@ -1,7 +1,11 @@
 import { QueryKey, useQuery, UseQueryOptions } from 'react-query';
 import axios from 'axios';
 import { CenterPreviewResponse } from 'climbingweb/types/response/center';
-import { Pagination } from 'climbingweb/types/common';
+import {
+  Pagination,
+  ServerBusinessError,
+  ServerError,
+} from 'climbingweb/types/common';
 
 /**
  * GET /centers api 의 query 함수
@@ -12,15 +16,19 @@ import { Pagination } from 'climbingweb/types/common';
 const getCenterList = async (
   option: 'bookmark' | 'new_setting' | 'newly_registered'
 ) => {
-  const { data } = await axios.get<Pagination<CenterPreviewResponse>>(
-    '/centers',
-    {
-      params: {
-        option: option,
-      },
-    }
-  );
-  return data;
+  try {
+    const { data } = await axios.get<Pagination<CenterPreviewResponse>>(
+      '/centers',
+      {
+        params: {
+          option: option,
+        },
+      }
+    );
+    return data;
+  } catch (error: any) {
+    throw error.response.data;
+  }
 };
 
 /**
@@ -35,20 +43,19 @@ export const useGetCenterList = (
   options?: Omit<
     UseQueryOptions<
       Pagination<CenterPreviewResponse>,
-      unknown,
+      ServerError | ServerBusinessError,
       Pagination<CenterPreviewResponse>,
       QueryKey
     >,
     'queryKey' | 'queryFn'
   >
 ) => {
-  return useQuery<Pagination<CenterPreviewResponse>>(
-    ['getCenterList', option],
-    () => getCenterList(option),
-    {
-      retry: 0,
-      enabled: !!option,
-      ...options,
-    }
-  );
+  return useQuery<
+    Pagination<CenterPreviewResponse>,
+    ServerError | ServerBusinessError
+  >(['getCenterList', option], () => getCenterList(option), {
+    retry: 0,
+    enabled: !!option,
+    ...options,
+  });
 };

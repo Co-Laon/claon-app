@@ -1,6 +1,7 @@
+import { ServerError, ServerBusinessError } from 'climbingweb/types/common';
 import axios from 'axios';
 import { CenterNameResponse } from 'climbingweb/types/response/center';
-import _ from 'lodash';
+import { debounce } from 'lodash';
 import { QueryKey, useQuery, UseQueryOptions } from 'react-query';
 
 /**
@@ -8,12 +9,16 @@ import { QueryKey, useQuery, UseQueryOptions } from 'react-query';
  * @param centerName 암장 이름 검색 input 값
  * @returns axiosResponse.data
  */
-const searchCenterName = _.debounce(
+const searchCenterName = debounce(
   async (centerName: string) => {
-    const { data } = await axios.get<CenterNameResponse[]>(
-      `/centers/name/${centerName}`
-    );
-    return data;
+    try {
+      const { data } = await axios.get<CenterNameResponse[]>(
+        `/centers/name/${centerName}`
+      );
+      return data;
+    } catch (error: any) {
+      throw error.response.data;
+    }
   },
   300,
   { leading: true }
@@ -31,14 +36,14 @@ export const useSearchCenterName = (
   options?: Omit<
     UseQueryOptions<
       CenterNameResponse[],
-      unknown,
+      ServerError | ServerBusinessError,
       CenterNameResponse[],
       QueryKey
     >,
     'queryKey' | 'queryFn'
   >
 ) => {
-  return useQuery<CenterNameResponse[]>(
+  return useQuery<CenterNameResponse[], ServerError | ServerBusinessError>(
     ['centerName', centerName],
     () => searchCenterName(centerName),
     {

@@ -1,7 +1,11 @@
 import { ChildCommentResponse } from './../../../../types/response/post/index.d';
 import { QueryKey, useQuery, UseQueryOptions } from 'react-query';
 import axios from 'axios';
-import { Pagination } from 'climbingweb/types/common';
+import {
+  Pagination,
+  ServerError,
+  ServerBusinessError,
+} from 'climbingweb/types/common';
 
 /**
  * GET /api​/v1​/posts​/comment​/{parentId}​/children api query 함수
@@ -10,10 +14,14 @@ import { Pagination } from 'climbingweb/types/common';
  * @returns axiosResponse.data
  */
 const findAllChildrenComment = async (commentId: string) => {
-  const { data } = await axios.get<Pagination<ChildCommentResponse>>(
-    `/posts/${commentId}/comment`
-  );
-  return data;
+  try {
+    const { data } = await axios.get<Pagination<ChildCommentResponse>>(
+      `/posts/${commentId}/comment`
+    );
+    return data;
+  } catch (error: any) {
+    throw error.response.data;
+  }
 };
 
 /**
@@ -28,14 +36,17 @@ export const useFindAllChildrenComment = (
   options?: Omit<
     UseQueryOptions<
       Pagination<ChildCommentResponse>,
-      unknown,
+      ServerError | ServerBusinessError,
       Pagination<ChildCommentResponse>,
       QueryKey
     >,
     'queryKey'
   >
 ) => {
-  return useQuery<Pagination<ChildCommentResponse>>(
+  return useQuery<
+    Pagination<ChildCommentResponse>,
+    ServerError | ServerBusinessError
+  >(
     ['findAllParentCommentAndThreeChildComment', postId],
     () => findAllChildrenComment(postId),
     { retry: 0, enabled: !!postId, ...options }
