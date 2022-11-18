@@ -1,6 +1,10 @@
 import { useInfiniteQuery } from 'react-query';
 import axios from 'axios';
-import { Pagination } from 'climbingweb/types/common';
+import {
+  Pagination,
+  ServerBusinessError,
+  ServerError,
+} from 'climbingweb/types/common';
 import { UserPostDetailResponse } from 'climbingweb/types/response/laon';
 
 /**
@@ -10,15 +14,19 @@ import { UserPostDetailResponse } from 'climbingweb/types/response/laon';
  * @returns axiosResponse.data
  */
 const getLaonPost = async ({ pageParam = 0 }) => {
-  const { data } = await axios.get<Pagination<UserPostDetailResponse>>(
-    '/laon/posts',
-    {
-      params: {
-        page: pageParam,
-      },
-    }
-  );
-  return data;
+  try {
+    const { data } = await axios.get<Pagination<UserPostDetailResponse>>(
+      '/laon/posts',
+      {
+        params: {
+          page: pageParam,
+        },
+      }
+    );
+    return data;
+  } catch (error: any) {
+    throw error.response.data;
+  }
 };
 
 /**
@@ -28,16 +36,15 @@ const getLaonPost = async ({ pageParam = 0 }) => {
  * @returns GET /api/v1/laon/posts api의 useInfiniteQuery return 값
  */
 export const useGetLaonPost = () => {
-  return useInfiniteQuery<Pagination<UserPostDetailResponse>>(
-    ['getLaonPost'],
-    getLaonPost,
-    {
-      staleTime: 3000,
-      getNextPageParam: (lastPageData: Pagination<UserPostDetailResponse>) => {
-        return lastPageData.nextPageNum < 0
-          ? undefined
-          : lastPageData.nextPageNum;
-      },
-    }
-  );
+  return useInfiniteQuery<
+    Pagination<UserPostDetailResponse>,
+    ServerError | ServerBusinessError
+  >(['getLaonPost'], getLaonPost, {
+    staleTime: 3000,
+    getNextPageParam: (lastPageData: Pagination<UserPostDetailResponse>) => {
+      return lastPageData.nextPageNum < 0
+        ? undefined
+        : lastPageData.nextPageNum;
+    },
+  });
 };

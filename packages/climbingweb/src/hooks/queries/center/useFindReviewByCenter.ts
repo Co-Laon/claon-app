@@ -1,3 +1,5 @@
+import { ServerBusinessError } from './../../../../types/common/index.d';
+import { ServerError } from 'climbingweb/types/common';
 import { QueryKey, useQuery, UseQueryOptions } from 'react-query';
 import axios from 'axios';
 import { ReviewListFindResponse } from 'climbingweb/types/response/center';
@@ -9,10 +11,14 @@ import { ReviewListFindResponse } from 'climbingweb/types/response/center';
  * @returns axiosResponse.data
  */
 const findReviewByCenter = async (centerId: string) => {
-  const { data } = await axios.get<ReviewListFindResponse>(
-    `/centers/${centerId}/review`
-  );
-  return data;
+  try {
+    const { data } = await axios.get<ReviewListFindResponse>(
+      `/centers/${centerId}/review`
+    );
+    return data;
+  } catch (error: any) {
+    throw error.response.data;
+  }
 };
 
 /**
@@ -27,14 +33,14 @@ export const useFindReviewByCenter = (
   options?: Omit<
     UseQueryOptions<
       ReviewListFindResponse,
-      unknown,
+      ServerError | ServerBusinessError,
       ReviewListFindResponse,
       QueryKey
     >,
     'queryKey' | 'queryFn'
   >
 ) => {
-  return useQuery<ReviewListFindResponse>(
+  return useQuery<ReviewListFindResponse, ServerError | ServerBusinessError>(
     ['findReviewByCenter', centerId],
     () => findReviewByCenter(centerId),
     { retry: 0, enabled: !!centerId, ...options }

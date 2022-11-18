@@ -1,5 +1,6 @@
 import { useMutation, UseMutationOptions } from 'react-query';
 import axios from 'axios';
+import { ServerBusinessError, ServerError } from 'climbingweb/types/common';
 
 /**
  * DELETE /laon/{nickname} api 의 query 함수
@@ -8,8 +9,12 @@ import axios from 'axios';
  * @returns axiosReponse.data
  */
 const deleteLaon = async (nickname: string) => {
-  const { data } = await axios.delete<void>(`/laon/${nickname}`);
-  return data;
+  try {
+    const { data } = await axios.delete<void>(`/laon/${nickname}`);
+    return data;
+  } catch (error: any) {
+    throw error.response.data;
+  }
 };
 
 /**
@@ -21,7 +26,13 @@ const deleteLaon = async (nickname: string) => {
  */
 export const useDeleteLaon = (
   nickname: string,
-  options?: Omit<UseMutationOptions<void, unknown, void, unknown>, 'mutationFn'>
+  options?: Omit<
+    UseMutationOptions<void, ServerError | ServerBusinessError, void, unknown>,
+    'mutationFn'
+  >
 ) => {
-  return useMutation<void>(() => deleteLaon(nickname), options);
+  return useMutation<void, ServerError | ServerBusinessError>(
+    () => deleteLaon(nickname),
+    options
+  );
 };

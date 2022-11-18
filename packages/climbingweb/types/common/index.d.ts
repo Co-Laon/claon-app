@@ -15,3 +15,10 @@ export interface ServerError {
   error: string;
   path: string;
 }
+
+export interface ServerBusinessError {
+  errorCode: number;
+  message: string;
+  timeStamp: string;
+  violations?: string[];
+}

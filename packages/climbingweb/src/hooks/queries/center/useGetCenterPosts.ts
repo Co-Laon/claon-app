@@ -1,4 +1,8 @@
-import { Pagination } from 'climbingweb/types/common';
+import {
+  Pagination,
+  ServerError,
+  ServerBusinessError,
+} from 'climbingweb/types/common';
 import { useQuery, UseQueryOptions, QueryKey } from 'react-query';
 import axios from 'axios';
 import { CenterPostThumbnailResponse } from 'climbingweb/types/response/center';
@@ -10,10 +14,14 @@ import { CenterPostThumbnailResponse } from 'climbingweb/types/response/center';
  * @returns axiosReponse.data
  */
 const getCenterPosts = async (centerId: string) => {
-  const { data } = await axios.get<Pagination<CenterPostThumbnailResponse>>(
-    `/centers/${centerId}/posts`
-  );
-  return data;
+  try {
+    const { data } = await axios.get<Pagination<CenterPostThumbnailResponse>>(
+      `/centers/${centerId}/posts`
+    );
+    return data;
+  } catch (error: any) {
+    throw error.response.data;
+  }
 };
 
 /**
@@ -28,16 +36,19 @@ export const useGetCenterPosts = (
   options?: Omit<
     UseQueryOptions<
       Pagination<CenterPostThumbnailResponse>,
-      unknown,
+      ServerError | ServerBusinessError,
       Pagination<CenterPostThumbnailResponse>,
       QueryKey
     >,
     'queryKey' | 'queryFn'
   >
 ) => {
-  return useQuery<Pagination<CenterPostThumbnailResponse>>(
-    ['getCenterPosts', centerId],
-    () => getCenterPosts(centerId),
-    { retry: 0, enabled: !!centerId, ...options }
-  );
+  return useQuery<
+    Pagination<CenterPostThumbnailResponse>,
+    ServerError | ServerBusinessError
+  >(['getCenterPosts', centerId], () => getCenterPosts(centerId), {
+    retry: 0,
+    enabled: !!centerId,
+    ...options,
+  });
 };

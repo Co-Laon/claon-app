@@ -1,3 +1,4 @@
+import { ServerError, ServerBusinessError } from 'climbingweb/types/common';
 import { useMutation, UseMutationOptions } from 'react-query';
 import axios from 'axios';
 
@@ -8,8 +9,12 @@ import axios from 'axios';
  * @returns axiosResponse.data
  */
 const createLaon = async (nickname: string) => {
-  const { data } = await axios.post<void>(`/laon/${nickname}`);
-  return data;
+  try {
+    const { data } = await axios.post<void>(`/laon/${nickname}`);
+    return data;
+  } catch (error: any) {
+    throw error.response.data;
+  }
 };
 
 /**
@@ -21,7 +26,13 @@ const createLaon = async (nickname: string) => {
  */
 export const useCreateLaon = (
   nickname: string,
-  options?: Omit<UseMutationOptions<void, unknown, void, unknown>, 'mutationFn'>
+  options?: Omit<
+    UseMutationOptions<void, ServerError | ServerBusinessError, void, unknown>,
+    'mutationFn'
+  >
 ) => {
-  return useMutation<void>(() => createLaon(nickname), options);
+  return useMutation<void, ServerError | ServerBusinessError>(
+    () => createLaon(nickname),
+    options
+  );
 };
