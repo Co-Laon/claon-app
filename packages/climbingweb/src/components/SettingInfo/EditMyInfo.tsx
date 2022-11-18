@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import { BottomSheet } from 'react-spring-bottom-sheet';
 import { DropDown } from '../common/DropDown';
-import 'react-spring-bottom-sheet/dist/style.css';
 import { ListSheet } from '../common/BottomSheetContents/ListSheet/ListSheet';
 import { Input } from '../common/Input';
 import { StringCount } from '../common/Input/StringCount';

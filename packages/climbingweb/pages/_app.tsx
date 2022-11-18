@@ -12,6 +12,7 @@ import {
   sendReactNativeMessage,
 } from 'climbingweb/src/utils/reactNativeMessage';
 import { isDesktop } from 'react-device-detect';
+import 'react-spring-bottom-sheet/dist/style.css';
 
 function MyApp({ Component, pageProps }: AppProps) {
   axios.defaults.baseURL = '' + process.env.NEXT_PUBLIC_API;

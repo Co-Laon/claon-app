@@ -9,7 +9,6 @@ import {
 import TextArea from 'climbingweb/src/components/common/TextArea/TextArea';
 import { useState } from 'react';
 import { BottomSheet } from 'react-spring-bottom-sheet';
-import 'react-spring-bottom-sheet/dist/style.css';
 export default function ReportPage({}) {
   const [open, setOpen] = useState(false);
   const handleOpen = () => {
