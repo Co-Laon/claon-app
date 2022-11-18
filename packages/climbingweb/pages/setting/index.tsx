@@ -38,12 +38,17 @@ export default function SettingPage() {
   //user 개인 data useQuery
   const {
     data: userData,
+    refetch: refetchUserData,
     isError: isUserDataError,
     error: userDataError,
   } = useRetrieveMe();
 
   //프로필 비공개 관련 useMutation
-  const { mutate: changePublicScopeMutate } = useChangePublicScope();
+  const { mutate: changePublicScopeMutate } = useChangePublicScope({
+    onSuccess: () => {
+      refetchUserData();
+    },
+  });
 
   //회원 탈퇴 관련 useMutation
   // const { mutate: deleteUserMutate } = useDeleteUser();

@@ -6,6 +6,7 @@ import { NormalButton, SmmallNodeButton } from '../common/button/Button';
 import InstaIcon from 'climbingweb/src/assets/icon/ic_24_instagram.svg';
 import { UserRequest } from 'climbingweb/types/request/user';
 import { useModifyUser } from 'climbingweb/src/hooks/queries/user/useModifyUser';
+import { useRetrieveMe } from 'climbingweb/src/hooks/queries/user/useRetrieveMe';
 
 interface InfoProps {
   userRequest: UserRequest;
@@ -18,8 +19,14 @@ export const EditMyInfo = ({ userRequest, setTitleName }: InfoProps) => {
   const [userRequestData, setUserRequestData] =
     useState<UserRequest>(userRequest);
 
+  const { refetch: refetchUserData } = useRetrieveMe();
+
   // modifyUer server mutation
-  const { mutate: modifyUserMutate } = useModifyUser(userRequestData);
+  const { mutate: modifyUserMutate } = useModifyUser(userRequestData, {
+    onSuccess: () => {
+      refetchUserData();
+    },
+  });
 
   const {
     armReach,
@@ -32,6 +39,7 @@ export const EditMyInfo = ({ userRequest, setTitleName }: InfoProps) => {
 
   // 데이터 변경 핸들러들
   const handleChangeNicknameInput = (changedNickname: string) => {
+    if (changedNickname.length > 20) return;
     setUserRequestData({ ...userRequestData, nickname: changedNickname });
   };
   const handleChangeHeightInput = (changedHeight: number) => {
