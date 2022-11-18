@@ -87,6 +87,7 @@ export const BanList = ({}) => {
               <LaonList
                 key={`blockUserDataPage_${pIndex}`}
                 laonList={laonList}
+                disabled
               />
             );
           })

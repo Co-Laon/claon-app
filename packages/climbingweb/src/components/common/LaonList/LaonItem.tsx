@@ -6,6 +6,7 @@ export const LaonItem = ({
   laonNickName,
   laonProfileImage,
   rightNode,
+  disabled,
 }: LaonProps) => {
   /**
    * 라온 리스트 클릭 핸들러
@@ -16,11 +17,11 @@ export const LaonItem = ({
   };
 
   return (
-    <li
-      className="flex flex-row items-center justify-between"
-      onClick={handleLaonItemClick}
-    >
-      <div className="flex flex-row items-center gap-2">
+    <li className="flex flex-row items-center justify-between">
+      <div
+        className="flex flex-row items-center gap-2"
+        onClick={!disabled ? handleLaonItemClick : undefined}
+      >
         <div className="h-10 w-10 relative">
           <Image
             className="rounded-full"
