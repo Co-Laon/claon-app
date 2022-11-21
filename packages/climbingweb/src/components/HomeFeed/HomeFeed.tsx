@@ -12,6 +12,8 @@ import { BottomSheet } from 'react-spring-bottom-sheet';
 import { ListSheet } from '../common/BottomSheetContents/ListSheet/ListSheet';
 import { PostDetailResponse } from 'climbingweb/types/response/post';
 import { UserPostDetailResponse } from 'climbingweb/types/response/laon';
+import Loading from '../common/Loading/Loading';
+import ErrorContent from '../common/Error/ErrorContent';
 
 interface HomeFeedProps {
   postData: PostDetailResponse | UserPostDetailResponse;
@@ -73,9 +75,9 @@ const HomeFeed = ({ postData }: HomeFeedProps) => {
   //옵션 도트 클릭 핸들러
   const handleOptionDotClick = () => setOpenBTSheet(true);
 
-  if (isCommentError) return <div>{commentError}</div>;
+  if (isCommentError) return <ErrorContent error={commentError} />;
 
-  if (!!postData && !!commentData)
+  if (commentData)
     return (
       <section className={'w-full mb-footer'}>
         <FeedHeader
@@ -105,7 +107,7 @@ const HomeFeed = ({ postData }: HomeFeedProps) => {
       </section>
     );
 
-  return <div>로딩 중...</div>;
+  return <Loading />;
 };
 
 export default HomeFeed;

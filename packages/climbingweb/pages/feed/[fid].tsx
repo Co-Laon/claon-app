@@ -4,6 +4,7 @@ import {
   ModifiedButton,
 } from 'climbingweb/src/components/common/AppBar/IconButton';
 import { ListSheet } from 'climbingweb/src/components/common/BottomSheetContents/ListSheet/ListSheet';
+import Loading from 'climbingweb/src/components/common/Loading/Loading';
 import HomeFeed from 'climbingweb/src/components/HomeFeed/HomeFeed';
 import { useGetPost } from 'climbingweb/src/hooks/queries/post/useGetPost';
 import { useRouter } from 'next/router';
@@ -16,7 +17,7 @@ export default function FeedPage({}) {
   const router = useRouter();
   const { fid } = router.query;
   //fid string 거르는 로직, useRouter 에 대해 자세히 보고 추후 반드시 변경 해야함
-  const feedId = fid ? (Array.isArray(fid) ? fid[0] : fid) : '';
+  const feedId = fid as string;
 
   const {
     data: postData,
@@ -41,5 +42,5 @@ export default function FeedPage({}) {
       </section>
     );
 
-  return <div>로딩 중...</div>;
+  return <Loading />;
 }

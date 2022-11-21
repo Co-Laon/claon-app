@@ -9,6 +9,8 @@ import Router from 'next/router';
 import { useGetPosts } from 'climbingweb/src/hooks/queries/post/useGetPosts';
 import { useGetLaonPost } from 'climbingweb/src/hooks/queries/laon/useGetLaonPost';
 import { useIntersectionObserver } from 'climbingweb/src/hooks/useIntersectionObserver';
+import ErrorContent from 'climbingweb/src/components/common/Error/ErrorContent';
+import Loading from 'climbingweb/src/components/common/Loading/Loading';
 
 const Home: NextPage = () => {
   //laon feed data useQuery
@@ -49,8 +51,8 @@ const Home: NextPage = () => {
     { threshold: 1 }
   );
 
-  if (isPostsDataError) return <div>{postsDataError}</div>;
-  if (isLaonPostsDataError) return <div>{laonPostsDataError}</div>;
+  if (isPostsDataError) return <ErrorContent error={postsDataError} />;
+  if (isLaonPostsDataError) return <ErrorContent error={laonPostsDataError} />;
 
   if (postsData && laonPostsData)
     return (
@@ -59,13 +61,11 @@ const Home: NextPage = () => {
           leftNode={<AppLogo />}
           rightNode={<ModifiedButton onClick={onClickCreateFeed} />}
         />
-        <>
-          {laonPostsData.pages.map((page) => {
-            return page.results.map((result, index) => (
-              <HomeFeed key={`laonPostsDataFeed_${index}`} postData={result} />
-            ));
-          })}
-        </>
+        {laonPostsData.pages.map((page) => {
+          return page.results.map((result, index) => (
+            <HomeFeed key={`laonPostsDataFeed_${index}`} postData={result} />
+          ));
+        })}
         {!hasNextLaonPosts ? (
           <div className="m-4 font-medium">
             <div className="h-[1px] my-2 bg-slate-300"></div>
@@ -73,22 +73,20 @@ const Home: NextPage = () => {
             <div className="h-[1px] my-2 bg-slate-300"></div>
           </div>
         ) : null}
-        <>
-          {postsData.pages.map((page) => {
-            return page.results.map((result, index) => (
-              <HomeFeed key={`postsDataFeed_${index}`} postData={result} />
-            ));
-          })}
-        </>
+        {postsData.pages.map((page) => {
+          return page.results.map((result, index) => (
+            <HomeFeed key={`postsDataFeed_${index}`} postData={result} />
+          ));
+        })}
         {!isFetchingPosts && !isFetchingLaonPosts ? (
           <div className="h-[1px] bg-slate-300" ref={target}></div>
         ) : (
-          <div>로딩 중...</div>
+          <Loading />
         )}
       </div>
     );
 
-  return <div>로딩 중...</div>;
+  return <Loading />;
 };
 
 export default Home;
