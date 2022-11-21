@@ -81,4 +81,6 @@ export default function CenterPage({}) {
         </div>
       </section>
     );
+
+  return <Loading />;
 }
