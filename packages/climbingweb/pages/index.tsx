@@ -5,14 +5,15 @@ import {
   ModifiedButton,
   AppLogo,
 } from 'climbingweb/src/components/common/AppBar/IconButton';
-import Router from 'next/router';
 import { useGetPosts } from 'climbingweb/src/hooks/queries/post/useGetPosts';
 import { useGetLaonPost } from 'climbingweb/src/hooks/queries/laon/useGetLaonPost';
 import { useIntersectionObserver } from 'climbingweb/src/hooks/useIntersectionObserver';
 import ErrorContent from 'climbingweb/src/components/common/Error/ErrorContent';
 import Loading from 'climbingweb/src/components/common/Loading/Loading';
+import { useRouter } from 'next/router';
 
 const Home: NextPage = () => {
+  const router = useRouter();
   //laon feed data useQuery
   const {
     data: laonPostsData,
@@ -35,7 +36,7 @@ const Home: NextPage = () => {
 
   //피드 추가 버튼 클릭 핸들러
   const onClickCreateFeed = () => {
-    Router.push('/feed/create');
+    router.push('/feed/create');
   };
 
   //intersect 핸들러
