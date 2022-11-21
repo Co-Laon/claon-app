@@ -37,9 +37,6 @@ export default function CenterPage({}) {
   if (isNewlyRegisteredError)
     return <ErrorContent error={newlyRegisteredError} />;
 
-  if (isNewSettingLoading || isBookmarkLoading || isNewlyRegisteredLoading)
-    return <Loading />;
-
   if (newSettingData && bookmarkData && newlyRegisteredData)
     return (
       <section className="mb-footer">
