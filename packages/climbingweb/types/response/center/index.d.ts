@@ -5,8 +5,10 @@ import { Pagination } from '../../common/index';
  * 특이사항: Pagination«CenterPreviewResponseDto»
  */
 export interface CenterPreviewResponse {
-  centerImage: string;
-  centerName: string;
+  id: string;
+  name: string;
+  reviewRank: number;
+  thumbnailUrl: string;
 }
 
 /**

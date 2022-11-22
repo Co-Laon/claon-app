@@ -6,6 +6,8 @@ import {
   BookMarkButton,
   OptionButton,
 } from 'climbingweb/src/components/common/AppBar/IconButton';
+import ErrorContent from 'climbingweb/src/components/common/Error/ErrorContent';
+import Loading from 'climbingweb/src/components/common/Loading/Loading';
 import { useFindCenter } from 'climbingweb/src/hooks/queries/center/useFindCenter';
 import { useRouter } from 'next/router';
 
@@ -13,39 +15,39 @@ export default function CenterDetailPage() {
   const router = useRouter();
   const { cid } = router.query;
   //cid string 거르는 로직, useRouter 에 대해 자세히 보고 추후 반드시 변경 해야함
-  const centerId = cid ? (Array.isArray(cid) ? cid[0] : cid) : '';
+  const centerId = cid as string;
 
   //암장 상세 정보 useQuery state
   const {
-    isLoading: isCenterDetailLoading,
     data: CenterDetailData,
     isError: isCenterDetailError,
     error: CenterDetailerror,
   } = useFindCenter(centerId);
 
-  return isCenterDetailLoading ? (
-    <div>로딩 중</div>
-  ) : isCenterDetailError ? (
-    <div>{CenterDetailerror}</div>
-  ) : CenterDetailData ? (
-    <section className="mb-footer overflow-auto scrollbar-hide">
-      <AppBar
-        leftNode={<AppLogo />}
-        rightNode={
-          <div className="flex flex-row gap-x-3">
-            <BookMarkButton /> <OptionButton />
-          </div>
-        }
-      />
-      <CenterInfoHead
-        name={CenterDetailData.name}
-        address={CenterDetailData.address}
-        tel={CenterDetailData.tel}
-        instagramUrl={CenterDetailData.instagramUrl}
-        webUrl={CenterDetailData.webUrl}
-        youtubeUrl={CenterDetailData.youtubeUrl}
-      />
-      <CenterInfoContent data={CenterDetailData} />
-    </section>
-  ) : null;
+  if (isCenterDetailError) return <ErrorContent error={CenterDetailerror} />;
+
+  if (CenterDetailData)
+    return (
+      <section className="mb-footer overflow-auto scrollbar-hide">
+        <AppBar
+          leftNode={<AppLogo />}
+          rightNode={
+            <div className="flex flex-row gap-x-3">
+              <BookMarkButton /> <OptionButton />
+            </div>
+          }
+        />
+        <CenterInfoHead
+          name={CenterDetailData.name}
+          address={CenterDetailData.address}
+          tel={CenterDetailData.tel}
+          instagramUrl={CenterDetailData.instagramUrl}
+          webUrl={CenterDetailData.webUrl}
+          youtubeUrl={CenterDetailData.youtubeUrl}
+        />
+        <CenterInfoContent data={CenterDetailData} />
+      </section>
+    );
+
+  return <Loading />;
 }

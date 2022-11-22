@@ -1,6 +1,9 @@
 import { useGetCenterPosts } from 'climbingweb/src/hooks/queries/center/useGetCenterPosts';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
+import EmptyContent from '../../common/EmptyContent/EmptyContent';
+import ErrorContent from '../../common/Error/ErrorContent';
+import Loading from '../../common/Loading/Loading';
 
 interface CenterPostsProps {
   centerId: string;
@@ -14,7 +17,7 @@ export const CenterPost = ({ centerId }: CenterPostsProps) => {
     router.push(`/feed/${id}`);
   };
 
-  if (isError) return <div>{error}</div>;
+  if (isError) return <ErrorContent error={error} />;
 
   if (!!data)
     return data.totalCount !== 0 ? (
@@ -36,8 +39,8 @@ export const CenterPost = ({ centerId }: CenterPostsProps) => {
         ))}
       </div>
     ) : (
-      <div> 게시글이 없습니다. </div>
+      <EmptyContent message="게시글이 없습니다." />
     );
 
-  return <div>로딩 중...</div>;
+  return <Loading />;
 };

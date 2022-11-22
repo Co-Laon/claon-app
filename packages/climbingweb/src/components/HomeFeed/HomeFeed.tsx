@@ -7,17 +7,20 @@ import ImageSlider from '../ImageSlider/ImageSlider';
 import { useCreateLike } from 'climbingweb/src/hooks/queries/post/useCreateLike';
 import { useDeleteLike } from 'climbingweb/src/hooks/queries/post/useDeleteLike';
 import { useFindAllParentCommentAndThreeChildComment } from 'climbingweb/src/hooks/queries/post/useFindAllParentCommentAndThreeChildComment';
-import Router from 'next/router';
 import { BottomSheet } from 'react-spring-bottom-sheet';
 import { ListSheet } from '../common/BottomSheetContents/ListSheet/ListSheet';
 import { PostDetailResponse } from 'climbingweb/types/response/post';
 import { UserPostDetailResponse } from 'climbingweb/types/response/laon';
+import Loading from '../common/Loading/Loading';
+import ErrorContent from '../common/Error/ErrorContent';
+import { useRouter } from 'next/router';
 
 interface HomeFeedProps {
   postData: PostDetailResponse | UserPostDetailResponse;
 }
 
 const HomeFeed = ({ postData }: HomeFeedProps) => {
+  const router = useRouter();
   //바텀시트 open state
   const [openBTSheet, setOpenBTSheet] = useState<boolean>(false);
 
@@ -67,15 +70,19 @@ const HomeFeed = ({ postData }: HomeFeedProps) => {
 
   //댓글 더보기 클릭 핸들러
   const handleMoreCommentClick = () => {
-    Router.push(`/feed/${postData.postId}/comments`);
+    router.push(`/feed/${postData.postId}/comments`);
   };
 
   //옵션 도트 클릭 핸들러
   const handleOptionDotClick = () => setOpenBTSheet(true);
 
-  if (isCommentError) return <div>{commentError}</div>;
+  //바텀시트 리스트 클릭 핸들러
+  const handleBTSheetListClick = () =>
+    router.push(`/report/${postData.postId}`);
 
-  if (!!postData && !!commentData)
+  if (isCommentError) return <ErrorContent error={commentError} />;
+
+  if (commentData)
     return (
       <section className={'w-full mb-footer'}>
         <FeedHeader
@@ -99,13 +106,13 @@ const HomeFeed = ({ postData }: HomeFeedProps) => {
           <ListSheet
             headerTitle={''}
             list={['신고하기']}
-            onSelect={() => Router.push(`/report/${postData.postId}`)}
+            onSelect={handleBTSheetListClick}
           />
         </BottomSheet>
       </section>
     );
 
-  return <div>로딩 중...</div>;
+  return <Loading />;
 };
 
 export default HomeFeed;
