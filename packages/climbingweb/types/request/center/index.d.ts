@@ -1,4 +1,4 @@
-import { CenterImg, ReportType } from 'climbingweb/types/response/center';
+import { CenterImg } from 'climbingweb/types/response/center';
 
 export interface HoldInfoRequest {
   image: string;
@@ -37,7 +37,14 @@ export interface CenterCreateRequest {
  */
 export interface CenterReportCreateRequest {
   content: string;
-  reportType: ReportType;
+  reportType:
+    | '사진'
+    | '세팅일정'
+    | '연락처'
+    | '운영시간'
+    | '이용요금'
+    | '편의시설'
+    | '홀드정보';
 }
 
 /**

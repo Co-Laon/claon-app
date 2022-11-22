@@ -151,6 +151,7 @@ export interface CenterReportResponse {
 /**
  * 작성자: 윤웅재
  * GET /api/v1/centers/{centerId}/review
+ *
  */
 export interface ReviewListFindResponse {
   centerId: string;
@@ -166,6 +167,13 @@ export interface ReviewFindResponse {
   reviewerNickname: string;
   reviewerProfileImage: string;
   updatedAt: string;
+}
+
+export interface ReviewBundleFindResponse {
+  centerId: string;
+  otherReviewsPagination: Pagination<ReviewFindResponse>;
+  rank: number;
+  selfReview: ReviewFindResponse;
 }
 
 /**

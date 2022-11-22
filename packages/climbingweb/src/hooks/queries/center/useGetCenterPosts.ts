@@ -3,7 +3,7 @@ import {
   ServerError,
   ServerBusinessError,
 } from 'climbingweb/types/common';
-import { useQuery, UseQueryOptions, QueryKey } from 'react-query';
+import { useInfiniteQuery } from 'react-query';
 import axios from 'axios';
 import { CenterPostThumbnailResponse } from 'climbingweb/types/response/center';
 
@@ -13,10 +13,15 @@ import { CenterPostThumbnailResponse } from 'climbingweb/types/response/center';
  * @param centerId 검색할 암장의 id
  * @returns axiosReponse.data
  */
-const getCenterPosts = async (centerId: string) => {
+const getCenterPosts = async (centerId: string, pageParam: number) => {
   try {
     const { data } = await axios.get<Pagination<CenterPostThumbnailResponse>>(
-      `/centers/${centerId}/posts`
+      `/centers/${centerId}/posts`,
+      {
+        params: {
+          page: pageParam,
+        },
+      }
     );
     return data;
   } catch (error: any) {
@@ -25,30 +30,27 @@ const getCenterPosts = async (centerId: string) => {
 };
 
 /**
- * getCenterPosts api의 useQuery 함수
+ * getCenterPosts api의 useInfiniteQuery 함수
  *
  * @param centerId 검색할 암장의 id
- * @param options getCenterPosts api의 useQuery 추가 옵션
  * @returns getCenterPosts api의 useQuery return 값
  */
-export const useGetCenterPosts = (
-  centerId: string,
-  options?: Omit<
-    UseQueryOptions<
-      Pagination<CenterPostThumbnailResponse>,
-      ServerError | ServerBusinessError,
-      Pagination<CenterPostThumbnailResponse>,
-      QueryKey
-    >,
-    'queryKey' | 'queryFn'
-  >
-) => {
-  return useQuery<
+export const useGetCenterPosts = (centerId: string) => {
+  return useInfiniteQuery<
     Pagination<CenterPostThumbnailResponse>,
     ServerError | ServerBusinessError
-  >(['getCenterPosts', centerId], () => getCenterPosts(centerId), {
-    retry: 0,
-    enabled: !!centerId,
-    ...options,
-  });
+  >(
+    ['getCenterPosts', centerId],
+    (context) => getCenterPosts(centerId, context.pageParam),
+    {
+      enabled: !!centerId,
+      getNextPageParam: (
+        lastPageData: Pagination<CenterPostThumbnailResponse>
+      ) => {
+        return lastPageData.nextPageNum < 0
+          ? undefined
+          : lastPageData.nextPageNum;
+      },
+    }
+  );
 };
