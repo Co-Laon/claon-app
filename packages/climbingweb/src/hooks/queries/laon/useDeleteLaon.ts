@@ -20,19 +20,22 @@ const deleteLaon = async (nickname: string) => {
 /**
  * deleteLaon api 의 useMutation hooks
  *
- * @param nickname 라온을 취소할 유저의 닉네임
  * @param options useMutation 추가 옵션
  * @returns deleteLaon api 의 useMutation return 값
  */
 export const useDeleteLaon = (
-  nickname: string,
   options?: Omit<
-    UseMutationOptions<void, ServerError | ServerBusinessError, void, unknown>,
+    UseMutationOptions<
+      void,
+      ServerError | ServerBusinessError,
+      string,
+      unknown
+    >,
     'mutationFn'
   >
 ) => {
-  return useMutation<void, ServerError | ServerBusinessError>(
-    () => deleteLaon(nickname),
+  return useMutation<void, ServerError | ServerBusinessError, string>(
+    deleteLaon,
     options
   );
 };

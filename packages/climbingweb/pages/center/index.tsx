@@ -5,6 +5,9 @@ import {
   Empty,
 } from 'climbingweb/src/components/common/AppBar/IconButton';
 import { useGetCenterList } from 'climbingweb/src/hooks/queries/center/useGetCenterList';
+import Loading from 'climbingweb/src/components/common/Loading/Loading';
+import ErrorContent from 'climbingweb/src/components/common/Error/ErrorContent';
+import EmptyContent from 'climbingweb/src/components/common/EmptyContent/EmptyContent';
 
 export default function CenterPage({}) {
   //새로운 세팅 리스트 useQuery state
@@ -29,43 +32,55 @@ export default function CenterPage({}) {
     error: newlyRegisteredError,
   } = useGetCenterList('newly_registered');
 
-  return (
-    <section className="mb-footer">
-      <AppBar leftNode={<AppLogo />} title=" " rightNode={<Empty />} />
-      <div className="pl-4 flex flex-col gap-6">
-        <div className="flex flex-col gap-4">
-          <h2 className="text-lg font-extrabold leading-6">{'새로운 세팅'}</h2>
-          {isNewSettingLoading ? (
-            <div>로딩 중</div>
-          ) : isNewSettingError ? (
-            <div>{newSettingError}</div>
-          ) : newSettingData ? (
-            <CenterResultList centerList={newSettingData.results} />
-          ) : null}
+  if (isNewSettingError) return <ErrorContent error={newSettingError} />;
+  if (isBookmarkError) return <ErrorContent error={bookmarkError} />;
+  if (isNewlyRegisteredError)
+    return <ErrorContent error={newlyRegisteredError} />;
+
+  if (newSettingData && bookmarkData && newlyRegisteredData)
+    return (
+      <section className="mb-footer">
+        <AppBar leftNode={<AppLogo />} title=" " rightNode={<Empty />} />
+        <div className="pl-4 flex flex-col gap-6">
+          <div className="flex flex-col gap-4">
+            <h2 className="text-lg font-extrabold leading-6">
+              {'새로운 세팅'}
+            </h2>
+            {isNewSettingLoading ? (
+              <Loading />
+            ) : newSettingData.totalCount !== 0 ? (
+              <CenterResultList centerList={newSettingData.results} />
+            ) : (
+              <EmptyContent message="새로운 세팅을 한 암장이 없습니다." />
+            )}
+          </div>
+          <div className="flex flex-col gap-4">
+            <h2 className="text-lg font-extrabold leading-6">
+              {'즐겨찾는 암장'}
+            </h2>
+            {isBookmarkLoading ? (
+              <Loading />
+            ) : bookmarkData.totalCount !== 0 ? (
+              <CenterResultList centerList={bookmarkData.results} />
+            ) : (
+              <EmptyContent message="즐겨찾기 한 암장이 없습니다." />
+            )}
+          </div>
+          <div className="flex flex-col gap-4">
+            <h2 className="text-lg font-extrabold leading-6">
+              {'새로운 암장'}
+            </h2>
+            {isNewlyRegisteredLoading ? (
+              <Loading />
+            ) : newlyRegisteredData.totalCount !== 0 ? (
+              <CenterResultList centerList={newlyRegisteredData.results} />
+            ) : (
+              <EmptyContent message="새로운 암장이 없습니다." />
+            )}
+          </div>
         </div>
-        <div className="flex flex-col gap-4">
-          <h2 className="text-lg font-extrabold leading-6">
-            {'즐겨찾는 암장'}
-          </h2>
-          {isBookmarkLoading ? (
-            <div>로딩 중</div>
-          ) : isBookmarkError ? (
-            <div>{bookmarkError}</div>
-          ) : bookmarkData ? (
-            <CenterResultList centerList={bookmarkData.results} />
-          ) : null}
-        </div>
-        <div className="flex flex-col gap-4">
-          <h2 className="text-lg font-extrabold leading-6">{'새로운 암장'}</h2>
-          {isNewlyRegisteredLoading ? (
-            <div>로딩 중</div>
-          ) : isNewlyRegisteredError ? (
-            <div>{newlyRegisteredError}</div>
-          ) : newlyRegisteredData ? (
-            <CenterResultList centerList={newlyRegisteredData.results} />
-          ) : null}
-        </div>
-      </div>
-    </section>
-  );
+      </section>
+    );
+
+  return <Loading />;
 }
