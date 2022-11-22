@@ -9,14 +9,14 @@ export interface Pagination<T> {
   totalCount: number;
 }
 
-export interface ServerError {
+interface ServerError {
   timestamp: string;
   status: number;
   error: string;
   path: string;
 }
 
-export interface ServerBusinessError {
+interface ServerBusinessError {
   errorCode: number;
   message: string;
   timeStamp: string;

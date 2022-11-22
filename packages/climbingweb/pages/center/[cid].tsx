@@ -9,9 +9,11 @@ import {
 import { ListSheet } from 'climbingweb/src/components/common/BottomSheetContents/ListSheet/ListSheet';
 import ErrorContent from 'climbingweb/src/components/common/Error/ErrorContent';
 import Loading from 'climbingweb/src/components/common/Loading/Loading';
-import { useCreateCenterBookmark } from 'climbingweb/src/hooks/queries/center/useCreateCenterBookmark';
-import { useDeleteCenterBookmark } from 'climbingweb/src/hooks/queries/center/useDeleteCenterBookmark';
-import { useFindCenter } from 'climbingweb/src/hooks/queries/center/useFindCenter';
+import {
+  useCreateCenterBookmark,
+  useDeleteCenterBookmark,
+  useFindCenter,
+} from 'climbingweb/src/hooks/queries/center/queryKey';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 import { BottomSheet } from 'react-spring-bottom-sheet';
@@ -28,30 +30,17 @@ export default function CenterDetailPage() {
   //암장 상세 정보 useQuery state
   const {
     data: CenterDetailData,
-    refetch: refetchCenterDetail,
     isError: isCenterDetailError,
     error: CenterDetailerror,
   } = useFindCenter(centerId);
 
   //암장 즐겨찾기 useMutation
-  const { mutate: createCenterBookmarkMutate } = useCreateCenterBookmark(
-    centerId,
-    {
-      onSuccess: () => {
-        refetchCenterDetail();
-      },
-    }
-  );
+  const { mutate: createCenterBookmarkMutate } =
+    useCreateCenterBookmark(centerId);
 
   //암장 즐겨찾기 취소 useMutation
-  const { mutate: deleteCenterBookmarkMutate } = useDeleteCenterBookmark(
-    centerId,
-    {
-      onSuccess: () => {
-        refetchCenterDetail();
-      },
-    }
-  );
+  const { mutate: deleteCenterBookmarkMutate } =
+    useDeleteCenterBookmark(centerId);
 
   //암장 즐겨찾기 아이콘 클릭 핸들러
   const handleLikeIconClick = () => {

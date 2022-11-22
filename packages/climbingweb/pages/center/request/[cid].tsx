@@ -11,7 +11,7 @@ import { useState } from 'react';
 import { BottomSheet } from 'react-spring-bottom-sheet';
 import { CenterReportCreateRequest } from 'climbingweb/types/request/center';
 import { useRouter } from 'next/router';
-import { useCreateCenterReport } from 'climbingweb/src/hooks/queries/center/useCreateReport';
+import { useCreateCenterReport } from 'climbingweb/src/hooks/queries/center/queryKey';
 
 export default function ReportPage({}) {
   const router = useRouter();
@@ -29,7 +29,7 @@ export default function ReportPage({}) {
     mutate: createCenterReportMutate,
     isSuccess,
     isError,
-  } = useCreateCenterReport();
+  } = useCreateCenterReport(centerId);
 
   // 바텀 시트 on/off state
   const [open, setOpen] = useState<boolean>(false);
@@ -81,6 +81,7 @@ export default function ReportPage({}) {
 
   // 수정 요청 완료 버튼 클릭 핸들러
   const handleSubmitButtonClick = () => {
+    console.dir('handleSubmitButtonClick');
     createCenterReportMutate({
       centerId: centerId,
       reportCreateRequest: reportData,

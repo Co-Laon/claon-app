@@ -1,4 +1,4 @@
-import { useFindReviewByCenter } from 'climbingweb/src/hooks/queries/center/useFindReviewByCenter';
+import { useFindReviewByCenter } from 'climbingweb/src/hooks/queries/center/queryKey';
 import { useIntersectionObserver } from 'climbingweb/src/hooks/useIntersectionObserver';
 import { ReviewComment } from '../../Comments/ReviewComment';
 import EmptyContent from '../../common/EmptyContent/EmptyContent';

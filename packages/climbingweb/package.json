@@ -10,6 +10,7 @@
     "test": "jest"
   },
   "dependencies": {
+    "@lukemorales/query-key-factory": "^1.0.3",
     "next": "12.1.1",
     "react-device-detect": "^2.2.2"
   },

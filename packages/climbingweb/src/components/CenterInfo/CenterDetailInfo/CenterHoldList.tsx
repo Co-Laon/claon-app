@@ -27,12 +27,12 @@ const CenterHoldList = ({ holdInfoList, holdInfoImg }: CenterHoldListProps) => {
         {holdInfoList.map((value, index) => (
           <div
             key={`centerHoldListImage_${index}`}
-            className="h-8 w-8 mx-1 relative"
+            className={`h-8 w-8 relative z-[${index}]`}
           >
             <Image
               layout="fill"
               objectFit="scale-down"
-              src={value.image}
+              src={value.crayonImage}
               alt={value.name}
             />
           </div>

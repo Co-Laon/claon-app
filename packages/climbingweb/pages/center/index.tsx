@@ -4,10 +4,10 @@ import {
   AppLogo,
   Empty,
 } from 'climbingweb/src/components/common/AppBar/IconButton';
-import { useGetCenterList } from 'climbingweb/src/hooks/queries/center/useGetCenterList';
 import Loading from 'climbingweb/src/components/common/Loading/Loading';
 import ErrorContent from 'climbingweb/src/components/common/Error/ErrorContent';
 import EmptyContent from 'climbingweb/src/components/common/EmptyContent/EmptyContent';
+import { useGetCenterList } from 'climbingweb/src/hooks/queries/center/queryKey';
 
 export default function CenterPage({}) {
   //새로운 세팅 리스트 useQuery state
