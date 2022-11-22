@@ -56,7 +56,7 @@ export const useSearchUser = (
   return useQuery<
     Pagination<UserPreviewResponse>,
     ServerError | ServerBusinessError
-  >(['searchUserName', searchUserName], () => searchUser(searchUserName), {
+  >(['searchUser', searchUserName], () => searchUser(searchUserName), {
     retry: 0,
     enabled: !!searchUserName,
     ...options,

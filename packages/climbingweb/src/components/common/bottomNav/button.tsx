@@ -28,7 +28,7 @@ const navButtons = [
   },
   {
     label: '마이',
-    path: '/my',
+    path: '/users/me',
     icon: <MyLogo alt="setting" />,
     activedIcon: <MyActivedLogo alt="setting-actived" />,
   },

@@ -44,7 +44,7 @@ export const useSearchCenterName = (
   >
 ) => {
   return useQuery<CenterNameResponse[], ServerError | ServerBusinessError>(
-    ['centerName', centerName],
+    ['searchCenterName', centerName],
     () => searchCenterName(centerName),
     {
       initialData: [],
