@@ -4,9 +4,6 @@ import FeedContent from './FeedContent/FeedContent';
 import FeedHeader from './FeedHeader/FeedHeader';
 import FeedSectorInfo from './FeedSectorInfo/FeedSectorInfo';
 import ImageSlider from '../ImageSlider/ImageSlider';
-import { useCreateLike } from 'climbingweb/src/hooks/queries/post/useCreateLike';
-import { useDeleteLike } from 'climbingweb/src/hooks/queries/post/useDeleteLike';
-import { useFindAllParentCommentAndThreeChildComment } from 'climbingweb/src/hooks/queries/post/useFindAllParentCommentAndThreeChildComment';
 import { BottomSheet } from 'react-spring-bottom-sheet';
 import { ListSheet } from '../common/BottomSheetContents/ListSheet/ListSheet';
 import { PostDetailResponse } from 'climbingweb/types/response/post';
@@ -14,6 +11,11 @@ import { UserPostDetailResponse } from 'climbingweb/types/response/laon';
 import Loading from '../common/Loading/Loading';
 import ErrorContent from '../common/Error/ErrorContent';
 import { useRouter } from 'next/router';
+import {
+  useCreateLike,
+  useDeleteLike,
+  useFindAllParentCommentAndThreeChildComment,
+} from 'climbingweb/src/hooks/queries/post/queryKey';
 
 interface HomeFeedProps {
   postData: PostDetailResponse | UserPostDetailResponse;
@@ -31,37 +33,15 @@ const HomeFeed = ({ postData }: HomeFeedProps) => {
     error: commentError,
   } = useFindAllParentCommentAndThreeChildComment(postData.postId);
 
-  //좋아요 눌렀는지 여부 backend api 에서 제공 변경해야 함
-  const [isLiked, setIsLiked] = useState<boolean>(postData.isLike);
-
-  //좋아요 개수 state
-  const [likeCount, setLikeCount] = useState<number>(
-    postData ? postData.likeCount : 0
-  );
-
   //좋아요 추가 useMutation
-  const { mutate: createLikeMutate } = useCreateLike(postData.postId, {
-    onSuccess: (createData) => {
-      setIsLiked(!isLiked);
-      if (createData) {
-        setLikeCount(createData.likeCount);
-      }
-    },
-  });
+  const { mutate: createLikeMutate } = useCreateLike(postData.postId);
 
   //좋아요 취소 useMutation
-  const { mutate: deleteLikeMutate } = useDeleteLike(postData.postId, {
-    onSuccess: (deleteData) => {
-      setIsLiked(!isLiked);
-      if (deleteData) {
-        setLikeCount(deleteData.likeCount);
-      }
-    },
-  });
+  const { mutate: deleteLikeMutate } = useDeleteLike(postData.postId);
 
   //좋아요 아이콘 클릭 핸들러
   const handleLikeButtonClick = () => {
-    if (isLiked) {
+    if (postData.isLike) {
       deleteLikeMutate();
     } else {
       createLikeMutate();
@@ -94,11 +74,11 @@ const HomeFeed = ({ postData }: HomeFeedProps) => {
         <ImageSlider imageList={postData.contentsList} />
         <FeedSectorInfo holdList={postData.climbingHistories} />
         <FeedContent
-          isLiked={isLiked}
-          likeCount={likeCount}
+          isLiked={postData.isLike}
+          likeCount={postData.likeCount}
           createdAt={postData.createdAt}
           content={postData.content}
-          replyCount={commentData.totalCount}
+          replyCount={commentData.pages[0].totalCount}
           onClickHeartIcon={handleLikeButtonClick}
           onClickMoreComment={handleMoreCommentClick}
         ></FeedContent>

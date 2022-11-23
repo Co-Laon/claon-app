@@ -41,7 +41,10 @@ export const useCreateLaon = () => {
   const queryClient = useQueryClient();
   return useMutation(createLaon, {
     onSuccess: () => {
-      queryClient.invalidateQueries(laonQueries.list());
+      queryClient.invalidateQueries({
+        queryKey: laonQueries.list().queryKey,
+        refetchInactive: true,
+      });
     },
   });
 };
@@ -55,7 +58,10 @@ export const useDeleteLaon = () => {
   const queryClient = useQueryClient();
   return useMutation(deleteLaon, {
     onSuccess: () => {
-      queryClient.invalidateQueries(laonQueries.list());
+      queryClient.invalidateQueries({
+        queryKey: laonQueries.list().queryKey,
+        refetchInactive: true,
+      });
     },
   });
 };
