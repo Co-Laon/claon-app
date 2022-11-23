@@ -18,6 +18,9 @@ import {
   searchCenterName,
 } from './queries';
 
+/**
+ * center-controller api 의 query key factory
+ */
 export const centerQueries = createQueryKeys('centers', {
   list: (option: 'bookmark' | 'new_setting' | 'newly_registered') => ({
     queryKey: [option],
@@ -81,9 +84,10 @@ export const useFindCenter = (centerId: string) => {
 };
 
 /**
+ * createCenterBookmark api useMutation hooks
  *
- * @param centerId
- * @returns
+ * @param centerId 즐겨찾기 추가 할 센터의 id
+ * @returns findHoldInfoByCenter api useMutation return 값
  */
 export const useCreateCenterBookmark = (centerId: string) => {
   const queryClient = useQueryClient();
@@ -101,6 +105,12 @@ export const useCreateCenterBookmark = (centerId: string) => {
   });
 };
 
+/**
+ * deleteCenterBookmark api useMutation hooks
+ *
+ * @param centerId 즐겨찾기 삭제 할 센터의 id
+ * @returns deleteCenterBookmark api useMutation return 값
+ */
 export const useDeleteCenterBookmark = (centerId: string) => {
   const queryClient = useQueryClient();
   return useMutation(() => deleteCenterBookmark(centerId), {
@@ -117,6 +127,12 @@ export const useDeleteCenterBookmark = (centerId: string) => {
   });
 };
 
+/**
+ * findHoldInfoByCenter api useQuery hooks
+ *
+ * @param centerId 홀드 정보를 검색할 센터의 id
+ * @returns findHoldInfoByCenter api useQuery return 값
+ */
 export const useFindHoldInfoByCenter = (centerId: string) => {
   return useQuery({
     ...centerQueries.detail(centerId)._ctx.findHoldInfoByCenter(),
@@ -128,6 +144,12 @@ export const useFindHoldInfoByCenter = (centerId: string) => {
   });
 };
 
+/**
+ * findReviewByCenter api useInfiniteQuery hooks
+ *
+ * @param centerId  리뷰를 검색할 센터의 id
+ * @returns findReviewByCenter api useInfiniteQuery return 값
+ */
 export const useFindReviewByCenter = (centerId: string) => {
   return useInfiniteQuery({
     ...centerQueries.detail(centerId)._ctx.findReviewByCenter(),
@@ -140,6 +162,12 @@ export const useFindReviewByCenter = (centerId: string) => {
   });
 };
 
+/**
+ * createCenterReport api useMutation hooks
+ *
+ * @param centerId 수정요청 할 센터의 id
+ * @returns createCenterReport api useMutation return 값
+ */
 export const useCreateCenterReport = (centerId: string) => {
   const queryClient = useQueryClient();
   return useMutation(createCenterReport, {
@@ -152,6 +180,12 @@ export const useCreateCenterReport = (centerId: string) => {
   });
 };
 
+/**
+ * getCenterPosts api useInfiniteQuery hooks
+ *
+ * @param centerId 게시글을 검색할 센터의 id
+ * @returns getCenterPosts api useInfiniteQuery return 값
+ */
 export const useGetCenterPosts = (centerId: string) => {
   return useInfiniteQuery({
     ...centerQueries.detail(centerId)._ctx.getCenterPosts(),
@@ -164,6 +198,12 @@ export const useGetCenterPosts = (centerId: string) => {
   });
 };
 
+/**
+ * seachCenter api useQuery hooks
+ *
+ * @param name 검색할 센터의 이름
+ * @returns seachCenter api useQuery return 값
+ */
 export const useSearchCenter = (name: string) => {
   return useQuery({
     ...centerQueries.search(name),
@@ -171,6 +211,13 @@ export const useSearchCenter = (name: string) => {
   });
 };
 
+/**
+ * searchCenterName api useQuery hooks
+ * searchInput 에서 사용
+ *
+ * @param centerName 검색할 센터의 이름
+ * @returns searchCenterName api useQuery return 값
+ */
 export const useSearchCenterName = (centerName: string) => {
   return useQuery({
     ...centerQueries.searchName(centerName),

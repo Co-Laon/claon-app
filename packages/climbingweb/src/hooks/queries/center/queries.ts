@@ -178,7 +178,7 @@ export const findReviewByCenter = async (
 /**
  * GET /center/search api 의 query 함수
  *
- * @param searchCenterName 검색할 암장 이름. query params 로 들어간다.
+ * @param searchCenterName 검색할 암장 이름
  * @returns axiosResponse.data
  */
 export const searchCenter = debounce(
@@ -203,6 +203,7 @@ export const searchCenter = debounce(
 
 /**
  * GET /centers/name/${centerName} api query 함수
+ *
  * @param centerName 암장 이름 검색 input 값
  * @returns axiosResponse.data
  */
