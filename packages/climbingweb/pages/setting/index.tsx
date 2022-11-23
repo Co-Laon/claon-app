@@ -10,11 +10,13 @@ import { NotificationList } from 'climbingweb/src/components/SettingInfo/Notific
 import { BottomSheet } from 'react-spring-bottom-sheet';
 import { ButtonSheet } from 'climbingweb/src/components/common/BottomSheetContents/ButtonSheet';
 import { BanList } from 'climbingweb/src/components/SettingInfo/BanList';
-import { useChangePublicScope } from 'climbingweb/src/hooks/queries/user/useChangePublicScope';
-import { useRetrieveMe } from 'climbingweb/src/hooks/queries/user/useRetrieveMe';
 import { sendReactNativeMessage } from 'climbingweb/src/utils/reactNativeMessage';
 import Loading from 'climbingweb/src/components/common/Loading/Loading';
 import ErrorContent from 'climbingweb/src/components/common/Error/ErrorContent';
+import {
+  useChangePublicScope,
+  useRetrieveMe,
+} from 'climbingweb/src/hooks/queries/user/queryKey';
 // import { useDeleteUser } from 'climbingweb/src/hooks/queries/user/useDeleteUser';
 
 export default function SettingPage() {
@@ -38,17 +40,12 @@ export default function SettingPage() {
   //user 개인 data useQuery
   const {
     data: userData,
-    refetch: refetchUserData,
     isError: isUserDataError,
     error: userDataError,
   } = useRetrieveMe();
 
   //프로필 비공개 관련 useMutation
-  const { mutate: changePublicScopeMutate } = useChangePublicScope({
-    onSuccess: () => {
-      refetchUserData();
-    },
-  });
+  const { mutate: changePublicScopeMutate } = useChangePublicScope();
 
   //회원 탈퇴 관련 useMutation
   // const { mutate: deleteUserMutate } = useDeleteUser();

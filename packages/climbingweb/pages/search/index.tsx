@@ -4,12 +4,12 @@ import UserResult from 'climbingweb/src/components/SearchResult/UserResult/UserR
 import React from 'react';
 import { useState } from 'react';
 import SearchIcon from 'climbingweb/src/assets/icon/ic_24_search_gray800.svg';
-import { useSearchUser } from 'climbingweb/src/hooks/queries/user/useSearchUser';
 import { AppBar } from 'climbingweb/src/components/common/AppBar';
 import { AppLogo } from 'climbingweb/src/components/common/AppBar/IconButton';
 import Loading from 'climbingweb/src/components/common/Loading/Loading';
 import ErrorContent from 'climbingweb/src/components/common/Error/ErrorContent';
 import { useSearchCenter } from 'climbingweb/src/hooks/queries/center/queryKey';
+import { useSearchUser } from 'climbingweb/src/hooks/queries/user/queryKey';
 
 const SearchPage = () => {
   //search input value state

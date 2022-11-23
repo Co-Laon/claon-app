@@ -1,5 +1,7 @@
-import { useDeleteBlock } from 'climbingweb/src/hooks/queries/user/useDeleteBlock';
-import { useFindBlockUser } from 'climbingweb/src/hooks/queries/user/useFindBlockUser';
+import {
+  useDeleteBlock,
+  useFindBlockUser,
+} from 'climbingweb/src/hooks/queries/user/queryKey';
 import { useIntersectionObserver } from 'climbingweb/src/hooks/useIntersectionObserver';
 import { useState } from 'react';
 import { BottomSheet } from 'react-spring-bottom-sheet';
@@ -20,18 +22,13 @@ export const BanList = ({}) => {
     data: blockUserData,
     isError: isBlockUserDataError,
     error: blockUserDataError,
-    refetch: refetchBlockUserData,
     fetchNextPage: fetchBlockUserDataNextPage,
     isFetchingNextPage: isFetchBlockUserDataNextPage,
     hasNextPage: hasBlockUserDataNextPage,
   } = useFindBlockUser();
 
   //Block 유저 취소 useMutation
-  const { mutate: deleteBlockMutate } = useDeleteBlock({
-    onSuccess: () => {
-      refetchBlockUserData();
-    },
-  });
+  const { mutate: deleteBlockMutate } = useDeleteBlock();
 
   //Block 유저 취소 버튼 클릭 핸들러
   const handleDeleteBlockButtonClick = (nickname: string) => {

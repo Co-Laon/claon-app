@@ -5,8 +5,7 @@ import { ProfileImage } from '../common/profileImage/ProfileImage';
 import { NormalButton, SmmallNodeButton } from '../common/button/Button';
 import InstaIcon from 'climbingweb/src/assets/icon/ic_24_instagram.svg';
 import { UserRequest } from 'climbingweb/types/request/user';
-import { useModifyUser } from 'climbingweb/src/hooks/queries/user/useModifyUser';
-import { useRetrieveMe } from 'climbingweb/src/hooks/queries/user/useRetrieveMe';
+import { useModifyUser } from 'climbingweb/src/hooks/queries/user/queryKey';
 
 interface InfoProps {
   userRequest: UserRequest;
@@ -19,14 +18,8 @@ export const EditMyInfo = ({ userRequest, setTitleName }: InfoProps) => {
   const [userRequestData, setUserRequestData] =
     useState<UserRequest>(userRequest);
 
-  const { refetch: refetchUserData } = useRetrieveMe();
-
   // modifyUer server mutation
-  const { mutate: modifyUserMutate } = useModifyUser(userRequestData, {
-    onSuccess: () => {
-      refetchUserData();
-    },
-  });
+  const { mutate: modifyUserMutate } = useModifyUser();
 
   const {
     armReach,
@@ -54,7 +47,7 @@ export const EditMyInfo = ({ userRequest, setTitleName }: InfoProps) => {
 
   // 수정 버튼 클릭 핸들러
   const handleModifyButtonClick = () => {
-    modifyUserMutate();
+    modifyUserMutate(userRequestData);
     setTitleName('설정');
   };
 

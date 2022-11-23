@@ -12,8 +12,10 @@ import UserFeedList from 'climbingweb/src/components/User/UserFeedList';
 import { UserHead } from 'climbingweb/src/components/User/UserHead';
 import UserPageLayout from 'climbingweb/src/components/User/UserPageLayout';
 import UserRecordList from 'climbingweb/src/components/User/UserRecordList';
-import { useFindPostsByUser } from 'climbingweb/src/hooks/queries/user/useFindPostsByUser';
-import { useRetrieveMe } from 'climbingweb/src/hooks/queries/user/useRetrieveMe';
+import {
+  useFindPostsByUser,
+  useRetrieveMe,
+} from 'climbingweb/src/hooks/queries/user/queryKey';
 import { useIntersectionObserver } from 'climbingweb/src/hooks/useIntersectionObserver';
 import { useRouter } from 'next/router';
 
@@ -30,10 +32,10 @@ export default function MyPage({}) {
     data: findPostsByUserData,
     isError: isFindPostsByUserDataError,
     error: findPostsByUserDataError,
-    fetchNextPage: fetchFindPostsByUserDataNextPage,
     isFetchingNextPage: isFetchingFindPostsByUserDataNextPage,
     hasNextPage: hasFetchFindPostsByUserNextPage,
-  } = useFindPostsByUser(getUserData?.nickname);
+    fetchNextPage: fetchFindPostsByUserDataNextPage,
+  } = useFindPostsByUser(getUserData ? getUserData.nickname : '');
 
   const router = useRouter();
   // 세팅 아이콘 클릭 핸들러
