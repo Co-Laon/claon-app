@@ -12,8 +12,10 @@ import UserFeedList from 'climbingweb/src/components/User/UserFeedList';
 import { UserHead } from 'climbingweb/src/components/User/UserHead';
 import UserPageLayout from 'climbingweb/src/components/User/UserPageLayout';
 import UserRecordList from 'climbingweb/src/components/User/UserRecordList';
-import { useCreateLaon } from 'climbingweb/src/hooks/queries/laon/useCreateLaon';
-import { useDeleteLaon } from 'climbingweb/src/hooks/queries/laon/useDeleteLaon';
+import {
+  useCreateLaon,
+  useDeleteLaon,
+} from 'climbingweb/src/hooks/queries/laon/queryKey';
 import { useCreateBlock } from 'climbingweb/src/hooks/queries/user/useCreateBlock';
 import { useFindPostsByUser } from 'climbingweb/src/hooks/queries/user/useFindPostsByUser';
 import { useGetPublicUser } from 'climbingweb/src/hooks/queries/user/useGetPublicUser';
@@ -49,11 +51,7 @@ export default function UserPage({}) {
   } = useFindPostsByUser(userNickname);
 
   // 라온 신청 useMutation
-  const { mutate: createLaonMutate } = useCreateLaon(userNickname, {
-    onSuccess: () => {
-      refetchGetUserData();
-    },
-  });
+  const { mutate: createLaonMutate } = useCreateLaon();
 
   // 라온 취소 useMutation
   const { mutate: deleteLaonMutate } = useDeleteLaon();
@@ -73,7 +71,7 @@ export default function UserPage({}) {
   // 유저 라온 버튼 클릭 핸들러
   const handleLaonButtonClick = () => {
     if (getUserData?.isLaon === false) {
-      createLaonMutate();
+      createLaonMutate(userNickname);
     }
   };
   // 뒤로가기 아이콘 클릭 핸들러

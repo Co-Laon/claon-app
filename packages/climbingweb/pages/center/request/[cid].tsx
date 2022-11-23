@@ -81,7 +81,6 @@ export default function ReportPage({}) {
 
   // 수정 요청 완료 버튼 클릭 핸들러
   const handleSubmitButtonClick = () => {
-    console.dir('handleSubmitButtonClick');
     createCenterReportMutate({
       centerId: centerId,
       reportCreateRequest: reportData,

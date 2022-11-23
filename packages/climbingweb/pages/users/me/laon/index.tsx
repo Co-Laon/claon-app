@@ -7,8 +7,10 @@ import { SmmallNodeButton } from 'climbingweb/src/components/common/button/Butto
 import EmptyContent from 'climbingweb/src/components/common/EmptyContent/EmptyContent';
 import { LaonList } from 'climbingweb/src/components/common/LaonList';
 import Loading from 'climbingweb/src/components/common/Loading/Loading';
-import { useDeleteLaon } from 'climbingweb/src/hooks/queries/laon/useDeleteLaon';
-import { useFindAllLaon } from 'climbingweb/src/hooks/queries/laon/useFindAllLaon';
+import {
+  useDeleteLaon,
+  useFindAllLaon,
+} from 'climbingweb/src/hooks/queries/laon/queryKey';
 import { useIntersectionObserver } from 'climbingweb/src/hooks/useIntersectionObserver';
 import React from 'react';
 
@@ -18,18 +20,13 @@ export const MyLaonList = ({}) => {
     data: laonUserData,
     isError: isLaonUserDataError,
     error: laonUserDataError,
-    refetch: refetchLaonUserData,
     fetchNextPage: fetchLaonUserDataNextPage,
     isFetchingNextPage: isFetchLaonUserDataNextPage,
     hasNextPage: hasLaonUserDataNextPage,
   } = useFindAllLaon();
 
   // Laon 유저 취소 useMutation
-  const { mutate: deleteLaonMutate } = useDeleteLaon({
-    onSuccess: () => {
-      refetchLaonUserData();
-    },
-  });
+  const { mutate: deleteLaonMutate } = useDeleteLaon();
 
   // 뒤로 버튼 클릭 핸들러
   const handleGoToBack = () => {

@@ -6,11 +6,11 @@ import {
   AppLogo,
 } from 'climbingweb/src/components/common/AppBar/IconButton';
 import { useGetPosts } from 'climbingweb/src/hooks/queries/post/useGetPosts';
-import { useGetLaonPost } from 'climbingweb/src/hooks/queries/laon/useGetLaonPost';
 import { useIntersectionObserver } from 'climbingweb/src/hooks/useIntersectionObserver';
 import ErrorContent from 'climbingweb/src/components/common/Error/ErrorContent';
 import Loading from 'climbingweb/src/components/common/Loading/Loading';
 import { useRouter } from 'next/router';
+import { useGetLaonPost } from 'climbingweb/src/hooks/queries/laon/queryKey';
 
 const Home: NextPage = () => {
   const router = useRouter();
