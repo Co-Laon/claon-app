@@ -7,11 +7,11 @@ import HoldListModal from 'climbingweb/src/components/CreateFeed/SelectHoldList/
 import PageSubTitle from 'climbingweb/src/components/common/PageSubTitle/PageSubTitle';
 import { NextButton } from 'climbingweb/src/components/common/AppBar/NextButton';
 import { CenterSearchInput } from 'climbingweb/src/components/CreateFeed/CenterSearchInput';
-import { useCreatePost } from 'climbingweb/src/hooks/queries/post/useCreatePost';
 import {
   ClimbingHistoryRequest,
   PostCreateRequest,
 } from 'climbingweb/types/request/post';
+import { useCreatePost } from 'climbingweb/src/hooks/queries/post/queryKey';
 
 export default function CreatePostPage() {
   const [page, setPage] = useState<string>('first');

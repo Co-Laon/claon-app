@@ -1,4 +1,4 @@
-import { useGetNoticeList } from 'climbingweb/src/hooks/queries/notice/useGetNoticeList';
+import { useGetNoticeList } from 'climbingweb/src/hooks/queries/notice/queryKey';
 import { useIntersectionObserver } from 'climbingweb/src/hooks/useIntersectionObserver';
 import { NoticeReponse } from 'climbingweb/types/response/notice';
 import { useState } from 'react';

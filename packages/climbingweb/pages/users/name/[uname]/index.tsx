@@ -12,11 +12,15 @@ import UserFeedList from 'climbingweb/src/components/User/UserFeedList';
 import { UserHead } from 'climbingweb/src/components/User/UserHead';
 import UserPageLayout from 'climbingweb/src/components/User/UserPageLayout';
 import UserRecordList from 'climbingweb/src/components/User/UserRecordList';
-import { useCreateLaon } from 'climbingweb/src/hooks/queries/laon/useCreateLaon';
-import { useDeleteLaon } from 'climbingweb/src/hooks/queries/laon/useDeleteLaon';
-import { useCreateBlock } from 'climbingweb/src/hooks/queries/user/useCreateBlock';
-import { useFindPostsByUser } from 'climbingweb/src/hooks/queries/user/useFindPostsByUser';
-import { useGetPublicUser } from 'climbingweb/src/hooks/queries/user/useGetPublicUser';
+import {
+  useCreateLaon,
+  useDeleteLaon,
+} from 'climbingweb/src/hooks/queries/laon/queryKey';
+import {
+  useCreateBlock,
+  useFindPostsByUser,
+  useGetPublicUser,
+} from 'climbingweb/src/hooks/queries/user/queryKey';
 import { useIntersectionObserver } from 'climbingweb/src/hooks/useIntersectionObserver';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
@@ -35,7 +39,6 @@ export default function UserPage({}) {
     data: getUserData,
     isError: isGetUserDataError,
     error: getUserDataError,
-    refetch: refetchGetUserData,
   } = useGetPublicUser(userNickname);
 
   // 개인이 올린 포스트 server state
@@ -49,21 +52,13 @@ export default function UserPage({}) {
   } = useFindPostsByUser(userNickname);
 
   // 라온 신청 useMutation
-  const { mutate: createLaonMutate } = useCreateLaon(userNickname, {
-    onSuccess: () => {
-      refetchGetUserData();
-    },
-  });
+  const { mutate: createLaonMutate } = useCreateLaon();
 
   // 라온 취소 useMutation
   const { mutate: deleteLaonMutate } = useDeleteLaon();
 
   // 차단 useMutation
-  const { mutate: createBlockMutate } = useCreateBlock(userNickname, {
-    onSuccess: () => {
-      refetchGetUserData();
-    },
-  });
+  const { mutate: createBlockMutate } = useCreateBlock();
 
   // 옵션 아이콘 클릭 핸들러
   const handleOptionButtonClick = () => {
@@ -73,7 +68,7 @@ export default function UserPage({}) {
   // 유저 라온 버튼 클릭 핸들러
   const handleLaonButtonClick = () => {
     if (getUserData?.isLaon === false) {
-      createLaonMutate();
+      createLaonMutate(userNickname);
     }
   };
   // 뒤로가기 아이콘 클릭 핸들러
@@ -90,9 +85,9 @@ export default function UserPage({}) {
   const onBottomSheetSelect = () => {
     if (getUserData?.isLaon === true) {
       deleteLaonMutate(userNickname);
-      createBlockMutate();
+      createBlockMutate(userNickname);
     } else {
-      createBlockMutate();
+      createBlockMutate(userNickname);
     }
     router.push('/');
   };

@@ -1,5 +1,5 @@
 import VersionLogo from 'climbingweb/src/assets/version_logo.svg';
-import { useGetAppVersion } from 'climbingweb/src/hooks/queries/user/useGetAppVersion';
+import { useGetAppVersion } from 'climbingweb/src/hooks/queries/app-version/useGetAppVersion';
 import { NormalButton } from '../common/button/Button';
 import ErrorContent from '../common/Error/ErrorContent';
 import Loading from '../common/Loading/Loading';

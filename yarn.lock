@@ -2245,6 +2245,11 @@
   resolved "https://registry.yarnpkg.com/@juggle/resize-observer/-/resize-observer-3.3.1.tgz#b50a781709c81e10701004214340f25475a171a0"
   integrity sha512-zMM9Ds+SawiUkakS7y94Ymqx+S0ORzpG3frZirN3l+UlXUmSUR7hF4wxCVqW+ei94JzV5kt0uXBcoOEAuiydrw==
 
+"@lukemorales/query-key-factory@^1.0.3":
+  version "1.0.3"
+  resolved "https://registry.yarnpkg.com/@lukemorales/query-key-factory/-/query-key-factory-1.0.3.tgz#d85352f2362a7ac90eba75db8a2edf58668ab0d4"
+  integrity sha512-50E4OCFbOUkHNCiHS5g2RzoDH2ZI0zg+k1/z0x9c9QqfotWNHSVSQ0F1Xb6cO+Ys/W+uMrECIFEcvzFJ/oVmFg==
+
 "@mdx-js/loader@^1.6.22":
   version "1.6.22"
   resolved "https://registry.npmjs.org/@mdx-js/loader/-/loader-1.6.22.tgz"

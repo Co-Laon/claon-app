@@ -1,4 +1,4 @@
-import { useFindHoldInfoByCenter } from 'climbingweb/src/hooks/queries/center/useFindHoldInfoByCenter';
+import { useFindHoldInfoByCenter } from 'climbingweb/src/hooks/queries/center/queryKey';
 import Hold from 'climbingweb/src/interface/Hold';
 import { ClimbingHistoryRequest } from 'climbingweb/types/request/post';
 import React, { useCallback, useEffect, useState } from 'react';
@@ -33,12 +33,7 @@ const HoldListModal = ({
     data: holdListData,
     isError: isHoldListDataError,
     error: holdListDataError,
-  } = useFindHoldInfoByCenter<Hold>(centerId, {
-    select: (response) =>
-      response.map((val) => {
-        return { ...val, count: 0 };
-      }),
-  });
+  } = useFindHoldInfoByCenter(centerId as string);
 
   /**
    * ClimbingHistoryRequest 를 HoldList 로 변환해주는 함수

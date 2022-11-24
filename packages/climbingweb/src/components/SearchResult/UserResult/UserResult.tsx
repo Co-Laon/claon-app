@@ -1,4 +1,4 @@
-import { useCreateLaon } from 'climbingweb/src/hooks/queries/laon/useCreateLaon';
+import { useCreateLaon } from 'climbingweb/src/hooks/queries/laon/queryKey';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import React from 'react';
@@ -17,11 +17,11 @@ const UserResult = ({ imagePath, isLaon, nickname }: UserProps) => {
   const router = useRouter();
 
   //라온 신청 mutation
-  const { mutate: createLaonMutate } = useCreateLaon(nickname);
+  const { mutate: createLaonMutate } = useCreateLaon();
 
   // 라온 신청 버튼 클릭 핸들링 함수
   const handleRaonButtonClick = () => {
-    createLaonMutate();
+    createLaonMutate(nickname);
   };
   // 라온 검색 결과 클릭 핸들링 함수
   const handleUserResultClick = () => {

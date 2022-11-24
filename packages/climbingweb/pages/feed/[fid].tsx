@@ -6,7 +6,7 @@ import {
 import { ListSheet } from 'climbingweb/src/components/common/BottomSheetContents/ListSheet/ListSheet';
 import Loading from 'climbingweb/src/components/common/Loading/Loading';
 import HomeFeed from 'climbingweb/src/components/HomeFeed/HomeFeed';
-import { useGetPost } from 'climbingweb/src/hooks/queries/post/useGetPost';
+import { useGetPost } from 'climbingweb/src/hooks/queries/post/queryKey';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 import { BottomSheet } from 'react-spring-bottom-sheet';

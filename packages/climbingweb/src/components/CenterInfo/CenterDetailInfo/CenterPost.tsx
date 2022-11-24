@@ -1,4 +1,4 @@
-import { useGetCenterPosts } from 'climbingweb/src/hooks/queries/center/useGetCenterPosts';
+import { useGetCenterPosts } from 'climbingweb/src/hooks/queries/center/queryKey';
 import { useIntersectionObserver } from 'climbingweb/src/hooks/useIntersectionObserver';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
