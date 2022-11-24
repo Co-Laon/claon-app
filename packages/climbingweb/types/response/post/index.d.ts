@@ -39,7 +39,7 @@ export interface ClimbingHistoryResponse {
 }
 
 export interface CommentFindResponse {
-  children: Pagination<ChildCommentResponse[]>;
+  children: Pagination<ChildCommentResponse>;
   commentId: string;
   content: string;
   createdAt: string;

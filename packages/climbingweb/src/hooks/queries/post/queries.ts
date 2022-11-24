@@ -1,6 +1,7 @@
 import axios from 'axios';
 import { Pagination } from 'climbingweb/types/common';
 import {
+  CommentCreateRequest,
   PostCreateRequest,
   PostReportRequest,
 } from 'climbingweb/types/request/post';
@@ -89,12 +90,12 @@ export const deleteLike = async (postId: string) => {
  * @returns axiosResponse.data
  */
 export const findAllChildrenComment = async (
-  commentId: string,
+  parentId: string,
   pageParam = 0
 ) => {
   try {
     const { data } = await axios.get<Pagination<ChildCommentResponse>>(
-      `/posts/${commentId}/comment`,
+      `/posts/comment/${parentId}/children`,
       {
         params: {
           page: pageParam,
@@ -160,6 +161,28 @@ export const getPosts = async (pageParam = 0) => {
         page: pageParam,
       },
     });
+    return data;
+  } catch (error: any) {
+    throw error.response.data;
+  }
+};
+
+/**
+ *  POST /api/v1/posts/{postId}/comment api query 함수
+ *
+ * @param postId 댓글을 달 게시글의 id
+ * @param commentCreateRequest 댓글 내용, 대 댓글일 경우 commentId 까지
+ * @returns axiosResponse.data
+ */
+export const createComment = async (
+  postId: string,
+  commentCreateRequest: CommentCreateRequest
+) => {
+  try {
+    const { data } = await axios.post<CommentCreateRequest>(
+      `/posts/${postId}/comment`,
+      commentCreateRequest
+    );
     return data;
   } catch (error: any) {
     throw error.response.data;

@@ -1,5 +1,8 @@
 import { createQueryKeys } from '@lukemorales/query-key-factory';
-import { PostCreateRequest } from 'climbingweb/types/request/post';
+import {
+  CommentCreateRequest,
+  PostCreateRequest,
+} from 'climbingweb/types/request/post';
 import {
   useMutation,
   useQueryClient,
@@ -7,6 +10,7 @@ import {
   useQuery,
 } from 'react-query';
 import {
+  createComment,
   createLike,
   createPost,
   deleteLike,
@@ -39,10 +43,10 @@ export const postQueries = createQueryKeys('posts', {
         queryFn: (context) =>
           findAllParentCommentAndThreeChildComment(postId, context?.pageParam),
       }),
-      childrenComment: (commentId: string) => ({
-        queryKey: [commentId],
+      childrenComment: (parentId: string) => ({
+        queryKey: [parentId],
         queryFn: (context) =>
-          findAllChildrenComment(commentId, context?.pageParam),
+          findAllChildrenComment(parentId, context?.pageParam),
       }),
     },
   }),
@@ -170,4 +174,49 @@ export const useGetPosts = () => {
         : lastPageData.nextPageNum;
     },
   });
+};
+
+/**
+ * createComment api useMutation hooks
+ *
+ * @param postId 댓글을 달 게시글의 id
+ * @returns createComment api useMutation return 값
+ */
+export const useCreateComment = (postId: string) => {
+  const queryClient = useQueryClient();
+  return useMutation(
+    (commentCreateRequest: CommentCreateRequest) =>
+      createComment(postId, commentCreateRequest),
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries({
+          queryKey: postQueries.detail(postId)._ctx.parentComments().queryKey,
+          refetchInactive: true,
+        });
+      },
+    }
+  );
+};
+
+/**
+ * createChildComment api useMutation hooks
+ *
+ * @param commentId 댓글의 답글을 달 comment id
+ * @returns createChildComment api useMutation return 값
+ */
+export const useCreateChildComment = (postId: string, parentId: string) => {
+  const queryClient = useQueryClient();
+  return useMutation(
+    (commentCreateRequest: CommentCreateRequest) =>
+      createComment(postId, commentCreateRequest),
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries({
+          queryKey: postQueries.detail(postId)._ctx.childrenComment(parentId)
+            .queryKey,
+          refetchInactive: true,
+        });
+      },
+    }
+  );
 };

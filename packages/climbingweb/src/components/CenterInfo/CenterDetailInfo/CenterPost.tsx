@@ -61,7 +61,7 @@ export const CenterPost = ({ centerId }: CenterPostsProps) => {
           })}
         </div>
         {!isFetchingNextPage ? (
-          <div className="h-[1px] bg-slate-300" ref={target}></div>
+          <div className="h-[1px]" ref={target}></div>
         ) : (
           <Loading />
         )}

@@ -27,11 +27,7 @@ export interface PostReportRequest {
   reportType: '부적절한 게시글' | '부적절한 닉네임' | '잘못된 암장 선택';
 }
 
-export interface CommentRequest {
-  content: string;
+export interface CommentCreateRequest {
+  content?: string;
   parentCommentId?: string;
-}
-
-export interface CommentRequest {
-  content: string;
 }
