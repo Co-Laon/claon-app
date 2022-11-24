@@ -40,7 +40,7 @@ export const postQueries = createQueryKeys('posts', {
           findAllParentCommentAndThreeChildComment(postId, context?.pageParam),
       }),
       childrenComment: (commentId: string) => ({
-        queryKey: ['childrenComment'],
+        queryKey: [commentId],
         queryFn: (context) =>
           findAllChildrenComment(commentId, context?.pageParam),
       }),
