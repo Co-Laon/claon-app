@@ -44,7 +44,7 @@ export const Commment = ({
   };
 
   return (
-    <div className="w-screen flex flex-row">
+    <div className="w-screen flex flex-row mx-5">
       <div className="flex flex-row py-4 gap-2">
         <div className="h-10 w-10 relative">
           <Image
@@ -71,7 +71,7 @@ export const Commment = ({
             </p>
           </div>
           <div className="w-screen">
-            <p className="text-sm line-clamp-3 ">
+            <p className="text-sm line-clamp-3 inline">
               {isDeleted ? '삭제된 게시글 입니다' : content}
             </p>
           </div>
@@ -132,7 +132,7 @@ export function ParentComment({
             <div className="flex flex-row h-10 content-center items-center">
               <div className="bg-gray-400 h-px w-8 mr-3" />
               <span className="text-gray-400" onClick={handleMoreCommentClick}>
-                대댓글 {moreCommentCount}개 더 보기
+                답댓글 {moreCommentCount}개 더 보기
               </span>
             </div>
           ) : null}
