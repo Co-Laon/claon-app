@@ -1,6 +1,7 @@
 import { createQueryKeys } from '@lukemorales/query-key-factory';
 import {
   CommentCreateRequest,
+  CommentUpdateRequest,
   PostCreateRequest,
 } from 'climbingweb/types/request/post';
 import {
@@ -13,11 +14,13 @@ import {
   createComment,
   createLike,
   createPost,
+  deleteComment,
   deleteLike,
   findAllChildrenComment,
-  findAllParentCommentAndThreeChildComment,
+  findAllParentComment,
   getPost,
   getPosts,
+  updateComment,
 } from './queries';
 
 /**
@@ -40,8 +43,7 @@ export const postQueries = createQueryKeys('posts', {
     contextQueries: {
       parentComments: () => ({
         queryKey: ['parentComments'],
-        queryFn: (context) =>
-          findAllParentCommentAndThreeChildComment(postId, context?.pageParam),
+        queryFn: (context) => findAllParentComment(postId, context?.pageParam),
       }),
       childrenComment: (parentId: string) => ({
         queryKey: [parentId],
@@ -115,12 +117,12 @@ export const useCreatePost = (postCreateRequest: PostCreateRequest) => {
 };
 
 /**
- * findAllParentCommentAndThreeChildComment api useInfiniteQuery hooks
+ * findAllParentComment api useInfiniteQuery hooks
  *
  * @param postId 댓글을 불러올 post id
- * @returns findAllParentCommentAndThreeChildComment api useInfiniteQuery return 값
+ * @returns findAllParentComment api useInfiniteQuery return 값
  */
-export const useFindAllParentCommentAndThreeChildComment = (postId: string) => {
+export const useFindAllParentComment = (postId: string) => {
   return useInfiniteQuery({
     ...postQueries.detail(postId)._ctx.parentComments(),
     enabled: Boolean(postId),
@@ -201,7 +203,8 @@ export const useCreateComment = (postId: string) => {
 /**
  * createChildComment api useMutation hooks
  *
- * @param commentId 댓글의 답글을 달 comment id
+ * @param postId 댓글을 달 게시글의 id
+ * @param parentId 댓글의 답글을 달 comment id
  * @returns createChildComment api useMutation return 값
  */
 export const useCreateChildComment = (postId: string, parentId: string) => {
@@ -219,4 +222,44 @@ export const useCreateChildComment = (postId: string, parentId: string) => {
       },
     }
   );
+};
+
+/**
+ * updateComment api useMutation hooks
+ *
+ * @param commentId 수정할 댓글의 id
+ * @returns updateComment api useMutation return 값
+ */
+export const useUpdateComment = (postId: string, commentId: string) => {
+  const queryClient = useQueryClient();
+  return useMutation(
+    (commentUpdateRequest: CommentUpdateRequest) =>
+      updateComment(commentId, commentUpdateRequest),
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries({
+          queryKey: postQueries.detail(postId).queryKey,
+          refetchInactive: true,
+        });
+      },
+    }
+  );
+};
+
+/**
+ * deleteComment api useMutation hooks
+ *
+ * @param commentId 삭제할 댓글의 id
+ * @returns deleteComment api useMutation return 값
+ */
+export const useDeleteComment = (postId: string, commentId: string) => {
+  const queryClient = useQueryClient();
+  return useMutation(() => deleteComment(commentId), {
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: postQueries.detail(postId).queryKey,
+        refetchInactive: true,
+      });
+    },
+  });
 };

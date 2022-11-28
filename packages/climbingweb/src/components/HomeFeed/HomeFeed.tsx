@@ -14,7 +14,7 @@ import { useRouter } from 'next/router';
 import {
   useCreateLike,
   useDeleteLike,
-  useFindAllParentCommentAndThreeChildComment,
+  useFindAllParentComment,
 } from 'climbingweb/src/hooks/queries/post/queryKey';
 
 interface HomeFeedProps {
@@ -31,7 +31,7 @@ const HomeFeed = ({ postData }: HomeFeedProps) => {
     data: commentData,
     isError: isCommentError,
     error: commentError,
-  } = useFindAllParentCommentAndThreeChildComment(postData.postId);
+  } = useFindAllParentComment(postData.postId);
 
   //좋아요 추가 useMutation
   const { mutate: createLikeMutate } = useCreateLike(postData.postId);
