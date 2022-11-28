@@ -2,6 +2,7 @@ import {
   ChildCommentResponse,
   CommentResponse,
 } from './../../../../types/response/post/index.d';
+import { PostContents } from './../../../../types/response/post/index.d';
 import axios from 'axios';
 import { Pagination } from 'climbingweb/types/common';
 import {
@@ -227,4 +228,22 @@ export const deleteComment = async (commentId: string) => {
   } catch (error: any) {
     throw error.response.data;
   }
+};
+export const getPostContentsList = async (fileList: File[]) => {
+  let postContentsList: PostContents[] = [];
+  fileList.forEach(async (file) => {
+    const formData = new FormData();
+    formData.append('image', file);
+    try {
+      const { data } = await axios.post<string>('/posts/contents', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
+      postContentsList.push({ url: data });
+    } catch (error: any) {
+      throw error.response.data;
+    }
+  });
+  return postContentsList;
 };

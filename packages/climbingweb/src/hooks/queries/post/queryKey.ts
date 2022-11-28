@@ -21,6 +21,8 @@ import {
   deleteLike,
   findAllChildrenComment,
   findAllParentComment,
+  findAllParentCommentAndThreeChildComment,
+  getPostContentsList,
   getPost,
   getPosts,
   updateComment,
@@ -297,4 +299,6 @@ export const useCreateReport = (postId: string) => {
   return useMutation((reportData: PostReportRequest) =>
     createReport(postId, reportData)
   );
+export const useGetPostContentsList = () => {
+  return useMutation((fileList: File[]) => getPostContentsList(fileList));
 };

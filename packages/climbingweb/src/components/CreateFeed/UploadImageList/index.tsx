@@ -1,14 +1,15 @@
-import { useState } from 'react';
+import { useCreatePostForm } from 'climbingweb/src/hooks/useCreatePostForm';
 import { UploadImage } from './UploadImage';
 import { UploadImageButton } from './UploadImageButton';
 
 export function UploadImageList() {
-
-    const [mediaBase64, setMediaBase64] = useState<string[]>([]);
-    return (
-        <div className='w-full flex flex-row gap-2 overflow-x-auto scrollbar-hide'>
-            <UploadImageButton media={mediaBase64} setMedia={setMediaBase64} />
-            {mediaBase64?.map(image => <UploadImage media={mediaBase64} setMedia={setMediaBase64} key={image} src={image} />)}
-        </div>
-    );
+  const { postImageList } = useCreatePostForm();
+  return (
+    <div className="w-full flex flex-row gap-2 overflow-x-auto scrollbar-hide">
+      <UploadImageButton />
+      {postImageList?.map(({ thumbNail }, idx) => (
+        <UploadImage key={`key${idx}`} src={thumbNail} id={idx} />
+      ))}
+    </div>
+  );
 }
