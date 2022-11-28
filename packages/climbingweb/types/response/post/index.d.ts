@@ -1,5 +1,3 @@
-import { Pagination } from 'climbingweb/types/common';
-
 export interface PostResponse {
   centerId: string;
   centerName: string;
@@ -22,6 +20,7 @@ export interface PostDetailResponse {
   contentsList: string[];
   createdAt: string;
   isLike: boolean;
+  isOwner: boolean;
   likeCount: number;
   postId: string;
   userNickname: string;
@@ -39,11 +38,12 @@ export interface ClimbingHistoryResponse {
 }
 
 export interface CommentFindResponse {
-  children: Pagination<ChildCommentResponse>;
+  childrenCommentCount: number;
   commentId: string;
   content: string;
   createdAt: string;
   isDeleted: boolean;
+  isOwner: boolean;
   postId: string;
   updatedAt: string;
   writerNickname: string;
@@ -59,6 +59,7 @@ export interface ChildCommentResponse {
   updatedAt: string;
   writerNickname: string;
   writerProfileImage: string;
+  isOwner?: boolean;
 }
 
 export interface LikeFindResponse {

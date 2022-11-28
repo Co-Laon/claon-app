@@ -28,6 +28,10 @@ export interface PostReportRequest {
 }
 
 export interface CommentCreateRequest {
-  content?: string;
+  content: string;
   parentCommentId?: string;
+}
+
+export interface CommentUpdateRequest {
+  content: string;
 }

@@ -1,5 +1,3 @@
-import { Pagination } from 'climbingweb/types/common';
-import { ChildCommentResponse } from 'climbingweb/types/response/post';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 
@@ -12,12 +10,15 @@ interface ParentCommentProps {
   writerProfileImage: string;
   createdAt: string;
   updatedAt?: string;
-  replies?: Pagination<ChildCommentResponse>;
+  childrenCommentCount: number;
+  isOwner?: boolean;
+  handleModifyCommentClick: (commentId: string) => void;
+  handleDeleteCommentClick: (commentId: string) => void;
 }
 
 interface CommentProps {
   postId: string;
-  commentId?: string;
+  commentId: string;
   content: string;
   isDeleted: boolean;
   writerNickname: string;
@@ -25,9 +26,12 @@ interface CommentProps {
   createdAt: string;
   updatedAt?: string;
   isParent: boolean;
+  isOwner?: boolean;
+  handleModifyCommentClick: (commentId: string) => void;
+  handleDeleteCommentClick: (commentId: string) => void;
 }
 
-export const Commment = ({
+export const Comment = ({
   postId,
   commentId,
   content,
@@ -37,6 +41,9 @@ export const Commment = ({
   createdAt,
   updatedAt,
   isParent,
+  isOwner,
+  handleModifyCommentClick,
+  handleDeleteCommentClick,
 }: CommentProps) => {
   const router = useRouter();
   const hanedleCreateChildComment = () => {
@@ -65,8 +72,24 @@ export const Commment = ({
                   className="hover:text-black"
                   onClick={hanedleCreateChildComment}
                 >
-                  ·답댓글 달기
+                  ·대댓글 달기
                 </span>
+              )}
+              {isOwner && (
+                <>
+                  <span
+                    className="hover:text-black"
+                    onClick={() => handleModifyCommentClick(commentId)}
+                  >
+                    ·수정
+                  </span>
+                  <span
+                    className="hover:text-black"
+                    onClick={() => handleDeleteCommentClick(commentId)}
+                  >
+                    ·삭제
+                  </span>
+                </>
               )}
             </p>
           </div>
@@ -90,9 +113,11 @@ export function ParentComment({
   writerProfileImage,
   createdAt,
   updatedAt,
-  replies,
+  childrenCommentCount,
+  isOwner,
+  handleModifyCommentClick,
+  handleDeleteCommentClick,
 }: ParentCommentProps) {
-  const moreCommentCount = replies ? replies.totalCount - 3 : 0;
   const router = useRouter();
 
   const handleMoreCommentClick = () => {
@@ -101,7 +126,7 @@ export function ParentComment({
 
   return (
     <>
-      <Commment
+      <Comment
         postId={postId}
         commentId={commentId}
         content={content}
@@ -111,33 +136,18 @@ export function ParentComment({
         createdAt={createdAt}
         updatedAt={updatedAt}
         isParent={true}
+        isOwner={isOwner}
+        handleModifyCommentClick={() => handleModifyCommentClick(commentId)}
+        handleDeleteCommentClick={() => handleDeleteCommentClick(commentId)}
       />
-      {replies && (
-        <div className="pl-10">
-          {replies.results.map((reply) => (
-            <Commment
-              key={reply.commentId}
-              postId={postId}
-              commentId={reply.commentId}
-              content={reply.content}
-              isDeleted={reply.isDeleted}
-              writerNickname={reply.writerNickname}
-              writerProfileImage={reply.writerProfileImage}
-              createdAt={reply.createdAt}
-              updatedAt={reply.updatedAt}
-              isParent={false}
-            />
-          ))}
-          {moreCommentCount > 0 ? (
-            <div className="flex flex-row h-10 content-center items-center">
-              <div className="bg-gray-400 h-px w-8 mr-3" />
-              <span className="text-gray-400" onClick={handleMoreCommentClick}>
-                답댓글 {moreCommentCount}개 더 보기
-              </span>
-            </div>
-          ) : null}
+      {childrenCommentCount > 0 ? (
+        <div className="flex flex-row pl-10 h-10 content-center items-center">
+          <div className="bg-gray-400 h-px w-8 mr-3" />
+          <span className="text-gray-400" onClick={handleMoreCommentClick}>
+            대댓글 {childrenCommentCount}개 더 보기
+          </span>
         </div>
-      )}
+      ) : null}
     </>
   );
 }
