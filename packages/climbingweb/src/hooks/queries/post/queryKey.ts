@@ -1,5 +1,10 @@
+import { laonQueries } from './../laon/queryKey';
 import { createQueryKeys } from '@lukemorales/query-key-factory';
-import { PostCreateRequest } from 'climbingweb/types/request/post';
+import {
+  CommentCreateRequest,
+  CommentUpdateRequest,
+  PostCreateRequest,
+} from 'climbingweb/types/request/post';
 import {
   useMutation,
   useQueryClient,
@@ -7,13 +12,16 @@ import {
   useQuery,
 } from 'react-query';
 import {
+  createComment,
   createLike,
   createPost,
+  deleteComment,
   deleteLike,
   findAllChildrenComment,
-  findAllParentCommentAndThreeChildComment,
+  findAllParentComment,
   getPost,
   getPosts,
+  updateComment,
 } from './queries';
 
 /**
@@ -36,15 +44,13 @@ export const postQueries = createQueryKeys('posts', {
     contextQueries: {
       parentComments: () => ({
         queryKey: ['parentComments'],
-        queryFn: (context) =>
-          findAllParentCommentAndThreeChildComment(postId, context?.pageParam),
-      }),
-      childrenComment: (commentId: string) => ({
-        queryKey: [commentId],
-        queryFn: (context) =>
-          findAllChildrenComment(commentId, context?.pageParam),
+        queryFn: (context) => findAllParentComment(postId, context?.pageParam),
       }),
     },
+  }),
+  childrenComment: (parentId: string) => ({
+    queryKey: [parentId],
+    queryFn: (context) => findAllChildrenComment(parentId, context?.pageParam),
   }),
 });
 
@@ -64,6 +70,10 @@ export const useCreateLike = (postId: string) => {
       });
       queryClient.invalidateQueries({
         queryKey: postQueries.detail(postId).queryKey,
+        refetchInactive: true,
+      });
+      queryClient.invalidateQueries({
+        queryKey: laonQueries.posts().queryKey,
         refetchInactive: true,
       });
     },
@@ -86,6 +96,10 @@ export const useDeleteLike = (postId: string) => {
       });
       queryClient.invalidateQueries({
         queryKey: postQueries.detail(postId).queryKey,
+        refetchInactive: true,
+      });
+      queryClient.invalidateQueries({
+        queryKey: laonQueries.posts().queryKey,
         refetchInactive: true,
       });
     },
@@ -111,12 +125,12 @@ export const useCreatePost = (postCreateRequest: PostCreateRequest) => {
 };
 
 /**
- * findAllParentCommentAndThreeChildComment api useInfiniteQuery hooks
+ * findAllParentComment api useInfiniteQuery hooks
  *
  * @param postId 댓글을 불러올 post id
- * @returns findAllParentCommentAndThreeChildComment api useInfiniteQuery return 값
+ * @returns findAllParentComment api useInfiniteQuery return 값
  */
-export const useFindAllParentCommentAndThreeChildComment = (postId: string) => {
+export const useFindAllParentComment = (postId: string) => {
   return useInfiniteQuery({
     ...postQueries.detail(postId)._ctx.parentComments(),
     enabled: Boolean(postId),
@@ -136,7 +150,7 @@ export const useFindAllParentCommentAndThreeChildComment = (postId: string) => {
  */
 export const useFindAllChildrenComment = (commentId: string) => {
   return useInfiniteQuery({
-    ...postQueries.detail(commentId)._ctx.childrenComment(commentId),
+    ...postQueries.childrenComment(commentId),
     enabled: Boolean(commentId),
     getNextPageParam: (lastPageData) => {
       return lastPageData.nextPageNum < 0
@@ -168,6 +182,111 @@ export const useGetPosts = () => {
       return lastPageData.nextPageNum < 0
         ? undefined
         : lastPageData.nextPageNum;
+    },
+  });
+};
+
+/**
+ * createComment api useMutation hooks
+ *
+ * @param postId 댓글을 달 게시글의 id
+ * @returns createComment api useMutation return 값
+ */
+export const useCreateComment = (postId: string) => {
+  const queryClient = useQueryClient();
+  return useMutation(
+    (commentCreateRequest: CommentCreateRequest) =>
+      createComment(postId, commentCreateRequest),
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries({
+          queryKey: postQueries.detail(postId).queryKey,
+          refetchInactive: true,
+        });
+      },
+    }
+  );
+};
+
+/**
+ * createChildComment api useMutation hooks
+ *
+ * @param postId 댓글을 달 게시글의 id
+ * @param parentId 댓글의 답글을 달 comment id
+ * @returns createChildComment api useMutation return 값
+ */
+export const useCreateChildComment = (postId: string, parentId: string) => {
+  const queryClient = useQueryClient();
+  return useMutation(
+    (commentCreateRequest: CommentCreateRequest) =>
+      createComment(postId, commentCreateRequest),
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries({
+          queryKey: postQueries.childrenComment(parentId).queryKey,
+          refetchInactive: true,
+        });
+      },
+    }
+  );
+};
+
+/**
+ * updateComment api useMutation hooks
+ *
+ * @param commentId 수정할 댓글의 id
+ * @returns updateComment api useMutation return 값
+ */
+export const useUpdateComment = (
+  postId: string,
+  commentId: string,
+  parentId?: string
+) => {
+  const queryClient = useQueryClient();
+  return useMutation(
+    (commentUpdateRequest: CommentUpdateRequest) =>
+      updateComment(commentId, commentUpdateRequest),
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries({
+          queryKey: postQueries.detail(postId).queryKey,
+          refetchInactive: true,
+        });
+        if (parentId) {
+          queryClient.invalidateQueries({
+            queryKey: postQueries.childrenComment(parentId).queryKey,
+            refetchInactive: true,
+          });
+        }
+      },
+    }
+  );
+};
+
+/**
+ * deleteComment api useMutation hooks
+ *
+ * @param commentId 삭제할 댓글의 id
+ * @returns deleteComment api useMutation return 값
+ */
+export const useDeleteComment = (
+  postId: string,
+  commentId: string,
+  parentId?: string
+) => {
+  const queryClient = useQueryClient();
+  return useMutation(() => deleteComment(commentId), {
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: postQueries.detail(postId).queryKey,
+        refetchInactive: true,
+      });
+      if (parentId) {
+        queryClient.invalidateQueries({
+          queryKey: postQueries.childrenComment(parentId).queryKey,
+          refetchInactive: true,
+        });
+      }
     },
   });
 };

@@ -1,11 +1,16 @@
+import {
+  ChildCommentResponse,
+  CommentResponse,
+} from './../../../../types/response/post/index.d';
 import axios from 'axios';
 import { Pagination } from 'climbingweb/types/common';
 import {
+  CommentCreateRequest,
+  CommentUpdateRequest,
   PostCreateRequest,
   PostReportRequest,
 } from 'climbingweb/types/request/post';
 import {
-  ChildCommentResponse,
   CommentFindResponse,
   LikeResponse,
   PostDetailResponse,
@@ -83,18 +88,15 @@ export const deleteLike = async (postId: string) => {
 };
 
 /**
- * GET /api​/v1​/posts​/comment​/{parentId}​/children api query 함수
+ * GET /api/v1/posts/{postId}/comment api query 함수
  *
- * @param commentId 모든 대댓글을 확인 할 commentId
+ * @param postId 모든 댓글을 확인 할 postId
  * @returns axiosResponse.data
  */
-export const findAllChildrenComment = async (
-  commentId: string,
-  pageParam = 0
-) => {
+export const findAllParentComment = async (postId: string, pageParam = 0) => {
   try {
-    const { data } = await axios.get<Pagination<ChildCommentResponse>>(
-      `/posts/${commentId}/comment`,
+    const { data } = await axios.get<Pagination<CommentFindResponse>>(
+      `/posts/${postId}/comment`,
       {
         params: {
           page: pageParam,
@@ -108,18 +110,18 @@ export const findAllChildrenComment = async (
 };
 
 /**
- * GET /api/v1/posts/{postId}/comment api query 함수
+ * GET /api​/v1​/posts​/comment​/{parentId}​/children api query 함수
  *
- * @param postId 모든 댓글을 확인 할 postId
+ * @param parentId 모든 대댓글을 확인 할 commentId
  * @returns axiosResponse.data
  */
-export const findAllParentCommentAndThreeChildComment = async (
-  postId: string,
+export const findAllChildrenComment = async (
+  parentId: string,
   pageParam = 0
 ) => {
   try {
-    const { data } = await axios.get<Pagination<CommentFindResponse>>(
-      `/posts/${postId}/comment`,
+    const { data } = await axios.get<Pagination<ChildCommentResponse>>(
+      `/posts/comment/${parentId}/children`,
       {
         params: {
           page: pageParam,
@@ -160,6 +162,67 @@ export const getPosts = async (pageParam = 0) => {
         page: pageParam,
       },
     });
+    return data;
+  } catch (error: any) {
+    throw error.response.data;
+  }
+};
+
+/**
+ *  POST /api/v1/posts/{postId}/comment api query 함수
+ *
+ * @param postId 댓글을 달 게시글의 id
+ * @param commentCreateRequest 댓글 내용, 대 댓글일 경우 commentId 까지
+ * @returns axiosResponse.data
+ */
+export const createComment = async (
+  postId: string,
+  commentCreateRequest: CommentCreateRequest
+) => {
+  try {
+    const { data } = await axios.post<CommentCreateRequest>(
+      `/posts/${postId}/comment`,
+      commentCreateRequest
+    );
+    return data;
+  } catch (error: any) {
+    throw error.response.data;
+  }
+};
+
+/**
+ * PUT /api/v1/posts/comment/{commentId} api query 함수
+ *
+ * @param commentId 수정할 댓글의 id
+ * @param commentUpdateRequest 수정할 댓글 내용
+ * @returns axiosResponse.data
+ */
+export const updateComment = async (
+  commentId: string,
+  commentUpdateRequest: CommentUpdateRequest
+) => {
+  try {
+    const { data } = await axios.put<CommentUpdateRequest>(
+      `/posts/comment/${commentId}`,
+      commentUpdateRequest
+    );
+    return data;
+  } catch (error: any) {
+    throw error.response.data;
+  }
+};
+
+/**
+ * DELETE /api/v1/posts/comment/{commentId} api query 함수
+ *
+ * @param commentId 삭제할 댓글의 id
+ * @returns axiosResponse.data
+ */
+export const deleteComment = async (commentId: string) => {
+  try {
+    const { data } = await axios.delete<CommentResponse>(
+      `/posts/comment/${commentId}`
+    );
     return data;
   } catch (error: any) {
     throw error.response.data;
