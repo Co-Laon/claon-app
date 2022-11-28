@@ -1,3 +1,4 @@
+import { laonQueries } from './../laon/queryKey';
 import { createQueryKeys } from '@lukemorales/query-key-factory';
 import {
   CommentCreateRequest,
@@ -45,12 +46,11 @@ export const postQueries = createQueryKeys('posts', {
         queryKey: ['parentComments'],
         queryFn: (context) => findAllParentComment(postId, context?.pageParam),
       }),
-      childrenComment: (parentId: string) => ({
-        queryKey: [parentId],
-        queryFn: (context) =>
-          findAllChildrenComment(parentId, context?.pageParam),
-      }),
     },
+  }),
+  childrenComment: (parentId: string) => ({
+    queryKey: [parentId],
+    queryFn: (context) => findAllChildrenComment(parentId, context?.pageParam),
   }),
 });
 
@@ -70,6 +70,10 @@ export const useCreateLike = (postId: string) => {
       });
       queryClient.invalidateQueries({
         queryKey: postQueries.detail(postId).queryKey,
+        refetchInactive: true,
+      });
+      queryClient.invalidateQueries({
+        queryKey: laonQueries.posts().queryKey,
         refetchInactive: true,
       });
     },
@@ -92,6 +96,10 @@ export const useDeleteLike = (postId: string) => {
       });
       queryClient.invalidateQueries({
         queryKey: postQueries.detail(postId).queryKey,
+        refetchInactive: true,
+      });
+      queryClient.invalidateQueries({
+        queryKey: laonQueries.posts().queryKey,
         refetchInactive: true,
       });
     },
@@ -142,7 +150,7 @@ export const useFindAllParentComment = (postId: string) => {
  */
 export const useFindAllChildrenComment = (commentId: string) => {
   return useInfiniteQuery({
-    ...postQueries.detail(commentId)._ctx.childrenComment(commentId),
+    ...postQueries.childrenComment(commentId),
     enabled: Boolean(commentId),
     getNextPageParam: (lastPageData) => {
       return lastPageData.nextPageNum < 0
@@ -192,7 +200,7 @@ export const useCreateComment = (postId: string) => {
     {
       onSuccess: () => {
         queryClient.invalidateQueries({
-          queryKey: postQueries.detail(postId)._ctx.parentComments().queryKey,
+          queryKey: postQueries.detail(postId).queryKey,
           refetchInactive: true,
         });
       },
@@ -215,8 +223,7 @@ export const useCreateChildComment = (postId: string, parentId: string) => {
     {
       onSuccess: () => {
         queryClient.invalidateQueries({
-          queryKey: postQueries.detail(postId)._ctx.childrenComment(parentId)
-            .queryKey,
+          queryKey: postQueries.childrenComment(parentId).queryKey,
           refetchInactive: true,
         });
       },
@@ -230,7 +237,11 @@ export const useCreateChildComment = (postId: string, parentId: string) => {
  * @param commentId 수정할 댓글의 id
  * @returns updateComment api useMutation return 값
  */
-export const useUpdateComment = (postId: string, commentId: string) => {
+export const useUpdateComment = (
+  postId: string,
+  commentId: string,
+  parentId?: string
+) => {
   const queryClient = useQueryClient();
   return useMutation(
     (commentUpdateRequest: CommentUpdateRequest) =>
@@ -241,6 +252,12 @@ export const useUpdateComment = (postId: string, commentId: string) => {
           queryKey: postQueries.detail(postId).queryKey,
           refetchInactive: true,
         });
+        if (parentId) {
+          queryClient.invalidateQueries({
+            queryKey: postQueries.childrenComment(parentId).queryKey,
+            refetchInactive: true,
+          });
+        }
       },
     }
   );
@@ -252,7 +269,11 @@ export const useUpdateComment = (postId: string, commentId: string) => {
  * @param commentId 삭제할 댓글의 id
  * @returns deleteComment api useMutation return 값
  */
-export const useDeleteComment = (postId: string, commentId: string) => {
+export const useDeleteComment = (
+  postId: string,
+  commentId: string,
+  parentId?: string
+) => {
   const queryClient = useQueryClient();
   return useMutation(() => deleteComment(commentId), {
     onSuccess: () => {
@@ -260,6 +281,12 @@ export const useDeleteComment = (postId: string, commentId: string) => {
         queryKey: postQueries.detail(postId).queryKey,
         refetchInactive: true,
       });
+      if (parentId) {
+        queryClient.invalidateQueries({
+          queryKey: postQueries.childrenComment(parentId).queryKey,
+          refetchInactive: true,
+        });
+      }
     },
   });
 };

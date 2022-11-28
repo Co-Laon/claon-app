@@ -79,13 +79,15 @@ export default function CommentDetailPage() {
   //댓글 수정 useMutation
   const { mutate: updateCommentMutate } = useUpdateComment(
     feedId,
-    selectedComment.commentId
+    selectedComment.commentId,
+    parentCommentId
   );
 
   //댓글 삭제 useMutation
   const { mutate: deleteCommentMutate } = useDeleteComment(
     feedId,
-    selectedComment.commentId
+    selectedComment.commentId,
+    parentCommentId
   );
 
   //뒤로가기 핸들러
@@ -170,7 +172,7 @@ export default function CommentDetailPage() {
           createdAt={createdAt}
           updatedAt={updatedAt}
           isOwner={isOwner}
-          isParent={true}
+          isParent={false}
           handleModifyCommentClick={handleModifyCommentClick}
           handleDeleteCommentClick={handleDeleteCommentClick}
         />
