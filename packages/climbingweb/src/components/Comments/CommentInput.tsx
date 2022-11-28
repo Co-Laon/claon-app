@@ -18,11 +18,7 @@ export const CommentInput = ({
           ref={refObj}
           className="w-full p-4"
           type="text"
-          placeholder={
-            parentCommentId
-              ? '대댓글을 입력해 주세요.'
-              : '댓글을 입력해 주세요.'
-          }
+          placeholder={'댓글을 입력해 주세요.'}
         />
         <button
           className="bg-white min-w-max text-purple-500 rounded-lg p-4 mx-1"
