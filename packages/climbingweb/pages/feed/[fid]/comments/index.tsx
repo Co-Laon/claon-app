@@ -78,9 +78,12 @@ export default function CommentPage() {
   };
 
   //댓글 수정 클릭 핸들러
-  const handleModifyCommentClick = (commentId: string) => {
-    setSelectedComment({ ...selectedComment, commentId, isEdit: true });
-    commentInputRef.current?.focus();
+  const handleModifyCommentClick = (commentId: string, content: string) => {
+    if (commentInputRef.current) {
+      setSelectedComment({ ...selectedComment, commentId, isEdit: true });
+      commentInputRef.current.value = content;
+      commentInputRef.current.focus();
+    }
   };
 
   //댓글 삭제 클릭 핸들러

@@ -32,8 +32,8 @@ const CenterCharge = ({ chargeList }: CenterChargeProps) => {
                 className={'flex justify-between items-center'}
                 key={`chargeListInner_${innerIdx}`}
               >
-                <text className={'w-[60%]'}>{inner.name}</text>
-                <text>{`${inner.fee}`}</text>
+                <span className={'w-[60%]'}>{inner.name}</span>
+                <span>{`${inner.fee}`}</span>
               </li>
             ))}
           </div>

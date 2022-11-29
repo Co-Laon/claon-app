@@ -9,7 +9,6 @@ import {
   UserPreviewResponse,
   UserResponse,
 } from 'climbingweb/types/response/user';
-import { debounce } from 'lodash';
 
 /**
  * PUT /api/v1//users/me/scope api query 함수
@@ -166,25 +165,21 @@ export const retrieveMe = async () => {
  * @param searchUserName 검색할 유저 이름. query params 로 들어간다.
  * @returns axiosResponse.data
  */
-export const searchUser = debounce(
-  async (searchUserName: string) => {
-    try {
-      const { data } = await axios.get<Pagination<UserPreviewResponse>>(
-        '/users/search',
-        {
-          params: {
-            nickname: searchUserName,
-          },
-        }
-      );
-      return data;
-    } catch (error: any) {
-      throw error.response.data;
-    }
-  },
-  300,
-  { leading: true }
-);
+export const searchUser = async (searchUserName: string) => {
+  try {
+    const { data } = await axios.get<Pagination<UserPreviewResponse>>(
+      '/users/search',
+      {
+        params: {
+          nickname: searchUserName,
+        },
+      }
+    );
+    return data;
+  } catch (error: any) {
+    throw error.response.data;
+  }
+};
 
 /**
  * GET /users/me/account api의 query 함수

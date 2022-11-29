@@ -11,7 +11,6 @@ import {
   HoldInfoResponse,
   ReviewBundleFindResponse,
 } from 'climbingweb/types/response/center';
-import { debounce } from 'lodash';
 
 /**
  * GET /centers api 의 query 함수
@@ -132,13 +131,10 @@ export const getCenterPosts = async (centerId: string, pageParam: number) => {
  * @param reportCreateRequest 수정 신청 내용
  * @returns axiosReponse.data
  */
-export const createCenterReport = async ({
-  centerId,
-  reportCreateRequest,
-}: {
-  centerId: string;
-  reportCreateRequest: CenterReportCreateRequest;
-}) => {
+export const createCenterReport = async (
+  centerId: string,
+  reportCreateRequest: CenterReportCreateRequest
+) => {
   try {
     const { data } = await axios.post<CenterReportResponse>(
       `/centers/${centerId}/report`,
@@ -181,25 +177,21 @@ export const findReviewByCenter = async (
  * @param searchCenterName 검색할 암장 이름
  * @returns axiosResponse.data
  */
-export const searchCenter = debounce(
-  async (searchCenterName: string) => {
-    try {
-      const { data } = await axios.get<Pagination<CenterPreviewResponse>>(
-        '/centers/search',
-        {
-          params: {
-            name: searchCenterName,
-          },
-        }
-      );
-      return data;
-    } catch (error: any) {
-      throw error.response.data;
-    }
-  },
-  300,
-  { leading: true }
-);
+export const searchCenter = async (searchCenterName: string) => {
+  try {
+    const { data } = await axios.get<Pagination<CenterPreviewResponse>>(
+      '/centers/search',
+      {
+        params: {
+          name: searchCenterName,
+        },
+      }
+    );
+    return data;
+  } catch (error: any) {
+    throw error.response.data;
+  }
+};
 
 /**
  * GET /centers/name/${centerName} api query 함수
@@ -207,17 +199,13 @@ export const searchCenter = debounce(
  * @param centerName 암장 이름 검색 input 값
  * @returns axiosResponse.data
  */
-export const searchCenterName = debounce(
-  async (centerName: string) => {
-    try {
-      const { data } = await axios.get<CenterNameResponse[]>(
-        `/centers/name/${centerName}`
-      );
-      return data;
-    } catch (error: any) {
-      throw error.response.data;
-    }
-  },
-  300,
-  { leading: true }
-);
+export const searchCenterName = async (centerName: string) => {
+  try {
+    const { data } = await axios.get<CenterNameResponse[]>(
+      `/centers/name/${centerName}`
+    );
+    return data;
+  } catch (error: any) {
+    throw error.response.data;
+  }
+};

@@ -1,4 +1,5 @@
 import { createQueryKeys } from '@lukemorales/query-key-factory';
+import { CenterReportCreateRequest } from 'climbingweb/types/request/center';
 import {
   useMutation,
   useQuery,
@@ -170,14 +171,18 @@ export const useFindReviewByCenter = (centerId: string) => {
  */
 export const useCreateCenterReport = (centerId: string) => {
   const queryClient = useQueryClient();
-  return useMutation(createCenterReport, {
-    onSuccess: () => {
-      queryClient.invalidateQueries({
-        queryKey: centerQueries.detail(centerId).queryKey,
-        refetchInactive: true,
-      });
-    },
-  });
+  return useMutation(
+    (centerReportRequest: CenterReportCreateRequest) =>
+      createCenterReport(centerId, centerReportRequest),
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries({
+          queryKey: centerQueries.detail(centerId).queryKey,
+          refetchInactive: true,
+        });
+      },
+    }
+  );
 };
 
 /**

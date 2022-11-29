@@ -7,28 +7,29 @@ import {
   Empty,
 } from 'climbingweb/src/components/common/AppBar/IconButton';
 import TextArea from 'climbingweb/src/components/common/TextArea/TextArea';
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { BottomSheet } from 'react-spring-bottom-sheet';
-import ReportData from 'climbingweb/src/interface/ReportData';
-import { useCreateReport } from 'climbingweb/src/hooks/queries/post/useCreateReport';
 import { useRouter } from 'next/router';
-
-const REPORT_LIST = ['부적절한 게시글', '부적절한 닉네임', '잘못된 암장 선택'];
+import { useCreateReport } from 'climbingweb/src/hooks/queries/post/queryKey';
 
 export default function ReportPage({}) {
   const router = useRouter();
   const { fid } = router.query;
   //fid string 거르는 로직, useRouter 에 대해 자세히 보고 추후 반드시 변경 해야함
-  const feedId = fid ? (Array.isArray(fid) ? fid[0] : fid) : '';
+  const feedId = fid as string;
+
+  const contentInputRef = useRef<HTMLTextAreaElement>(null);
 
   const [open, setOpen] = useState(false);
-  const [reportData, setReportData] = useState<ReportData>({
-    content: '',
-    postId: '',
-    reportType: '',
-  });
+  const [reportType, setReportType] = useState<
+    '부적절한 게시글' | '부적절한 닉네임' | '잘못된 암장 선택'
+  >('부적절한 게시글');
 
-  const { mutate, isSuccess, error } = useCreateReport(feedId, reportData);
+  const {
+    mutate: createCenterReportMutate,
+    isSuccess,
+    error,
+  } = useCreateReport(feedId);
 
   //바텀 시트 open/ close handler
   const handleOpen = () => {
@@ -39,23 +40,25 @@ export default function ReportPage({}) {
   };
 
   //바텀 시트 선택 handler
-  const handleSheetSelect = (selectedData: string) => {
-    setReportData({ ...reportData, reportType: selectedData });
+  const handleSheetSelect = (
+    selectedData: '부적절한 게시글' | '부적절한 닉네임' | '잘못된 암장 선택'
+  ) => {
+    setReportType(selectedData);
     setOpen(false);
-  };
-
-  //신고 내용 input handler
-  const handleContentInput = (contentData: string) => {
-    setReportData({ ...reportData, content: contentData });
   };
 
   //완료 버튼 클릭 handler
   const handlerSubmit = () => {
-    mutate();
-    if (isSuccess) {
-      alert('입력 완료 되었습니다.');
-    } else {
-      alert(error);
+    if (contentInputRef.current) {
+      createCenterReportMutate({
+        reportType: reportType,
+        content: contentInputRef.current.value,
+      });
+      if (isSuccess) {
+        alert('입력 완료 되었습니다.');
+      } else {
+        alert(error);
+      }
     }
   };
 
@@ -66,7 +69,7 @@ export default function ReportPage({}) {
         <div className="flex flex-col gap-2.5">
           <h2 className="text-lg font-extrabold leading-6">신고 사유</h2>
           <DropDown
-            value={reportData.reportType}
+            value={reportType}
             onSheetOpen={handleOpen}
             placeholder="신고 사유를 선택해주세요"
           />
@@ -74,7 +77,7 @@ export default function ReportPage({}) {
         <div className="flex flex-col gap-2.5">
           <h2 className="text-lg font-extrabold leading-6">신고 내용</h2>
           <TextArea
-            setData={handleContentInput}
+            refObj={contentInputRef}
             placeholder="요청 내용을 자세히 입력해주세요."
           />
         </div>
@@ -89,7 +92,7 @@ export default function ReportPage({}) {
       <BottomSheet open={open} onDismiss={handleDismiss}>
         <ListSheet
           headerTitle={'신고 사유'}
-          list={REPORT_LIST}
+          list={['부적절한 게시글', '부적절한 닉네임', '잘못된 암장 선택']}
           onSelect={handleSheetSelect}
         />
       </BottomSheet>

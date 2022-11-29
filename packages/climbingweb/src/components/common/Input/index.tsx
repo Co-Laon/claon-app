@@ -1,14 +1,20 @@
-import { ChangeEvent, useRef, useState } from 'react';
+import { ChangeEvent, useState } from 'react';
 
 interface InputProps {
+  refObj?: React.RefObject<HTMLInputElement>;
   value?: string | number;
   onChange?: any;
   leftNode?: JSX.Element;
   rightNode?: JSX.Element;
 }
 
-export const Input = ({ value, onChange, leftNode, rightNode }: InputProps) => {
-  const ref = useRef(null);
+export const Input = ({
+  refObj,
+  value,
+  onChange,
+  leftNode,
+  rightNode,
+}: InputProps) => {
   const [borderColor, setBorderColor] = useState('');
   const containerCss = `border-2 border-gray-300 h-12 w-full bg-white rounded-lg relative flex flex-row items-center justify-between px-4 focused:border-purple-500 ${borderColor}`;
   const handleFocused = () => {
@@ -25,7 +31,7 @@ export const Input = ({ value, onChange, leftNode, rightNode }: InputProps) => {
     <div className={containerCss}>
       {leftNode}
       <input
-        ref={ref}
+        ref={refObj}
         value={value}
         onChange={(e) => handleChangeValue(e)}
         onFocus={handleFocused}
