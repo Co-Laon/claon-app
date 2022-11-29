@@ -10,8 +10,10 @@ import Loading from 'climbingweb/src/components/common/Loading/Loading';
 import ErrorContent from 'climbingweb/src/components/common/Error/ErrorContent';
 import { useSearchCenter } from 'climbingweb/src/hooks/queries/center/queryKey';
 import { useSearchUser } from 'climbingweb/src/hooks/queries/user/queryKey';
+import { debounce } from 'lodash';
 
 const SearchPage = () => {
+  const searchInputRef = React.useRef<HTMLInputElement>(null);
   //search input value state
   const [inputValue, setInputValue] = useState<string>('');
 
@@ -31,13 +33,20 @@ const SearchPage = () => {
     error: centerDataListError,
   } = useSearchCenter(inputValue);
 
+  //search input value change handler
+  const handleSearchInputChange = debounce(() => {
+    if (searchInputRef.current) {
+      setInputValue(searchInputRef.current.value);
+    }
+  }, 500);
+
   return (
     <div className="w-full flex flex-col item-center 'mb-footer overflow-auto scrollbar-hide'">
       <AppBar leftNode={<AppLogo />} />
       <div className="px-5">
         <Input
-          value={inputValue}
-          onChange={setInputValue}
+          refObj={searchInputRef}
+          onChange={handleSearchInputChange}
           leftNode={<SearchIcon />}
         />
       </div>

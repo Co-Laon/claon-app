@@ -4,6 +4,7 @@ import {
   CommentCreateRequest,
   CommentUpdateRequest,
   PostCreateRequest,
+  PostReportRequest,
 } from 'climbingweb/types/request/post';
 import {
   useMutation,
@@ -15,6 +16,7 @@ import {
   createComment,
   createLike,
   createPost,
+  createReport,
   deleteComment,
   deleteLike,
   findAllChildrenComment,
@@ -289,4 +291,10 @@ export const useDeleteComment = (
       }
     },
   });
+};
+
+export const useCreateReport = (postId: string) => {
+  return useMutation((reportData: PostReportRequest) =>
+    createReport(postId, reportData)
+  );
 };

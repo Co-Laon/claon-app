@@ -12,7 +12,7 @@ interface ParentCommentProps {
   updatedAt?: string;
   childrenCommentCount: number;
   isOwner?: boolean;
-  handleModifyCommentClick: (commentId: string) => void;
+  handleModifyCommentClick: (commentId: string, content: string) => void;
   handleDeleteCommentClick: (commentId: string) => void;
 }
 
@@ -27,7 +27,7 @@ interface CommentProps {
   updatedAt?: string;
   isParent: boolean;
   isOwner?: boolean;
-  handleModifyCommentClick: (commentId: string) => void;
+  handleModifyCommentClick: (commentId: string, content: string) => void;
   handleDeleteCommentClick: (commentId: string) => void;
 }
 
@@ -79,7 +79,7 @@ export const Comment = ({
                 <>
                   <span
                     className="hover:text-black"
-                    onClick={() => handleModifyCommentClick(commentId)}
+                    onClick={() => handleModifyCommentClick(commentId, content)}
                   >
                     ·수정
                   </span>
@@ -137,7 +137,9 @@ export function ParentComment({
         updatedAt={updatedAt}
         isParent={true}
         isOwner={isOwner}
-        handleModifyCommentClick={() => handleModifyCommentClick(commentId)}
+        handleModifyCommentClick={() =>
+          handleModifyCommentClick(commentId, content)
+        }
         handleDeleteCommentClick={() => handleDeleteCommentClick(commentId)}
       />
       {childrenCommentCount > 0 ? (

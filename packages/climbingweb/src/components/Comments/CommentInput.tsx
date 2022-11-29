@@ -11,6 +11,18 @@ export const CommentInput = ({
   parentCommentId,
   onClickSubmit,
 }: CommentInputProps) => {
+  //등록 버튼 클릭 핸들러
+  const handleSubmitButtonClick = () => {
+    const content = refObj.current?.value;
+    if (content) {
+      onClickSubmit({
+        parentCommentId: parentCommentId,
+        content: refObj.current?.value,
+      });
+      refObj.current.value = '';
+    }
+  };
+
   return (
     <div className="bg-gray-100 w-full h-24 flex p-4 fixed bottom-0 mb-footer">
       <div className="w-full bg-white rounded-lg flex">
@@ -22,16 +34,7 @@ export const CommentInput = ({
         />
         <button
           className="bg-white min-w-max text-purple-500 rounded-lg p-4 mx-1"
-          onClick={() => {
-            const content = refObj.current?.value;
-            if (content) {
-              onClickSubmit({
-                parentCommentId: parentCommentId,
-                content: refObj.current?.value,
-              });
-              refObj.current.value = '';
-            }
-          }}
+          onClick={handleSubmitButtonClick}
         >
           등록
         </button>

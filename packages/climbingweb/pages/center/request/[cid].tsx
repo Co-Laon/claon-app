@@ -7,9 +7,8 @@ import {
   Empty,
 } from 'climbingweb/src/components/common/AppBar/IconButton';
 import TextArea from 'climbingweb/src/components/common/TextArea/TextArea';
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { BottomSheet } from 'react-spring-bottom-sheet';
-import { CenterReportCreateRequest } from 'climbingweb/types/request/center';
 import { useRouter } from 'next/router';
 import { useCreateCenterReport } from 'climbingweb/src/hooks/queries/center/queryKey';
 
@@ -18,11 +17,18 @@ export default function ReportPage({}) {
   const { cid } = router.query;
   const centerId = cid as string;
 
+  const contentInputRef = useRef<HTMLTextAreaElement>(null);
+
   // 수정요청 request state
-  const [reportData, setReportData] = useState<CenterReportCreateRequest>({
-    content: '',
-    reportType: '사진',
-  });
+  const [reportType, serReportType] = useState<
+    | '사진'
+    | '세팅일정'
+    | '연락처'
+    | '운영시간'
+    | '이용요금'
+    | '편의시설'
+    | '홀드정보'
+  >('사진');
 
   // 수정 요청 useMutation
   const {
@@ -61,7 +67,7 @@ export default function ReportPage({}) {
 
   // 수정 요청 request의 reportType input 변경 핸들러
   const handleReportTypeInputChange = (
-    reportType:
+    selectedData:
       | '사진'
       | '세팅일정'
       | '연락처'
@@ -70,23 +76,20 @@ export default function ReportPage({}) {
       | '편의시설'
       | '홀드정보'
   ) => {
-    setReportData({ ...reportData, reportType });
+    serReportType(selectedData);
     setOpen(false);
-  };
-
-  // 수정 요청 request의 content input 변경 핸들러
-  const handleContentInputChange = (content: string) => {
-    setReportData({ ...reportData, content });
   };
 
   // 수정 요청 완료 버튼 클릭 핸들러
   const handleSubmitButtonClick = () => {
-    createCenterReportMutate({
-      centerId: centerId,
-      reportCreateRequest: reportData,
-    });
-    if (isSuccess) router.back();
-    if (isError) alert('수정 요청에 실패했습니다.');
+    if (contentInputRef.current) {
+      createCenterReportMutate({
+        content: contentInputRef.current?.value,
+        reportType: reportType,
+      });
+      if (isSuccess) router.back();
+      if (isError) alert('수정 요청에 실패했습니다.');
+    }
   };
 
   return (
@@ -102,14 +105,13 @@ export default function ReportPage({}) {
           <DropDown
             onSheetOpen={handleOpen}
             placeholder="요청 부분을 선택해주세요"
-            value={reportData.reportType}
+            value={reportType}
           />
         </div>
         <div className="flex flex-col gap-2.5">
           <h2 className="text-lg font-extrabold leading-6">요청 내용</h2>
           <TextArea
-            data={reportData.content}
-            setData={handleContentInputChange}
+            refObj={contentInputRef}
             placeholder="요청 내용을 자세히 입력해주세요."
           />
         </div>

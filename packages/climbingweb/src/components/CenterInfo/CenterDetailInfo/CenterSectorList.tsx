@@ -14,10 +14,10 @@ const CenterSectorList = ({ sectorInfoList }: CenterSectorListProps) => (
           className={'flex gap-2 justify-between items-center'}
           key={`sectorInfoList_${value.id}`}
         >
-          <text>{value.name}</text>
-          <text>{`${value.start} ${value.start && value.end ? '~' : ''} ${
+          <span>{value.name}</span>
+          <span>{`${value.start} ${value.start && value.end ? '~' : ''} ${
             value.end
-          }`}</text>
+          }`}</span>
         </li>
       ))}
     </ul>
