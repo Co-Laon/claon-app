@@ -2,7 +2,6 @@ import {
   ChildCommentResponse,
   CommentResponse,
 } from './../../../../types/response/post/index.d';
-import { PostContents } from './../../../../types/response/post/index.d';
 import axios from 'axios';
 import { Pagination } from 'climbingweb/types/common';
 import {
@@ -230,20 +229,25 @@ export const deleteComment = async (commentId: string) => {
   }
 };
 export const getPostContentsList = async (fileList: File[]) => {
-  let postContentsList: PostContents[] = [];
-  fileList.forEach(async (file) => {
-    const formData = new FormData();
-    formData.append('image', file);
-    try {
-      const { data } = await axios.post<string>('/posts/contents', formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
-      });
-      postContentsList.push({ url: data });
-    } catch (error: any) {
+  const data = await axios
+    .all(
+      fileList.map(async (file) => {
+        const formData = new FormData();
+        formData.append('image', file);
+        await axios.post<string>('/posts/contents', formData, {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        });
+      })
+    )
+    .then(
+      axios.spread((...responses: any[]) => {
+        return responses.map((res) => res.data);
+      })
+    )
+    .catch((error: any) => {
       throw error.response.data;
-    }
-  });
-  return postContentsList;
+    });
+  return data;
 };
