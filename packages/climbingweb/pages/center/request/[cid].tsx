@@ -7,15 +7,17 @@ import {
   Empty,
 } from 'climbingweb/src/components/common/AppBar/IconButton';
 import TextArea from 'climbingweb/src/components/common/TextArea/TextArea';
-import { useRef, useState } from 'react';
+import { useContext, useRef, useState } from 'react';
 import { BottomSheet } from 'react-spring-bottom-sheet';
 import { useRouter } from 'next/router';
 import { useCreateCenterReport } from 'climbingweb/src/hooks/queries/center/queryKey';
+import { ToastContext } from 'climbingweb/src/components/common/Toast/ToastClient';
 
 export default function ReportPage({}) {
   const router = useRouter();
   const { cid } = router.query;
   const centerId = cid as string;
+  const { toast } = useContext(ToastContext);
 
   const contentInputRef = useRef<HTMLTextAreaElement>(null);
 
@@ -87,8 +89,11 @@ export default function ReportPage({}) {
         content: contentInputRef.current?.value,
         reportType: reportType,
       });
-      if (isSuccess) router.back();
-      if (isError) alert('수정 요청에 실패했습니다.');
+      if (isSuccess) {
+        router.back();
+        toast('수정 요청이 완료되었습니다.');
+      }
+      if (isError) toast('수정 요청에 실패했습니다.');
     }
   };
 

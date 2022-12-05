@@ -1,3 +1,4 @@
+import { ToastContext } from 'climbingweb/src/components/common/Toast/ToastClient';
 import { AppBar } from 'climbingweb/src/components/common/AppBar';
 import {
   BackButton,
@@ -12,9 +13,10 @@ import {
   useFindAllLaon,
 } from 'climbingweb/src/hooks/queries/laon/queryKey';
 import { useIntersectionObserver } from 'climbingweb/src/hooks/useIntersectionObserver';
-import React from 'react';
+import React, { useContext } from 'react';
 
 export const MyLaonList = ({}) => {
+  const { toast } = useContext(ToastContext);
   // Laon 유저 리스트 fetch api useQuery
   const {
     data: laonUserData,
@@ -36,6 +38,7 @@ export const MyLaonList = ({}) => {
   // 라온 취소 버튼 클릭 핸들러
   const handleDeleteLaonClick = (nickname: string) => {
     deleteLaonMutate(nickname);
+    toast('라온이 취소되었습니다.');
   };
 
   // InfiniteScroll 을 위한 로직

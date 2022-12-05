@@ -11,6 +11,7 @@ import { isDesktop } from 'react-device-detect';
 import 'react-spring-bottom-sheet/dist/style.css';
 import { useRNMessage } from 'climbingweb/src/hooks/useRNMessage';
 import Loading from 'climbingweb/src/components/common/Loading/Loading';
+import { ToastClient } from 'climbingweb/src/components/common/Toast/ToastClient';
 
 function MyApp({ Component, pageProps }: AppProps) {
   const { token, sendReactNativeMessage } = useRNMessage();
@@ -66,8 +67,10 @@ function MyApp({ Component, pageProps }: AppProps) {
   return (
     <Provider store={store}>
       <QueryClientProvider client={queryClient}>
-        <Component {...pageProps} />
-        <NavBar navButtons={navButtons} />
+        <ToastClient>
+          <Component {...pageProps} />
+          <NavBar navButtons={navButtons} />
+        </ToastClient>
       </QueryClientProvider>
     </Provider>
   );
