@@ -5,7 +5,7 @@ import { ConfirmSheetProps } from './type';
 
 export const FeedEditSheet = ({ onCancel, onConfirm }: ConfirmSheetProps) => {
   const [selectDelete, setSelectDelete] = useState<boolean>(false);
-  const handleToastDelete = (e: any) => {
+  const handleAlertDelete = (e: any) => {
     const target = e.target.innerHTML;
     if (target === '삭제하기') setSelectDelete(true);
   };
@@ -26,7 +26,7 @@ export const FeedEditSheet = ({ onCancel, onConfirm }: ConfirmSheetProps) => {
       ) : (
         <ListSheet
           headerTitle=""
-          onSelect={handleToastDelete}
+          onSelect={handleAlertDelete}
           list={sheetList}
         />
       )}
