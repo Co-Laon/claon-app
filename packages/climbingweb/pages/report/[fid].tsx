@@ -7,18 +7,18 @@ import {
   Empty,
 } from 'climbingweb/src/components/common/AppBar/IconButton';
 import TextArea from 'climbingweb/src/components/common/TextArea/TextArea';
-import { useContext, useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 import { BottomSheet } from 'react-spring-bottom-sheet';
 import { useRouter } from 'next/router';
 import { useCreateReport } from 'climbingweb/src/hooks/queries/post/queryKey';
-import { ToastContext } from 'climbingweb/src/components/common/Toast/ToastClient';
+import { useToast } from 'climbingweb/src/hooks/useToast';
 
 export default function ReportPage({}) {
   const router = useRouter();
   const { fid } = router.query;
   //fid string 거르는 로직, useRouter 에 대해 자세히 보고 추후 반드시 변경 해야함
   const feedId = fid as string;
-  const { toast } = useContext(ToastContext);
+  const { toast } = useToast();
 
   const contentInputRef = useRef<HTMLTextAreaElement>(null);
 

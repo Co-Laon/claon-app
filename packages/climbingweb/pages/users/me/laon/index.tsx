@@ -1,4 +1,3 @@
-import { ToastContext } from 'climbingweb/src/components/common/Toast/ToastClient';
 import { AppBar } from 'climbingweb/src/components/common/AppBar';
 import {
   BackButton,
@@ -13,10 +12,11 @@ import {
   useFindAllLaon,
 } from 'climbingweb/src/hooks/queries/laon/queryKey';
 import { useIntersectionObserver } from 'climbingweb/src/hooks/useIntersectionObserver';
-import React, { useContext } from 'react';
+import { useToast } from 'climbingweb/src/hooks/useToast';
+import React from 'react';
 
 export const MyLaonList = ({}) => {
-  const { toast } = useContext(ToastContext);
+  const { toast } = useToast();
   // Laon 유저 리스트 fetch api useQuery
   const {
     data: laonUserData,

@@ -7,17 +7,17 @@ import {
   Empty,
 } from 'climbingweb/src/components/common/AppBar/IconButton';
 import TextArea from 'climbingweb/src/components/common/TextArea/TextArea';
-import { useContext, useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 import { BottomSheet } from 'react-spring-bottom-sheet';
 import { useRouter } from 'next/router';
 import { useCreateCenterReport } from 'climbingweb/src/hooks/queries/center/queryKey';
-import { ToastContext } from 'climbingweb/src/components/common/Toast/ToastClient';
+import { useToast } from 'climbingweb/src/hooks/useToast';
 
 export default function ReportPage({}) {
   const router = useRouter();
   const { cid } = router.query;
   const centerId = cid as string;
-  const { toast } = useContext(ToastContext);
+  const { toast } = useToast();
 
   const contentInputRef = useRef<HTMLTextAreaElement>(null);
 

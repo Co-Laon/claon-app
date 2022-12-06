@@ -1,11 +1,11 @@
 import { useFindHoldInfoByCenter } from 'climbingweb/src/hooks/queries/center/queryKey';
+import { useToast } from 'climbingweb/src/hooks/useToast';
 import Hold from 'climbingweb/src/interface/Hold';
 import { ClimbingHistoryRequest } from 'climbingweb/types/request/post';
-import React, { useCallback, useContext, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import EmptyContent from '../../common/EmptyContent/EmptyContent';
 import ErrorContent from '../../common/Error/ErrorContent';
 import Loading from '../../common/Loading/Loading';
-import { ToastContext } from '../../common/Toast/ToastClient';
 import HoldImage from './HoldImage';
 import HoldImageButton from './HoldImageButton';
 
@@ -36,7 +36,7 @@ const HoldListModal = ({
     error: holdListDataError,
   } = useFindHoldInfoByCenter(centerId as string);
 
-  const { toast } = useContext(ToastContext);
+  const { toast } = useToast();
 
   /**
    * ClimbingHistoryRequest 를 HoldList 로 변환해주는 함수
