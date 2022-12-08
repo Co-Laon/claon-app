@@ -231,10 +231,10 @@ export const deleteComment = async (commentId: string) => {
 export const getPostContentsList = async (fileList: File[]) => {
   const data = await axios
     .all(
-      fileList.map(async (file) => {
+      fileList.map((file) => {
         const formData = new FormData();
         formData.append('image', file);
-        await axios.post<string>('/posts/contents', formData, {
+        return axios.post<string>('/posts/contents', formData, {
           headers: {
             'Content-Type': 'multipart/form-data',
           },
@@ -243,11 +243,11 @@ export const getPostContentsList = async (fileList: File[]) => {
     )
     .then(
       axios.spread((...responses: any[]) => {
-        return responses.map((res) => res.data);
+        return responses.map((res) => ({ url: res.data }));
       })
     )
     .catch((error: any) => {
-      throw error.response.data;
+      throw error.response;
     });
   return data;
 };

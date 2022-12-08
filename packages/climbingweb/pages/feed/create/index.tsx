@@ -14,7 +14,6 @@ import {
 } from 'climbingweb/src/hooks/queries/post/queryKey';
 import { useCreatePostForm } from 'climbingweb/src/hooks/useCreatePostForm';
 import Loading from 'climbingweb/src/components/common/Loading/Loading';
-import { useRouter } from 'next/router';
 
 export default function CreatePostPage() {
   const [page, setPage] = useState<string>('first');
@@ -23,33 +22,15 @@ export default function CreatePostPage() {
   const [searchInput, setSearchInput] = useState<string>('');
   //searchInput 으로 인한 centerList 중 선택 된 것이 있는지 여부
   const [selected, setSelected] = useState(false);
-  const { mutate, isSuccess, error } = useCreatePost(postData);
-  const {
-    mutate: getPostContentsList,
-    isSuccess: getPostContentsListSuccess,
-    isLoading: getPostContentsListLoading,
-    isError: getPostContentsListError,
-    data: postContentsList,
-  } = useGetPostContentsList();
-  const router = useRouter();
+  const { isLoading } = useCreatePost();
+  const { mutate: getPostContentsList, isLoading: getPostContentsListLoading } =
+    useGetPostContentsList();
 
   useEffect(() => {
-    console.log(postData);
     return () => {
       initPost();
     };
   }, [initPost]);
-
-  /**
-   * 사진 추가 핸들링 함수
-   * @param contentsList
-   */
-  const handleContentsListInput = useCallback(
-    (contentsList: { url: string }[]) => {
-      setPostData({ ...postData, contentsList });
-    },
-    [setPostData, postData]
-  );
 
   /**
    * 내용 입력 핸들링 함수
@@ -84,44 +65,15 @@ export default function CreatePostPage() {
     [setPostData, postData]
   );
 
-  const handleGoToHome = useCallback(() => {
-    router.push('/');
-  }, [router]);
-
   /**
    * 포스트 입력 완료 핸들링 함수
    */
   const handlePostDataSubmit = useCallback(() => {
     const urlList = postImageList.map(({ file }) => file);
     getPostContentsList(urlList);
-    if (getPostContentsListSuccess) {
-      console.log('success');
-      handleContentsListInput(postContentsList);
-      mutate();
-      if (isSuccess) {
-        handleGoToHome();
-        alert('입력 완료 되었습니다.');
-      } else {
-        alert(error);
-      }
-    }
-    if (getPostContentsListError) {
-      alert('이미지 업로드 중 문제가 발생하였습니다.');
-    }
-  }, [
-    mutate,
-    isSuccess,
-    error,
-    getPostContentsList,
-    handleContentsListInput,
-    getPostContentsListError,
-    postContentsList,
-    getPostContentsListSuccess,
-    postImageList,
-    handleGoToHome,
-  ]);
+  }, [postImageList, getPostContentsList]);
 
-  if (getPostContentsListLoading) {
+  if (getPostContentsListLoading && isLoading) {
     return (
       <section className=" h-screen flex justify-center items-center">
         <Loading />

@@ -1,4 +1,5 @@
 import { laonQueries } from './../laon/queryKey';
+import { useCreatePostForm } from 'climbingweb/src/hooks/useCreatePostForm';
 import { createQueryKeys } from '@lukemorales/query-key-factory';
 import {
   CommentCreateRequest,
@@ -21,12 +22,13 @@ import {
   deleteLike,
   findAllChildrenComment,
   findAllParentComment,
-  findAllParentCommentAndThreeChildComment,
   getPostContentsList,
   getPost,
   getPosts,
   updateComment,
 } from './queries';
+import { PostContents } from 'climbingweb/types/response/post';
+import { useRouter } from 'next/router';
 
 /**
  * 추후 성능 개선 필요!!
@@ -116,16 +118,27 @@ export const useDeleteLike = (postId: string) => {
  * @param postCreateRequest 게시할 피드 내용
  * @returns createPost api useMutation return 값
  */
-export const useCreatePost = (postCreateRequest: PostCreateRequest) => {
+export const useCreatePost = () => {
+  const router = useRouter();
   const queryClient = useQueryClient();
-  return useMutation(() => createPost(postCreateRequest), {
-    onSuccess: () => {
-      queryClient.invalidateQueries({
-        queryKey: postQueries.list().queryKey,
-        refetchInactive: true,
-      });
-    },
-  });
+  return useMutation(
+    (postCreateRequest: PostCreateRequest) => createPost(postCreateRequest),
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries({
+          queryKey: postQueries.list().queryKey,
+          refetchInactive: true,
+        });
+        alert('입력 완료 되었습니다.');
+        router.push('/');
+      },
+      onError: (error) => {
+        console.error(error);
+        alert('피드 작성에 실패했습니다. 다시 시도해주세요.');
+        window.location.reload();
+      },
+    }
+  );
 };
 
 /**
@@ -299,6 +312,19 @@ export const useCreateReport = (postId: string) => {
   return useMutation((reportData: PostReportRequest) =>
     createReport(postId, reportData)
   );
+};
+
 export const useGetPostContentsList = () => {
-  return useMutation((fileList: File[]) => getPostContentsList(fileList));
+  const { mutate } = useCreatePost();
+  const { postData } = useCreatePostForm();
+  return useMutation((fileList: File[]) => getPostContentsList(fileList), {
+    onSuccess: (data: PostContents[]) => {
+      console.log(data);
+      mutate({ ...postData, contentsList: data });
+    },
+    onError: (error) => {
+      console.error(error);
+      alert('이미지 업로드에 실패했습니다.');
+    },
+  });
 };
