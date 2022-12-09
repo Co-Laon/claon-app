@@ -14,12 +14,13 @@ export const ProfileImage = ({ src, icon, onClickIcon }: ProfileProps) => {
     <div className="w-16 relative">
       <div className="w-15 h-15 rounded-xl relative">
         {src ? (
-          <div className="w-16 h-16">
+          <div className="w-16 h-16 flex items-center justify-center">
             <Image
               className="relative rounded-full"
               src={src}
-              layout="fill"
               alt="profile"
+              height={40}
+              width={40}
             />
           </div>
         ) : (

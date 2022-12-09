@@ -21,6 +21,7 @@ const UserFeedList = ({
       page.results.map((result, rIndex) => (
         <UserFeed
           key={`userPost${pIndex}${rIndex}`}
+          postId={result.postId}
           centerName={result.centerName}
           image={result.thumbnailUrl}
           climbingHistories={result.climbingHistories}

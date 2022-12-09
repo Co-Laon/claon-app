@@ -1,4 +1,3 @@
-import { CenterPreviewResponse } from '../center/index';
 import { ClimbingHistoryResponse } from 'climbingweb/types/response/post';
 
 export interface BlockUserFindResponse {
@@ -45,7 +44,7 @@ export interface UserDetailResponse {
 }
 
 export interface CenterClimbingHistoryResponse {
-  center: CenterPreviewResponse;
+  center: UserCenterPreviewResponse;
   climbingHistories: ClimbingHistoryResponse[];
 }
 

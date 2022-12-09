@@ -27,18 +27,14 @@ export const centerQueries = createQueryKeys('centers', {
     queryKey: [option],
     queryFn: () => getCenterList(option),
   }),
-  search: (name: string) => {
-    return {
-      queryKey: [name],
-      queryFn: () => searchCenter(name),
-    };
-  },
-  searchName: (centerName: string) => {
-    return {
-      queryKey: [centerName],
-      queryFn: () => searchCenterName(centerName),
-    };
-  },
+  search: (name: string) => ({
+    queryKey: [name],
+    queryFn: () => searchCenter(name),
+  }),
+  searchName: (centerName: string) => ({
+    queryKey: [centerName],
+    queryFn: () => searchCenterName(centerName),
+  }),
   detail: (centerId: string) => ({
     queryKey: [centerId],
     queryFn: () => findCenter(centerId),
