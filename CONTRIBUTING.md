@@ -4,15 +4,17 @@ This Repository is the CLAON project Frontend Repository of the Co-Laon team.
 
 ## 1. Fork and Clone
 
-Please fork from `Co-Laon/claon-app` repository to your Github account,
-and contribute through your forked repository.
+Please fork from `Co-Laon/claon-app` repository to your Github account, and
+contribute through your forked repository.
 
 Clone your forked repository.
+
 ```shell
 git clone https://www.github.com/{your account name}/claon-app.git
 ```
 
 Configure Git to sync your fork with the original repository.
+
 ```shell
 git remote add upstream https://github.com/Co-Laon/claon-app.git
 ```
@@ -21,10 +23,12 @@ git remote add upstream https://github.com/Co-Laon/claon-app.git
 
 ### Rules to manage branch
 
-* `master`: project with release level can be merged to `master` branch
-* `develop`: new feature developed after fully verified from others can be merged to `develop` branch
+- `master`: project with release level can be merged to `master` branch
+- `develop`: new feature developed after fully verified from others can be
+  merged to `develop` branch
 
 We recommend that make new branch in the develop branch for your contribution.
+
 ```shell
 git checkout -b (branch name)
 ```
@@ -44,6 +48,8 @@ refac: refactored code that neither fixes a bug nor adds a feature
 docs: documentation only changes
 chore: extra work
 lint: changes that do not affect the meaning of the code
+style: changes that only ui style codes
+test: changes code for test
 ```
 
 #### - Example
@@ -58,6 +64,7 @@ lint: changes that do not affect the meaning of the code
 ```
 (Type): (Description)
 ```
+
 - Start with lowercase letter
 - Don't put a `.` at the end of the message
 - Write message authoritatively
@@ -69,5 +76,5 @@ lint: changes that do not affect the meaning of the code
 
 ## 4. Pull Request
 
-Create pull request at the `Co-Laon/claon-app` repository according to the PR Template.
-You can merge only when more than one team member approve.
+Create pull request at the `Co-Laon/claon-app` repository according to the PR
+Template. You can merge only when more than one team member approve.
