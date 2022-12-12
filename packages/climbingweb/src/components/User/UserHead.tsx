@@ -79,7 +79,7 @@ export const UserHead = ({
           </p>
           <p className="flex w-full justify-between">
             <span>Ape Index</span>
-            <span>+{apeIndex}</span>
+            <span>{apeIndex > 0 ? `+${apeIndex}` : apeIndex}</span>
           </p>
         </div>
       ) : null}
