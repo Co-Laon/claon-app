@@ -12,9 +12,11 @@ import {
   useFindAllLaon,
 } from 'climbingweb/src/hooks/queries/laon/queryKey';
 import { useIntersectionObserver } from 'climbingweb/src/hooks/useIntersectionObserver';
+import { useToast } from 'climbingweb/src/hooks/useToast';
 import React from 'react';
 
 export const MyLaonList = ({}) => {
+  const { toast } = useToast();
   // Laon 유저 리스트 fetch api useQuery
   const {
     data: laonUserData,
@@ -36,6 +38,7 @@ export const MyLaonList = ({}) => {
   // 라온 취소 버튼 클릭 핸들러
   const handleDeleteLaonClick = (nickname: string) => {
     deleteLaonMutate(nickname);
+    toast('라온이 취소되었습니다.');
   };
 
   // InfiniteScroll 을 위한 로직

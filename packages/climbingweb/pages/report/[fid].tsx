@@ -11,12 +11,14 @@ import { useRef, useState } from 'react';
 import { BottomSheet } from 'react-spring-bottom-sheet';
 import { useRouter } from 'next/router';
 import { useCreateReport } from 'climbingweb/src/hooks/queries/post/queryKey';
+import { useToast } from 'climbingweb/src/hooks/useToast';
 
 export default function ReportPage({}) {
   const router = useRouter();
   const { fid } = router.query;
   //fid string 거르는 로직, useRouter 에 대해 자세히 보고 추후 반드시 변경 해야함
   const feedId = fid as string;
+  const { toast } = useToast();
 
   const contentInputRef = useRef<HTMLTextAreaElement>(null);
 
@@ -25,11 +27,8 @@ export default function ReportPage({}) {
     '부적절한 게시글' | '부적절한 닉네임' | '잘못된 암장 선택'
   >('부적절한 게시글');
 
-  const {
-    mutate: createCenterReportMutate,
-    isSuccess,
-    error,
-  } = useCreateReport(feedId);
+  const { mutate: createCenterReportMutate, isSuccess } =
+    useCreateReport(feedId);
 
   //바텀 시트 open/ close handler
   const handleOpen = () => {
@@ -55,9 +54,9 @@ export default function ReportPage({}) {
         content: contentInputRef.current.value,
       });
       if (isSuccess) {
-        alert('입력 완료 되었습니다.');
+        toast('입력 완료 되었습니다.');
       } else {
-        alert(error);
+        toast('입력 실패 하였습니다.');
       }
     }
   };

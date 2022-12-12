@@ -1,4 +1,5 @@
 import { useFindHoldInfoByCenter } from 'climbingweb/src/hooks/queries/center/queryKey';
+import { useToast } from 'climbingweb/src/hooks/useToast';
 import Hold from 'climbingweb/src/interface/Hold';
 import { ClimbingHistoryRequest } from 'climbingweb/types/request/post';
 import React, { useCallback, useEffect, useState } from 'react';
@@ -34,6 +35,8 @@ const HoldListModal = ({
     isError: isHoldListDataError,
     error: holdListDataError,
   } = useFindHoldInfoByCenter(centerId as string);
+
+  const { toast } = useToast();
 
   /**
    * ClimbingHistoryRequest 를 HoldList 로 변환해주는 함수
@@ -112,7 +115,7 @@ const HoldListModal = ({
       if (
         tempSelectedHold.reduce((prev, curr) => prev + curr.count, 0) > maxCount
       ) {
-        alert(
+        toast(
           `너무 많은 홀드를 선택하셨습니다. 최대 ${maxCount}개의 홀드를 선택 할 수 있습니다.`
         );
         return;
