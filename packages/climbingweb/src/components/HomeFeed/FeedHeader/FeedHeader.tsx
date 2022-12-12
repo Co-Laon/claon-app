@@ -1,6 +1,7 @@
 import React from 'react';
 import OptionDotImg from 'climbingweb/src/assets/option_gray800.svg';
 import { ProfileImage } from '../../common/profileImage/ProfileImage';
+import { useRouter } from 'next/router';
 
 interface FeedHeaderProps {
   userImage: string;
@@ -15,12 +16,14 @@ const FeedHeader = ({
   userLocation,
   handleOptionDotClick,
 }: FeedHeaderProps) => {
+  const router = useRouter();
+  const handleProfileClick = () => {
+    router.push(`/users/name/${userName}`);
+  };
   return (
     <header className={'flex w-full h-[56px] my-1 justify-between'}>
-      <div className={'flex items-center'}>
-        <div className={'ml-4 mr-2'}>
-          <ProfileImage src={userImage} />
-        </div>
+      <div className={'flex items-center'} onClick={handleProfileClick}>
+        <ProfileImage src={userImage} />
         <div>
           <p className={'text-sm'}>{userName}</p>
           <p className={'text-sm text-gray-600'}>{userLocation}</p>

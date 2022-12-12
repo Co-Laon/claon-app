@@ -214,3 +214,8 @@ export interface ReviewResponse {
  * GET /api/v1/centers/search
  * 특이사항: Pagination«CenterPreviewResponseDto»
  */
+
+export interface UserCenterPreviewResponse {
+  centerImage: string;
+  centerName: string;
+}

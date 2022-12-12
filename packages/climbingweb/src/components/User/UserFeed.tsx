@@ -1,17 +1,33 @@
 import { ClimbingHistoryResponse } from 'climbingweb/types/response/post';
 import Image from 'next/image';
+import { useRouter } from 'next/router';
 import React from 'react';
 import MiniHold from './MiniHold';
 
 interface UserFeedProps {
+  postId: string;
   centerName: string;
   image: string;
   climbingHistories: ClimbingHistoryResponse[];
 }
 
-const UserFeed = ({ centerName, image, climbingHistories }: UserFeedProps) => {
+const UserFeed = ({
+  postId,
+  centerName,
+  image,
+  climbingHistories,
+}: UserFeedProps) => {
+  const router = useRouter();
+
+  const handleFeedClick = () => {
+    router.push(`/feed/${postId}`);
+  };
+
   return (
-    <div className="flex flex-col my-1 mr-2 pb-3 rounded-xl shadow-lg max-w-[160px] h-[200px]">
+    <div
+      className="flex flex-col my-1 mr-2 pb-3 rounded-xl shadow-lg max-w-[160px] h-[200px]"
+      onClick={handleFeedClick}
+    >
       <Image
         src={image}
         alt={'UserFeedImage'}
