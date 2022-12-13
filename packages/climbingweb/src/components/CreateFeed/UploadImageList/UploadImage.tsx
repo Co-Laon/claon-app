@@ -1,16 +1,16 @@
 import Image from 'next/image';
 import DelButton from 'climbingweb/src/assets/icon/createFeed/ic_24_del_gray800.svg';
+import { useCreatePostForm } from 'climbingweb/src/hooks/useCreatePostForm';
 
 interface ImageProps {
   src: string;
-  media: string[];
-  setMedia: ({}: any) => void;
+  id: number;
 }
 
-export function UploadImage({ src, media, setMedia }: ImageProps) {
+export function UploadImage({ id, src }: ImageProps) {
+  const { deleteImageList } = useCreatePostForm();
   const handleDeleteMedia = () => {
-    const deletedMedia = media.filter((m) => m !== src);
-    setMedia(deletedMedia);
+    deleteImageList(id);
   };
 
   return (

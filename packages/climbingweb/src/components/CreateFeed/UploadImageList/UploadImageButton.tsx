@@ -1,37 +1,14 @@
 import UploadIcon from 'climbingweb/src/assets/icon/createFeed/ic_24_photo_gray800.svg';
+import { useCreatePostForm } from 'climbingweb/src/hooks/useCreatePostForm';
+const MAX_COUNT = 10;
 
-interface ButtonProps {
-  onClick?: any;
-  count?: string;
-  media?: any;
-  setMedia?: any;
-}
-
-export function UploadImageButton({ media, setMedia }: ButtonProps) {
-  const count = media.length;
-  const maxCount = 10;
+export function UploadImageButton() {
+  const { postImageList, selectImageList } = useCreatePostForm();
+  const count = postImageList.length;
 
   const handleUploadFile = (e: any) => {
-    if (count < maxCount) {
-      const files: File[] = Array.from(e.target.files);
-      console.log(files);
-      files.map((file) => {
-        let reader = new FileReader();
-        reader.readAsDataURL(file);
-        reader.onload = () => {
-          const base64 = reader.result;
-          console.log('base64: ', base64);
-          if (base64) {
-            setMedia((originMedia: string[]) => [
-              ...originMedia,
-              base64.toString(),
-            ]);
-          }
-        };
-      });
-    } else {
-      alert('초과했습니다.');
-    }
+    const files: File[] = Array.from(e.target.files);
+    selectImageList(files);
   };
 
   return (
@@ -52,7 +29,7 @@ export function UploadImageButton({ media, setMedia }: ButtonProps) {
         <UploadIcon alt="upload" />
         <div>
           <span className="text-[#5953FF]">{count ? count : 0}</span>
-          <span> / {maxCount}</span>
+          <span> / {MAX_COUNT}</span>
         </div>
       </div>
     </label>
