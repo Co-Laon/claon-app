@@ -7,7 +7,7 @@ interface UserRecordListProps {
 }
 
 const UserRecordList = ({ userDetailData }: UserRecordListProps) => (
-  <div>
+  <>
     {userDetailData.centerClimbingHistories.map((value, index) => (
       <UserRecord
         key={`UserRecord_${index}`}
@@ -15,7 +15,7 @@ const UserRecordList = ({ userDetailData }: UserRecordListProps) => (
         climbingHistories={value.climbingHistories}
       />
     ))}
-  </div>
+  </>
 );
 
 export default UserRecordList;

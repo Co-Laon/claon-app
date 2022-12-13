@@ -1,6 +1,6 @@
 import { AppBar } from 'climbingweb/src/components/common/AppBar';
 import {
-  AppLogo,
+  BackButton,
   ModifiedButton,
 } from 'climbingweb/src/components/common/AppBar/IconButton';
 import { ListSheet } from 'climbingweb/src/components/common/BottomSheetContents/ListSheet/ListSheet';
@@ -30,7 +30,7 @@ export default function FeedPage({}) {
   if (postData)
     return (
       <section>
-        <AppBar leftNode={<AppLogo />} rightNode={<ModifiedButton />} />
+        <AppBar leftNode={<BackButton />} rightNode={<ModifiedButton />} />
         <HomeFeed postData={postData} />
         <BottomSheet open={openBTSheet} onDismiss={() => setOpenBTSheet(false)}>
           <ListSheet

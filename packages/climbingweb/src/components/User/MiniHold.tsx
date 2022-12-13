@@ -8,8 +8,8 @@ interface MiniHoldProps {
 
 const MiniHold = ({ hold }: MiniHoldProps) => {
   return (
-    <div className="flex justify-center text-xs">
-      <Image height={10} width={10} src={hold.holdImage} alt={hold.holdId} />
+    <div className="relative flex items-center text-xs min-w-fi ">
+      <Image height={12} width={12} src={hold.holdImage} alt={hold.holdId} />
       {hold.climbingCount}
     </div>
   );
