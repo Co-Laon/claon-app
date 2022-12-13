@@ -7,14 +7,16 @@ import { QueryClient, QueryClientProvider } from 'react-query';
 import NavBar from 'climbingweb/src/components/common/bottomNav/NavBar';
 import navButtons from 'climbingweb/src/components/common/bottomNav/button';
 import axios from 'axios';
-import { isDesktop } from 'react-device-detect';
 import 'react-spring-bottom-sheet/dist/style.css';
 import { useRNMessage } from 'climbingweb/src/hooks/useRNMessage';
-import Loading from 'climbingweb/src/components/common/Loading/Loading';
 import { ToastClient } from 'climbingweb/src/components/common/Toast/ToastClient';
+import { useToken } from 'climbingweb/src/hooks/useToken';
+import Login from 'climbingweb/src/components/dev/Login';
+import { isDesktop } from 'react-device-detect';
 
 function MyApp({ Component, pageProps }: AppProps) {
   const { token, sendReactNativeMessage } = useRNMessage();
+  const { token: storageToken, isStorageLogin } = useToken();
   useLayoutEffect(() => {
     if (token) {
       axios.defaults.headers.common['access-token'] = token.accessToken;
@@ -25,6 +27,11 @@ function MyApp({ Component, pageProps }: AppProps) {
         '' + process.env.NEXT_PUBLIC_ACCESS_TOKEN;
       axios.defaults.headers.common['refresh-token'] =
         '' + process.env.NEXT_PUBLIC_REFRESH_TOKEN;
+    }
+    if (isStorageLogin()) {
+      axios.defaults.headers.common['access-token'] = storageToken.accessToken;
+      axios.defaults.headers.common['refresh-token'] =
+        storageToken.refreshToken;
     }
 
     axios.defaults.baseURL = '' + process.env.NEXT_PUBLIC_API;
@@ -56,10 +63,10 @@ function MyApp({ Component, pageProps }: AppProps) {
         },
       })
   );
-  if (!token && !isDesktop) {
+  if (!token && !isDesktop && !isStorageLogin()) {
     return (
       <section className=" h-screen flex justify-center items-center">
-        <Loading />
+        <Login />
       </section>
     );
   }

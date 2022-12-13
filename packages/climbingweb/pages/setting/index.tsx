@@ -17,6 +17,7 @@ import {
   useChangePublicScope,
   useRetrieveMe,
 } from 'climbingweb/src/hooks/queries/user/queryKey';
+import { useToken } from 'climbingweb/src/hooks/useToken';
 // import { useDeleteUser } from 'climbingweb/src/hooks/queries/user/useDeleteUser';
 
 export default function SettingPage() {
@@ -36,6 +37,8 @@ export default function SettingPage() {
   const [sheetKey, setSheetKey] = useState<string>();
   //바텀 시트 on/off state
   const [openSheet, setOpenSheet] = useState<boolean>(false);
+  //devToken state
+  const { logout } = useToken();
 
   //user 개인 data useQuery
   const {
@@ -86,6 +89,7 @@ export default function SettingPage() {
     if (sheetKey === 'logout') {
       //로그아웃
       sendReactNativeMessage({ type: 'logout' });
+      logout();
       setOpenSheet(false);
     } else if (sheetKey === 'leave') {
       //회원 탈퇴

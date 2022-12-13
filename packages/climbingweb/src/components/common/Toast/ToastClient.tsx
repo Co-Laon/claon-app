@@ -22,13 +22,14 @@ export const ToastClient = ({ children }: { children: ReactNode }) => {
         toast: (toastMessage: string) => {
           setToastOpen(true);
           setMessage(toastMessage);
+          setTimeout(() => {
+            setToastOpen(false);
+          }, 2500);
         },
       }}
     >
       {children}
-      {toastOpen && (
-        <Toast message={message} setToastOpenState={setToastOpen} />
-      )}
+      {toastOpen && <Toast message={message} />}
     </ToastContext.Provider>
   );
 };
