@@ -1,8 +1,5 @@
 import { AppBar } from 'climbingweb/src/components/common/AppBar';
-import {
-  BackButton,
-  ModifiedButton,
-} from 'climbingweb/src/components/common/AppBar/IconButton';
+import { BackButton } from 'climbingweb/src/components/common/AppBar/IconButton';
 import { ListSheet } from 'climbingweb/src/components/common/BottomSheetContents/ListSheet/ListSheet';
 import Loading from 'climbingweb/src/components/common/Loading/Loading';
 import HomeFeed from 'climbingweb/src/components/HomeFeed/HomeFeed';
@@ -25,12 +22,15 @@ export default function FeedPage({}) {
     error: postError,
   } = useGetPost(feedId);
 
+  //뒤로가기 버튼 클릭 핸들러
+  const handleBackButtonClick = () => window.history.back();
+
   if (isPostError) return <div>{postError}</div>;
 
   if (postData)
     return (
       <section>
-        <AppBar leftNode={<BackButton />} rightNode={<ModifiedButton />} />
+        <AppBar leftNode={<BackButton onClick={handleBackButtonClick} />} />
         <HomeFeed postData={postData} />
         <BottomSheet open={openBTSheet} onDismiss={() => setOpenBTSheet(false)}>
           <ListSheet

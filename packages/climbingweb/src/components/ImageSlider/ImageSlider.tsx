@@ -6,6 +6,8 @@ const ImageSlider = ({ imageList }: { imageList: string[] }) => {
   //피드에서 현재 보여질 이미지 index
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
 
+  const imageWidth = window.innerWidth;
+
   const onTouchStart = (event: TouchEvent<HTMLDivElement>) => {
     const touchX = event.changedTouches[0].pageX;
     if (touchX > 200) {
@@ -30,13 +32,13 @@ const ImageSlider = ({ imageList }: { imageList: string[] }) => {
 
   return (
     <div
-      className={'bg-black relative w-full overflow-hidden'}
+      className={`bg-black relative w-full h-[${imageWidth}px] overflow-hidden`}
       onTouchStart={onTouchStart}
       onTouchEnd={onTouchEnd}
     >
       <div
-        className={`h-[360px] -ml-[${
-          selectedImageIndex * 360
+        className={`h-[${imageWidth}px] w-[3000px] relative -ml-[${
+          selectedImageIndex * imageWidth
         }px] transition-all 0.5s`}
       >
         {imageList.map((value, index) =>
@@ -44,12 +46,15 @@ const ImageSlider = ({ imageList }: { imageList: string[] }) => {
             <Image
               key={`sectorInfo${index}`}
               src={value}
-              width={'360px'}
-              height={'360px'}
+              width={`${imageWidth}px`}
+              height={`${imageWidth}px`}
               alt={'sliderImage'}
             />
           ) : (
-            <div key={`sectorInfo${index}`} className={'w-[360px] h-[360px]'}>
+            <div
+              key={`sectorInfo${index}`}
+              className={`w-[${imageWidth}px] h-[${imageWidth}px]`}
+            >
               <div
                 className={
                   'border-t-transparent animate-spin inline-block w-8 h-8 border-4 rounded-full'
