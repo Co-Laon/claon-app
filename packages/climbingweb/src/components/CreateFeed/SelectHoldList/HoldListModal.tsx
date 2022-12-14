@@ -5,7 +5,6 @@ import { ClimbingHistoryRequest } from 'climbingweb/types/request/post';
 import React, { useCallback, useEffect, useState } from 'react';
 import EmptyContent from '../../common/EmptyContent/EmptyContent';
 import ErrorContent from '../../common/Error/ErrorContent';
-import Loading from '../../common/Loading/Loading';
 import HoldImage from './HoldImage';
 import HoldImageButton from './HoldImageButton';
 
@@ -98,7 +97,9 @@ const HoldListModal = ({
       0
     );
     setTotalHoldCount(totalCount);
-    setData(holdToClimbingHistories(selectedHold));
+    setData(
+      holdToClimbingHistories(selectedHold.filter((hold) => hold.count > 0))
+    );
     setSelectedHold(selectedHold);
   }, [selectedHold, holdToClimbingHistories, setData]);
 
@@ -237,7 +238,7 @@ const HoldListModal = ({
       </>
     );
 
-  return <Loading />;
+  return <HoldImageButton count={totalHoldCount} maxCount={maxCount} />;
 };
 
 export default HoldListModal;
