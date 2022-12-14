@@ -1,73 +1,74 @@
-import { useSearchCenterName } from 'climbingweb/src/hooks/queries/center/queryKey';
-import CenterName from 'climbingweb/src/interface/CenterName';
-import { ChangeEvent, useState, useEffect, useRef } from 'react';
+import { CenterNameResponse } from 'climbingweb/types/response/center';
+
+import { ChangeEvent, useState, useEffect } from 'react';
 
 interface CenterSearchInputProps {
+  refObj?: React.RefObject<HTMLInputElement>;
   selected: boolean;
   setSelected: any;
-  setData: any;
-  inputValue: string;
-  setInputValue: React.Dispatch<React.SetStateAction<string>>;
+  setData: (centerName: string, centerId: string) => void;
+  initialValue?: string;
+  centerList?: CenterNameResponse[];
+  onChange: any;
 }
 
 export const CenterSearchInput = ({
+  refObj,
   selected,
   setSelected,
   setData,
-  inputValue,
-  setInputValue,
+  initialValue,
+  centerList,
+  onChange,
 }: CenterSearchInputProps) => {
-  const ref = useRef(null);
-  //css 관련 state
-  const [borderColor, setBorderColor] = useState('');
-  const [border, setBorder] = useState('');
+  //focus 관련 state
+  const [focused, setFocused] = useState(false);
   //검색 결과가 open 되어야 할 지 말지
   const [isOptionOpen, setIsOptionOpen] = useState(false);
 
-  const { isLoading, data: centerList } = useSearchCenterName(inputValue);
+  const [inputValue, setInputValue] = useState<string>(
+    initialValue ? initialValue : ''
+  );
 
-  const inputCss = `border-2 border-gray-300 h-12 w-full bg-white relative flex flex-col justify-between px-4 focused:border-purple-500 ${borderColor} ${border}`;
+  const inputCss = `border-2 border-gray-300 h-12 w-full bg-white relative flex flex-col justify-between px-4 focused:border-purple-500 ${
+    focused ? 'border-purple-500' : ''
+  } ${isOptionOpen ? 'rounded-t-lg' : 'rounded-lg'}`;
 
   //focus 관련 handler
   const handleFocused = () => {
-    setBorderColor('border-purple-500');
-    setIsOptionOpen(centerList?.length !== 0);
+    setFocused(true);
+    setIsOptionOpen(centerList ? centerList.length !== 0 : false);
   };
   const handleFocusedOut = () => {
-    setBorderColor('');
+    setFocused(false);
     setIsOptionOpen(false);
   };
 
   const handleChangeValue = (e: ChangeEvent<HTMLInputElement>) => {
     setInputValue(e.target.value);
+    onChange();
     setSelected(false);
+    if (e.target.value === '') {
+      setIsOptionOpen(false);
+    }
   };
 
   // option list 중 하나를 선택 했을 때 handler
-  const handleSelected = (val: CenterName) => {
+  const handleSelected = (val: CenterNameResponse) => {
     setInputValue(val.name);
-    setData(val.id);
+    setData(val.name, val.id);
     setSelected(true);
   };
 
-  // option list 가 열고 닫힐 때, input component 의 border 변경
-  useEffect(() => {
-    if (isOptionOpen) {
-      setBorder('rounded-t-lg');
-    } else {
-      setBorder('rounded-lg');
-    }
-  }, [isOptionOpen]);
-
   // centerList 가 비어있는 경우 option list 를 닫는 상태로 변경
   useEffect(() => {
-    setIsOptionOpen(!selected && centerList?.length !== 0);
-  }, [centerList]);
+    setIsOptionOpen(!selected && centerList ? centerList.length !== 0 : false);
+  }, [centerList, selected]);
 
   useEffect(() => {
-    setIsOptionOpen(false);
     if (!selected) {
-      setData('');
+      setData('', '');
+      setIsOptionOpen(false);
     }
   }, [selected]);
 
@@ -75,9 +76,9 @@ export const CenterSearchInput = ({
     <div className={'relative'}>
       <form className={inputCss} id="searchInputForm">
         <input
-          ref={ref}
+          ref={refObj}
           value={inputValue}
-          onChange={handleChangeValue}
+          onChange={(e) => handleChangeValue(e)}
           onFocus={handleFocused}
           onBlur={handleFocusedOut}
           className="h-full w-full outline-0"
@@ -89,19 +90,15 @@ export const CenterSearchInput = ({
             'absolute border-x-2 border-b-2 rounded-b-lg w-full bg-white flex flex-col justify-evenly px-4 focused:border-purple-500 border-purple-500'
           }
         >
-          {isLoading ? (
-            <div>...</div>
-          ) : (
-            centerList.map((val: any, index: number) => (
-              <div
-                key={`searchInputForm_${index}`}
-                className="my-2"
-                onTouchEnd={() => handleSelected(val)}
-              >
-                {val.name}
-              </div>
-            ))
-          )}
+          {centerList.map((val: any, index: number) => (
+            <div
+              key={`searchInputForm_${index}`}
+              className="my-2"
+              onTouchEnd={() => handleSelected(val)}
+            >
+              {val.name}
+            </div>
+          ))}
         </div>
       ) : null}
     </div>

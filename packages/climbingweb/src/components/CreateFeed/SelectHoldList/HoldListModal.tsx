@@ -1,10 +1,9 @@
-import { useFindHoldInfoByCenter } from 'climbingweb/src/hooks/queries/center/queryKey';
 import { useToast } from 'climbingweb/src/hooks/useToast';
 import Hold from 'climbingweb/src/interface/Hold';
 import { ClimbingHistoryRequest } from 'climbingweb/types/request/post';
-import React, { useCallback, useEffect, useState } from 'react';
+import { HoldInfoResponse } from 'climbingweb/types/response/center';
+import React, { memo, useCallback, useEffect, useState } from 'react';
 import EmptyContent from '../../common/EmptyContent/EmptyContent';
-import ErrorContent from '../../common/Error/ErrorContent';
 import HoldImage from './HoldImage';
 import HoldImageButton from './HoldImageButton';
 
@@ -18,6 +17,7 @@ import HoldImageButton from './HoldImageButton';
 interface ModalProps {
   maxCount: number;
   centerId?: string;
+  standardHoldList?: HoldInfoResponse[];
   preSelectedHoldList?: ClimbingHistoryRequest[];
   setData: any;
 }
@@ -25,48 +25,35 @@ interface ModalProps {
 const HoldListModal = ({
   maxCount,
   centerId,
+  standardHoldList,
   preSelectedHoldList,
   setData,
 }: ModalProps) => {
-  //기준이 되는 hold 리스트 state
-  const {
-    data: holdListData,
-    isError: isHoldListDataError,
-    error: holdListDataError,
-  } = useFindHoldInfoByCenter(centerId as string);
-
   const { toast } = useToast();
 
   /**
-   * ClimbingHistoryRequest 를 HoldList 로 변환해주는 함수
+   * ClimbingHistoryRequest(postData 에 들어갈 변수) 를 HoldList(modal 보여주기 위한 변수) 로 변환해주는 함수
    * @param toConvertValue 변환하고 싶은 ClimbingHistories 객체
    * @returns 변환된 HoldList
    */
   const climbingHistoriesToHold = useCallback(
-    (
-      toConvertValue: ClimbingHistoryRequest[],
-      standardArray?: Hold[]
-    ): Hold[] => {
-      return toConvertValue.map((outerItem) => {
-        const tempHold = standardArray?.find(
-          (innerItem) => innerItem.id === outerItem.holdId
-        );
-        return {
-          id: outerItem.holdId,
-          image:
-            tempHold !== undefined
-              ? tempHold.image
-              : 'https://claon-server.s3.ap-northeast-2.amazonaws.com/center/seoul/damjang/hold/black.svg',
-          name: tempHold !== undefined ? tempHold.name : 'altName',
-          count: outerItem.climbingCount,
-          crayonImage:
-            tempHold !== undefined
-              ? tempHold.crayonImage
-              : 'https://claon-server.s3.ap-northeast-2.amazonaws.com/center/seoul/damjang/crayon/black.svg',
-        };
-      });
+    (toConvertValue: ClimbingHistoryRequest[]): Hold[] => {
+      return (
+        standardHoldList?.map((item) => {
+          const tempHold = toConvertValue.find(
+            (innerItem) => innerItem.holdId === item.id
+          );
+          return {
+            id: item.id,
+            image: item.image,
+            name: item.name,
+            count: tempHold !== undefined ? tempHold.climbingCount : 0,
+            crayonImage: item.crayonImage,
+          };
+        }) ?? []
+      );
     },
-    []
+    [standardHoldList]
   );
 
   /**
@@ -83,25 +70,28 @@ const HoldListModal = ({
     []
   );
 
+  const getHoldTotalCount = useCallback((holdList: Hold[]) => {
+    return holdList.reduce((prev, curr) => prev + curr.count, 0);
+  }, []);
+
   // 전체 count
   const [totalHoldCount, setTotalHoldCount] = useState<number>(0);
   // Modal 에서 선택된 홀드 내용, postData 에는 선택 되기 전 까진 반영되지 않음
-  const [selectedHold, setSelectedHold] = useState<Hold[]>([]);
+  const [selectedHoldList, setSelectedHoldList] = useState<Hold[]>(
+    climbingHistoriesToHold(preSelectedHoldList ?? [])
+  );
 
   /**
    * 선택 버튼 클릭 시, 선택된 홀드 리스트를 실제 반영하고, 변경된 홀드 리스트를 반영하는 함수
    */
   const handleModalSelectBtn = useCallback(() => {
-    const totalCount = selectedHold.reduce(
-      (prev, curr) => prev + curr.count,
-      0
-    );
+    const totalCount = getHoldTotalCount(selectedHoldList);
     setTotalHoldCount(totalCount);
     setData(
-      holdToClimbingHistories(selectedHold.filter((hold) => hold.count > 0))
+      holdToClimbingHistories(selectedHoldList.filter((hold) => hold.count > 0))
     );
-    setSelectedHold(selectedHold);
-  }, [selectedHold, holdToClimbingHistories, setData]);
+    setSelectedHoldList(selectedHoldList);
+  }, [selectedHoldList, holdToClimbingHistories, setData, getHoldTotalCount]);
 
   /**
    * 다이얼로그 내 HoldImage 를 클릭 시, hold 숫자를 늘려주는 함수
@@ -109,21 +99,19 @@ const HoldListModal = ({
    */
   const handleSelectHold = useCallback(
     (indexHold: Hold) => {
-      const tempSelectedHold = selectedHold.map((item) =>
+      const tempSelectedHoldList = selectedHoldList.map((item) =>
         indexHold.id === item.id ? { ...item, count: item.count + 1 } : item
       );
       // 홀드 최대 개수를 넘었는지 확인하는 로직
-      if (
-        tempSelectedHold.reduce((prev, curr) => prev + curr.count, 0) > maxCount
-      ) {
+      if (getHoldTotalCount(tempSelectedHoldList) > maxCount) {
         toast(
           `너무 많은 홀드를 선택하셨습니다. 최대 ${maxCount}개의 홀드를 선택 할 수 있습니다.`
         );
         return;
       }
-      setSelectedHold(tempSelectedHold);
+      setSelectedHoldList(tempSelectedHoldList);
     },
-    [selectedHold, maxCount]
+    [selectedHoldList, maxCount, toast, getHoldTotalCount]
   );
 
   /**
@@ -132,12 +120,12 @@ const HoldListModal = ({
    */
   const handleDeleteHold = useCallback(
     (indexHold: Hold) => {
-      const tempSelectedHold = selectedHold.map((item) =>
+      const tempSelectedHold = selectedHoldList.map((item) =>
         indexHold.id === item.id ? { ...item, count: item.count - 1 } : item
       );
-      setSelectedHold(tempSelectedHold);
+      setSelectedHoldList(tempSelectedHold);
     },
-    [selectedHold]
+    [selectedHoldList]
   );
 
   /**
@@ -146,27 +134,18 @@ const HoldListModal = ({
   useEffect(() => {
     //먼저 선택한 홀드 정보가 있으면
     if (preSelectedHoldList !== undefined) {
-      const convertedHold = climbingHistoriesToHold(
-        preSelectedHoldList,
-        holdListData
-      );
+      const convertedHold = climbingHistoriesToHold(preSelectedHoldList);
       //선택된 홀드 총 갯수 계산
-      const convertedHoldCount = convertedHold.reduce(
-        (prev: number, curr: Hold) => {
-          return prev + curr.count;
-        },
-        0
-      );
+      const convertedHoldCount = getHoldTotalCount(convertedHold);
       setTotalHoldCount(convertedHoldCount);
-      setSelectedHold(
-        convertedHoldCount === 0
-          ? holdListData === undefined
-            ? []
-            : holdListData
-          : convertedHold
-      );
+      setSelectedHoldList(convertedHold);
     }
-  }, [holdListData, preSelectedHoldList, climbingHistoriesToHold]);
+  }, [
+    standardHoldList,
+    preSelectedHoldList,
+    climbingHistoriesToHold,
+    getHoldTotalCount,
+  ]);
 
   useEffect(() => {
     if (centerId === '') {
@@ -179,9 +158,7 @@ const HoldListModal = ({
     }
   }, [centerId]);
 
-  if (isHoldListDataError) return <ErrorContent error={holdListDataError} />;
-
-  if (holdListData)
+  if (standardHoldList)
     return (
       <>
         <div className="w-full flex flex-row gap-2 overflow-x-auto scrollbar-hide">
@@ -189,15 +166,14 @@ const HoldListModal = ({
             <HoldImageButton count={totalHoldCount} maxCount={maxCount} />
           </label>
           {preSelectedHoldList !== undefined
-            ? climbingHistoriesToHold(preSelectedHoldList, holdListData).map(
-                (item) =>
-                  item.count !== 0 ? (
-                    <HoldImage
-                      key={`HoldListModal_Hold${item.id}`}
-                      indexHold={item}
-                      count={item.count}
-                    />
-                  ) : null
+            ? climbingHistoriesToHold(preSelectedHoldList).map((item) =>
+                item.count !== 0 ? (
+                  <HoldImage
+                    key={`HoldListModal_Hold${item.id}`}
+                    indexHold={item}
+                    count={item.count}
+                  />
+                ) : null
               )
             : null}
         </div>
@@ -206,7 +182,7 @@ const HoldListModal = ({
           <div className="modal-box">
             {centerId ? (
               <div className="w-full grid grid-cols-3 gap-y-4">
-                {selectedHold.map((item) => (
+                {selectedHoldList.map((item) => (
                   <div
                     key={`HoldListModal_Hold${item.id}`}
                     className="w-full flex justify-center"
@@ -241,4 +217,4 @@ const HoldListModal = ({
   return <HoldImageButton count={totalHoldCount} maxCount={maxCount} />;
 };
 
-export default HoldListModal;
+export default memo(HoldListModal);

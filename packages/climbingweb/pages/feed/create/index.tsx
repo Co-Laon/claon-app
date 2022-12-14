@@ -1,7 +1,7 @@
 import { AppBar } from 'climbingweb/src/components/common/AppBar';
 import TextArea from 'climbingweb/src/components/common/TextArea/TextArea';
 import { UploadImageList } from 'climbingweb/src/components/CreateFeed/UploadImageList/';
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { BackButton } from 'climbingweb/src/components/common/AppBar/IconButton';
 import HoldListModal from 'climbingweb/src/components/CreateFeed/SelectHoldList/HoldListModal';
 import PageSubTitle from 'climbingweb/src/components/common/PageSubTitle/PageSubTitle';
@@ -14,14 +14,25 @@ import {
 } from 'climbingweb/src/hooks/queries/post/queryKey';
 import { useCreatePostForm } from 'climbingweb/src/hooks/useCreatePostForm';
 import Loading from 'climbingweb/src/components/common/Loading/Loading';
+import { debounce } from 'lodash';
+import {
+  useFindHoldInfoByCenter,
+  useSearchCenterName,
+} from 'climbingweb/src/hooks/queries/center/queryKey';
 
 export default function CreatePostPage() {
   const [page, setPage] = useState<string>('first');
   const { postData, setPostData, postImageList, initPost } =
     useCreatePostForm();
-  const [searchInput, setSearchInput] = useState<string>('');
   //searchInput 으로 인한 centerList 중 선택 된 것이 있는지 여부
+  const searchInputRef = useRef<HTMLInputElement>(null);
+  const [searchInput, setSearchInput] = useState<string>('');
   const [selected, setSelected] = useState(false);
+  const { data: centerList } = useSearchCenterName(searchInput);
+
+  //기준이 되는 hold 리스트 state
+  const { data: holdListData } = useFindHoldInfoByCenter(postData.centerId);
+
   const { isLoading } = useCreatePost();
   const { mutate: getPostContentsList, isLoading: getPostContentsListLoading } =
     useGetPostContentsList();
@@ -48,11 +59,21 @@ export default function CreatePostPage() {
    * @param centerId
    */
   const handleCenterIdInput = useCallback(
-    (centerId: string) => {
+    (centerName: string, centerId: string) => {
       setPostData({ ...postData, centerId });
+      setSearchInput(centerName);
     },
     [setPostData, postData]
   );
+
+  /**
+   * 암장 검색 입력 핸들링 함수
+   */
+  const handleSearchInputChange = debounce(() => {
+    if (searchInputRef.current) {
+      setSearchInput(searchInputRef.current.value);
+    }
+  }, 500);
 
   /**
    * 홀드 입력 핸들링 함수
@@ -110,16 +131,19 @@ export default function CreatePostPage() {
           <div className="flex flex-col gap-4">
             <PageSubTitle title={'암장 이름'} />
             <CenterSearchInput
+              refObj={searchInputRef}
               selected={selected}
               setSelected={setSelected}
               setData={handleCenterIdInput}
-              inputValue={searchInput}
-              setInputValue={setSearchInput}
+              initialValue={searchInput}
+              centerList={centerList}
+              onChange={handleSearchInputChange}
             />
             <PageSubTitle title={'완등 횟수'} />
             <HoldListModal
               maxCount={10}
               centerId={postData.centerId}
+              standardHoldList={holdListData}
               preSelectedHoldList={postData.climbingHistories}
               setData={handleClimbingHistoriesInput}
             />
