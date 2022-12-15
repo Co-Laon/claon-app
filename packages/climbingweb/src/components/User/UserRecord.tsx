@@ -10,24 +10,25 @@ const UserRecord = ({
   climbingHistories,
 }: UserRecordProps) => {
   return (
-    <div className="rounded-xl p-1 shadow-sm mt-2 mr-3 shadow-gray-300 h-36 min-w-[90px]">
-      <Image
-        className="rounded-full"
-        src={centerImage}
-        alt={centerName}
-        height={80}
-        width={80}
-        sizes={'(max-width: 80px)'}
-      />
-      <div className="text-gray-400 ml-1 text-xs line-clamp-1">
-        {centerName}
+    <span className="flex flex-col rounded-lg shadow-sm mr-2 shadow-gray-300 h-[155px] min-w-[90px] pb-[5px]">
+      <div className="aspect-square flex items-center justify-center mx-[5px] p-[5px]">
+        <Image
+          className="relative rounded-full"
+          src={centerImage}
+          alt={centerName}
+          height={80}
+          width={80}
+        />
       </div>
-      <div className="grid grid-cols-3 overflow-auto scrollbar-hide">
-        {climbingHistories.map((value, index) => (
-          <MiniHold key={`miniHold_${index}`} hold={value} />
-        ))}
+      <div className="pl-[5px] pr-2">
+        <div className="text-gray-400 text-xs line-clamp-1">{centerName}</div>
+        <div className="grid grid-cols-3  overflow-auto scrollbar-hide">
+          {climbingHistories.map((value, index) => (
+            <MiniHold key={`miniHold_${index}`} hold={value} />
+          ))}
+        </div>
       </div>
-    </div>
+    </span>
   );
 };
 

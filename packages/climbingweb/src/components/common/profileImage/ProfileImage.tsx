@@ -7,22 +7,26 @@ interface ProfileProps {
   src?: string;
   icon?: 'default' | 'insta';
   onClickIcon?: () => void;
+  size?: number;
 }
 
-export const ProfileImage = ({ src, icon, onClickIcon }: ProfileProps) => {
+export const ProfileImage = ({
+  src,
+  icon,
+  onClickIcon,
+  size,
+}: ProfileProps) => {
   return (
     <div className="w-16 relative">
-      <div className="w-15 h-15 rounded-xl relative">
+      <div className="w-15 h-15 rounded-xl relative flex items-center justify-center">
         {src ? (
-          <div className="w-16 h-16 flex items-center justify-center">
-            <Image
-              className="relative rounded-full"
-              src={src}
-              alt="profile"
-              height={40}
-              width={40}
-            />
-          </div>
+          <Image
+            className="relative rounded-full"
+            src={src}
+            alt="profile"
+            height={size ? size : 40}
+            width={size ? size : 40}
+          />
         ) : (
           <ProfileSkeleton />
         )}

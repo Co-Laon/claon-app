@@ -34,6 +34,10 @@ export const UserHead = ({
 
   const router = useRouter();
 
+  const handleProfileIconClick = () => {
+    if (instagramUrl) router.push(instagramUrl);
+  };
+
   return (
     <div className="flex flex-col gap-4 px-6 py-4 shadow-sm my-4 rounded-lg">
       <div className="flex flex-row items-center justify-between">
@@ -41,9 +45,8 @@ export const UserHead = ({
           <ProfileImage
             src={imagePath}
             icon={instagramUrl ? 'insta' : 'default'}
-            onClickIcon={() => {
-              if (instagramUrl) router.push(instagramUrl);
-            }}
+            onClickIcon={handleProfileIconClick}
+            size={60}
           />
         </div>
         <div className="flex flex-col gap-1.5 w-52 ml-7">

@@ -134,10 +134,10 @@ export const useFindHoldInfoByCenter = (centerId: string) => {
   return useQuery({
     ...centerQueries.detail(centerId)._ctx.findHoldInfoByCenter(),
     enabled: Boolean(centerId),
-    select: (response) =>
-      response.map((val) => {
-        return { ...val, count: 0 };
-      }),
+    // select: (response) =>
+    //   response.map((val) => {
+    //     return { ...val, count: 0 };
+    //   }),
   });
 };
 
