@@ -43,6 +43,14 @@ export default function CreatePostPage() {
     };
   }, [initPost]);
 
+  const handleBackButtonClick = () => {
+    if (page === 'first') {
+      window.history.back();
+    } else {
+      setPage('first');
+    }
+  };
+
   /**
    * 내용 입력 핸들링 함수
    * @param content
@@ -106,7 +114,7 @@ export default function CreatePostPage() {
     <div className="mb-footer overflow-auto scrollbar-hide">
       <AppBar
         title="새 게시물"
-        leftNode={<BackButton onClick={() => setPage('first')} />}
+        leftNode={<BackButton onClick={handleBackButtonClick} />}
         rightNode={
           <NextButton
             pageState={page}
