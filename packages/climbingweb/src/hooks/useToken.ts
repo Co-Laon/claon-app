@@ -19,19 +19,16 @@ export const useToken = () => {
     }
   });
 
-  const dispatchStorgeEvent = (oldValue: Token, newValue: Token) => {
+  const dispatchStorgeEvent = (
+    key: string,
+    oldValue: Token,
+    newValue: Token
+  ) => {
     window.dispatchEvent(
       new StorageEvent('storage', {
-        key: 'accessToken',
+        key: key,
         oldValue: oldValue.accessToken,
         newValue: newValue.accessToken,
-      })
-    );
-    window.dispatchEvent(
-      new StorageEvent('storage', {
-        key: 'refreshToken',
-        oldValue: oldValue.refreshToken,
-        newValue: newValue.refreshToken,
       })
     );
   };
@@ -40,7 +37,8 @@ export const useToken = () => {
     try {
       window.localStorage.setItem('accessToken', newToken.accessToken);
       window.localStorage.setItem('refreshToken', newToken.refreshToken);
-      dispatchStorgeEvent(token, newToken);
+      dispatchStorgeEvent('accessToken', token, newToken);
+      dispatchStorgeEvent('refreshToken', token, newToken);
       setToken(newToken);
     } catch (error) {
       console.log(error);
