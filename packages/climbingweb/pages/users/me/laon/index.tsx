@@ -5,6 +5,7 @@ import {
 } from 'climbingweb/src/components/common/AppBar/IconButton';
 import { SmmallNodeButton } from 'climbingweb/src/components/common/button/Button';
 import EmptyContent from 'climbingweb/src/components/common/EmptyContent/EmptyContent';
+import ErrorContent from 'climbingweb/src/components/common/Error/ErrorContent';
 import { LaonList } from 'climbingweb/src/components/common/LaonList';
 import Loading from 'climbingweb/src/components/common/Loading/Loading';
 import {
@@ -52,7 +53,7 @@ export const MyLaonList = ({}) => {
     { threshold: 1 }
   );
 
-  if (isLaonUserDataError) return <div>{laonUserDataError}</div>;
+  if (isLaonUserDataError) return <ErrorContent error={laonUserDataError} />;
 
   if (laonUserData)
     return (
