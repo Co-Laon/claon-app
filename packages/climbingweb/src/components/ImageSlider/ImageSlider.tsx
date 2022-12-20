@@ -11,7 +11,7 @@ const ImageSlider = ({ imageList }: { imageList: string[] }) => {
 
   const onTouchEnd = (event: TouchEvent<HTMLDivElement>) => {
     const touchX = event.changedTouches[0].pageX;
-    if (touchX > 200) {
+    if (touchX > imageWidth / 2) {
       if (selectedImageIndex < imageList.length - 1) {
         setSelectedImageIndex(selectedImageIndex + 1);
       }
