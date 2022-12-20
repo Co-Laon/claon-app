@@ -3,7 +3,7 @@ import StarIcon from 'climbingweb/src/assets/icon/ic_12_rate_black.svg';
 import { useRouter } from 'next/router';
 import Image from 'next/image';
 
-interface CenterProps {
+export interface CenterProps {
   id: string;
   name: string;
   thumbnailUrl: string;

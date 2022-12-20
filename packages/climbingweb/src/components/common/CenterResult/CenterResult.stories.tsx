@@ -12,7 +12,6 @@ const Template: ComponentStory<typeof CenterResult> = (args) => (
 
 export const Default = Template.bind({});
 Default.args = {
-  star: 4.5,
   name: '더클라이밍',
   id: '1',
 };

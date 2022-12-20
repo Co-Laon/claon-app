@@ -9,8 +9,8 @@ export default {
 
 export const Primary: ComponentStory<typeof FeedHeader> = () => (
   <FeedHeader
-    userImage={null}
-    userLocation={'비클럭 클라이밍 강남점'}
-    userName={'kimclaon85'}
+    userLocation="비클럭 클라이밍 강남점"
+    userName="kimclaon85"
+    handleOptionDotClick={() => {}}
   />
 );
