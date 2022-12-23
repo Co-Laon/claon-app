@@ -4,6 +4,7 @@ import AppleLogo from '../../assets/icon/ic_24_apple.svg';
 import GoogleLogo from '../../assets/icon/ic_24_google.svg';
 import InstagramLogo from '../../assets/icon/ic_24_instagram.svg';
 import KakaoLogo from '../../assets/icon/ic_24_kakao.svg';
+import { vs } from 'react-native-size-matters';
 
 export const Apple = {
   bgColor: colorStyles.Gray800,
@@ -87,7 +88,7 @@ export const Instagram = {
   bgColor: colorStyles.White,
   width: '100%',
   color: 'black',
-  height: '56px',
+  height: `${vs(56)}px`,
   icon: <InstagramLogo />,
   text: '  인스타그램 연결',
   underlayColor: colorStyles.Gray100,

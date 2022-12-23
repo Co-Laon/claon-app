@@ -16,12 +16,13 @@ import { useAuth } from 'climbingapp/src/hooks/useAuth';
 import { colorStyles } from 'climbingapp/src/styles';
 import { api } from 'climbingapp/src/utils/constants';
 import React from 'react';
+import { vs } from 'react-native-size-matters';
 import styled from 'styled-components/native';
 import { LoginScreenProp } from './type';
 
 const ButtonContainer = styled.View`
-  flex: 0.3;
-  margin-top: 100px;
+  height: ${vs(56)}px;
+  width: 100%;
   margin-bottom: 24px;
 `;
 const SubText = styled.Text`
@@ -36,14 +37,16 @@ const Name = styled.Text`
   font-size: 14px;
   line-height: 20px;
   font-weight: 700;
+  margin-bottom: ${vs(8)}px;
 `;
 
 const ProfileContainer = styled.View`
-  flex: 0.5;
+  flex: 1.5;
   align-items: center;
+  margin-bottom: 100px;
 `;
 
-const InstagramButton = ({ onPress }: { onPress: ({}: any) => void }) => {
+const InstagramButton = ({ onPress }: { onPress: ({ }: any) => void }) => {
   return <DefaultButton {...Instagram} onPress={onPress} />;
 };
 
@@ -75,12 +78,14 @@ function ConnectWithInstagramScreen() {
       <TitleContainer>
         <Title>인스타그램을</Title>
         <Title>연결해 주세요</Title>
-        <SubText>미연결시 앱 사용에 제한이 있어요</SubText>
+        <SubText>다음 버전에 출시될 기능입니다.</SubText>
       </TitleContainer>
       <ProfileContainer>
         <InstaImage />
         <Name>asdf</Name>
-        <InstagramButton onPress={handleConnectInstagram} />
+        <ButtonContainer>
+          <InstagramButton onPress={handleConnectInstagram} />
+        </ButtonContainer>
       </ProfileContainer>
       <ButtonContainer>
         <NextButton onPress={handleSignUp} text="완료" />

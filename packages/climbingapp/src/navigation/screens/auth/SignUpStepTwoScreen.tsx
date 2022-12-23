@@ -14,10 +14,13 @@ import { MyTextInput } from 'climbingapp/src/component/text-input/TextInput';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from 'climbingapp/src/store/slices';
 import { setArmReach, setHeight } from 'climbingapp/src/store/slices/authInfo';
+import { vs } from 'react-native-size-matters';
 
 const ButtonContainer = styled.View`
-  flex: 0.5;
-  margin-bottom: 24;
+  position: absolute;
+  bottom: 24px;
+  width: 100%;
+  height: ${vs(56)}px;
 `;
 
 const InputContainer = styled.View`
@@ -70,7 +73,7 @@ function SignUpStepTwoScreen() {
       </InputContainer>
       {height && armReach ? (
         <SubText>
-          Ape Index {(parseFloat(height) / parseFloat(armReach)).toFixed(3)}
+          Ape Index {(parseFloat(armReach) - parseFloat(height)).toFixed(2)} cm
         </SubText>
       ) : null}
       <ButtonContainer>

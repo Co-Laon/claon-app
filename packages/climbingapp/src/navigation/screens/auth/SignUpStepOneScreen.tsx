@@ -20,9 +20,14 @@ import { debounce } from 'lodash';
 import { api } from 'climbingapp/src/utils/constants';
 
 import axios from 'axios';
+import { vs } from 'react-native-size-matters';
+
 const ButtonContainer = styled.View`
   flex: 0.5;
-  margin-bottom: 24;
+  position: absolute;
+  width: 100%;
+  bottom: 24px;
+  height: ${vs(56)}px;
 `;
 
 const ProfileContainer = styled.View`
@@ -30,7 +35,7 @@ const ProfileContainer = styled.View`
 `;
 
 const NickNameContainer = styled.View`
-  flex: 1;
+  flex: 2;
 `;
 
 const SubText = styled.Text`
@@ -38,6 +43,7 @@ const SubText = styled.Text`
   font-size: 14px;
   font-weight: 700;
   line-height: 20px;
+  margin-bottom: ${vs(8)}px;
 `;
 const ErrorText = styled.Text`
   margin: 5px;

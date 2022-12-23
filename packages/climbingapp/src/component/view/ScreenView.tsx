@@ -12,8 +12,8 @@ const DefaultView = styled.SafeAreaView<ViewProps>`
     height: 100%;
 `;
 const InnerView = styled.View`
-    margin-left: 20PX;
-    margin-right: 20PX;
+    margin-left: 20px;
+    margin-right: 20px;
     height: 100%;
 `;
 
