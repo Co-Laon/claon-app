@@ -6,6 +6,6 @@ import HomeScreen from './screens/main/HomeScreen';
 
 export function RootNavigator() {
   const { user } = useAuth();
-  const isLoggedIn = user ? user.accessToken && user.isCompletedSignUp : false;
+  const isLoggedIn = user ? user.isCompletedSignUp : false;
   return <>{isLoggedIn ? <HomeScreen /> : <LoginNavigator />}</>;
 }

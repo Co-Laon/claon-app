@@ -56,14 +56,14 @@ function LoginScreen() {
   };
   const handleSignGoogle = async () => {
     await googleLogin().then(() => {
-      if (user && !user?.isCompletedSignUp) {
+      if (!user?.isCompletedSignUp) {
         navigation.navigate('register');
       }
     });
   };
   const handleSignKakao = async () => {
     await kakaoLogin().then(() => {
-      if (user && !user?.isCompletedSignUp) {
+      if (!user?.isCompletedSignUp) {
         navigation.navigate('register');
       }
     });
