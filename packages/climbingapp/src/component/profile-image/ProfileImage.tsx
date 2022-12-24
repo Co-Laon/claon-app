@@ -26,11 +26,11 @@ const Conatainer = styled.Pressable`
 
 export function ProfileImage({ icon }: ImageProps) {
     const { pickerResponse, selectImage } = useImagePicker();
-    const uri = pickerResponse?.assets[0]?.uri;
-    console.log(uri);
+    const uri = pickerResponse?.assets ? pickerResponse?.assets[0]?.uri : undefined;
+
     return (
         <Conatainer onPress={selectImage} >
-            {pickerResponse ? <Image source={{ uri: uri }} resizeMode='cover' resizeMethod='scale' /> : <ProfileSkeleton />}
+            {uri ? <Image source={{ uri: uri }} resizeMode='cover' resizeMethod='scale' /> : <ProfileSkeleton />}
             {icon === 'insta' && <InstagramIcon style={{ position: 'absolute', bottom: 0, right: 0, backgroundColor: colorStyles.White }} />}
             {icon === 'camera' && <CameraIcon style={{ borderRadius: 100, position: 'absolute', bottom: 0, right: 0, backgroundColor: colorStyles.Black }} />}
         </Conatainer>

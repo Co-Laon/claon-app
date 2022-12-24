@@ -70,7 +70,6 @@ export const useImagePicker = () => {
   }, []);
   const [pickerResponse, setPickerResponse] = useState<any>(null);
   const testPicker = useCallback(async () => {
-    console.log(ImagePicker);
     await ImagePicker.launchImageLibrary(
       selectImageAction.options,
       setPickerResponse

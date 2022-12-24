@@ -1,7 +1,7 @@
 import { AppBar } from 'climbingapp/src/component/appBar/AppBar';
 import { ScreenView } from 'climbingapp/src/component/view/ScreenView';
 import { colorStyles } from 'climbingapp/src/styles';
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import styled from 'styled-components/native';
 import ArrowRightIcon from 'climbingapp/src/assets/icon/ic_24_arrow_right_gray800.svg';
 import { TouchableHighlight, View } from 'react-native';
@@ -93,8 +93,14 @@ function RegisterScreen() {
 
   const navigation = useNavigation<LoginScreenProp>();
   const [checkList, setCheckList] = useState(infoData);
+  const [disabled, setDisabled] = useState(true);
 
   const checkedAll = () => checkList.every(({ checked }) => checked);
+  const checkDisabled = () => {
+    setDisabled(() => !checkList
+      .filter(({ isEssential }) => isEssential)
+      .every(({ checked }) => checked));
+  };
 
   const handleCheckAll = useCallback(() => {
     const value = checkedAll();
@@ -111,10 +117,9 @@ function RegisterScreen() {
     setCheckList(values);
   };
 
-  const isDisabled = () =>
-    !checkList
-      .filter(({ isEssential }) => isEssential)
-      .every(({ checked }) => checked);
+  useEffect(() => {
+    checkDisabled();
+  }, [checkList]);
 
   return (
     <ScreenView color="white">
@@ -149,7 +154,7 @@ function RegisterScreen() {
       <ButtonContainer>
         <NextButton
           onPress={() => navigation.navigate('signUpStepOne')}
-          disabled={isDisabled}
+          disabled={disabled}
         />
       </ButtonContainer>
     </ScreenView>

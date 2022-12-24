@@ -11,7 +11,7 @@ interface ButtonProps {
   text: string;
   icon?: JSX.Element;
   disabled?: boolean;
-  onPress: ({}: any) => void;
+  onPress: ({ }: any) => void;
 }
 
 const Default = styled.TouchableHighlight<ButtonProps>`
@@ -66,17 +66,16 @@ export const NextButton = ({
   disabled,
   text,
 }: {
-  onPress: ({}: any) => void;
-  disabled?: () => boolean;
+  onPress: ({ }: any) => void;
+  disabled?: boolean;
   text?: string;
 }) => {
-  const disable = disabled && disabled();
   return (
     <DefaultButton
       {...LargePurple}
       text={text ? text : LargePurple.text}
       onPress={onPress}
-      disabled={disable}
+      disabled={disabled}
     />
   );
 };
