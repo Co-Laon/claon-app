@@ -19,6 +19,7 @@ import React from 'react';
 import { vs } from 'react-native-size-matters';
 import styled from 'styled-components/native';
 import { LoginScreenProp } from './type';
+import { Alert } from 'react-native';
 
 const ButtonContainer = styled.View`
   height: ${vs(56)}px;
@@ -65,10 +66,23 @@ function ConnectWithInstagramScreen() {
             'refresh-token': user?.refreshToken,
           },
         })
-        .then((res) => console.log(res.data))
-        .catch((err) => console.log(err.response));
-
-      navigation.navigate('welcome');
+        .then((res) => {
+          console.log(res.data);
+          navigation.navigate('welcome');
+        })
+        .catch((err) => {
+          Alert.alert(
+            '에러',
+            err.response.data.message,
+            [
+              {
+                text: '돌아가기',
+                onPress: () => navigation.navigate('login'),
+                style: 'cancel',
+              },
+            ]
+          );
+        });
     }
   };
 

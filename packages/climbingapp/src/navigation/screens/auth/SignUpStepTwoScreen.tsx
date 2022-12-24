@@ -63,7 +63,7 @@ function SignUpStepTwoScreen() {
       <InputContainer>
         <SubText>신장 (Height)</SubText>
         <MyTextInput
-          value={height}
+          value={height + ''}
           onChangeText={handleChangeHeight}
           placeholder="173.3"
         />
@@ -71,7 +71,7 @@ function SignUpStepTwoScreen() {
       <InputContainer>
         <SubText>암리치 (Arm reach)</SubText>
         <MyTextInput
-          value={armReach}
+          value={armReach + ''}
           onChangeText={handleChangeArmReach}
           placeholder="173.3"
         />

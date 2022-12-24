@@ -62,7 +62,7 @@ function SignUpStepOneScreen() {
   const isDisabled = nickname === '' || isErrorNickName !== '' || isDuplicated;
   const dispatch = useDispatch();
 
-  const handleCheckDuplicated = debounce(async (nick: string) => {
+  const handleCheckDuplicated = debounce(async (nick: string | undefined) => {
     if (nick === '') return;
     await axios
       .get(api + `/auth/nickname/${nick}/duplicate-check`)
@@ -84,7 +84,7 @@ function SignUpStepOneScreen() {
 
   useEffect(() => {
     handleCheckDuplicated(nickname);
-    handleNickNameErrorMessage(nickname, isDuplicated);
+    handleNickNameErrorMessage(nickname + '', isDuplicated);
   }, [nickname]);
 
 
@@ -108,7 +108,7 @@ function SignUpStepOneScreen() {
           닉네임 <Text style={{ color: '#FF0000' }}>*</Text>{' '}
         </SubText>
         <MyTextInput
-          value={nickname}
+          value={nickname + ''}
           onChangeText={handleChangeNickName}
           placeholder="한글, 영문, 숫자 포함 2-20자"
         />

@@ -6,10 +6,10 @@ interface Instagram {
 }
 
 export interface UserInfo extends Instagram {
-  armReach: string;
-  height: string;
-  imagePath: string;
-  nickname: string;
+  armReach?: string;
+  height?: string;
+  imagePath?: string;
+  nickname?: string;
 }
 
 interface AuthInfoState {
@@ -18,12 +18,9 @@ interface AuthInfoState {
 
 const initialState: AuthInfoState = {
   userInfo: {
+    nickname: '',
     armReach: '',
     height: '',
-    imagePath: '',
-    instagramOAuthId: '',
-    instagramUserName: '',
-    nickname: '',
   },
 };
 
