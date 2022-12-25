@@ -1,7 +1,9 @@
 import { useAuth } from 'climbingapp/src/hooks/useAuth';
+import { injectedScriptForWebViewBackButton } from 'climbingapp/src/utils/constants';
 import { storeData } from 'climbingapp/src/utils/storage';
-import React, { useEffect, useRef } from 'react';
-import { WebView } from 'react-native-webview';
+import React, { useEffect, useRef, useState } from 'react';
+import { BackHandler } from 'react-native';
+import { WebView, WebViewMessageEvent } from 'react-native-webview';
 
 interface WebInfo {
   url: string;
@@ -36,23 +38,48 @@ export default function CustomWebView({ url }: WebInfo) {
     sendTokenToWebview();
   }, []);
 
+  const [isCanGoBack, setIsCanGoBack] = useState(false);
+  const onPressHardwareBackButton = () => {
+    if (webviewRef.current && isCanGoBack) {
+      webviewRef.current.goBack();
+      return true;
+    } else {
+      return false;
+    }
+  };
+
+  const onMessageHandler = ({ nativeEvent: state }: WebViewMessageEvent) => {
+    if (state.data === typeof JSON) {
+      const data = JSON.parse(state.data);
+      if (data.type === 'updateToken') {
+        handleUpdateToken(data);
+      }
+      if (data.type === 'logout') {
+        logout();
+      }
+    }
+    if (state.data === 'navigationStateChange') {
+      setIsCanGoBack(state.canGoBack);
+    }
+  };
+
+  useEffect(() => {
+    BackHandler.addEventListener('hardwareBackPress', onPressHardwareBackButton);
+    return () => {
+      BackHandler.removeEventListener('hardwareBackPress', onPressHardwareBackButton);
+    };
+  }, [isCanGoBack]);
+
   return (
     <>
       <WebView
         ref={webviewRef}
         onLoad={sendTokenToWebview}
-        onMessage={(e) => {
-          const data = JSON.parse(e.nativeEvent.data);
-          if (data.type === 'updateToken') {
-            handleUpdateToken(data);
-          }
-          if (data.type === 'logout') {
-            logout();
-          }
-        }}
+        onMessage={onMessageHandler}
         javaScriptEnabled={true}
         source={{ uri: url }}
         overScrollMode="never"
+        injectedJavaScript={injectedScriptForWebViewBackButton}
       />
     </>
   );
