@@ -47,7 +47,6 @@ const GoogleButton = ({ onPress }: { onPress: ({ }: any) => void }) => {
 };
 function LoginScreen() {
   const navigation = useNavigation<LoginScreenProp>();
-  const { user } = useAuth();
 
   const { kakaoLogin, googleLogin } = useAuth();
 
@@ -55,15 +54,19 @@ function LoginScreen() {
     navigation.navigate('register');
   };
   const handleSignGoogle = async () => {
-    await googleLogin().then(() => {
-      if (!user?.isCompletedSignUp) {
+    await googleLogin().then((res) => {
+      if (res?.isCompletedSignUp) {
+        navigation.reset({ routes: [{ name: 'home' }] });
+      } else {
         navigation.navigate('register');
       }
     });
   };
   const handleSignKakao = async () => {
-    await kakaoLogin().then(() => {
-      if (!user?.isCompletedSignUp) {
+    await kakaoLogin().then((res) => {
+      if (res?.isCompletedSignUp) {
+        navigation.reset({ routes: [{ name: 'home' }] });
+      } else {
         navigation.navigate('register');
       }
     });

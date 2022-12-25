@@ -10,6 +10,7 @@ type LoginStackkParamList = {
   connectInsta: undefined;
   welcome: undefined;
   instagram: any;
+  home: undefined;
 };
 
 type LoginScreenProp = NativeStackNavigationProp<LoginStackkParamList>;
