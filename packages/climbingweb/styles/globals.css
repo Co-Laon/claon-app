@@ -4,33 +4,43 @@
 
 @font-face {
   font-family: 'SpoqaHanSansNeo';
-  src: url('/fonts/SpoqaHanSansNeo-Thin.otf');
+  src: local('SpoqaHanSansNeo'),
+    url('/fonts/SpoqaHanSansNeo-Thin.otf') format('opentype');
   font-weight: 100;
   font-style: normal;
+  font-display: swap;
 }
 @font-face {
   font-family: 'SpoqaHanSansNeo';
-  src: url('/fonts/SpoqaHanSansNeo-Light.otf');
+  src: local('SpoqaHanSansNeo'),
+    url('/fonts/SpoqaHanSansNeo-Light.otf') format('opentype');
   font-weight: 300;
   font-style: normal;
+  font-display: swap;
 }
 @font-face {
   font-family: 'SpoqaHanSansNeo';
-  src: url('/fonts/SpoqaHanSansNeo-Regular.otf');
+  src: local('SpoqaHanSansNeo'),
+    url('/fonts/SpoqaHanSansNeo-Regular.otf') format('opentype');
   font-weight: 400;
   font-style: normal;
+  font-display: swap;
 }
 @font-face {
   font-family: 'SpoqaHanSansNeo';
-  src: url('/fonts/SpoqaHanSansNeo-Medium.otf');
+  src: local('SpoqaHanSansNeo'),
+    url('/fonts/SpoqaHanSansNeo-Medium.otf') format('opentype');
   font-weight: 500;
   font-style: normal;
+  font-display: swap;
 }
 @font-face {
   font-family: 'SpoqaHanSansNeo';
-  src: url('/fonts/SpoqaHanSansNeo-Bold.otf');
+  src: local('SpoqaHanSansNeo'),
+    url('/fonts/SpoqaHanSansNeo-Bold.otf') format('opentype');
   font-weight: 700;
   font-style: normal;
+  font-display: swap;
 }
 
 html,

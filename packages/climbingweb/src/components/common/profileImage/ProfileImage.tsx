@@ -28,7 +28,7 @@ export const ProfileImage = ({
             width={size ? size : 40}
           />
         ) : (
-          <ProfileSkeleton width={size} height={size} />
+          <ProfileSkeleton width={size ? size : 40} height={size ? size : 40} />
         )}
       </div>
       {icon ? (

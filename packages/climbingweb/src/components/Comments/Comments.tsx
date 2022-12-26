@@ -1,5 +1,5 @@
-import Image from 'next/image';
 import { useRouter } from 'next/router';
+import { ProfileImage } from '../common/profileImage/ProfileImage';
 
 interface ParentCommentProps {
   postId: string;
@@ -51,16 +51,10 @@ export const Comment = ({
   };
 
   return (
-    <div className="w-screen flex flex-row mx-5">
+    <div className="w-screen flex flex-row mr-5">
       <div className="flex flex-row py-4 gap-2">
-        <div className="h-10 w-10 relative">
-          <Image
-            className="rounded-full"
-            layout="fill"
-            objectFit="cover"
-            src={writerProfileImage}
-            alt="comment"
-          />
+        <div className="w-10 mr-3 relative">
+          <ProfileImage src={writerProfileImage} />
         </div>
         <div className="w-screen gap-2">
           <div className="h-10">
