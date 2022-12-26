@@ -54,12 +54,14 @@ const FeedContent = ({
       ) : (
         <p className="py-2 font-medium">{content}</p>
       )}
-      {replyCount ? (
+      {
         <p
           onTouchEnd={onClickMoreComment}
           className="font-medium text-gray-400"
-        >{`댓글 ${replyCount}개 더 보기`}</p>
-      ) : null}
+        >
+          {replyCount === 0 ? '댓글 달기' : `댓글 ${replyCount}개 더 보기`}
+        </p>
+      }
     </section>
   );
 };
