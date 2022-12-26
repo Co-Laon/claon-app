@@ -2,6 +2,7 @@ import { useCreateLaon } from 'climbingweb/src/hooks/queries/laon/queryKey';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import React from 'react';
+import { UserResultSkeleton } from '../../common/skeleton/UserResultSkeleton';
 
 interface UserProps {
   imagePath: string;
@@ -27,6 +28,11 @@ const UserResult = ({ imagePath, isLaon, nickname }: UserProps) => {
   const handleUserResultClick = () => {
     router.push(`/users/name/${nickname}`);
   };
+
+  if (!nickname) {
+    return <UserResultSkeleton />;
+  }
+
   return (
     <div className="relative flex flex-col mx-2 items-center text-center w-[75px] h-[110px] rounded-[4px] border-gray-400 border-2 text-[8px] p-1">
       <div onClick={handleUserResultClick}>

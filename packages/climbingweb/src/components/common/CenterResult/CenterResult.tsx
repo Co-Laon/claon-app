@@ -2,6 +2,7 @@ import React from 'react';
 import StarIcon from 'climbingweb/src/assets/icon/ic_12_rate_black.svg';
 import { useRouter } from 'next/router';
 import Image from 'next/image';
+import { CenterResultSkeleton } from '../skeleton/CenterResultSkeleton';
 
 export interface CenterProps {
   id: string;
@@ -21,6 +22,10 @@ const CenterResult = ({ id, name, thumbnailUrl, reviewRank }: CenterProps) => {
   const handleGoToCenterDetail = () => {
     router.push(`/center/${id}`);
   };
+
+  if (!(id && name && thumbnailUrl)) {
+    return <CenterResultSkeleton />;
+  }
 
   return (
     <div

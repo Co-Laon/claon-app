@@ -2,6 +2,7 @@ import { ClimbingHistoryResponse } from 'climbingweb/types/response/post';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import React from 'react';
+import { UserFeedSkeleton } from '../common/skeleton/UserFeedSkeleton';
 import MiniHold from './MiniHold';
 
 interface UserFeedProps {
@@ -22,6 +23,10 @@ const UserFeed = ({
   const handleFeedClick = () => {
     router.push(`/feed/${postId}`);
   };
+
+  if (!(postId && centerName && image)) {
+    return <UserFeedSkeleton />;
+  }
 
   return (
     <div

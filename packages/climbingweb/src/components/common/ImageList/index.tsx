@@ -1,4 +1,5 @@
 import Image from 'next/image';
+import { CenterImageSkeleton } from '../skeleton/CenterImageSkeleton';
 const DefaultCenterImage = '/assets/default_image.svg';
 
 interface ListProps {
@@ -8,7 +9,7 @@ interface ListProps {
 export const ImageList = ({ imageList }: ListProps) => {
   return (
     <div className="w-full flex flex-row overflow-x-auto scrollbar-hide">
-      {imageList?.map((image, idx) => (
+      {imageList?.map((image, idx) => ((image) ?
         <div key={image + idx} className="min-w-40 w-40 h-32 relative">
           <Image
             key={image + idx}
@@ -18,7 +19,7 @@ export const ImageList = ({ imageList }: ListProps) => {
             src={image ? image : DefaultCenterImage}
             alt={image}
           />
-        </div>
+        </div> : <CenterImageSkeleton />
       ))}
     </div>
   );
