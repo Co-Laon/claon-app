@@ -4,7 +4,7 @@ import { ProfileImage } from '../../common/profileImage/ProfileImage';
 import { useRouter } from 'next/router';
 
 interface FeedHeaderProps {
-  userImage: string;
+  userImage?: string;
   userName: string;
   userLocation: string;
   handleOptionDotClick: () => void;

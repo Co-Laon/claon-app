@@ -1,6 +1,7 @@
 import { AppBar } from 'climbingweb/src/components/common/AppBar';
 import { BackButton } from 'climbingweb/src/components/common/AppBar/IconButton';
 import { ListSheet } from 'climbingweb/src/components/common/BottomSheetContents/ListSheet/ListSheet';
+import ErrorContent from 'climbingweb/src/components/common/Error/ErrorContent';
 import Loading from 'climbingweb/src/components/common/Loading/Loading';
 import HomeFeed from 'climbingweb/src/components/HomeFeed/HomeFeed';
 import { useGetPost } from 'climbingweb/src/hooks/queries/post/queryKey';
@@ -25,7 +26,7 @@ export default function FeedPage({}) {
   //뒤로가기 버튼 클릭 핸들러
   const handleBackButtonClick = () => window.history.back();
 
-  if (isPostError) return <div>{postError}</div>;
+  if (isPostError) return <ErrorContent error={postError} />;
 
   if (postData)
     return (
