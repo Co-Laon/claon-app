@@ -59,9 +59,11 @@ const Home: NextPage = () => {
     return (
       <div className="mb-footer overflow-auto scrollbar-hide">
         <AppBar
+          className="fixed top-0 z-10 bg-white w-full"
           leftNode={<AppLogo />}
           rightNode={<ModifiedButton onClick={onClickCreateFeed} />}
         />
+        <div className="h-16"></div>
         {laonPostsData.pages.map((page) => {
           return page.results.map((result, index) => (
             <HomeFeed key={`laonPostsDataFeed_${index}`} postData={result} />
