@@ -7,21 +7,23 @@ import {
 } from 'climbingapp/src/component/text/AuthTitle';
 import { ScreenView } from 'climbingapp/src/component/view/ScreenView';
 import { colorStyles } from 'climbingapp/src/styles';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components/native';
 import { LoginScreenProp } from './type';
 import { MyTextInput } from 'climbingapp/src/component/text-input/TextInput';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from 'climbingapp/src/store/slices';
 import { setArmReach, setHeight } from 'climbingapp/src/store/slices/authInfo';
+import { vs } from 'react-native-size-matters';
 
 const ButtonContainer = styled.View`
-  flex: 0.5;
-  margin-bottom: 24;
+  bottom: 24px;
+  width: 100%;
+  height: ${vs(56)}px;
 `;
 
 const InputContainer = styled.View`
-  flex: 1;
+  flex: 1.5;
 `;
 
 const SubText = styled.Text`
@@ -29,10 +31,13 @@ const SubText = styled.Text`
   font-size: 14px;
   font-weight: 700;
   line-height: 20px;
+  margin-top: ${vs(24)}px;
 `;
 function SignUpStepTwoScreen() {
   const navigation = useNavigation<LoginScreenProp>();
   const userInfo = useSelector((state: RootState) => state.authInfo.userInfo);
+  const [disabled, setDisabled] = useState<boolean>(true);
+  const { armReach, height } = userInfo;
   const dispatch = useDispatch();
 
   const isNumbertype = (nick: string) => /(^\d+$)|(^\d+\.\d{0,2}$)/.test(nick);
@@ -44,7 +49,10 @@ function SignUpStepTwoScreen() {
     if (isNumbertype(nick) || nick === '') dispatch(setArmReach(nick));
   };
 
-  const { armReach, height } = userInfo;
+  useEffect(() => {
+    setDisabled(!(height && armReach));
+  }, [height, armReach]);
+
   return (
     <ScreenView color={colorStyles.White}>
       <AppBar />
@@ -55,7 +63,7 @@ function SignUpStepTwoScreen() {
       <InputContainer>
         <SubText>신장 (Height)</SubText>
         <MyTextInput
-          value={height}
+          value={height + ''}
           onChangeText={handleChangeHeight}
           placeholder="173.3"
         />
@@ -63,18 +71,18 @@ function SignUpStepTwoScreen() {
       <InputContainer>
         <SubText>암리치 (Arm reach)</SubText>
         <MyTextInput
-          value={armReach}
+          value={armReach + ''}
           onChangeText={handleChangeArmReach}
           placeholder="173.3"
         />
+        {height && armReach ? (
+          <SubText>
+            Ape Index {(parseFloat(armReach) - parseFloat(height)).toFixed(2)} cm
+          </SubText>
+        ) : null}
       </InputContainer>
-      {height && armReach ? (
-        <SubText>
-          Ape Index {(parseFloat(height) / parseFloat(armReach)).toFixed(3)}
-        </SubText>
-      ) : null}
       <ButtonContainer>
-        <NextButton onPress={() => navigation.navigate('connectInsta')} />
+        <NextButton onPress={() => navigation.navigate('connectInsta')} disabled={disabled} />
       </ButtonContainer>
     </ScreenView>
   );

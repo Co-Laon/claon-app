@@ -5,7 +5,9 @@
 # react-native-config file, codegen
 .env
 ios/tmp.xcconfig
-
+.env.development
+.env.staging
+.env.production
 
 # Xcode
 #

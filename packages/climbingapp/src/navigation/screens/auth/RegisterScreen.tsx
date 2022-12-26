@@ -1,7 +1,7 @@
 import { AppBar } from 'climbingapp/src/component/appBar/AppBar';
 import { ScreenView } from 'climbingapp/src/component/view/ScreenView';
 import { colorStyles } from 'climbingapp/src/styles';
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import styled from 'styled-components/native';
 import ArrowRightIcon from 'climbingapp/src/assets/icon/ic_24_arrow_right_gray800.svg';
 import { TouchableHighlight, View } from 'react-native';
@@ -13,11 +13,13 @@ import {
   TitleContainer,
 } from 'climbingapp/src/component/text/AuthTitle';
 import { NextButton } from 'climbingapp/src/component/button/Button';
+import { vs } from 'react-native-size-matters';
 
 const CheckListItem = styled.View`
   flex-direction: row;
   align-items: center;
-  height: 45;
+  height: 45px;
+  margin-bottom: ${vs(8)}px;
 `;
 
 const CheckListContainer = styled.View`
@@ -26,7 +28,10 @@ const CheckListContainer = styled.View`
 
 const ButtonContainer = styled.View`
   flex: 0.5;
-  margin-bottom: 24;
+  position: absolute;
+  width: 100%;
+  bottom: 24px;
+  height: ${vs(56)}px;
 `;
 
 const InnerText = styled.Text`
@@ -37,14 +42,15 @@ const InnerText = styled.Text`
 const Divider = styled.View`
   background-color: ${colorStyles.Gray300};
   height: 1px;
+  margin-bottom: ${vs(8)}px;
 `;
 
 const CheckHeader = ({
   checked,
   onPress,
 }: {
-  checked: boolean | (({}: any) => boolean);
-  onPress: ({}: any) => void;
+  checked: boolean | (({ }: any) => boolean);
+  onPress: ({ }: any) => void;
 }) => {
   return (
     <CheckListItem>
@@ -67,24 +73,18 @@ function RegisterScreen() {
   const infoData: CheckData[] = [
     {
       key: 1,
-      text: '[필수] 만 14세 이상',
-      checked: false,
-      isEssential: true,
-    },
-    {
-      key: 2,
       text: '[필수] 이용약관',
       checked: false,
       isEssential: true,
     },
     {
-      key: 3,
+      key: 2,
       text: '[필수] 개인정보수집 및 이용동의',
       checked: false,
       isEssential: true,
     },
     {
-      key: 4,
+      key: 3,
       text: '[선택] 이벤트 알림, 이메일, 문자, 앱 푸시',
       checked: false,
       isEssential: false,
@@ -93,8 +93,14 @@ function RegisterScreen() {
 
   const navigation = useNavigation<LoginScreenProp>();
   const [checkList, setCheckList] = useState(infoData);
+  const [disabled, setDisabled] = useState(true);
 
   const checkedAll = () => checkList.every(({ checked }) => checked);
+  const checkDisabled = () => {
+    setDisabled(() => !checkList
+      .filter(({ isEssential }) => isEssential)
+      .every(({ checked }) => checked));
+  };
 
   const handleCheckAll = useCallback(() => {
     const value = checkedAll();
@@ -111,10 +117,9 @@ function RegisterScreen() {
     setCheckList(values);
   };
 
-  const isDisabled = () =>
-    !checkList
-      .filter(({ isEssential }) => isEssential)
-      .every(({ checked }) => checked);
+  useEffect(() => {
+    checkDisabled();
+  }, [checkList]);
 
   return (
     <ScreenView color="white">
@@ -127,7 +132,7 @@ function RegisterScreen() {
         <CheckHeader checked={checkedAll()} onPress={handleCheckAll} />
         <Divider />
         {checkList?.map((check) => (
-          <CheckListItem style={{ justifyContent: 'space-between' }}>
+          <CheckListItem key={check.key} style={{ justifyContent: 'space-between' }}>
             <View style={{ flexDirection: 'row' }}>
               <CheckBox
                 checkIcon="line"
@@ -149,7 +154,7 @@ function RegisterScreen() {
       <ButtonContainer>
         <NextButton
           onPress={() => navigation.navigate('signUpStepOne')}
-          disabled={isDisabled}
+          disabled={disabled}
         />
       </ButtonContainer>
     </ScreenView>

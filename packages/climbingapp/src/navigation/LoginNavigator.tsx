@@ -10,6 +10,7 @@ import WelcomeScreen from './screens/auth/WelcomeScreen';
 import InstagramAuthWebView from '../component/webview/InstagramAuthWebview';
 import Config from 'react-native-config';
 import SignUpStepTwoScreen from './screens/auth/SignUpStepTwoScreen';
+import HomeScreen from './screens/main/HomeScreen';
 const Stack = createNativeStackNavigator();
 
 const LoginNavigator = () => {
@@ -27,14 +28,16 @@ const LoginNavigator = () => {
       }}
     >
       <Stack.Screen name="login" component={LoginScreen} />
-      <Stack.Screen name="register" component={RegisterScreen} />
-      <Stack.Screen name="agreeInfo" component={AgreeInfoScreen} />
-      <Stack.Screen name="signUpStepOne" component={SignUpStepOneScreen} />
-      <Stack.Screen name="signUpStepTwo" component={SignUpStepTwoScreen} />
-      <Stack.Screen name="optionalInfo" component={OptionalInfoScreen} />
+      <Stack.Screen name="register" component={RegisterScreen} options={{ animation: 'slide_from_right' }} />
+      <Stack.Screen name="agreeInfo" component={AgreeInfoScreen} options={{ animation: 'slide_from_right' }} />
+      <Stack.Screen name="signUpStepOne" component={SignUpStepOneScreen} options={{ animation: 'slide_from_right' }} />
+      <Stack.Screen name="signUpStepTwo" component={SignUpStepTwoScreen} options={{ animation: 'slide_from_right' }} />
+      <Stack.Screen name="optionalInfo" component={OptionalInfoScreen} options={{ animation: 'slide_from_right' }} />
+      <Stack.Screen name="home" component={HomeScreen} options={{ animation: 'simple_push' }} />
       <Stack.Screen
         name="connectInsta"
         component={ConnectWithInstagramScreen}
+        options={{ animation: 'slide_from_right' }}
       />
       <Stack.Screen name="welcome" component={WelcomeScreen} />
       <Stack.Screen

@@ -1,7 +1,7 @@
 import { storeData } from './../utils/storage';
 import { RootState } from './../store/slices/index';
 import KakaoSDK from '@actbase/react-kakaosdk';
-import { authorize, logout } from 'climbingapp/src/store/slices/auth';
+import { authorize, logout, User } from 'climbingapp/src/store/slices/auth';
 import { useSelector, useDispatch } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
@@ -34,7 +34,7 @@ export const useAuth = () => {
   const userInfo = useUserInfo();
 
   const signInWithProvider = async ({ code, provider }: SignInType) => {
-    await axios
+    const signValue: User = await axios
       .post(api + '/auth/sign-in/' + provider, {
         code,
       })
@@ -43,17 +43,20 @@ export const useAuth = () => {
         auth.authorize(res);
         storeData('access-token', res.accessToken);
         storeData('refresh-token', res.refreshToken);
+        return res;
       })
       .catch((error) => console.log(error));
+
+    return signValue;
   };
 
-  const kakaoLogin = async (): Promise<void> => {
+  const kakaoLogin = async () => {
     try {
       await KakaoSDK.init(Config.KAKAO_APP_KEY);
       const token = await KakaoSDK.login();
       const code = token?.access_token;
       if (code) {
-        signInWithProvider({ code, provider: 'KAKAO' });
+        return await signInWithProvider({ code, provider: 'KAKAO' });
       }
     } catch (err) {
       console.log(err);
@@ -71,7 +74,7 @@ export const useAuth = () => {
       await GoogleSignin.hasPlayServices();
       const { idToken: code } = await GoogleSignin.signIn();
       if (code) {
-        signInWithProvider({ code, provider: 'GOOGLE' });
+        return await signInWithProvider({ code, provider: 'GOOGLE' });
       }
     } catch (err) {
       console.log(err);

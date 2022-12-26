@@ -35,19 +35,18 @@ const ButtonContainer = styled.View`
   flex: 0.5;
 `;
 
-const KakaoButton = ({ onPress }: { onPress: ({}: any) => void }) => {
+const KakaoButton = ({ onPress }: { onPress: ({ }: any) => void }) => {
   return <DefaultButton {...Kakao} onPress={onPress} />;
 };
 
-const AppleButton = ({ onPress }: { onPress: ({}: any) => void }) => {
+const AppleButton = ({ onPress }: { onPress: ({ }: any) => void }) => {
   return <DefaultButton {...Apple} onPress={onPress} />;
 };
-const GoogleButton = ({ onPress }: { onPress: ({}: any) => void }) => {
+const GoogleButton = ({ onPress }: { onPress: ({ }: any) => void }) => {
   return <DefaultButton {...Google} onPress={onPress} />;
 };
 function LoginScreen() {
   const navigation = useNavigation<LoginScreenProp>();
-  const { user } = useAuth();
 
   const { kakaoLogin, googleLogin } = useAuth();
 
@@ -55,17 +54,22 @@ function LoginScreen() {
     navigation.navigate('register');
   };
   const handleSignGoogle = async () => {
-    await googleLogin();
-    if (!user?.isCompletedSignUp) {
-      //isCompletedSignUp === false 라면
-      navigation.navigate('register');
-    }
+    await googleLogin().then((res) => {
+      if (res?.isCompletedSignUp) {
+        navigation.reset({ routes: [{ name: 'home' }] });
+      } else {
+        navigation.navigate('register');
+      }
+    });
   };
   const handleSignKakao = async () => {
-    await kakaoLogin();
-    if (!user?.isCompletedSignUp) {
-      navigation.navigate('register');
-    }
+    await kakaoLogin().then((res) => {
+      if (res?.isCompletedSignUp) {
+        navigation.reset({ routes: [{ name: 'home' }] });
+      } else {
+        navigation.navigate('register');
+      }
+    });
   };
 
   return (
