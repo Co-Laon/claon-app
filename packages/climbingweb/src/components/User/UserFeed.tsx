@@ -25,7 +25,7 @@ const UserFeed = ({
 
   return (
     <div
-      className="flex flex-col my-1 mr-2 pb-[5px] rounded-lg shadow-lg max-w-[160px] h-[210px]"
+      className="flex flex-col my-1 mr-2 pb-[5px] rounded-lg shadow-lg max-w-[160px] h-[230px]"
       onClick={handleFeedClick}
     >
       <div className="relative flex">
@@ -37,9 +37,9 @@ const UserFeed = ({
           width={160}
         />
       </div>
-      <div className="ml-3 my-1 text-gray-500 text-xs">
+      <div className="ml-3 my-1 text-gray-500 text-xs scrollbar-hide">
         {centerName}
-        <div className="flex overflow-auto scrollbar-hide justify-between">
+        <div className="grid grid-cols-4">
           {climbingHistories.map((value, index) => (
             <MiniHold key={`miniHold_${index}`} hold={value} />
           ))}
