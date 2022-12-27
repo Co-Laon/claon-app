@@ -1,5 +1,6 @@
 import { useRouter } from 'next/router';
 import { ProfileImage } from '../common/profileImage/ProfileImage';
+import { CommentSkeleton } from '../common/skeleton/CommentSkeleton';
 
 interface ParentCommentProps {
   postId: string;
@@ -49,6 +50,10 @@ export const Comment = ({
   const hanedleCreateChildComment = () => {
     router.push(`/feed/${postId}/comments/${commentId}`);
   };
+
+  if (!(postId && commentId && content)) {
+    return <CommentSkeleton />;
+  }
 
   return (
     <div className="w-screen flex flex-row mr-5">
@@ -117,6 +122,10 @@ export function ParentComment({
   const handleMoreCommentClick = () => {
     router.push(`/feed/${postId}/comments/${commentId}`);
   };
+
+  if (!(postId && commentId && content)) {
+    return <CommentSkeleton />;
+  }
 
   return (
     <>

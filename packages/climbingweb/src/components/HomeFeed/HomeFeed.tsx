@@ -8,7 +8,6 @@ import { BottomSheet } from 'react-spring-bottom-sheet';
 import { ListSheet } from '../common/BottomSheetContents/ListSheet/ListSheet';
 import { PostDetailResponse } from 'climbingweb/types/response/post';
 import { UserPostDetailResponse } from 'climbingweb/types/response/laon';
-import Loading from '../common/Loading/Loading';
 import ErrorContent from '../common/Error/ErrorContent';
 import { useRouter } from 'next/router';
 import {
@@ -16,6 +15,7 @@ import {
   useDeleteLike,
   useFindAllParentComment,
 } from 'climbingweb/src/hooks/queries/post/queryKey';
+import { FeedSkeleton } from '../common/skeleton/FeedSkeleton';
 
 interface HomeFeedProps {
   postData: PostDetailResponse | UserPostDetailResponse;
@@ -92,7 +92,7 @@ const HomeFeed = ({ postData }: HomeFeedProps) => {
       </section>
     );
 
-  return <Loading />;
+  return <FeedSkeleton />;
 };
 
 export default HomeFeed;

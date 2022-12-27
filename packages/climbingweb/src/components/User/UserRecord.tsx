@@ -1,14 +1,20 @@
 import { CenterClimbingHistoryResponse } from 'climbingweb/types/response/user';
 import Image from 'next/image';
 import React from 'react';
+import { UserRecordSkeleton } from '../common/skeleton/UserRecordSkeleton';
 import MiniHold from './MiniHold';
 
-interface UserRecordProps extends CenterClimbingHistoryResponse {}
+interface UserRecordProps extends CenterClimbingHistoryResponse { }
 
 const UserRecord = ({
   center: { centerName, centerImage },
   climbingHistories,
 }: UserRecordProps) => {
+
+  if (!(centerName && centerImage)) {
+    return <UserRecordSkeleton />;
+  }
+
   return (
     <span className="flex flex-col rounded-lg shadow-sm mr-2 shadow-gray-300 h-[155px] min-w-[90px] pb-[5px]">
       <div className="aspect-square flex items-center justify-center mx-[5px] p-[5px]">
