@@ -20,7 +20,7 @@ export const CenterInfoContent = ({ data }: ContentProps) => {
     {
       id: 2,
       tabName: '리뷰',
-      tabContent: <CenterReview id={data.id} />,
+      tabContent: <CenterReview centerId={data.id} />,
     },
     {
       id: 3,

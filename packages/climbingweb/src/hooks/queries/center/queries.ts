@@ -1,6 +1,10 @@
 import axios from 'axios';
 import { Pagination } from 'climbingweb/types/common';
-import { CenterReportCreateRequest } from 'climbingweb/types/request/center';
+import {
+  CenterReportCreateRequest,
+  ReviewCreateRequest,
+  ReviewUpdateRequest,
+} from 'climbingweb/types/request/center';
 import {
   CenterBookmarkResponse,
   CenterDetailResponse,
@@ -10,6 +14,7 @@ import {
   CenterReportResponse,
   HoldInfoResponse,
   ReviewBundleFindResponse,
+  ReviewResponse,
 } from 'climbingweb/types/response/center';
 
 /**
@@ -204,6 +209,65 @@ export const searchCenterName = async (centerName: string) => {
     const { data } = await axios.get<CenterNameResponse[]>(
       `/centers/name/${centerName}`
     );
+    return data;
+  } catch (error: any) {
+    throw error.response.data;
+  }
+};
+
+/**
+ * POST /centers/{centerId}/review api 의 query 함수
+ *
+ * @param centerId 리뷰를 작성할 센터의 id 값
+ * @param reviewCreateRequest 리뷰 작성 내용
+ * @returns axiosResponse.data
+ */
+export const createReview = async (
+  centerId: string,
+  reviewCreateRequest: ReviewCreateRequest
+) => {
+  try {
+    const { data } = await axios.post<ReviewResponse>(
+      `/centers/${centerId}/review`,
+      reviewCreateRequest
+    );
+    return data;
+  } catch (error: any) {
+    throw error.response.data;
+  }
+};
+
+/**
+ * PUT /centers/review/{reviewId} api 의 query 함수
+ *
+ * @param reviewId 수정할 리뷰의 id 값
+ * @param reviewUpdateRequest 수정할 리뷰 내용
+ * @returns axiosResponse.data
+ */
+export const updateReview = async (
+  reviewId: string,
+  reviewUpdateRequest: ReviewUpdateRequest
+) => {
+  try {
+    const { data } = await axios.put<ReviewResponse>(
+      `/centers/review/${reviewId}`,
+      reviewUpdateRequest
+    );
+    return data;
+  } catch (error: any) {
+    throw error.response.data;
+  }
+};
+
+/**
+ * DELETE /centers/review/{reviewId} api 의 query 함수
+ *
+ * @param reviewId 삭제할 리뷰의 id 값
+ * @returns
+ */
+export const deleteReview = async (reviewId: string) => {
+  try {
+    const { data } = await axios.delete<void>(`/centers/review/${reviewId}`);
     return data;
   } catch (error: any) {
     throw error.response.data;

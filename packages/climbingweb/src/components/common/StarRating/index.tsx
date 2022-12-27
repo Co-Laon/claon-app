@@ -1,10 +1,11 @@
-import { useState } from 'react';
+import { Dispatch, SetStateAction, useState } from 'react';
 
 interface RatingProps {
   count: number;
   readOnly?: boolean;
   size?: 'xs' | 'sm' | 'md' | 'lg';
   initialValue: number;
+  setData?: Dispatch<SetStateAction<number>>;
 }
 
 export const StarRating = ({
@@ -12,6 +13,7 @@ export const StarRating = ({
   readOnly = false,
   size = 'md',
   initialValue,
+  setData,
 }: RatingProps) => {
   const stars = Array(count * 2)
     .fill(1)
@@ -25,7 +27,7 @@ export const StarRating = ({
 
   const handleCheck = (num: number) => {
     if (!readOnly) setValue(num / 2);
-    console.log(value);
+    if (setData) setData(num / 2);
   };
 
   return (

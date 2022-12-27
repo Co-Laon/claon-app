@@ -1,5 +1,7 @@
-import Image from 'next/image';
+import { useDeleteReview } from 'climbingweb/src/hooks/queries/center/queryKey';
+import { useToast } from 'climbingweb/src/hooks/useToast';
 import { useState } from 'react';
+import { ProfileImage } from '../common/profileImage/ProfileImage';
 import { StarRating } from '../common/StarRating';
 
 // interface ReviewCommmentProps {
@@ -14,50 +16,72 @@ import { StarRating } from '../common/StarRating';
 // }
 
 interface ReviewCommentProps {
+  reviewId: string;
+  centerId: string;
   content: string;
   createdAt: string;
   rank: number;
   reviewerNickname: string;
   reviewerProfileImage: string;
   updatedAt: string;
+  isSelfReview?: boolean;
 }
 
 export const ReviewComment = ({
+  reviewId,
+  centerId,
   content,
   createdAt,
   rank,
   reviewerNickname,
   reviewerProfileImage,
   updatedAt,
+  isSelfReview,
 }: ReviewCommentProps) => {
   const [readMore, setReadMore] = useState(false);
 
+  const { toast } = useToast();
+
+  const { mutate: deleteReview } = useDeleteReview(centerId, reviewId);
+
+  const handleModifyReviewClick = () => {
+    console.log('수정');
+  };
+
+  const handleDeleteReviewClick = () => {
+    deleteReview();
+    toast('리뷰가 삭제되었습니다.');
+  };
+
   return (
     <div className="flex flex-row">
-      <div className="flex flex-row py-4 gap-2">
-        <div className="min-w-10 min-h-10 h-10 w-10 relative">
-          <Image
-            className="rounded-full"
-            layout="fill"
-            objectFit="cover"
-            src={reviewerProfileImage}
-            alt="comment"
-          />
-        </div>
-        <div className=" gap-2">
-          <div className="h-10 flex flex-row justify-between items-center">
+      <div className="flex flex-row py-4 gap-2 w-full">
+        <ProfileImage src={reviewerProfileImage} />
+        <div className="w-full gap-2">
+          <div className="h-10 flex flex-row justify-between items-center ">
             <div>
               <p className="text-sm font-bold">{reviewerNickname}</p>
-              <p className="text-gray-400 text-sm">
+              <span className="text-gray-400 text-sm">
                 {updatedAt ? updatedAt : createdAt}{' '}
-              </p>
+              </span>
+              {isSelfReview ? (
+                <>
+                  <span
+                    className="text-blue-500 text-sm"
+                    onClick={handleModifyReviewClick}
+                  >
+                    ·수정
+                  </span>
+                  <span
+                    className="text-blue-500 text-sm"
+                    onClick={handleDeleteReviewClick}
+                  >
+                    ·삭제
+                  </span>
+                </>
+              ) : null}
             </div>
-            <StarRating
-              readOnly={true}
-              size="sm"
-              count={rank}
-              initialValue={4}
-            />
+            <StarRating readOnly size="sm" count={5} initialValue={rank} />
           </div>
           <div className="">
             <p className={`text-sm ${readMore ? '' : 'line-clamp-3'}`}>
