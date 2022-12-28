@@ -55,3 +55,21 @@ export interface ReviewUpdateRequest {
   content: string;
   rank: number;
 }
+
+/**
+ * 작성자: 윤웅재
+ * POST /api/v1/centers/{centerId}/review
+ */
+export interface ReviewCreateRequest {
+  content: string;
+  rank: number;
+}
+
+/**
+ * 작성자: 윤웅재
+ * PUT /api/v1/centers/review/{reivewId}
+ */
+export interface ReviewUpdateRequest {
+  content: string;
+  rank: number;
+}

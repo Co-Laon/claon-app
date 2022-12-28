@@ -1,5 +1,9 @@
 import { createQueryKeys } from '@lukemorales/query-key-factory';
-import { CenterReportCreateRequest } from 'climbingweb/types/request/center';
+import {
+  CenterReportCreateRequest,
+  ReviewCreateRequest,
+  ReviewUpdateRequest,
+} from 'climbingweb/types/request/center';
 import {
   useMutation,
   useQuery,
@@ -9,7 +13,9 @@ import {
 import {
   createCenterBookmark,
   createCenterReport,
+  createReview,
   deleteCenterBookmark,
+  deleteReview,
   findCenter,
   findHoldInfoByCenter,
   findReviewByCenter,
@@ -17,6 +23,7 @@ import {
   getCenterPosts,
   searchCenter,
   searchCenterName,
+  updateReview,
 } from './queries';
 
 /**
@@ -134,10 +141,6 @@ export const useFindHoldInfoByCenter = (centerId: string) => {
   return useQuery({
     ...centerQueries.detail(centerId)._ctx.findHoldInfoByCenter(),
     enabled: Boolean(centerId),
-    // select: (response) =>
-    //   response.map((val) => {
-    //     return { ...val, count: 0 };
-    //   }),
   });
 };
 
@@ -223,5 +226,56 @@ export const useSearchCenterName = (centerName: string) => {
   return useQuery({
     ...centerQueries.searchName(centerName),
     enabled: Boolean(centerName),
+  });
+};
+
+/**
+ * createReview api useMutation hooks
+ *
+ * @param centerId 리뷰를 작성할 센터의 id
+ * @returns createReview api useMutation return 값
+ */
+export const useCreateReview = (centerId: string) => {
+  const queryClient = useQueryClient();
+  return useMutation(
+    (reviewCreateRequest: ReviewCreateRequest) =>
+      createReview(centerId, reviewCreateRequest),
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries({
+          queryKey: centerQueries.detail(centerId).queryKey,
+          refetchInactive: true,
+        });
+      },
+    }
+  );
+};
+
+export const useUpdateReview = (centerId: string, reviewId: string) => {
+  const queryClient = useQueryClient();
+  return useMutation(
+    (reviewUpdateRequest: ReviewUpdateRequest) =>
+      updateReview(reviewId, reviewUpdateRequest),
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries({
+          queryKey: centerQueries.detail(centerId)._ctx.findReviewByCenter()
+            .queryKey,
+          refetchInactive: true,
+        });
+      },
+    }
+  );
+};
+
+export const useDeleteReview = (centerId: string, reviewId: string) => {
+  const queryClient = useQueryClient();
+  return useMutation(() => deleteReview(reviewId), {
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: centerQueries.detail(centerId).queryKey,
+        refetchInactive: true,
+      });
+    },
   });
 };
