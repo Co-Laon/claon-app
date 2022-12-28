@@ -1,7 +1,7 @@
 import { useFindReviewByCenter } from 'climbingweb/src/hooks/queries/center/queryKey';
 import { useIntersectionObserver } from 'climbingweb/src/hooks/useIntersectionObserver';
 import { useRouter } from 'next/router';
-import { ReviewComment } from '../../Comments/ReviewComment';
+import { MyReviewComment, ReviewComment } from '../../Comments/ReviewComment';
 import EmptyContent from '../../common/EmptyContent/EmptyContent';
 import ErrorContent from '../../common/Error/ErrorContent';
 import Loading from '../../common/Loading/Loading';
@@ -68,30 +68,26 @@ export const CenterReview = ({ centerId }: ReviewProps) => {
             </button>
           ) : null}
         </div>
-        {data.pages[0].otherReviewsPagination.totalCount === 0 ? (
+        {data.pages[0].selfReview ? (
+          <MyReviewComment
+            key={data.pages[0].selfReview.reviewId}
+            centerId={centerId}
+            reviewId={data.pages[0].selfReview.reviewId}
+            content={data.pages[0].selfReview.content}
+            createdAt={data.pages[0].selfReview.createdAt}
+            rank={data.pages[0].selfReview.rank}
+            reviewerNickname={data.pages[0].selfReview.reviewerNickname}
+            reviewerProfileImage={data.pages[0].selfReview.reviewerProfileImage}
+            updatedAt={data.pages[0].selfReview.updatedAt}
+          />
+        ) : data.pages[0].otherReviewsPagination.totalCount === 0 ? (
           <EmptyContent message="아직 리뷰가 없습니다." />
         ) : (
+          <EmptyContent message="아직 내가 리뷰를 남기지 않았습니다." />
+        )}
+        {
           <>
             <div>
-              {data.pages[0].selfReview ? (
-                <ReviewComment
-                  key={data.pages[0].selfReview.reviewId}
-                  centerId={centerId}
-                  reviewId={data.pages[0].selfReview.reviewId}
-                  content={data.pages[0].selfReview.content}
-                  createdAt={data.pages[0].selfReview.createdAt}
-                  rank={data.pages[0].selfReview.rank}
-                  reviewerNickname={data.pages[0].selfReview.reviewerNickname}
-                  reviewerProfileImage={
-                    data.pages[0].selfReview.reviewerProfileImage
-                  }
-                  updatedAt={data.pages[0].selfReview.updatedAt}
-                  isSelfReview
-                />
-              ) : (
-                <EmptyContent message="아직 내가 리뷰를 남기지 않았습니다." />
-              )}
-              <div className="border-b border-gray-300" />
               {data.pages.map((page) => {
                 return page.otherReviewsPagination.results.map(
                   ({
@@ -124,7 +120,7 @@ export const CenterReview = ({ centerId }: ReviewProps) => {
               <Loading />
             )}
           </>
-        )}
+        }
       </div>
     );
 
