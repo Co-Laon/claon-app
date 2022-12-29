@@ -33,7 +33,7 @@ const UserFeed = ({
       className="flex flex-col my-1 mr-2 pb-[5px] rounded-lg shadow-lg max-w-[160px] h-[230px]"
       onClick={handleFeedClick}
     >
-      <div className="relative flex">
+      <div className="relative flex bg-black rounded-t-lg">
         <Image
           className="rounded-t-lg"
           src={image}
