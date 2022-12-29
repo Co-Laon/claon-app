@@ -1,5 +1,5 @@
-import Image from 'next/image';
 import Router from 'next/router';
+import { ProfileImage } from '../profileImage/ProfileImage';
 import { LaonProps } from './type';
 
 export const LaonItem = ({
@@ -22,15 +22,7 @@ export const LaonItem = ({
         className="flex flex-row items-center gap-2"
         onClick={!disabled ? handleLaonItemClick : undefined}
       >
-        <div className="h-10 w-10 relative">
-          <Image
-            className="rounded-full"
-            layout="fill"
-            objectFit="cover"
-            src={laonProfileImage}
-            alt="laonProfileImage"
-          />
-        </div>
+        <ProfileImage src={laonProfileImage} />
         <p className="text-sm font-bold">{laonNickName}</p>
       </div>
       {rightNode}
