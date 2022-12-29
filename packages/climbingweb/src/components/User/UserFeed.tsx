@@ -33,13 +33,14 @@ const UserFeed = ({
       className="flex flex-col my-1 mr-2 pb-[5px] rounded-lg shadow-lg max-w-[160px] h-[230px]"
       onClick={handleFeedClick}
     >
-      <div className="relative flex">
+      <div className="relative flex rounded-t-lg">
         <Image
           className="rounded-t-lg"
           src={image}
           alt={'UserFeedImage'}
           height={160}
           width={160}
+          objectFit={'contain'}
         />
       </div>
       <div className="ml-3 my-1 text-gray-500 text-xs scrollbar-hide">

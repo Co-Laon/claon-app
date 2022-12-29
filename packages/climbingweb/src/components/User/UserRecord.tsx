@@ -4,13 +4,12 @@ import React from 'react';
 import { UserRecordSkeleton } from '../common/skeleton/UserRecordSkeleton';
 import MiniHold from './MiniHold';
 
-interface UserRecordProps extends CenterClimbingHistoryResponse { }
+interface UserRecordProps extends CenterClimbingHistoryResponse {}
 
 const UserRecord = ({
   center: { centerName, centerImage },
   climbingHistories,
 }: UserRecordProps) => {
-
   if (!(centerName && centerImage)) {
     return <UserRecordSkeleton />;
   }
@@ -24,6 +23,7 @@ const UserRecord = ({
           alt={centerName}
           height={80}
           width={80}
+          objectFit={'contain'}
         />
       </div>
       <div className="pl-[5px] pr-2">

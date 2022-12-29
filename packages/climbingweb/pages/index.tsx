@@ -70,11 +70,7 @@ const Home: NextPage = () => {
           ));
         })}
         {!hasNextLaonPosts ? (
-          <div className="m-4 font-medium">
-            <div className="h-[1px] my-2 bg-slate-300"></div>
-            <div>추천 게시글</div>
-            <div className="h-[1px] my-2 bg-slate-300"></div>
-          </div>
+          <div className="m-4 font-medium">추천 게시글</div>
         ) : null}
         {postsData.pages.map((page) => {
           return page.results.map((result, index) => (
