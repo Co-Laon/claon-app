@@ -26,7 +26,7 @@ const ImageSlider = ({ imageList }: { imageList: string[] }) => {
 
   return (
     <div
-      className={'relative w-full aspect-square overflow-hidden bg-black'}
+      className={'relative w-full aspect-square overflow-hidden'}
       onTouchEnd={onTouchEnd}
     >
       <div
