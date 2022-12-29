@@ -40,6 +40,7 @@ const UserFeed = ({
           alt={'UserFeedImage'}
           height={160}
           width={160}
+          objectFit={'contain'}
         />
       </div>
       <div className="ml-3 my-1 text-gray-500 text-xs scrollbar-hide">

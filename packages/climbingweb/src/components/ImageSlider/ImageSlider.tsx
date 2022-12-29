@@ -3,6 +3,10 @@ import React, { useState } from 'react';
 import { TouchEvent } from 'react';
 import Loading from '../common/Loading/Loading';
 
+const imageLoader = ({ src, width }: { src: string; width: number }) => {
+  return `${src}?w=${width}`;
+};
+
 const ImageSlider = ({ imageList }: { imageList: string[] }) => {
   //피드에서 현재 보여질 이미지 index
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
@@ -39,7 +43,9 @@ const ImageSlider = ({ imageList }: { imageList: string[] }) => {
               src={value}
               width={`${imageWidth}px`}
               height={`${imageWidth}px`}
+              objectFit={'contain'}
               alt={'sliderImage'}
+              loader={imageLoader}
             />
           ) : (
             <div key={value} className={'w-full aspect-square'}>
