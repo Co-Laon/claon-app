@@ -57,16 +57,18 @@ const ImageSlider = ({ imageList }: { imageList: string[] }) => {
       <div
         className={'flex w-full my-4 absolute left-0 bottom-0 justify-center'}
       >
-        <div className="flex rounded-full bg-black bg-opacity-50">
-          {imageList.map((value, index) => (
-            <div
-              key={`justDot${index}`}
-              className={`w-2 h-2 m-1 rounded-full bg-white ${
-                selectedImageIndex === index ? 'opacity-100' : 'opacity-40'
-              }`}
-            />
-          ))}
-        </div>
+        {imageList.length > 1 && (
+          <div className="flex rounded-full">
+            {imageList.map((value, index) => (
+              <div
+                key={`justDot${index}`}
+                className={`w-2 h-2 m-1 rounded-full bg-purple-500 ${
+                  selectedImageIndex === index ? 'opacity-100' : 'opacity-40'
+                }`}
+              />
+            ))}
+          </div>
+        )}
       </div>
     </div>
   );
