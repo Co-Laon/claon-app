@@ -5,7 +5,7 @@ name: Deploy to Firebase Hosting on merge
 'on':
   push:
     branches:
-      - develop
+      - master
 jobs:
   build_and_deploy:
     runs-on: ubuntu-latest
@@ -15,6 +15,7 @@ jobs:
       - uses: FirebaseExtended/action-hosting-deploy@v0
         with:
           repoToken: '${{ secrets.GITHUB_TOKEN }}'
-          firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT_CLAON_351809 }}'
+          firebaseServiceAccount:
+            '${{ secrets.FIREBASE_SERVICE_ACCOUNT_CLAON_351809 }}'
           channelId: live
           projectId: claon-351809
