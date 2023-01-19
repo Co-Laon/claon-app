@@ -102,9 +102,9 @@ apply from: "../../../../node_modules/react-native/react.gradle"
 def enableSeparateBuildPerCPUArchitecture = true
 
 /**
- * Run Proguard to shrink the Java bytecode in release builds.
+ * Run Proguard to shrink the Java bytecode in release builds. // 프로가드 설정 시 릴리즈 빌드 크래시 발생..
  */
-def enableProguardInReleaseBuilds = true
+def enableProguardInReleaseBuilds = false
 
 /**
  * The preferred build flavor of JavaScriptCore.
@@ -143,8 +143,8 @@ android {
         applicationId "com.climbingapp"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 2
-        versionName "1.0.1"
+        versionCode 4
+        versionName "1.0.3"
     }
     splits {
         abi {
@@ -213,7 +213,7 @@ dependencies {
     implementation fileTree(dir: "libs", include: ["*.jar"])
     //noinspection GradleDynamicVersion
     implementation "com.facebook.react:react-native:+"  // From node_modules
-
+    
     implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.0.0"
 
     debugImplementation("com.facebook.flipper:flipper:${FLIPPER_VERSION}") {
