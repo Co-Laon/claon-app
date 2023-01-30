@@ -57,35 +57,33 @@ function SignUpStepOneScreen() {
   const navigation = useNavigation<LoginScreenProp>();
   const { userInfo } = useAuth();
   const { nickname } = userInfo;
-  const [isDuplicated, setIsDuplicated] = useState<boolean>(false);
   const [isErrorNickName, setIsErrorNickName] = useState<string>('');
-  const isDisabled = nickname === '' || isErrorNickName !== '' || isDuplicated;
+  const isDisabled = nickname === '' || isErrorNickName !== '';
   const dispatch = useDispatch();
 
-  const handleCheckDuplicated = debounce(async (nick: string | undefined) => {
+  const handleCheckDuplicated = async (nick: string | undefined) => {
     if (nick === '') return;
-    await axios
+    const checkNickName = await axios
       .get(api + `/auth/nickname/${nick}/duplicate-check`)
-      .then((res) => setIsDuplicated(res.data.result));
-  }, 800);
+      .then((res) => res.data.result);
+    return checkNickName;
+  };
 
-  const handleNickNameErrorMessage = debounce(
-    (nick: string, duplicated: boolean) => {
-      let errorMessage = '';
-      if (!/^[0-9a-zA-Z가-힣]{2,20}$/gi.test(nick))
-        errorMessage = '닉네임 규칙을 지켜주세요';
-      else if (duplicated) {
-        errorMessage = '닉네임이 중복되었습니다!';
-      }
-      setIsErrorNickName(errorMessage);
-    },
-    800
-  );
+  const handleNickNameErrorMessage = debounce(async (nick: string) => {
+    let errorMessage: string = await handleCheckDuplicated(nick)
+      .then(duplicated => errorMessage = duplicated ? '닉네임이 중복되었습니다!' : '');
+
+    errorMessage = !/^[0-9a-zA-Z가-힣]{2,20}$/gi.test(nick) ? '닉네임 규칙을 지켜주세요' : errorMessage;
+    setIsErrorNickName(errorMessage);
+  }, 300);
+
+  const handleGotoNext = () => {
+    navigation.navigate('signUpStepTwo');
+  };
 
   useEffect(() => {
-    handleCheckDuplicated(nickname);
-    handleNickNameErrorMessage(nickname + '', isDuplicated);
-  }, [nickname]);
+    handleNickNameErrorMessage(nickname + '');
+  }, [nickname, isErrorNickName]);
 
 
   const handleChangeNickName = (nick: string) => {
@@ -112,12 +110,12 @@ function SignUpStepOneScreen() {
           onChangeText={handleChangeNickName}
           placeholder="한글, 영문, 숫자 포함 2-20자"
         />
-        <ErrorText>{isErrorNickName}</ErrorText>
+        <ErrorText>{nickname && isDisabled && isErrorNickName}</ErrorText>
       </NickNameContainer>
       <ButtonContainer>
         <NextButton
           disabled={isDisabled}
-          onPress={() => navigation.navigate('signUpStepTwo')}
+          onPress={handleGotoNext}
         />
       </ButtonContainer>
     </ScreenView>
