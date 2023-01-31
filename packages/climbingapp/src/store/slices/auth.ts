@@ -1,7 +1,10 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-export interface User {
+
+export interface Token {
   accessToken: string;
   refreshToken: string;
+}
+export interface User extends Token {
   isCompletedSignUp: boolean;
 }
 
