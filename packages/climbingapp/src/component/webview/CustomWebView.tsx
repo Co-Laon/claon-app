@@ -1,4 +1,6 @@
+import { useNavigation } from '@react-navigation/native';
 import { useAuth } from 'climbingapp/src/hooks/useAuth';
+import { LoginScreenProp } from 'climbingapp/src/navigation/screens/auth/type';
 import { injectedScriptForWebViewBackButton } from 'climbingapp/src/utils/constants';
 import { storeData } from 'climbingapp/src/utils/storage';
 import React, { useEffect, useRef, useState } from 'react';
@@ -12,6 +14,8 @@ interface WebInfo {
 export default function CustomWebView({ url }: WebInfo) {
   const webviewRef = useRef<WebView>(null);
   const { user, logout } = useAuth();
+  const navigation = useNavigation<LoginScreenProp>();
+
   const sendTokenToWebview = () => {
     if (user) {
       const { accessToken, refreshToken } = user;
@@ -56,6 +60,7 @@ export default function CustomWebView({ url }: WebInfo) {
       }
       if (data.type === 'logout') {
         logout();
+        navigation.reset({ routes: [{ name: 'login' }] });
       }
     }
     if (state.data === 'navigationStateChange') {
