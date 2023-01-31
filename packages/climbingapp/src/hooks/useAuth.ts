@@ -1,7 +1,11 @@
 import { storeData } from './../utils/storage';
 import { RootState } from './../store/slices/index';
 import KakaoSDK from '@actbase/react-kakaosdk';
-import { authorize, logout, User } from 'climbingapp/src/store/slices/auth';
+import {
+  authorizeAction,
+  logoutAction,
+  User,
+} from 'climbingapp/src/store/slices/auth';
 import { useSelector, useDispatch } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
@@ -25,24 +29,30 @@ const useUserInfo = () => {
 
 const useAuthActions = () => {
   const dispatch = useDispatch();
-  return bindActionCreators({ authorize, logout }, dispatch);
+  return bindActionCreators({ authorizeAction, logoutAction }, dispatch);
 };
 
 export const useAuth = () => {
   const user = useUser();
   const auth = useAuthActions();
+  const { authorizeAction: authorize, logoutAction: logout } = auth;
   const userInfo = useUserInfo();
 
   const signInWithProvider = async ({ code, provider }: SignInType) => {
-    const signValue: User = await axios
+    const signValue = await axios
       .post(api + '/auth/sign-in/' + provider, {
         code,
       })
       .then((res) => res.data)
-      .then((res) => {
-        auth.authorize(res);
-        storeData('access-token', res.accessToken);
-        storeData('refresh-token', res.refreshToken);
+      .then(async (res: User) => {
+        authorize(res);
+        console.log(res);
+        await storeData('access-token', res.accessToken);
+        await storeData('refresh-token', res.refreshToken);
+        await storeData(
+          'isCompletedSignUp',
+          JSON.stringify(res.isCompletedSignUp)
+        );
         return res;
       })
       .catch((error) => console.log(error));
