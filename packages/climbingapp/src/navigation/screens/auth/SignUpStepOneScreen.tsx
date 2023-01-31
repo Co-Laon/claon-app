@@ -14,13 +14,18 @@ import { Text } from 'react-native';
 import { MyTextInput } from 'climbingapp/src/component/text-input/TextInput';
 import { ProfileImage } from 'climbingapp/src/component/profile-image/ProfileImage';
 import { useDispatch } from 'react-redux';
-import { setNickName } from 'climbingapp/src/store/slices/authInfo';
+import {
+  setImagePath,
+  setNickName,
+} from 'climbingapp/src/store/slices/authInfo';
 import { debounce } from 'lodash';
 import { api } from 'climbingapp/src/utils/constants';
 
 import axios from 'axios';
 import { vs } from 'react-native-size-matters';
 import { useAuth } from 'climbingapp/src/hooks/useAuth';
+import { useImagePicker } from 'climbingapp/src/hooks/useImagePicker';
+import { setProfileImageFile } from 'climbingapp/src/store/slices/s3util';
 
 const ButtonContainer = styled.View`
   flex: 0.5;
@@ -56,6 +61,10 @@ const ErrorText = styled.Text`
 function SignUpStepOneScreen() {
   const navigation = useNavigation<LoginScreenProp>();
   const { userInfo } = useAuth();
+  const { pickerResponse, selectImage } = useImagePicker();
+  const uri = pickerResponse?.assets
+    ? pickerResponse?.assets[0]?.uri
+    : undefined;
   const { nickname } = userInfo;
   const [isErrorNickName, setIsErrorNickName] = useState<string>('');
   const isDisabled = nickname === '' || isErrorNickName !== '';
@@ -70,10 +79,14 @@ function SignUpStepOneScreen() {
   };
 
   const handleNickNameErrorMessage = debounce(async (nick: string) => {
-    let errorMessage: string = await handleCheckDuplicated(nick)
-      .then(duplicated => errorMessage = duplicated ? '닉네임이 중복되었습니다!' : '');
+    let errorMessage: string = await handleCheckDuplicated(nick).then(
+      (duplicated) =>
+        (errorMessage = duplicated ? '닉네임이 중복되었습니다!' : '')
+    );
 
-    errorMessage = !/^[0-9a-zA-Z가-힣]{2,20}$/gi.test(nick) ? '닉네임 규칙을 지켜주세요' : errorMessage;
+    errorMessage = !/^[0-9a-zA-Z가-힣]{2,20}$/gi.test(nick)
+      ? '닉네임 규칙을 지켜주세요'
+      : errorMessage;
     setIsErrorNickName(errorMessage);
   }, 300);
 
@@ -85,6 +98,10 @@ function SignUpStepOneScreen() {
     handleNickNameErrorMessage(nickname + '');
   }, [nickname, isErrorNickName]);
 
+  useEffect(() => {
+    dispatch(setImagePath(uri));
+    dispatch(setProfileImageFile(pickerResponse?.assets[0]));
+  }, [uri]);
 
   const handleChangeNickName = (nick: string) => {
     dispatch(setNickName(nick));
@@ -99,7 +116,7 @@ function SignUpStepOneScreen() {
       </TitleContainer>
       <ProfileContainer>
         <SubText>프로필 사진</SubText>
-        <ProfileImage icon="camera" />
+        <ProfileImage icon="camera" src={uri} onPress={selectImage} />
       </ProfileContainer>
       <NickNameContainer>
         <SubText>
@@ -113,10 +130,7 @@ function SignUpStepOneScreen() {
         <ErrorText>{nickname && isDisabled && isErrorNickName}</ErrorText>
       </NickNameContainer>
       <ButtonContainer>
-        <NextButton
-          disabled={isDisabled}
-          onPress={handleGotoNext}
-        />
+        <NextButton disabled={isDisabled} onPress={handleGotoNext} />
       </ButtonContainer>
     </ScreenView>
   );

@@ -1,5 +1,4 @@
 import { useNavigation } from '@react-navigation/native';
-import axios from 'axios';
 import { AppBar } from 'climbingapp/src/component/appBar/AppBar';
 import {
   DefaultButton,
@@ -14,13 +13,20 @@ import {
 import { ScreenView } from 'climbingapp/src/component/view/ScreenView';
 import { useAuth } from 'climbingapp/src/hooks/useAuth';
 import { colorStyles } from 'climbingapp/src/styles';
-import { api } from 'climbingapp/src/utils/constants';
 import React from 'react';
 import { vs } from 'react-native-size-matters';
 import styled from 'styled-components/native';
 import { LoginScreenProp } from './type';
 import { Alert } from 'react-native';
 import { Skip } from 'climbingapp/src/component/appBar/Skip';
+import {
+  signUp,
+  uploadProfileImage,
+} from 'climbingapp/src/hooks/queries/sign/queries';
+import { defaultImage } from 'climbingapp/src/utils/constants';
+import { useSelector } from 'react-redux';
+import { RootState } from 'climbingapp/src/store/slices';
+import { errorMessage } from 'climbingapp/src/utils/errorMessage';
 
 const ButtonContainer = styled.View`
   height: ${vs(56)}px;
@@ -54,28 +60,56 @@ const InstagramButton = ({ onPress }: { onPress: ({}: any) => void }) => {
 
 function ConnectWithInstagramScreen() {
   const navigation = useNavigation<LoginScreenProp>();
+  const profileFile = useSelector(
+    (state: RootState) => state.s3util.profileImage
+  );
   const handleConnectInstagram = () => {
     navigation.navigate('instagram');
   };
-  const { user, userInfo } = useAuth();
+  const { userInfo } = useAuth();
   const { instagramOAuthId } = userInfo;
+
   const handleSignUp = async () => {
-    await axios
-      .post(api + '/auth/sign-up', userInfo, {
-        headers: {
-          'access-token': user?.accessToken + '',
-          'refresh-token': user?.refreshToken + '',
-        },
-      })
+    const profileImage = {
+      uri: profileFile?.uri,
+      type: profileFile?.type,
+      name: profileFile?.fileName,
+    };
+    const formData = new FormData();
+    formData.append('image', profileImage);
+
+    let S3ProfilePath = defaultImage;
+    if (userInfo.imagePath) {
+      await uploadProfileImage(formData)
+        .then((res) => {
+          S3ProfilePath = res;
+        })
+        .catch((err) => {
+          Alert.alert(
+            '에러 ' + err.response.data ? err.response.data?.errorCode : '',
+            err.response.data
+              ? err.response.data.message
+              : errorMessage.IMAGE_UPLOAD_ERROR,
+            [
+              {
+                text: '돌아가기',
+                style: 'cancel',
+              },
+            ]
+          );
+        });
+    }
+
+    await signUp({ ...userInfo, imagePath: S3ProfilePath })
       .then(() => {
         navigation.reset({ routes: [{ name: 'welcome' }] });
       })
       .catch((err) => {
         Alert.alert(
-          '에러' + err.response.data ? err.response.data?.errorCode : '',
+          '에러 ' + err.response.data ? err.response.data?.errorCode : '',
           err.response.data
             ? err.response.data.message
-            : '서버에 문제가 있습니다. 잠시 후 다시 시도해주세요.',
+            : errorMessage.SERVER_ERROR,
           [
             {
               text: '돌아가기',
