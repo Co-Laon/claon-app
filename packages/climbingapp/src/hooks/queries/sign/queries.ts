@@ -16,7 +16,6 @@ export const uploadProfileImage = async (formData: FormData) => {
     );
     return data;
   } catch (error: any) {
-    console.log(error.response);
     throw error.response.data;
   }
 };
