@@ -19,5 +19,10 @@ export const injectedScriptForWebViewBackButton = `
   });
 })();
 
+document.body.style.userSelect = 'none'
 true;
 `;
+
+// webview css
+// user-select:  none;
+//
