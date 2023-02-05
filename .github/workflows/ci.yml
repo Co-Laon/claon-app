@@ -39,3 +39,6 @@ jobs:
 
       - name: web unit-test
         run: yarn workspace climbingweb test
+
+      - name: build test
+        run: yarn workspace climbingweb build

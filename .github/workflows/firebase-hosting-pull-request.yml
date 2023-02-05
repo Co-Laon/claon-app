@@ -2,16 +2,47 @@
 # https://github.com/firebase/firebase-tools
 
 name: Deploy to Firebase Hosting on PR
-'on': pull_request
+on:
+  pull_request:
+    branches: [master]
+    types: [closed]
+
 jobs:
-  build_and_preview:
-    if: '${{ github.event.pull_request.head.repo.full_name == github.repository }}'
+  build_and_deploy:
+    if: github.event.pull_request.merged == true
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [16.x]
     steps:
-      - uses: actions/checkout@v2
-      - run: yarn workspace climbingweb build
+      - uses: actions/checkout@v3
+
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - name: Setting .env.production
+        run: |
+          echo "NEXT_PUBLIC_API=$NEXT_PUBLIC_API" >> packages/climbingweb/.env.production
+          echo "NEXT_PUBLIC_ANALYZE=$NEXT_PUBLIC_ANALYZE" >> packages/climbingweb/.env.production
+        env:
+          NEXT_PUBLIC_API: ${{ secrets.NEXT_PUBLIC_API}}
+          NEXT_PUBLIC_ANALYZE: ${{ secrets.NEXT_PUBLIC_ANALYZE }}
+
+      - name: Install dependencies
+        run: yarn install --immutable
+
+      - name: build test
+        run: yarn workspace climbingweb build
+
       - uses: FirebaseExtended/action-hosting-deploy@v0
         with:
           repoToken: '${{ secrets.GITHUB_TOKEN }}'
-          firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT_CLAON_351809 }}'
+          firebaseServiceAccount:
+            '${{ secrets.FIREBASE_SERVICE_ACCOUNT_CLAON_351809 }}'
+          channelId: live
           projectId: claon-351809
+          entryPoint: './packages/climbingweb'
+        env:
+          FIREBASE_CLI_EXPERIMENTS: webframeworks
