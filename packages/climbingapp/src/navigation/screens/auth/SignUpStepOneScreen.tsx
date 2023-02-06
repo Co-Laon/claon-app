@@ -14,13 +14,18 @@ import { Text } from 'react-native';
 import { MyTextInput } from 'climbingapp/src/component/text-input/TextInput';
 import { ProfileImage } from 'climbingapp/src/component/profile-image/ProfileImage';
 import { useDispatch } from 'react-redux';
-import { setNickName } from 'climbingapp/src/store/slices/authInfo';
+import {
+  setImagePath,
+  setNickName,
+} from 'climbingapp/src/store/slices/authInfo';
 import { debounce } from 'lodash';
 import { api } from 'climbingapp/src/utils/constants';
 
 import axios from 'axios';
 import { vs } from 'react-native-size-matters';
 import { useAuth } from 'climbingapp/src/hooks/useAuth';
+import { useImagePicker } from 'climbingapp/src/hooks/useImagePicker';
+import { setProfileImageFile } from 'climbingapp/src/store/slices/s3util';
 
 const ButtonContainer = styled.View`
   flex: 0.5;
@@ -56,37 +61,47 @@ const ErrorText = styled.Text`
 function SignUpStepOneScreen() {
   const navigation = useNavigation<LoginScreenProp>();
   const { userInfo } = useAuth();
+  const { pickerResponse, selectImage } = useImagePicker();
+  const uri = pickerResponse?.assets
+    ? pickerResponse?.assets[0]?.uri
+    : undefined;
   const { nickname } = userInfo;
-  const [isDuplicated, setIsDuplicated] = useState<boolean>(false);
   const [isErrorNickName, setIsErrorNickName] = useState<string>('');
-  const isDisabled = nickname === '' || isErrorNickName !== '' || isDuplicated;
+  const isDisabled = nickname === '' || isErrorNickName !== '';
   const dispatch = useDispatch();
 
-  const handleCheckDuplicated = debounce(async (nick: string | undefined) => {
+  const handleCheckDuplicated = async (nick: string | undefined) => {
     if (nick === '') return;
-    await axios
+    const checkNickName = await axios
       .get(api + `/auth/nickname/${nick}/duplicate-check`)
-      .then((res) => setIsDuplicated(res.data.result));
-  }, 800);
+      .then((res) => res.data.result);
+    return checkNickName;
+  };
 
-  const handleNickNameErrorMessage = debounce(
-    (nick: string, duplicated: boolean) => {
-      let errorMessage = '';
-      if (!/^[0-9a-zA-Z가-힣]{2,20}$/gi.test(nick))
-        errorMessage = '닉네임 규칙을 지켜주세요';
-      else if (duplicated) {
-        errorMessage = '닉네임이 중복되었습니다!';
-      }
-      setIsErrorNickName(errorMessage);
-    },
-    800
-  );
+  const handleNickNameErrorMessage = debounce(async (nick: string) => {
+    let errorMessage: string = await handleCheckDuplicated(nick).then(
+      (duplicated) =>
+        (errorMessage = duplicated ? '닉네임이 중복되었습니다!' : '')
+    );
+
+    errorMessage = !/^[0-9a-zA-Z가-힣]{2,20}$/gi.test(nick)
+      ? '닉네임 규칙을 지켜주세요'
+      : errorMessage;
+    setIsErrorNickName(errorMessage);
+  }, 300);
+
+  const handleGotoNext = () => {
+    navigation.navigate('signUpStepTwo');
+  };
 
   useEffect(() => {
-    handleCheckDuplicated(nickname);
-    handleNickNameErrorMessage(nickname + '', isDuplicated);
-  }, [nickname]);
+    handleNickNameErrorMessage(nickname + '');
+  }, [nickname, isErrorNickName]);
 
+  useEffect(() => {
+    dispatch(setImagePath(uri));
+    dispatch(setProfileImageFile(pickerResponse?.assets[0]));
+  }, [uri]);
 
   const handleChangeNickName = (nick: string) => {
     dispatch(setNickName(nick));
@@ -101,7 +116,7 @@ function SignUpStepOneScreen() {
       </TitleContainer>
       <ProfileContainer>
         <SubText>프로필 사진</SubText>
-        <ProfileImage icon="camera" />
+        <ProfileImage icon="camera" src={uri} onPress={selectImage} />
       </ProfileContainer>
       <NickNameContainer>
         <SubText>
@@ -112,13 +127,10 @@ function SignUpStepOneScreen() {
           onChangeText={handleChangeNickName}
           placeholder="한글, 영문, 숫자 포함 2-20자"
         />
-        <ErrorText>{isErrorNickName}</ErrorText>
+        <ErrorText>{nickname && isDisabled && isErrorNickName}</ErrorText>
       </NickNameContainer>
       <ButtonContainer>
-        <NextButton
-          disabled={isDisabled}
-          onPress={() => navigation.navigate('signUpStepTwo')}
-        />
+        <NextButton disabled={isDisabled} onPress={handleGotoNext} />
       </ButtonContainer>
     </ScreenView>
   );

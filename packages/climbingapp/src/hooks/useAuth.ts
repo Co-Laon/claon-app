@@ -47,7 +47,10 @@ export const useAuth = () => {
       .then((res) => res.data)
       .then(async (res: User) => {
         authorize(res);
-        console.log(res);
+        // 토큰 axios 헤더에 저장
+        axios.defaults.headers.common['access-token'] = res.accessToken;
+        axios.defaults.headers.common['refresh-token'] = res.refreshToken;
+        // 토큰 async storage에 저장
         await storeData('access-token', res.accessToken);
         await storeData('refresh-token', res.refreshToken);
         await storeData(

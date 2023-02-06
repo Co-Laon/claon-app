@@ -2,6 +2,8 @@ import Config from 'react-native-config';
 
 export const api = Config.API + '/api/v1';
 
+export const defaultImage = Config.DEFAULT_IMAGE;
+
 export const injectedScriptForWebViewBackButton = `
 (function() {
   function wrap(fn) {
