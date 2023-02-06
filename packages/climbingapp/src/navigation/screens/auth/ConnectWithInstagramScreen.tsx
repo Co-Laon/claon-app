@@ -48,7 +48,7 @@ const ProfileContainer = styled.View`
   margin-bottom: 100px;
 `;
 
-const InstagramButton = ({ onPress }: { onPress: ({ }: any) => void }) => {
+const InstagramButton = ({ onPress }: { onPress: ({}: any) => void }) => {
   return <DefaultButton {...Instagram} onPress={onPress} disabled={true} />;
 };
 
@@ -60,7 +60,6 @@ function ConnectWithInstagramScreen() {
   const { user, userInfo } = useAuth();
   const { instagramOAuthId } = userInfo;
   const handleSignUp = async () => {
-    console.log(user);
     await axios
       .post(api + '/auth/sign-up', userInfo, {
         headers: {
@@ -68,15 +67,15 @@ function ConnectWithInstagramScreen() {
           'refresh-token': user?.refreshToken + '',
         },
       })
-      .then((res) => {
-        console.log(res.data);
+      .then(() => {
         navigation.reset({ routes: [{ name: 'welcome' }] });
       })
       .catch((err) => {
-        console.log(err.response.data);
         Alert.alert(
           '에러' + err.response.data ? err.response.data?.errorCode : '',
-          err.response.data ? err.response.data.message : '서버에 문제가 있습니다. 잠시 후 다시 시도해주세요.',
+          err.response.data
+            ? err.response.data.message
+            : '서버에 문제가 있습니다. 잠시 후 다시 시도해주세요.',
           [
             {
               text: '돌아가기',
@@ -103,7 +102,11 @@ function ConnectWithInstagramScreen() {
         </ButtonContainer>
       </ProfileContainer>
       <ButtonContainer>
-        <NextButton onPress={handleSignUp} text="완료" disabled={!instagramOAuthId} />
+        <NextButton
+          onPress={handleSignUp}
+          text="완료"
+          disabled={!instagramOAuthId}
+        />
       </ButtonContainer>
     </ScreenView>
   );
