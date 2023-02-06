@@ -47,7 +47,7 @@ export default function CommentDetailPage() {
   });
 
   //댓글 수정 클릭 시 input focus 를 위한 ref
-  const commentInputRef = useRef<HTMLInputElement>(null);
+  const commentInputRef = useRef<HTMLTextAreaElement>(null);
 
   //현재 대댓글 페이지의 부모 댓글을 api 에서 지원하지 않기 때문에 따로 가져옴
   const {

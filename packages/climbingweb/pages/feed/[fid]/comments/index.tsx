@@ -45,7 +45,7 @@ export default function CommentPage() {
   });
 
   //댓글 수정 클릭 시 input focus 를 위한 ref
-  const commentInputRef = useRef<HTMLInputElement>(null);
+  const commentInputRef = useRef<HTMLTextAreaElement>(null);
 
   //현재 댓글 페이지의 댓글들을 가져옴
   const {
