@@ -78,6 +78,7 @@ export default function CustomWebView({ url }: WebInfo) {
   return (
     <>
       <WebView
+        setBuiltInZoomControls={false}
         ref={webviewRef}
         onLoad={sendTokenToWebview}
         onMessage={onMessageHandler}
