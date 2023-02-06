@@ -12,6 +12,9 @@ import React from 'react';
 import styled from 'styled-components/native';
 import { LoginScreenProp } from './type';
 import { useAuth } from 'climbingapp/src/hooks/useAuth';
+import { Alert, Platform } from 'react-native';
+import { ErrorResponse } from 'climbingapp/src/types/type';
+import { User } from 'climbingapp/src/store/slices/auth';
 
 const EmptyConatiner = styled.View`
   flex: 0.5;
@@ -32,7 +35,7 @@ const Title = styled.Text`
 `;
 
 const ButtonContainer = styled.View`
-  flex: 0.5;
+  flex: 0.3;
 `;
 
 const KakaoButton = ({ onPress }: { onPress: ({ }: any) => void }) => {
@@ -50,27 +53,34 @@ function LoginScreen() {
 
   const { kakaoLogin, googleLogin } = useAuth();
 
+  const handleAfterOAuth = (res: void | User | ErrorResponse) => {
+    if (res) {
+      if (res.hasOwnProperty('errorCode')) {
+        const { errorCode, message } = res as ErrorResponse;
+        Alert.alert(errorCode + '', message + '');
+        throw new Error(message + '');
+      } else {
+        const { isCompletedSignUp } = res as User;
+        if (isCompletedSignUp) {
+          navigation.reset({ routes: [{ name: 'home' }] });
+        } else {
+          navigation.navigate('register');
+        }
+      }
+    }
+  };
+
   const handleSignApple = () => {
     navigation.navigate('register');
   };
+
   const handleSignGoogle = async () => {
-    await googleLogin().then((res) => {
-      if (res?.isCompletedSignUp) {
-        navigation.reset({ routes: [{ name: 'home' }] });
-      } else {
-        navigation.navigate('register');
-      }
-    });
+    await googleLogin().then(handleAfterOAuth);
   };
   const handleSignKakao = async () => {
-    await kakaoLogin().then((res) => {
-      if (res?.isCompletedSignUp) {
-        navigation.reset({ routes: [{ name: 'home' }] });
-      } else {
-        navigation.navigate('register');
-      }
-    });
+    await kakaoLogin().then(handleAfterOAuth);
   };
+
 
   return (
     <ScreenView color="white">
@@ -81,8 +91,7 @@ function LoginScreen() {
       </TitleContainer>
       <ButtonContainer>
         <KakaoButton onPress={handleSignKakao} />
-        {/* {Platform.OS === 'ios' && <AppleButton onPress={handleSignApple} />} */}
-        <AppleButton onPress={handleSignApple} />
+        {Platform.OS === 'ios' && <AppleButton onPress={handleSignApple} />}
         <GoogleButton onPress={handleSignGoogle} />
       </ButtonContainer>
       <EmptyConatiner />

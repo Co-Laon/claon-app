@@ -13,6 +13,7 @@ import Config from 'react-native-config';
 import { api } from '../utils/constants';
 import axios from 'axios';
 import { AccessTokenType } from '@actbase/react-kakaosdk/lib/types';
+import { Alert } from 'react-native';
 
 interface SignInType {
   code: string | AccessTokenType;
@@ -55,21 +56,23 @@ export const useAuth = () => {
         );
         return res;
       })
-      .catch((error) => console.log(error));
+      .catch((error) => {
+        console.log(error);
+        Alert.alert(
+          '에러',
+          '서버에 문제가 있습니다. 잠시 후 다시 시도해주세요.'
+        );
+      });
 
     return signValue;
   };
 
   const kakaoLogin = async () => {
-    try {
-      await KakaoSDK.init(Config.KAKAO_APP_KEY);
-      const token = await KakaoSDK.login();
-      const code = token?.access_token;
-      if (code) {
-        return await signInWithProvider({ code, provider: 'KAKAO' });
-      }
-    } catch (err) {
-      console.log(err);
+    await KakaoSDK.init(Config.KAKAO_APP_KEY);
+    const token = await KakaoSDK.login();
+    const code = token?.access_token;
+    if (code) {
+      return signInWithProvider({ code, provider: 'KAKAO' });
     }
   };
 
