@@ -1,5 +1,6 @@
 import { colorStyles } from 'climbingapp/src/styles';
 import React from 'react';
+import { KeyboardTypeOptions } from 'react-native';
 import styled from 'styled-components/native';
 
 
@@ -18,9 +19,10 @@ interface TextInputProps {
     placeholder: string;
     value: string;
     onChangeText: ({ }: any) => void;
+    keyboardType?: KeyboardTypeOptions;
 }
 
-export const MyTextInput = ({ placeholder, value, onChangeText }: TextInputProps) => {
+export const MyTextInput = ({ placeholder, value, onChangeText, keyboardType = 'default' }: TextInputProps) => {
 
-    return <Container value={value} onChangeText={onChangeText} placeholder={placeholder} placeholderTextColor={colorStyles.Gray400} />;
+    return <Container value={value} onChangeText={onChangeText} placeholder={placeholder} placeholderTextColor={colorStyles.Gray400} keyboardType={keyboardType} />;
 };

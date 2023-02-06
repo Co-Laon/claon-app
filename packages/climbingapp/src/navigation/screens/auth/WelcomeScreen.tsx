@@ -6,7 +6,8 @@ import styled from 'styled-components/native';
 import { colorStyles } from 'climbingapp/src/styles';
 import { Title } from 'climbingapp/src/component/text/AuthTitle';
 import { TouchableHighlight } from 'react-native';
-import { useAuth } from 'climbingapp/src/hooks/useAuth';
+import { useNavigation } from '@react-navigation/native';
+import { LoginScreenProp } from './type';
 
 const Container = styled.View`
   flex: 0.8;
@@ -23,14 +24,9 @@ const Text = styled.Text`
 
 function WelcomeScreen() {
   const name = '닉네임';
-  const { authorize, user } = useAuth();
-  const goToMain = () => {
-    if (user) {
-      authorize({
-        ...user,
-        isCompletedSignUp: true,
-      });
-    }
+  const navigation = useNavigation<LoginScreenProp>();
+  const handleGoToMain = () => {
+    navigation.reset({ routes: [{ name: 'home' }] });
   };
 
   return (
@@ -49,7 +45,7 @@ function WelcomeScreen() {
       <TouchableHighlight
         style={{ alignItems: 'center' }}
         underlayColor="transparent"
-        onPress={goToMain}
+        onPress={handleGoToMain}
       >
         <Text>클라온 홈으로</Text>
       </TouchableHighlight>

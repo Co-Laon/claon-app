@@ -20,6 +20,7 @@ import { vs } from 'react-native-size-matters';
 import styled from 'styled-components/native';
 import { LoginScreenProp } from './type';
 import { Alert } from 'react-native';
+import { Skip } from 'climbingapp/src/component/appBar/Skip';
 
 const ButtonContainer = styled.View`
   height: ${vs(56)}px;
@@ -47,8 +48,8 @@ const ProfileContainer = styled.View`
   margin-bottom: 100px;
 `;
 
-const InstagramButton = ({ onPress }: { onPress: ({ }: any) => void }) => {
-  return <DefaultButton {...Instagram} onPress={onPress} />;
+const InstagramButton = ({ onPress }: { onPress: ({}: any) => void }) => {
+  return <DefaultButton {...Instagram} onPress={onPress} disabled={true} />;
 };
 
 function ConnectWithInstagramScreen() {
@@ -57,38 +58,37 @@ function ConnectWithInstagramScreen() {
     navigation.navigate('instagram');
   };
   const { user, userInfo } = useAuth();
+  const { instagramOAuthId } = userInfo;
   const handleSignUp = async () => {
-    if (user) {
-      await axios
-        .post(api + '/auth/sign-up', userInfo, {
-          headers: {
-            'access-token': user?.accessToken,
-            'refresh-token': user?.refreshToken,
-          },
-        })
-        .then((res) => {
-          console.log(res.data);
-          navigation.navigate('welcome');
-        })
-        .catch((err) => {
-          Alert.alert(
-            '에러',
-            err.response.data.message,
-            [
-              {
-                text: '돌아가기',
-                onPress: () => navigation.navigate('login'),
-                style: 'cancel',
-              },
-            ]
-          );
-        });
-    }
+    await axios
+      .post(api + '/auth/sign-up', userInfo, {
+        headers: {
+          'access-token': user?.accessToken + '',
+          'refresh-token': user?.refreshToken + '',
+        },
+      })
+      .then(() => {
+        navigation.reset({ routes: [{ name: 'welcome' }] });
+      })
+      .catch((err) => {
+        Alert.alert(
+          '에러' + err.response.data ? err.response.data?.errorCode : '',
+          err.response.data
+            ? err.response.data.message
+            : '서버에 문제가 있습니다. 잠시 후 다시 시도해주세요.',
+          [
+            {
+              text: '돌아가기',
+              style: 'cancel',
+            },
+          ]
+        );
+      });
   };
 
   return (
     <ScreenView color="white">
-      <AppBar />
+      <AppBar rightNode={<Skip onPress={handleSignUp} />} />
       <TitleContainer>
         <Title>인스타그램을</Title>
         <Title>연결해 주세요</Title>
@@ -102,7 +102,11 @@ function ConnectWithInstagramScreen() {
         </ButtonContainer>
       </ProfileContainer>
       <ButtonContainer>
-        <NextButton onPress={handleSignUp} text="완료" />
+        <NextButton
+          onPress={handleSignUp}
+          text="완료"
+          disabled={!instagramOAuthId}
+        />
       </ButtonContainer>
     </ScreenView>
   );

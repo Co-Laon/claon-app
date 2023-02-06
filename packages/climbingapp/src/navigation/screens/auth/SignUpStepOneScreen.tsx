@@ -13,14 +13,14 @@ import { LoginScreenProp } from './type';
 import { Text } from 'react-native';
 import { MyTextInput } from 'climbingapp/src/component/text-input/TextInput';
 import { ProfileImage } from 'climbingapp/src/component/profile-image/ProfileImage';
-import { useDispatch, useSelector } from 'react-redux';
-import { RootState } from 'climbingapp/src/store/slices';
+import { useDispatch } from 'react-redux';
 import { setNickName } from 'climbingapp/src/store/slices/authInfo';
 import { debounce } from 'lodash';
 import { api } from 'climbingapp/src/utils/constants';
 
 import axios from 'axios';
 import { vs } from 'react-native-size-matters';
+import { useAuth } from 'climbingapp/src/hooks/useAuth';
 
 const ButtonContainer = styled.View`
   flex: 0.5;
@@ -55,7 +55,7 @@ const ErrorText = styled.Text`
 
 function SignUpStepOneScreen() {
   const navigation = useNavigation<LoginScreenProp>();
-  const userInfo = useSelector((state: RootState) => state.authInfo.userInfo);
+  const { userInfo } = useAuth();
   const { nickname } = userInfo;
   const [isDuplicated, setIsDuplicated] = useState<boolean>(false);
   const [isErrorNickName, setIsErrorNickName] = useState<string>('');

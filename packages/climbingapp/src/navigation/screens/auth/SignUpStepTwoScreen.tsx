@@ -15,6 +15,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from 'climbingapp/src/store/slices';
 import { setArmReach, setHeight } from 'climbingapp/src/store/slices/authInfo';
 import { vs } from 'react-native-size-matters';
+import { Skip } from 'climbingapp/src/component/appBar/Skip';
 
 const ButtonContainer = styled.View`
   bottom: 24px;
@@ -33,6 +34,7 @@ const SubText = styled.Text`
   line-height: 20px;
   margin-top: ${vs(24)}px;
 `;
+
 function SignUpStepTwoScreen() {
   const navigation = useNavigation<LoginScreenProp>();
   const userInfo = useSelector((state: RootState) => state.authInfo.userInfo);
@@ -48,6 +50,7 @@ function SignUpStepTwoScreen() {
   const handleChangeArmReach = (nick: string) => {
     if (isNumbertype(nick) || nick === '') dispatch(setArmReach(nick));
   };
+  const handleGoToNext = () => { navigation.navigate('connectInsta'); };
 
   useEffect(() => {
     setDisabled(!(height && armReach));
@@ -55,7 +58,7 @@ function SignUpStepTwoScreen() {
 
   return (
     <ScreenView color={colorStyles.White}>
-      <AppBar />
+      <AppBar rightNode={<Skip onPress={handleGoToNext} />} />
       <TitleContainer>
         <Title>다음 항목을</Title>
         <Title>입력해 주세요</Title>
@@ -66,20 +69,18 @@ function SignUpStepTwoScreen() {
           value={height + ''}
           onChangeText={handleChangeHeight}
           placeholder="173.3"
+          keyboardType='numeric'
         />
-      </InputContainer>
-      <InputContainer>
         <SubText>암리치 (Arm reach)</SubText>
         <MyTextInput
           value={armReach + ''}
           onChangeText={handleChangeArmReach}
           placeholder="173.3"
+          keyboardType='numeric'
         />
-        {height && armReach ? (
-          <SubText>
-            Ape Index {(parseFloat(armReach) - parseFloat(height)).toFixed(2)} cm
-          </SubText>
-        ) : null}
+        <SubText>
+          Ape Index {armReach && height && (parseFloat(armReach) - parseFloat(height)).toFixed(1)}
+        </SubText>
       </InputContainer>
       <ButtonContainer>
         <NextButton onPress={() => navigation.navigate('connectInsta')} disabled={disabled} />
