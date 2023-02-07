@@ -13,10 +13,13 @@ import { ToastClient } from 'climbingweb/src/components/common/Toast/ToastClient
 import { useToken } from 'climbingweb/src/hooks/useToken';
 import Login from 'climbingweb/src/components/dev/Login';
 import { isDesktop } from 'react-device-detect';
+import { useBnbValue } from 'climbingweb/src/hooks/useBnB';
 
 function MyApp({ Component, pageProps }: AppProps) {
   const { token, sendReactNativeMessage } = useRNMessage();
   const { token: storageToken, isStorageLogin } = useToken();
+  const { visible } = useBnbValue();
+
   useLayoutEffect(() => {
     if (token) {
       axios.defaults.headers.common['access-token'] = token.accessToken;
@@ -76,7 +79,7 @@ function MyApp({ Component, pageProps }: AppProps) {
       <QueryClientProvider client={queryClient}>
         <ToastClient>
           <Component {...pageProps} />
-          <NavBar navButtons={navButtons} />
+          {visible && <NavBar navButtons={navButtons} />}
         </ToastClient>
       </QueryClientProvider>
     </Provider>

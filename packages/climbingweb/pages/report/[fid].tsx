@@ -7,11 +7,12 @@ import {
   Empty,
 } from 'climbingweb/src/components/common/AppBar/IconButton';
 import TextArea from 'climbingweb/src/components/common/TextArea/TextArea';
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { BottomSheet } from 'react-spring-bottom-sheet';
 import { useRouter } from 'next/router';
 import { useCreateReport } from 'climbingweb/src/hooks/queries/post/queryKey';
 import { useToast } from 'climbingweb/src/hooks/useToast';
+import { useBnbHide } from 'climbingweb/src/hooks/useBnB';
 
 export default function ReportPage({}) {
   const router = useRouter();
@@ -60,7 +61,9 @@ export default function ReportPage({}) {
       }
     }
   };
-
+  //Bottom Navigation Bar 가리기
+  useBnbHide();
+  
   return (
     <section className="mb-footer">
       <AppBar leftNode={<BackButton />} title="" rightNode={<Empty />} />
