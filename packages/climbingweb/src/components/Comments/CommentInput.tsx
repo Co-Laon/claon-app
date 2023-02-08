@@ -13,6 +13,7 @@ export const CommentInput = ({
   onClickSubmit,
 }: CommentInputProps) => {
   const INPUT_FONT_SIZE = 14;
+  const INIT_TEXTAREA_SCROLL_HEIGHT = 20;
   //등록 버튼 클릭 핸들러
   const [inputFocus, setInputFocus] = useState<boolean>(false);
 
@@ -39,10 +40,12 @@ export const CommentInput = ({
 
   const handleTextareaChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     const textarea = e.target;
-    textarea.style.height = 'auto';
     if (textarea.scrollHeight > INPUT_FONT_SIZE * 5) {
+      textarea.style.height = 'auto';
+      textarea.style.height = INIT_TEXTAREA_SCROLL_HEIGHT * 3 + 'px';
       return;
     }
+    textarea.style.height = 'auto';
     textarea.style.height = textarea.scrollHeight + 'px';
   };
 
