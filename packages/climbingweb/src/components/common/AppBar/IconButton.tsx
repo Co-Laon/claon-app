@@ -16,7 +16,11 @@ interface BookMark extends ButtonProps {
 }
 
 export const BackButton = ({ onClick }: ButtonProps) => {
-  return <ArrowBack onClick={onClick} alt="back" />;
+  const router = useRouter();
+  const handleBackTouch = () => {
+    router.back();
+  };
+  return <ArrowBack onClick={onClick || handleBackTouch} alt="back" />;
 };
 
 export const ModifiedButton = ({ onClick }: ButtonProps) => {
