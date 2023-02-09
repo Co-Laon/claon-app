@@ -55,7 +55,8 @@ export default function ReportPage({}) {
         content: contentInputRef.current.value,
       });
       if (isSuccess) {
-        toast('입력 완료 되었습니다.');
+        router.push('/');
+        toast('신고 완료');
       } else {
         toast('입력 실패 하였습니다.');
       }

@@ -7,7 +7,7 @@ interface ToastProps {
 // 공통 toast 컴포넌트, message를 받아서 toast 메시지를 띄워준다.
 const Toast = ({ message }: ToastProps) => {
   const commonCss =
-    'fixed w-[90%] left-[5%] bottom-4 mb-footer z-10 flex justify-center py-2 px-16 rounded bg-gray-800 text-white -translate-y-10 transition-all';
+    'fixed w-[90%] left-[5%] bottom-4 mb-footer z-10 flex justify-center py-2 px-16 rounded bg-gray-800 text-white text-sm -translate-y-10 transition-all';
   const [css, setCss] = useState<string>(
     `${commonCss} opacity-0 translate-y-10`
   );
