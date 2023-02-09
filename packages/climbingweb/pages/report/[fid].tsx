@@ -63,7 +63,12 @@ export default function ReportPage({}) {
 
   return (
     <section className="mb-footer">
-      <AppBar leftNode={<BackButton />} title="" rightNode={<Empty />} />
+      <AppBar
+        leftNode={<BackButton />}
+        title=""
+        rightNode={<Empty />}
+        className="h-[7.82vh]"
+      />
       <div className="px-5 flex flex-col gap-4">
         <div className="flex flex-col gap-2.5">
           <h2 className="text-lg font-extrabold leading-6">신고 사유</h2>
