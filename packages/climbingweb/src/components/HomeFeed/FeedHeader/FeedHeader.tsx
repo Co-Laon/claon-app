@@ -25,8 +25,8 @@ const FeedHeader = ({
       <div className={'flex items-center'} onClick={handleProfileClick}>
         <ProfileImage src={userImage} className="w-[40px] ml-[20px] mr-2" />
         <div>
-          <p className={'text-sm'}>{userName}</p>
-          <p className={'text-sm text-gray-600'}>{userLocation}</p>
+          <p className={'text-sm font-bold'}>{userName}</p>
+          <p className={'text-sm text-[#666666] font-medium'}>{userLocation}</p>
         </div>
       </div>
       <button className={'w-[24px] h-[24px] self-center mr-[19px]'}>
