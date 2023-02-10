@@ -98,6 +98,7 @@ export default function ReportPage({}) {
           headerTitle={'신고 사유'}
           list={['부적절한 게시글', '부적절한 닉네임', '잘못된 암장 선택']}
           onSelect={handleSheetSelect}
+          className="text-left"
         />
       </BottomSheet>
     </section>
