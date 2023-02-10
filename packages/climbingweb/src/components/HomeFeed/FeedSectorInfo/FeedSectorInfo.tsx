@@ -21,9 +21,17 @@ const FeedSectorInfo = ({
   holdList: ClimbingHistoryResponse[];
 }) => {
   return (
-    <div className={'flex border-b border-gray-300'}>
-      <div className={'flex ml-5 my-4 overflow-auto'}>
-        <div className={'mr-5 font-medium text-gray-600 min-w-fit'}>홀드</div>
+    <div
+      className={'flex border-b border-gray-300 mx-[20px] pt-[20px] pb-[13px]'}
+    >
+      <div className={'flex overflow-auto'}>
+        <div
+          className={
+            'ml-[10px] mr-5 font-bold min-w-fit text-sm text-[#666666]'
+          }
+        >
+          홀드
+        </div>
         <div className={'flex w-full overflow-auto scrollbar-hide'}>
           {holdList.map((value, index) => (
             <FeedHoldIcon

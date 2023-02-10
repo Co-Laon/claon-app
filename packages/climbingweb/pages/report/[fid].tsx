@@ -71,7 +71,7 @@ export default function ReportPage({}) {
         leftNode={<BackButton />}
         title=""
         rightNode={<Empty />}
-        className="h-[7vh]"
+        className="h-[7.82vh]"
       />
       <div className="px-5 flex flex-col gap-4">
         <div className="flex flex-col gap-2.5 mt-[10px]">
