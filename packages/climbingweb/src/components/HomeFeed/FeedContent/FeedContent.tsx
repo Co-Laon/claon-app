@@ -36,19 +36,23 @@ const FeedContent = ({
 
   return (
     <section className="px-[30px] pt-4 text-sm">
-      <div className={'flex justify-between'}>
-        <span className={'flex font-medium content-center'}>
+      <div className={'flex justify-between items-center'}>
+        <span className={'flex font-medium items-center'}>
           {isLiked ? (
             <SolidHeart
               onTouchEnd={onClickHeartIcon}
-              className="animate-larger mr-1 w-[32px] h-[32px]"
-              viewBox="0 0 32 32"
+              className="animate-larger mr-1"
+              width="32px"
+              height="32px"
+              viewBox="0 0 26 23"
             />
           ) : (
             <LineHeart
               onTouchEnd={onClickHeartIcon}
               className="animate-none mr-1 w-[32px] h-[32px]"
-              viewBox="0 0 32 32"
+              width="32px"
+              height="32px"
+              viewBox="0 0 26 23"
             />
           )}
           {`${likeCount}명이 좋아해요`}
