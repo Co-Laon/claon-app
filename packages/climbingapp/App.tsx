@@ -1,6 +1,6 @@
 import React from 'react';
-import { ThemeProvider } from 'styled-components';
-import { light } from './src/theme';
+import { ThemeProvider } from 'styled-components/native';
+import { theme } from './src/theme';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { NavigationContainer } from '@react-navigation/native';
 import store from './src/store';
@@ -9,11 +9,10 @@ import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
 import { RootNavigator } from './src/navigation';
 
 const App = () => {
-
   return (
     <Provider store={store}>
       <SafeAreaProvider>
-        <ThemeProvider theme={light}>
+        <ThemeProvider theme={theme}>
           <BottomSheetModalProvider>
             <NavigationContainer>
               <RootNavigator />
@@ -24,6 +23,5 @@ const App = () => {
     </Provider>
   );
 };
-
 
 export default App;
