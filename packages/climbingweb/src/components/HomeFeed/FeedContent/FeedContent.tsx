@@ -41,12 +41,14 @@ const FeedContent = ({
           {isLiked ? (
             <SolidHeart
               onTouchEnd={onClickHeartIcon}
-              className="animate-larger mr-1"
+              className="animate-larger mr-1 w-[32px] h-[32px]"
+              viewBox="0 0 32 32"
             />
           ) : (
             <LineHeart
               onTouchEnd={onClickHeartIcon}
-              className="animate-none mr-1"
+              className="animate-none mr-1 w-[32px] h-[32px]"
+              viewBox="0 0 32 32"
             />
           )}
           {`${likeCount}명이 좋아해요`}
@@ -54,7 +56,7 @@ const FeedContent = ({
         <span className="font-medium text-[#BFBFBF]">{createdAt}</span>
       </div>
       {content.length > 50 && !moreRead ? (
-        <div className="h-10 pl-[6px] py-2">
+        <div className="h-10 pl-[6px] my-2">
           <span className={' inline'}>{`${realContent}... `}</span>
           <span
             className="text-[#BFBFBF] tinline float-right"
@@ -69,7 +71,7 @@ const FeedContent = ({
       {
         <p
           onTouchEnd={onClickMoreComment}
-          className="font-medium text-gray-400"
+          className="font-medium text-[#BFBFBF] text-sm pl-[6px]"
         >
           {replyCount === 0 ? '댓글 달기' : `댓글 ${replyCount}개 더 보기`}
         </p>
