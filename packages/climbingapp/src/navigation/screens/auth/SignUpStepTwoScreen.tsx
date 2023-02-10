@@ -15,7 +15,10 @@ import { RootState } from 'climbingapp/src/store/slices';
 import { setArmReach, setHeight } from 'climbingapp/src/store/slices/authInfo';
 import { vs } from 'react-native-size-matters';
 import { Skip } from 'climbingapp/src/component/appBar/Skip';
-
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import { Dimensions } from 'react-native';
+import { useHeaderHeight } from '@react-navigation/elements';
+import { useKeyboard } from 'climbingapp/src/hooks/useKeyboard';
 const ButtonContainer = styled.View`
   bottom: 24px;
   width: 100%;
@@ -63,41 +66,52 @@ function SignUpStepTwoScreen() {
     });
   }, []);
 
+  const screenHeight = Dimensions.get('window').height;
+  const headerHeight = useHeaderHeight();
+  const { keyboardHeight, keyboardStatus } = useKeyboard();
   return (
-    <ScreenView color={colorStyles.White}>
-      <TitleContainer>
-        <Title>다음 항목을</Title>
-        <Title>입력해 주세요</Title>
-      </TitleContainer>
-      <InputContainer>
-        <SubText>신장 (Height)</SubText>
-        <MyTextInput
-          value={height + ''}
-          onChangeText={handleChangeHeight}
-          placeholder="173.3"
-          keyboardType="numeric"
-        />
-        <SubText>암리치 (Arm reach)</SubText>
-        <MyTextInput
-          value={armReach + ''}
-          onChangeText={handleChangeArmReach}
-          placeholder="173.3"
-          keyboardType="numeric"
-        />
-        <SubText>
-          Ape Index{' '}
-          {armReach &&
-            height &&
-            (parseFloat(armReach) - parseFloat(height)).toFixed(1)}
-        </SubText>
-      </InputContainer>
-      <ButtonContainer>
-        <NextButton
-          onPress={() => navigation.navigate('connectInsta')}
-          disabled={disabled}
-        />
-      </ButtonContainer>
-    </ScreenView>
+    <KeyboardAwareScrollView
+      contentContainerStyle={{ height: keyboardStatus ? screenHeight - headerHeight + keyboardHeight : screenHeight - headerHeight }}
+      showsVerticalScrollIndicator={false}
+      enableOnAndroid={true}
+      scrollEnabled={keyboardStatus}
+      pagingEnabled
+    >
+      <ScreenView color={colorStyles.White}>
+        <TitleContainer>
+          <Title>다음 항목을</Title>
+          <Title>입력해 주세요</Title>
+        </TitleContainer>
+        <InputContainer>
+          <SubText>신장 (Height)</SubText>
+          <MyTextInput
+            value={height + ''}
+            onChangeText={handleChangeHeight}
+            placeholder="173.3"
+            keyboardType="numeric"
+          />
+          <SubText>암리치 (Arm reach)</SubText>
+          <MyTextInput
+            value={armReach + ''}
+            onChangeText={handleChangeArmReach}
+            placeholder="173.3"
+            keyboardType="numeric"
+          />
+          <SubText>
+            Ape Index{' '}
+            {armReach &&
+              height &&
+              (parseFloat(armReach) - parseFloat(height)).toFixed(1)}
+          </SubText>
+        </InputContainer>
+        <ButtonContainer>
+          <NextButton
+            onPress={() => navigation.navigate('connectInsta')}
+            disabled={disabled}
+          />
+        </ButtonContainer>
+      </ScreenView>
+    </KeyboardAwareScrollView>
   );
 }
 
