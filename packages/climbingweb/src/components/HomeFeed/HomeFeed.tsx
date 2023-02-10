@@ -87,6 +87,7 @@ const HomeFeed = ({ postData }: HomeFeedProps) => {
             headerTitle={''}
             list={['신고하기']}
             onSelect={handleBTSheetListClick}
+            className='text-center'
           />
         </BottomSheet>
       </section>
