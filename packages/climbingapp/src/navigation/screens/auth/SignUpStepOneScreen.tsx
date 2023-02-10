@@ -1,5 +1,4 @@
 import { useNavigation } from '@react-navigation/native';
-import { AppBar } from 'climbingapp/src/component/appBar/AppBar';
 import { NextButton } from 'climbingapp/src/component/button/Button';
 import {
   Title,
@@ -28,7 +27,6 @@ import { useImagePicker } from 'climbingapp/src/hooks/useImagePicker';
 import { setProfileImageFile } from 'climbingapp/src/store/slices/s3util';
 
 const ButtonContainer = styled.View`
-  flex: 0.5;
   position: absolute;
   width: 100%;
   bottom: 24px;
@@ -109,7 +107,6 @@ function SignUpStepOneScreen() {
 
   return (
     <ScreenView color={colorStyles.White}>
-      <AppBar />
       <TitleContainer>
         <Title>다음 항목을</Title>
         <Title>입력해 주세요</Title>

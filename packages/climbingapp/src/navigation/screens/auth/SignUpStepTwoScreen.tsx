@@ -1,5 +1,4 @@
 import { useNavigation } from '@react-navigation/native';
-import { AppBar } from 'climbingapp/src/component/appBar/AppBar';
 import { NextButton } from 'climbingapp/src/component/button/Button';
 import {
   Title,
@@ -21,10 +20,11 @@ const ButtonContainer = styled.View`
   bottom: 24px;
   width: 100%;
   height: ${vs(56)}px;
+  position: absolute;
 `;
 
 const InputContainer = styled.View`
-  flex: 1.5;
+  flex: 2.5;
 `;
 
 const SubText = styled.Text`
@@ -50,15 +50,21 @@ function SignUpStepTwoScreen() {
   const handleChangeArmReach = (nick: string) => {
     if (isNumbertype(nick) || nick === '') dispatch(setArmReach(nick));
   };
-  const handleGoToNext = () => { navigation.navigate('connectInsta'); };
+  const handleGoToNext = () => {
+    navigation.navigate('connectInsta');
+  };
 
   useEffect(() => {
     setDisabled(!(height && armReach));
   }, [height, armReach]);
+  useEffect(() => {
+    navigation.setOptions({
+      headerRight: () => <Skip onPress={handleGoToNext} />,
+    });
+  }, []);
 
   return (
     <ScreenView color={colorStyles.White}>
-      <AppBar rightNode={<Skip onPress={handleGoToNext} />} />
       <TitleContainer>
         <Title>다음 항목을</Title>
         <Title>입력해 주세요</Title>
@@ -69,21 +75,27 @@ function SignUpStepTwoScreen() {
           value={height + ''}
           onChangeText={handleChangeHeight}
           placeholder="173.3"
-          keyboardType='numeric'
+          keyboardType="numeric"
         />
         <SubText>암리치 (Arm reach)</SubText>
         <MyTextInput
           value={armReach + ''}
           onChangeText={handleChangeArmReach}
           placeholder="173.3"
-          keyboardType='numeric'
+          keyboardType="numeric"
         />
         <SubText>
-          Ape Index {armReach && height && (parseFloat(armReach) - parseFloat(height)).toFixed(1)}
+          Ape Index{' '}
+          {armReach &&
+            height &&
+            (parseFloat(armReach) - parseFloat(height)).toFixed(1)}
         </SubText>
       </InputContainer>
       <ButtonContainer>
-        <NextButton onPress={() => navigation.navigate('connectInsta')} disabled={disabled} />
+        <NextButton
+          onPress={() => navigation.navigate('connectInsta')}
+          disabled={disabled}
+        />
       </ButtonContainer>
     </ScreenView>
   );
