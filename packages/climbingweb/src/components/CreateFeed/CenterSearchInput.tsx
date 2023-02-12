@@ -32,7 +32,7 @@ export const CenterSearchInput = ({
     initialValue ? initialValue : ''
   );
 
-  const inputCss = `border-2 border-gray-300 h-[7.8vh] w-full bg-white relative flex flex-col justify-between px-4 focused:border-purple-500 ${
+  const inputCss = `border-2 border-gray-300 h-[7.8vh] w-full bg-white relative flex flex-col justify-between px-[21px] focused:border-purple-500 ${
     focused ? 'border-purple-500' : ''
   } ${isOptionOpen ? 'rounded-t-lg' : 'rounded-lg'}`;
 
@@ -89,13 +89,13 @@ export const CenterSearchInput = ({
       {isOptionOpen && centerList ? (
         <div
           className={
-            'absolute border-x-2 border-b-2 rounded-b-lg w-full bg-white flex flex-col justify-evenly px-4 focused:border-purple-500 border-purple-500'
+            'absolute border-x-2 border-b-2 rounded-b-lg w-[88.8vw] bg-white flex flex-col justify-evenly px-[21px] focused:border-purple-500 border-purple-500  py-[10px]'
           }
         >
           {centerList.map((val: any, index: number) => (
             <div
               key={`searchInputForm_${index}`}
-              className="my-2"
+              className="my-2 text-sm font-medium"
               onTouchEnd={() => handleSelected(val)}
             >
               {val.name}

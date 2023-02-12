@@ -157,7 +157,7 @@ export default function CreatePostPage() {
               initialValue={searchInput}
               centerList={centerList}
               onChange={handleSearchInputChange}
-              className="px-[4px]"
+              className="px-[4px] min-h-[52px]"
             />
             <PageSubTitle
               title={'완등 횟수'}
