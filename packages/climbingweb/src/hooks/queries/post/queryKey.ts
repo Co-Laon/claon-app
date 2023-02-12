@@ -29,6 +29,7 @@ import {
 } from './queries';
 import { PostContents } from 'climbingweb/types/response/post';
 import { useRouter } from 'next/router';
+import { useToast } from '../../useToast';
 
 /**
  * 추후 성능 개선 필요!!
@@ -121,6 +122,7 @@ export const useDeleteLike = (postId: string) => {
 export const useCreatePost = () => {
   const router = useRouter();
   const queryClient = useQueryClient();
+  const { toast } = useToast();
   return useMutation(
     (postCreateRequest: PostCreateRequest) => createPost(postCreateRequest),
     {
@@ -129,12 +131,13 @@ export const useCreatePost = () => {
           queryKey: postQueries.list().queryKey,
           refetchInactive: true,
         });
-        alert('입력 완료 되었습니다.');
+        // alert('입력 완료 되었습니다.');
+        toast('게시글 작성 완료');
         router.push('/');
       },
       onError: (error) => {
         console.error(error);
-        alert('피드 작성에 실패했습니다. 다시 시도해주세요.');
+        toast('피드 작성에 실패했습니다. 다시 시도해주세요.');
         window.location.reload();
       },
     }

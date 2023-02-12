@@ -178,14 +178,14 @@ const HoldListModal = ({
             : null}
         </div>
         <input type="checkbox" id="my-modal" className="modal-toggle" />
-        <div className="modal">
-          <div className="modal-box">
+        <div className="modal flex">
+          <div className="modal-box pt-[28px] ">
             {centerId ? (
-              <div className="w-full grid grid-cols-3 gap-y-4">
+              <div className="w-full grid grid-cols-3 gap-y-[21px]">
                 {selectedHoldList.map((item) => (
                   <div
                     key={`HoldListModal_Hold${item.id}`}
-                    className="w-full flex justify-center"
+                    className="w-[72px] flex justify-center"
                   >
                     <HoldImage
                       indexHold={item}
@@ -203,7 +203,7 @@ const HoldListModal = ({
             )}
             <label htmlFor="my-modal">
               <div
-                className="relative -mb-6 -mx-6 mt-6 py-2 bg-purple-500 text-center text-white"
+                className="relative -mb-6 -mx-6 mt-6 py-2 bg-purple-500 text-center text-white text-base font-bold"
                 onClick={() => handleModalSelectBtn()}
               >
                 선택

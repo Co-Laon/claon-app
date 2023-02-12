@@ -83,7 +83,7 @@ export const CenterSearchInput = ({
           onChange={(e) => handleChangeValue(e)}
           onFocus={handleFocused}
           onBlur={handleFocusedOut}
-          className="h-full w-full outline-0"
+          className="h-full w-full outline-0 text-sm font-medium"
         />
       </form>
       {isOptionOpen && centerList ? (
