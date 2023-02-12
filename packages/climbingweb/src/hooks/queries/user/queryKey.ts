@@ -1,7 +1,10 @@
+import { UserRequest } from 'climbingweb/types/request/user';
+import { PublicScopeResponse } from './../../../../types/response/user/index.d';
 import { createQueryKeys } from '@lukemorales/query-key-factory';
 import {
   useInfiniteQuery,
   useMutation,
+  UseMutationOptions,
   useQuery,
   useQueryClient,
 } from 'react-query';
@@ -54,12 +57,22 @@ export const userQueries = createQueryKeys('users', {
 /**
  * changePublicScope api (회원 정보 공개 변경) 의 useMutation hooks
  *
+ * @param options useMutation 추가 옵션
  * @returns changePublicScope api (회원 정보 공개 변경) 의 useMutation return 값
  */
-export const useChangePublicScope = () => {
+export const useChangePublicScope = (
+  options?: Omit<
+    UseMutationOptions<PublicScopeResponse, unknown, void, unknown>,
+    'mutationFn'
+  >
+) => {
   const queryClient = useQueryClient();
   return useMutation(changePublicScope, {
-    onSuccess: () => {
+    ...options,
+    onSuccess: (data, variables, context) => {
+      if (options?.onSuccess) {
+        options.onSuccess(data, variables, context);
+      }
       queryClient.invalidateQueries(userQueries.me());
     },
   });
@@ -68,12 +81,22 @@ export const useChangePublicScope = () => {
 /**
  * createBlock api (회원 차단) 의 useMutation hooks
  *
+ * @param options useMutation 추가 옵션
  * @returns createBlock api (회원 차단) 의 useMutation return 값
  */
-export const useCreateBlock = () => {
+export const useCreateBlock = (
+  options?: Omit<
+    UseMutationOptions<void, unknown, string, unknown>,
+    'mutationFn'
+  >
+) => {
   const queryClient = useQueryClient();
   return useMutation(createBlock, {
-    onSuccess: () => {
+    ...options,
+    onSuccess: (data, variables, context) => {
+      if (options?.onSuccess) {
+        options.onSuccess(data, variables, context);
+      }
       queryClient.invalidateQueries(userQueries.block());
     },
   });
@@ -82,12 +105,22 @@ export const useCreateBlock = () => {
 /**
  * deleteBlock api (차단 삭제) 의 useMutation hooks
  *
+ * @param options useMutation 추가 옵션
  * @returns deleteBlock api (차단 삭제) 의 useMutation return 값
  */
-export const useDeleteBlock = () => {
+export const useDeleteBlock = (
+  options?: Omit<
+    UseMutationOptions<void, unknown, string, unknown>,
+    'mutationFn'
+  >
+) => {
   const queryClient = useQueryClient();
   return useMutation(createBlock, {
-    onSuccess: () => {
+    ...options,
+    onSuccess: (data, variables, context) => {
+      if (options?.onSuccess) {
+        options.onSuccess(data, variables, context);
+      }
       queryClient.invalidateQueries(userQueries.block());
     },
   });
@@ -143,12 +176,22 @@ export const useGetPublicUser = (nickname: string) => {
 /**
  * modifyUser api (회원 정보 수정) 의 useMutation hooks
  *
+ * @param options useMutation 추가 옵션
  * @returns modifyUser api (회원 정보 수정) 의 useMutation return 값
  */
-export const useModifyUser = () => {
+export const useModifyUser = (
+  options?: Omit<
+    UseMutationOptions<any, unknown, UserRequest, unknown>,
+    'mutationFn'
+  >
+) => {
   const queryClient = useQueryClient();
   return useMutation(modifyUser, {
-    onSuccess: () => {
+    ...options,
+    onSuccess: (data, variables, context) => {
+      if (options?.onSuccess) {
+        options.onSuccess(data, variables, context);
+      }
       queryClient.invalidateQueries(userQueries.me());
     },
   });

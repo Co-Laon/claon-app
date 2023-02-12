@@ -1,8 +1,9 @@
 import { useCreateLaon } from 'climbingweb/src/hooks/queries/laon/queryKey';
 import { useRouter } from 'next/router';
-import React from 'react';
+import React, { useState } from 'react';
 import { UserResultSkeleton } from '../../common/skeleton/UserResultSkeleton';
 import { ProfileImage } from '../../common/profileImage/ProfileImage';
+import { useToast } from 'climbingweb/src/hooks/useToast';
 
 interface UserProps {
   imagePath: string;
@@ -16,9 +17,19 @@ interface UserProps {
  */
 const UserResult = ({ imagePath, isLaon, nickname }: UserProps) => {
   const router = useRouter();
+  const { toast } = useToast();
+  const [buttonDisabled, setButtonDisabled] = useState<boolean>(isLaon);
 
   //라온 신청 mutation
-  const { mutate: createLaonMutate } = useCreateLaon();
+  const { mutate: createLaonMutate } = useCreateLaon({
+    onSuccess: () => {
+      toast('라온 신청하였습니다.');
+      setButtonDisabled(true);
+    },
+    onError: () => {
+      toast('라온 신청에 실패하였습니다.');
+    },
+  });
 
   // 라온 신청 버튼 클릭 핸들링 함수
   const handleRaonButtonClick = () => {
@@ -42,7 +53,7 @@ const UserResult = ({ imagePath, isLaon, nickname }: UserProps) => {
       <button
         className="absolute bg-purple-500 text-center bottom-0 my-[6px] w-[36px] h-[16px] rounded-full text-white disabled:bg-slate-400"
         onClick={handleRaonButtonClick}
-        disabled={isLaon}
+        disabled={buttonDisabled}
       >
         라온
       </button>
