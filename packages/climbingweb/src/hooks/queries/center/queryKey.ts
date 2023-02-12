@@ -1,3 +1,8 @@
+import {
+  CenterBookmarkResponse,
+  CenterReportResponse,
+  ReviewResponse,
+} from './../../../../types/response/center/index.d';
 import { createQueryKeys } from '@lukemorales/query-key-factory';
 import {
   CenterReportCreateRequest,
@@ -9,6 +14,9 @@ import {
   useQuery,
   useQueryClient,
   useInfiniteQuery,
+  UseQueryOptions,
+  QueryKey,
+  UseMutationOptions,
 } from 'react-query';
 import {
   createCenterBookmark,
@@ -66,12 +74,21 @@ export const centerQueries = createQueryKeys('centers', {
  * getCenterList api useQuery hooks
  *
  * @param option getCenterList api 의 option 값 (bookmark, new_setting, newly_registered)
+ * @param options useQuery 추가 옵션
  * @returns useQuery return 값
  */
 export const useGetCenterList = (
   option: 'bookmark' | 'new_setting' | 'newly_registered'
 ) => {
-  return useQuery({ ...centerQueries.list(option), enabled: Boolean(option) });
+  return useInfiniteQuery({
+    ...centerQueries.list(option),
+    enabled: Boolean(option),
+    getNextPageParam: (lastPageData) => {
+      return lastPageData.nextPageNum < 0
+        ? undefined
+        : lastPageData.nextPageNum;
+    },
+  });
 };
 
 /**
@@ -93,10 +110,20 @@ export const useFindCenter = (centerId: string) => {
  * @param centerId 즐겨찾기 추가 할 센터의 id
  * @returns findHoldInfoByCenter api useMutation return 값
  */
-export const useCreateCenterBookmark = (centerId: string) => {
+export const useCreateCenterBookmark = (
+  centerId: string,
+  options?: Omit<
+    UseMutationOptions<CenterBookmarkResponse, unknown, void, unknown>,
+    'mutationFn'
+  >
+) => {
   const queryClient = useQueryClient();
   return useMutation(() => createCenterBookmark(centerId), {
-    onSuccess: () => {
+    ...options,
+    onSuccess: (data, variables, context) => {
+      if (options?.onSuccess) {
+        options.onSuccess(data, variables, context);
+      }
       queryClient.invalidateQueries({
         queryKey: centerQueries.list('bookmark').queryKey,
         refetchInactive: true,
@@ -115,10 +142,17 @@ export const useCreateCenterBookmark = (centerId: string) => {
  * @param centerId 즐겨찾기 삭제 할 센터의 id
  * @returns deleteCenterBookmark api useMutation return 값
  */
-export const useDeleteCenterBookmark = (centerId: string) => {
+export const useDeleteCenterBookmark = (
+  centerId: string,
+  options?: Omit<UseMutationOptions<void, unknown, void, unknown>, 'mutationFn'>
+) => {
   const queryClient = useQueryClient();
   return useMutation(() => deleteCenterBookmark(centerId), {
-    onSuccess: () => {
+    ...options,
+    onSuccess: (data, variables, context) => {
+      if (options?.onSuccess) {
+        options.onSuccess(data, variables, context);
+      }
       queryClient.invalidateQueries({
         queryKey: centerQueries.list('bookmark').queryKey,
         refetchInactive: true,
@@ -168,13 +202,28 @@ export const useFindReviewByCenter = (centerId: string) => {
  * @param centerId 수정요청 할 센터의 id
  * @returns createCenterReport api useMutation return 값
  */
-export const useCreateCenterReport = (centerId: string) => {
+export const useCreateCenterReport = (
+  centerId: string,
+  options?: Omit<
+    UseMutationOptions<
+      CenterReportResponse,
+      unknown,
+      CenterReportCreateRequest,
+      unknown
+    >,
+    'mutationFn'
+  >
+) => {
   const queryClient = useQueryClient();
   return useMutation(
     (centerReportRequest: CenterReportCreateRequest) =>
       createCenterReport(centerId, centerReportRequest),
     {
-      onSuccess: () => {
+      ...options,
+      onSuccess: (data, variables, context) => {
+        if (options?.onSuccess) {
+          options.onSuccess(data, variables, context);
+        }
         queryClient.invalidateQueries({
           queryKey: centerQueries.detail(centerId).queryKey,
           refetchInactive: true,
@@ -235,13 +284,23 @@ export const useSearchCenterName = (centerName: string) => {
  * @param centerId 리뷰를 작성할 센터의 id
  * @returns createReview api useMutation return 값
  */
-export const useCreateReview = (centerId: string) => {
+export const useCreateReview = (
+  centerId: string,
+  options?: Omit<
+    UseMutationOptions<ReviewResponse, unknown, ReviewCreateRequest, unknown>,
+    'mutationFn'
+  >
+) => {
   const queryClient = useQueryClient();
   return useMutation(
     (reviewCreateRequest: ReviewCreateRequest) =>
       createReview(centerId, reviewCreateRequest),
     {
-      onSuccess: () => {
+      ...options,
+      onSuccess: (data, variables, context) => {
+        if (options?.onSuccess) {
+          options.onSuccess(data, variables, context);
+        }
         queryClient.invalidateQueries({
           queryKey: centerQueries.detail(centerId).queryKey,
           refetchInactive: true,
@@ -251,13 +310,32 @@ export const useCreateReview = (centerId: string) => {
   );
 };
 
-export const useUpdateReview = (centerId: string, reviewId: string) => {
+/**
+ * updateReview api useMutation hooks
+ *
+ * @param centerId 리뷰 수정할 암장 id
+ * @param reviewId 수정할 리뷰 id
+ * @param options 추가적인 useMutation hooks
+ * @returns updateReview api useMutation return 값
+ */
+export const useUpdateReview = (
+  centerId: string,
+  reviewId: string,
+  options?: Omit<
+    UseMutationOptions<ReviewResponse, unknown, any, unknown>,
+    'mutationFn'
+  >
+) => {
   const queryClient = useQueryClient();
   return useMutation(
     (reviewUpdateRequest: ReviewUpdateRequest) =>
       updateReview(reviewId, reviewUpdateRequest),
     {
-      onSuccess: () => {
+      ...options,
+      onSuccess: (data, variables, context) => {
+        if (options?.onSuccess) {
+          options.onSuccess(data, variables, context);
+        }
         queryClient.invalidateQueries({
           queryKey: centerQueries.detail(centerId)._ctx.findReviewByCenter()
             .queryKey,
@@ -268,10 +346,26 @@ export const useUpdateReview = (centerId: string, reviewId: string) => {
   );
 };
 
-export const useDeleteReview = (centerId: string, reviewId: string) => {
+/**
+ * deleteReview api useMutation hooks
+ *
+ * @param centerId 리뷰 삭제할 암장 id
+ * @param reviewId 삭제할 리뷰 id
+ * @param options 추가적인 useMutation hooks
+ * @returns deleteReview api useMutation return 값
+ */
+export const useDeleteReview = (
+  centerId: string,
+  reviewId: string,
+  options?: Omit<UseMutationOptions<void, unknown, void, unknown>, 'mutationFn'>
+) => {
   const queryClient = useQueryClient();
   return useMutation(() => deleteReview(reviewId), {
-    onSuccess: () => {
+    ...options,
+    onSuccess: (data, variables, context) => {
+      if (options?.onSuccess) {
+        options.onSuccess(data, variables, context);
+      }
       queryClient.invalidateQueries({
         queryKey: centerQueries.detail(centerId).queryKey,
         refetchInactive: true,
