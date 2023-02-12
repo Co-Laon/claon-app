@@ -161,7 +161,7 @@ const HoldListModal = ({
   if (standardHoldList)
     return (
       <>
-        <div className="w-full flex flex-row gap-2 overflow-x-auto scrollbar-hide">
+        <div className="w-full flex flex-row gap-[11px] overflow-x-auto scrollbar-hide">
           <label htmlFor="my-modal">
             <HoldImageButton count={totalHoldCount} maxCount={maxCount} />
           </label>

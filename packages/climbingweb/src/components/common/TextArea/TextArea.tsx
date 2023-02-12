@@ -13,7 +13,7 @@ export default function TextArea({
   data,
   setData,
   placeholder,
-  className,
+  className
 }: ContentProps) {
   const onChangeValue = (e: ChangeEvent<HTMLTextAreaElement>) => {
     if (setData) setData(e.target.value);

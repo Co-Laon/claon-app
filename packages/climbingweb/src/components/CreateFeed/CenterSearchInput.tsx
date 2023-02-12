@@ -10,6 +10,7 @@ interface CenterSearchInputProps {
   initialValue?: string;
   centerList?: CenterNameResponse[];
   onChange: any;
+  className?: string;
 }
 
 export const CenterSearchInput = ({
@@ -20,6 +21,7 @@ export const CenterSearchInput = ({
   initialValue,
   centerList,
   onChange,
+  className,
 }: CenterSearchInputProps) => {
   //focus 관련 state
   const [focused, setFocused] = useState(false);
@@ -30,7 +32,7 @@ export const CenterSearchInput = ({
     initialValue ? initialValue : ''
   );
 
-  const inputCss = `border-2 border-gray-300 h-12 w-full bg-white relative flex flex-col justify-between px-4 focused:border-purple-500 ${
+  const inputCss = `border-2 border-gray-300 h-[7.8vh] w-full bg-white relative flex flex-col justify-between px-4 focused:border-purple-500 ${
     focused ? 'border-purple-500' : ''
   } ${isOptionOpen ? 'rounded-t-lg' : 'rounded-lg'}`;
 
@@ -73,7 +75,7 @@ export const CenterSearchInput = ({
   }, [selected]);
 
   return (
-    <div className={'relative'}>
+    <div className={`relative ${className} `}>
       <form className={inputCss} id="searchInputForm">
         <input
           ref={refObj}

@@ -140,12 +140,15 @@ export default function CreatePostPage() {
               data={postData.content}
               setData={handleContentInput}
               placeholder="500자 이내 글 입력"
-              className="w-[89vw] h-[32.4vh]"
+              className="w-[89vw] h-[32.4vh] ml-[4px] mr-[4px]"
             />
           </div>
         ) : (
           <div className="flex flex-col gap-4">
-            <PageSubTitle title={'암장 이름'} />
+            <PageSubTitle
+              title={'암장 이름'}
+              className="px-[4px] text-base font-bold"
+            />
             <CenterSearchInput
               refObj={searchInputRef}
               selected={selected}
@@ -154,8 +157,12 @@ export default function CreatePostPage() {
               initialValue={searchInput}
               centerList={centerList}
               onChange={handleSearchInputChange}
+              className="px-[4px]"
             />
-            <PageSubTitle title={'완등 횟수'} />
+            <PageSubTitle
+              title={'완등 횟수'}
+              className="px-[4px] text-base font-bold"
+            />
             <HoldListModal
               maxCount={10}
               centerId={postData.centerId}
