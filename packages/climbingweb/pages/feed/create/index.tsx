@@ -122,17 +122,25 @@ export default function CreatePostPage() {
             onSubmit={page === 'second' ? handlePostDataSubmit : null}
           />
         }
+        className="pl-[20px] pr-[18px] text-base items-center"
       />
       <div className="p-4">
         {page === 'first' ? (
           <div className="flex flex-col gap-4">
-            <PageSubTitle title={'사진'} />
+            <PageSubTitle
+              title={'사진'}
+              className="px-[4px] text-base font-bold"
+            />
             <UploadImageList />
-            <PageSubTitle title={'내용'} />
+            <PageSubTitle
+              title={'내용'}
+              className="px-[4px] text-base font-bold"
+            />
             <TextArea
               data={postData.content}
               setData={handleContentInput}
               placeholder="500자 이내 글 입력"
+              className="w-[89vw] h-[32.4vh]"
             />
           </div>
         ) : (

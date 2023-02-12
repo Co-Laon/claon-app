@@ -5,6 +5,7 @@ interface ContentProps {
   data?: string;
   setData?: (content: string) => void;
   placeholder?: string;
+  className?: string;
 }
 
 export default function TextArea({
@@ -12,13 +13,16 @@ export default function TextArea({
   data,
   setData,
   placeholder,
+  className,
 }: ContentProps) {
   const onChangeValue = (e: ChangeEvent<HTMLTextAreaElement>) => {
     if (setData) setData(e.target.value);
   };
 
   return (
-    <div className="border h-96 w-full border-gray resize-none rounded-lg p-4">
+    <div
+      className={`border h-96 w-full border-gray resize-none rounded-lg p-4 ${className}`}
+    >
       <textarea
         ref={refObj}
         onChange={onChangeValue}

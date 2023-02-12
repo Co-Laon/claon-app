@@ -14,7 +14,7 @@ export function UploadImageButton() {
   return (
     <label
       htmlFor="upload"
-      className="rounded-lg border border-solid h-20 w-20 min-w-20 border-[#E6E6E6] flex items-center justify-center"
+      className="rounded-lg border border-solid h-[72px] w-[72px] min-w-[72px] border-[#E6E6E6] flex items-center justify-center"
     >
       <input
         id="upload"
@@ -27,7 +27,7 @@ export function UploadImageButton() {
       />
       <div className="items-center flex flex-col">
         <UploadIcon alt="upload" />
-        <div>
+        <div className="text-[12px] leading-[18px] font-medium">
           <span className="text-[#5953FF]">{count ? count : 0}</span>
           <span> / {MAX_COUNT}</span>
         </div>

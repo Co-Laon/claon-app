@@ -9,7 +9,7 @@ export function AppBar({ className, title, leftNode, rightNode }: Props) {
   return (
     <header className={`flex flex-row justify-between p-4 ${className}`}>
       {leftNode}
-      <h1 className="font-bold">{title}</h1>
+      <h1 className="font-bold ">{title}</h1>
       {rightNode}
     </header>
   );

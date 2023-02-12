@@ -5,7 +5,7 @@ import { UploadImageButton } from './UploadImageButton';
 export function UploadImageList() {
   const { postImageList } = useCreatePostForm();
   return (
-    <div className="w-full flex flex-row gap-2 overflow-x-auto scrollbar-hide">
+    <div className="w-full flex flex-row gap-2 overflow-x-auto scrollbar-hide ">
       <UploadImageButton />
       {postImageList?.map(({ thumbNail }, idx) => (
         <UploadImage key={`key${idx}`} src={thumbNail} id={idx} />
