@@ -13,7 +13,7 @@ export default function TextArea({
   data,
   setData,
   placeholder,
-  className
+  className,
 }: ContentProps) {
   const onChangeValue = (e: ChangeEvent<HTMLTextAreaElement>) => {
     if (setData) setData(e.target.value);
@@ -21,7 +21,7 @@ export default function TextArea({
 
   return (
     <div
-      className={`border h-96 w-full border-gray resize-none rounded-lg p-4 ${className}`}
+      className={`border  w-full border-gray resize-none rounded-lg p-4 ${className}`}
     >
       <textarea
         ref={refObj}
