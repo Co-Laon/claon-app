@@ -13,8 +13,6 @@ import {
   useInfiniteQuery,
   useQuery,
   UseMutationOptions,
-  UseInfiniteQueryOptions,
-  QueryKey,
 } from 'react-query';
 import {
   createComment,

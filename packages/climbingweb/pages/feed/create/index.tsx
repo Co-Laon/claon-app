@@ -40,7 +40,7 @@ export default function CreatePostPage() {
       alert('입력 완료 되었습니다.');
       router.push('/');
     },
-    onError: (error) => {
+    onError: () => {
       alert('피드 작성에 실패했습니다. 다시 시도해주세요.');
       window.location.reload();
     },

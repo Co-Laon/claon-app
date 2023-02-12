@@ -14,8 +14,6 @@ import {
   useQuery,
   useQueryClient,
   useInfiniteQuery,
-  UseQueryOptions,
-  QueryKey,
   UseMutationOptions,
 } from 'react-query';
 import {
