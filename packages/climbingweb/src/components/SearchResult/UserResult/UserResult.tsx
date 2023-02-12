@@ -3,6 +3,7 @@ import { useRouter } from 'next/router';
 import React from 'react';
 import { UserResultSkeleton } from '../../common/skeleton/UserResultSkeleton';
 import { ProfileImage } from '../../common/profileImage/ProfileImage';
+import { useToast } from 'climbingweb/src/hooks/useToast';
 
 interface UserProps {
   imagePath: string;
@@ -16,9 +17,14 @@ interface UserProps {
  */
 const UserResult = ({ imagePath, isLaon, nickname }: UserProps) => {
   const router = useRouter();
+  const { toast } = useToast();
 
   //라온 신청 mutation
-  const { mutate: createLaonMutate } = useCreateLaon();
+  const { mutate: createLaonMutate } = useCreateLaon({
+    onSuccess: () => {
+      toast('라온 신청하였습니다.');
+    },
+  });
 
   // 라온 신청 버튼 클릭 핸들링 함수
   const handleRaonButtonClick = () => {

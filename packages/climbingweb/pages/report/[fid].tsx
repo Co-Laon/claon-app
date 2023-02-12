@@ -27,18 +27,11 @@ export default function ReportPage({}) {
     '부적절한 게시글' | '부적절한 닉네임' | '잘못된 암장 선택'
   >('부적절한 게시글');
 
-  const { mutate: createCenterReportMutate, isSuccess } = useCreateReport(
-    feedId,
-    {
-      onSuccess: () => {
-        if (isSuccess) {
-          toast('입력 완료 되었습니다.');
-        } else {
-          toast('입력 실패 하였습니다.');
-        }
-      },
-    }
-  );
+  const { mutate: createCenterReportMutate } = useCreateReport(feedId, {
+    onSuccess: () => {
+      toast('입력 완료 되었습니다.');
+    },
+  });
 
   //바텀 시트 open/ close handler
   const handleOpen = () => {
