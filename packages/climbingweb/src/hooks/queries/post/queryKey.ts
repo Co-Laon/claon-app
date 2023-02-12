@@ -35,7 +35,6 @@ import {
   PostReportResponse,
   PostResponse,
 } from 'climbingweb/types/response/post';
-import { useRouter } from 'next/router';
 
 /**
  * 추후 성능 개선 필요!!
