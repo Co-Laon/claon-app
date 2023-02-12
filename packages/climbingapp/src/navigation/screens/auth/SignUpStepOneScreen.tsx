@@ -1,5 +1,4 @@
 import { useNavigation } from '@react-navigation/native';
-import { AppBar } from 'climbingapp/src/component/appBar/AppBar';
 import { NextButton } from 'climbingapp/src/component/button/Button';
 import {
   Title,
@@ -10,7 +9,7 @@ import { colorStyles } from 'climbingapp/src/styles';
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components/native';
 import { LoginScreenProp } from './type';
-import { Text } from 'react-native';
+import { Dimensions, Text } from 'react-native';
 import { MyTextInput } from 'climbingapp/src/component/text-input/TextInput';
 import { ProfileImage } from 'climbingapp/src/component/profile-image/ProfileImage';
 import { useDispatch } from 'react-redux';
@@ -26,10 +25,11 @@ import { vs } from 'react-native-size-matters';
 import { useAuth } from 'climbingapp/src/hooks/useAuth';
 import { useImagePicker } from 'climbingapp/src/hooks/useImagePicker';
 import { setProfileImageFile } from 'climbingapp/src/store/slices/s3util';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import { useKeyboard } from 'climbingapp/src/hooks/useKeyboard';
+import { useHeaderHeight } from '@react-navigation/elements';
 
 const ButtonContainer = styled.View`
-  flex: 0.5;
-  position: absolute;
   width: 100%;
   bottom: 24px;
   height: ${vs(56)}px;
@@ -106,33 +106,45 @@ function SignUpStepOneScreen() {
   const handleChangeNickName = (nick: string) => {
     dispatch(setNickName(nick));
   };
+  const { keyboardHeight, keyboardStatus } = useKeyboard();
+  const screenHeight = Dimensions.get('window').height;
+  const headerHeight = useHeaderHeight();
 
   return (
-    <ScreenView color={colorStyles.White}>
-      <AppBar />
-      <TitleContainer>
-        <Title>다음 항목을</Title>
-        <Title>입력해 주세요</Title>
-      </TitleContainer>
-      <ProfileContainer>
-        <SubText>프로필 사진</SubText>
-        <ProfileImage icon="camera" src={uri} onPress={selectImage} />
-      </ProfileContainer>
-      <NickNameContainer>
-        <SubText>
-          닉네임 <Text style={{ color: '#FF0000' }}>*</Text>{' '}
-        </SubText>
-        <MyTextInput
-          value={nickname + ''}
-          onChangeText={handleChangeNickName}
-          placeholder="한글, 영문, 숫자 포함 2-20자"
-        />
-        <ErrorText>{nickname && isDisabled && isErrorNickName}</ErrorText>
-      </NickNameContainer>
-      <ButtonContainer>
-        <NextButton disabled={isDisabled} onPress={handleGotoNext} />
-      </ButtonContainer>
-    </ScreenView>
+    <KeyboardAwareScrollView
+      contentContainerStyle={{ height: keyboardStatus ? screenHeight - headerHeight + keyboardHeight : screenHeight - headerHeight }}
+      showsVerticalScrollIndicator={false}
+      enableOnAndroid={true}
+      scrollEnabled={keyboardStatus}
+      pagingEnabled
+    >
+      <ScreenView color={colorStyles.White}>
+        <TitleContainer>
+          <Title>다음 항목을</Title>
+          <Title>입력해 주세요</Title>
+        </TitleContainer>
+        <ProfileContainer>
+          <SubText>프로필 사진</SubText>
+          <ProfileImage icon="camera" src={uri} onPress={selectImage} />
+        </ProfileContainer>
+        <NickNameContainer>
+          <SubText>
+            닉네임 <Text style={{ color: '#FF0000' }}>*</Text>{' '}
+          </SubText>
+          <MyTextInput
+            value={nickname + ''}
+            onChangeText={handleChangeNickName}
+            placeholder="한글, 영문, 숫자 포함 2-20자"
+          />
+          <ErrorText>{nickname && isDisabled && isErrorNickName}</ErrorText>
+        </NickNameContainer>
+        <ButtonContainer>
+          <NextButton disabled={isDisabled} onPress={handleGotoNext} />
+        </ButtonContainer>
+
+      </ScreenView >
+    </KeyboardAwareScrollView>
+
   );
 }
 

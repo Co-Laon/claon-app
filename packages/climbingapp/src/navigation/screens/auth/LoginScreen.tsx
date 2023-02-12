@@ -38,14 +38,14 @@ const ButtonContainer = styled.View`
   flex: 0.3;
 `;
 
-const KakaoButton = ({ onPress }: { onPress: ({ }: any) => void }) => {
+const KakaoButton = ({ onPress }: { onPress: ({}: any) => void }) => {
   return <DefaultButton {...Kakao} onPress={onPress} />;
 };
 
-const AppleButton = ({ onPress }: { onPress: ({ }: any) => void }) => {
+const AppleButton = ({ onPress }: { onPress: ({}: any) => void }) => {
   return <DefaultButton {...Apple} onPress={onPress} />;
 };
-const GoogleButton = ({ onPress }: { onPress: ({ }: any) => void }) => {
+const GoogleButton = ({ onPress }: { onPress: ({}: any) => void }) => {
   return <DefaultButton {...Google} onPress={onPress} />;
 };
 function LoginScreen() {
@@ -80,7 +80,6 @@ function LoginScreen() {
   const handleSignKakao = async () => {
     await kakaoLogin().then(handleAfterOAuth);
   };
-
 
   return (
     <ScreenView color="white">
