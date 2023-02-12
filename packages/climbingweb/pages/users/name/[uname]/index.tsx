@@ -20,16 +20,22 @@ import {
   useCreateBlock,
   useFindPostsByUser,
   useGetPublicUser,
+  userQueries,
 } from 'climbingweb/src/hooks/queries/user/queryKey';
 import { useIntersectionObserver } from 'climbingweb/src/hooks/useIntersectionObserver';
+import { useToast } from 'climbingweb/src/hooks/useToast';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
+import { useQueryClient } from 'react-query';
 import { BottomSheet } from 'react-spring-bottom-sheet';
 
 export default function UserPage({}) {
   const router = useRouter();
   const { uname } = router.query;
   const userNickname = uname as string;
+  const queryClient = useQueryClient();
+
+  const { toast } = useToast();
 
   //바텀 시트 on/off state
   const [openSheet, setOpenSheet] = useState<boolean>(false);
@@ -52,10 +58,20 @@ export default function UserPage({}) {
   } = useFindPostsByUser(userNickname);
 
   // 라온 신청 useMutation
-  const { mutate: createLaonMutate } = useCreateLaon();
+  const { mutate: createLaonMutate } = useCreateLaon({
+    onSuccess: () => {
+      toast('라온 신청하였습니다.');
+      queryClient.invalidateQueries(userQueries.name(userNickname));
+    },
+  });
 
   // 라온 취소 useMutation
-  const { mutate: deleteLaonMutate } = useDeleteLaon();
+  const { mutate: deleteLaonMutate } = useDeleteLaon({
+    onSuccess: () => {
+      toast('라온 취소하였습니다.');
+      queryClient.invalidateQueries(userQueries.name(userNickname));
+    },
+  });
 
   // 차단 useMutation
   const { mutate: createBlockMutate } = useCreateBlock();
