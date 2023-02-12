@@ -31,6 +31,9 @@ export default function ReportPage({}) {
     onSuccess: () => {
       toast('입력 완료 되었습니다.');
     },
+    onError: () => {
+      toast('신고글 게시에 실패하였습니다.');
+    },
   });
 
   //바텀 시트 open/ close handler

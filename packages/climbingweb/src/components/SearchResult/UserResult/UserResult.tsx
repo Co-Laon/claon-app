@@ -26,6 +26,9 @@ const UserResult = ({ imagePath, isLaon, nickname }: UserProps) => {
       toast('라온 신청하였습니다.');
       setButtonDisabled(true);
     },
+    onError: () => {
+      toast('라온 신청에 실패하였습니다.');
+    },
   });
 
   // 라온 신청 버튼 클릭 핸들링 함수
