@@ -80,14 +80,9 @@ export const centerQueries = createQueryKeys('centers', {
 export const useGetCenterList = (
   option: 'bookmark' | 'new_setting' | 'newly_registered'
 ) => {
-  return useInfiniteQuery({
+  return useQuery({
     ...centerQueries.list(option),
     enabled: Boolean(option),
-    getNextPageParam: (lastPageData) => {
-      return lastPageData.nextPageNum < 0
-        ? undefined
-        : lastPageData.nextPageNum;
-    },
   });
 };
 
