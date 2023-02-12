@@ -4,8 +4,6 @@ import React, { useLayoutEffect, useState } from 'react';
 import store from '../src/store';
 import { Provider } from 'react-redux';
 import { QueryClient, QueryClientProvider } from 'react-query';
-import NavBar from 'climbingweb/src/components/common/bottomNav/NavBar';
-import navButtons from 'climbingweb/src/components/common/bottomNav/button';
 import axios from 'axios';
 import 'react-spring-bottom-sheet/dist/style.css';
 import { useRNMessage } from 'climbingweb/src/hooks/useRNMessage';
@@ -13,10 +11,12 @@ import { ToastClient } from 'climbingweb/src/components/common/Toast/ToastClient
 import { useToken } from 'climbingweb/src/hooks/useToken';
 import Login from 'climbingweb/src/components/dev/Login';
 import { isDesktop } from 'react-device-detect';
+import NavBarWrapper from 'climbingweb/src/components/common/bottomNav/NavBarWrapper';
 
 function MyApp({ Component, pageProps }: AppProps) {
   const { token, sendReactNativeMessage } = useRNMessage();
   const { token: storageToken, isStorageLogin } = useToken();
+
   useLayoutEffect(() => {
     if (token) {
       axios.defaults.headers.common['access-token'] = token.accessToken;
@@ -76,7 +76,8 @@ function MyApp({ Component, pageProps }: AppProps) {
       <QueryClientProvider client={queryClient}>
         <ToastClient>
           <Component {...pageProps} />
-          <NavBar navButtons={navButtons} />
+          <NavBarWrapper />
+          {/* <NavBar navButtons={navButtons} /> */}
         </ToastClient>
       </QueryClientProvider>
     </Provider>

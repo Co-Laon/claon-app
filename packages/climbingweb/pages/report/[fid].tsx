@@ -12,6 +12,7 @@ import { BottomSheet } from 'react-spring-bottom-sheet';
 import { useRouter } from 'next/router';
 import { useCreateReport } from 'climbingweb/src/hooks/queries/post/queryKey';
 import { useToast } from 'climbingweb/src/hooks/useToast';
+import { useBnbHide } from 'climbingweb/src/hooks/useBnB';
 
 export default function ReportPage({}) {
   const router = useRouter();
@@ -61,21 +62,28 @@ export default function ReportPage({}) {
       });
     }
   };
+  //Bottom Navigation Bar 가리기
+  useBnbHide();
 
   return (
     <section className="mb-footer">
-      <AppBar leftNode={<BackButton />} title="" rightNode={<Empty />} />
+      <AppBar
+        leftNode={<BackButton />}
+        title=""
+        rightNode={<Empty />}
+        className="h-[7vh]"
+      />
       <div className="px-5 flex flex-col gap-4">
-        <div className="flex flex-col gap-2.5">
-          <h2 className="text-lg font-extrabold leading-6">신고 사유</h2>
+        <div className="flex flex-col gap-2.5 mt-[10px]">
+          <h2 className="text-base font-extrabold leading-6">신고 사유</h2>
           <DropDown
             value={reportType}
             onSheetOpen={handleOpen}
             placeholder="신고 사유를 선택해주세요"
           />
         </div>
-        <div className="flex flex-col gap-2.5">
-          <h2 className="text-lg font-extrabold leading-6">신고 내용</h2>
+        <div className="flex flex-col gap-2.5 h-[37vh] mb-[19px]">
+          <h2 className="text-base font-extrabold leading-6">신고 내용</h2>
           <TextArea
             refObj={contentInputRef}
             placeholder="요청 내용을 자세히 입력해주세요."

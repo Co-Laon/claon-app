@@ -13,7 +13,7 @@ export const DropDown = ({
 }: DropDownProps) => {
   return (
     <div
-      className="border-2 border-gray-300 h-12 w-full bg-white rounded-lg relative flex flex-row items-center justify-between px-4"
+      className="border-2 border-gray-300 h-[52px] w-full bg-white rounded-lg relative flex flex-row items-center justify-between px-4"
       onClick={onSheetOpen}
     >
       <input
