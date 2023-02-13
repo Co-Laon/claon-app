@@ -240,6 +240,10 @@ export const useCreateChildComment = (postId: string, parentId: string) => {
     {
       onSuccess: () => {
         queryClient.invalidateQueries({
+          queryKey: postQueries.detail(postId).queryKey,
+          refetchInactive: true,
+        });
+        queryClient.invalidateQueries({
           queryKey: postQueries.childrenComment(parentId).queryKey,
           refetchInactive: true,
         });
