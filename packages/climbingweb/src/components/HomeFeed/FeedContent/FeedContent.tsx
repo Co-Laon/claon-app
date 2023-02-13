@@ -73,12 +73,14 @@ const FeedContent = ({
         <p className="py-2 font-medium pl-[6px]">{content}</p>
       )}
       {
-        <p
-          onTouchEnd={onClickMoreComment}
-          className="font-medium text-[#BFBFBF] text-sm pl-[6px]"
-        >
-          {replyCount === 0 ? '댓글 달기' : `댓글 ${replyCount}개 더 보기`}
-        </p>
+        <div className="flex">
+          <p
+            onTouchEnd={onClickMoreComment}
+            className="font-medium text-gray-400"
+          >
+            {replyCount === 0 ? '댓글 달기' : `댓글 ${replyCount}개 더 보기`}
+          </p>
+        </div>
       }
     </section>
   );
