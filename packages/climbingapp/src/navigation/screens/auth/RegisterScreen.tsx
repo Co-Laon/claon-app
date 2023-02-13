@@ -1,4 +1,3 @@
-import { AppBar } from 'climbingapp/src/component/appBar/AppBar';
 import { ScreenView } from 'climbingapp/src/component/view/ScreenView';
 import { colorStyles } from 'climbingapp/src/styles';
 import React, { useCallback, useEffect, useState } from 'react';
@@ -49,8 +48,8 @@ const CheckHeader = ({
   checked,
   onPress,
 }: {
-  checked: boolean | (({ }: any) => boolean);
-  onPress: ({ }: any) => void;
+  checked: boolean | (({}: any) => boolean);
+  onPress: ({}: any) => void;
 }) => {
   return (
     <CheckListItem>
@@ -97,9 +96,12 @@ function RegisterScreen() {
 
   const checkedAll = () => checkList.every(({ checked }) => checked);
   const checkDisabled = () => {
-    setDisabled(() => !checkList
-      .filter(({ isEssential }) => isEssential)
-      .every(({ checked }) => checked));
+    setDisabled(
+      () =>
+        !checkList
+          .filter(({ isEssential }) => isEssential)
+          .every(({ checked }) => checked)
+    );
   };
 
   const handleCheckAll = useCallback(() => {
@@ -123,7 +125,6 @@ function RegisterScreen() {
 
   return (
     <ScreenView color="white">
-      <AppBar />
       <TitleContainer>
         <Title>클라온 이용 약관에</Title>
         <Title>동의해 주세요</Title>
@@ -132,7 +133,10 @@ function RegisterScreen() {
         <CheckHeader checked={checkedAll()} onPress={handleCheckAll} />
         <Divider />
         {checkList?.map((check) => (
-          <CheckListItem key={check.key} style={{ justifyContent: 'space-between' }}>
+          <CheckListItem
+            key={check.key}
+            style={{ justifyContent: 'space-between' }}
+          >
             <View style={{ flexDirection: 'row' }}>
               <CheckBox
                 checkIcon="line"

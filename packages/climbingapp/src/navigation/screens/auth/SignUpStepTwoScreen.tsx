@@ -1,5 +1,4 @@
 import { useNavigation } from '@react-navigation/native';
-import { AppBar } from 'climbingapp/src/component/appBar/AppBar';
 import { NextButton } from 'climbingapp/src/component/button/Button';
 import {
   Title,
@@ -16,15 +15,19 @@ import { RootState } from 'climbingapp/src/store/slices';
 import { setArmReach, setHeight } from 'climbingapp/src/store/slices/authInfo';
 import { vs } from 'react-native-size-matters';
 import { Skip } from 'climbingapp/src/component/appBar/Skip';
-
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import { Dimensions } from 'react-native';
+import { useHeaderHeight } from '@react-navigation/elements';
+import { useKeyboard } from 'climbingapp/src/hooks/useKeyboard';
 const ButtonContainer = styled.View`
   bottom: 24px;
   width: 100%;
   height: ${vs(56)}px;
+  position: absolute;
 `;
 
 const InputContainer = styled.View`
-  flex: 1.5;
+  flex: 2.5;
 `;
 
 const SubText = styled.Text`
@@ -50,42 +53,65 @@ function SignUpStepTwoScreen() {
   const handleChangeArmReach = (nick: string) => {
     if (isNumbertype(nick) || nick === '') dispatch(setArmReach(nick));
   };
-  const handleGoToNext = () => { navigation.navigate('connectInsta'); };
+  const handleGoToNext = () => {
+    navigation.navigate('connectInsta');
+  };
 
   useEffect(() => {
     setDisabled(!(height && armReach));
   }, [height, armReach]);
+  useEffect(() => {
+    navigation.setOptions({
+      headerRight: () => <Skip onPress={handleGoToNext} />,
+    });
+  }, []);
 
+  const screenHeight = Dimensions.get('window').height;
+  const headerHeight = useHeaderHeight();
+  const { keyboardHeight, keyboardStatus } = useKeyboard();
   return (
-    <ScreenView color={colorStyles.White}>
-      <AppBar rightNode={<Skip onPress={handleGoToNext} />} />
-      <TitleContainer>
-        <Title>다음 항목을</Title>
-        <Title>입력해 주세요</Title>
-      </TitleContainer>
-      <InputContainer>
-        <SubText>신장 (Height)</SubText>
-        <MyTextInput
-          value={height + ''}
-          onChangeText={handleChangeHeight}
-          placeholder="173.3"
-          keyboardType='numeric'
-        />
-        <SubText>암리치 (Arm reach)</SubText>
-        <MyTextInput
-          value={armReach + ''}
-          onChangeText={handleChangeArmReach}
-          placeholder="173.3"
-          keyboardType='numeric'
-        />
-        <SubText>
-          Ape Index {armReach && height && (parseFloat(armReach) - parseFloat(height)).toFixed(1)}
-        </SubText>
-      </InputContainer>
-      <ButtonContainer>
-        <NextButton onPress={() => navigation.navigate('connectInsta')} disabled={disabled} />
-      </ButtonContainer>
-    </ScreenView>
+    <KeyboardAwareScrollView
+      contentContainerStyle={{ height: keyboardStatus ? screenHeight - headerHeight + keyboardHeight : screenHeight - headerHeight }}
+      showsVerticalScrollIndicator={false}
+      enableOnAndroid={true}
+      scrollEnabled={keyboardStatus}
+      pagingEnabled
+    >
+      <ScreenView color={colorStyles.White}>
+        <TitleContainer>
+          <Title>다음 항목을</Title>
+          <Title>입력해 주세요</Title>
+        </TitleContainer>
+        <InputContainer>
+          <SubText>신장 (Height)</SubText>
+          <MyTextInput
+            value={height + ''}
+            onChangeText={handleChangeHeight}
+            placeholder="173.3"
+            keyboardType="numeric"
+          />
+          <SubText>암리치 (Arm reach)</SubText>
+          <MyTextInput
+            value={armReach + ''}
+            onChangeText={handleChangeArmReach}
+            placeholder="173.3"
+            keyboardType="numeric"
+          />
+          <SubText>
+            Ape Index{' '}
+            {armReach &&
+              height &&
+              (parseFloat(armReach) - parseFloat(height)).toFixed(1)}
+          </SubText>
+        </InputContainer>
+        <ButtonContainer>
+          <NextButton
+            onPress={() => navigation.navigate('connectInsta')}
+            disabled={disabled}
+          />
+        </ButtonContainer>
+      </ScreenView>
+    </KeyboardAwareScrollView>
   );
 }
 

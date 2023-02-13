@@ -12,6 +12,7 @@ import {
   useQueryClient,
   useInfiniteQuery,
   useQuery,
+  UseMutationOptions,
 } from 'react-query';
 import {
   createComment,
@@ -27,8 +28,13 @@ import {
   getPosts,
   updateComment,
 } from './queries';
-import { PostContents } from 'climbingweb/types/response/post';
-import { useRouter } from 'next/router';
+import {
+  CommentResponse,
+  LikeResponse,
+  PostContents,
+  PostReportResponse,
+  PostResponse,
+} from 'climbingweb/types/response/post';
 
 /**
  * 추후 성능 개선 필요!!
@@ -64,12 +70,23 @@ export const postQueries = createQueryKeys('posts', {
  * createLike api useMutation hooks
  *
  * @param postId 좋아요를 누를 post id
+ * @param options 추가적인 옵션
  * @returns createLike api useMutation return 값
  */
-export const useCreateLike = (postId: string) => {
+export const useCreateLike = (
+  postId: string,
+  options?: Omit<
+    UseMutationOptions<LikeResponse, unknown, void, unknown>,
+    'mutationFn'
+  >
+) => {
   const queryClient = useQueryClient();
   return useMutation(() => createLike(postId), {
-    onSuccess: () => {
+    ...options,
+    onSuccess: (data, variables, context) => {
+      if (options?.onSuccess) {
+        options.onSuccess(data, variables, context);
+      }
       queryClient.invalidateQueries({
         queryKey: postQueries.list().queryKey,
         refetchInactive: true,
@@ -90,12 +107,23 @@ export const useCreateLike = (postId: string) => {
  * deleteLike api useMutation hooks
  *
  * @param postId 좋아요를 취소할 post id
+ * @param options 추가적인 옵션
  * @returns deleteLike api useMutation return 값
  */
-export const useDeleteLike = (postId: string) => {
+export const useDeleteLike = (
+  postId: string,
+  options?: Omit<
+    UseMutationOptions<LikeResponse, unknown, void, unknown>,
+    'mutationFn'
+  >
+) => {
   const queryClient = useQueryClient();
   return useMutation(() => deleteLike(postId), {
-    onSuccess: () => {
+    ...options,
+    onSuccess: (data, variables, context) => {
+      if (options?.onSuccess) {
+        options.onSuccess(data, variables, context);
+      }
       queryClient.invalidateQueries({
         queryKey: postQueries.list().queryKey,
         refetchInactive: true,
@@ -116,26 +144,28 @@ export const useDeleteLike = (postId: string) => {
  * createPost api useMutation hooks
  *
  * @param postCreateRequest 게시할 피드 내용
+ * @param options 추가적인 옵션
  * @returns createPost api useMutation return 값
  */
-export const useCreatePost = () => {
-  const router = useRouter();
+export const useCreatePost = (
+  options?: Omit<
+    UseMutationOptions<PostResponse, unknown, PostCreateRequest, unknown>,
+    'mutationFn'
+  >
+) => {
   const queryClient = useQueryClient();
   return useMutation(
     (postCreateRequest: PostCreateRequest) => createPost(postCreateRequest),
     {
-      onSuccess: () => {
+      ...options,
+      onSuccess: (data, variables, context) => {
+        if (options?.onSuccess) {
+          options.onSuccess(data, variables, context);
+        }
         queryClient.invalidateQueries({
           queryKey: postQueries.list().queryKey,
           refetchInactive: true,
         });
-        alert('입력 완료 되었습니다.');
-        router.push('/');
-      },
-      onError: (error) => {
-        console.error(error);
-        alert('피드 작성에 실패했습니다. 다시 시도해주세요.');
-        window.location.reload();
       },
     }
   );
@@ -207,15 +237,30 @@ export const useGetPosts = () => {
  * createComment api useMutation hooks
  *
  * @param postId 댓글을 달 게시글의 id
+ * @param options 추가적인 옵션
  * @returns createComment api useMutation return 값
  */
-export const useCreateComment = (postId: string) => {
+export const useCreateComment = (
+  postId: string,
+  options?: Omit<
+    UseMutationOptions<
+      CommentCreateRequest,
+      unknown,
+      CommentCreateRequest,
+      unknown
+    >,
+    'mutationFn'
+  >
+) => {
   const queryClient = useQueryClient();
   return useMutation(
     (commentCreateRequest: CommentCreateRequest) =>
       createComment(postId, commentCreateRequest),
     {
-      onSuccess: () => {
+      onSuccess: (data, variables, context) => {
+        if (options?.onSuccess) {
+          options.onSuccess(data, variables, context);
+        }
         queryClient.invalidateQueries({
           queryKey: postQueries.detail(postId).queryKey,
           refetchInactive: true,
@@ -230,15 +275,31 @@ export const useCreateComment = (postId: string) => {
  *
  * @param postId 댓글을 달 게시글의 id
  * @param parentId 댓글의 답글을 달 comment id
+ * @param options 추가적인 옵션
  * @returns createChildComment api useMutation return 값
  */
-export const useCreateChildComment = (postId: string, parentId: string) => {
+export const useCreateChildComment = (
+  postId: string,
+  parentId: string,
+  options?: Omit<
+    UseMutationOptions<
+      CommentCreateRequest,
+      unknown,
+      CommentCreateRequest,
+      unknown
+    >,
+    'mutationFn'
+  >
+) => {
   const queryClient = useQueryClient();
   return useMutation(
     (commentCreateRequest: CommentCreateRequest) =>
       createComment(postId, commentCreateRequest),
     {
-      onSuccess: () => {
+      onSuccess: (data, variables, context) => {
+        if (options?.onSuccess) {
+          options.onSuccess(data, variables, context);
+        }
         queryClient.invalidateQueries({
           queryKey: postQueries.childrenComment(parentId).queryKey,
           refetchInactive: true,
@@ -252,19 +313,32 @@ export const useCreateChildComment = (postId: string, parentId: string) => {
  * updateComment api useMutation hooks
  *
  * @param commentId 수정할 댓글의 id
+ * @param options 추가적인 옵션
  * @returns updateComment api useMutation return 값
  */
 export const useUpdateComment = (
   postId: string,
   commentId: string,
-  parentId?: string
+  parentId?: string,
+  options?: Omit<
+    UseMutationOptions<
+      CommentUpdateRequest,
+      unknown,
+      CommentUpdateRequest,
+      unknown
+    >,
+    'mutationFn'
+  >
 ) => {
   const queryClient = useQueryClient();
   return useMutation(
     (commentUpdateRequest: CommentUpdateRequest) =>
       updateComment(commentId, commentUpdateRequest),
     {
-      onSuccess: () => {
+      onSuccess: (data, variables, context) => {
+        if (options?.onSuccess) {
+          options.onSuccess(data, variables, context);
+        }
         queryClient.invalidateQueries({
           queryKey: postQueries.detail(postId).queryKey,
           refetchInactive: true,
@@ -284,16 +358,24 @@ export const useUpdateComment = (
  * deleteComment api useMutation hooks
  *
  * @param commentId 삭제할 댓글의 id
+ * @param options 추가적인 옵션
  * @returns deleteComment api useMutation return 값
  */
 export const useDeleteComment = (
   postId: string,
   commentId: string,
-  parentId?: string
+  parentId?: string,
+  options?: Omit<
+    UseMutationOptions<CommentResponse, unknown, void, unknown>,
+    'mutationFn'
+  >
 ) => {
   const queryClient = useQueryClient();
   return useMutation(() => deleteComment(commentId), {
-    onSuccess: () => {
+    onSuccess: (data, variables, context) => {
+      if (options?.onSuccess) {
+        options.onSuccess(data, variables, context);
+      }
       queryClient.invalidateQueries({
         queryKey: postQueries.detail(postId).queryKey,
         refetchInactive: true,
@@ -308,9 +390,25 @@ export const useDeleteComment = (
   });
 };
 
-export const useCreateReport = (postId: string) => {
-  return useMutation((reportData: PostReportRequest) =>
-    createReport(postId, reportData)
+/**
+ * createReport api useMutation hooks
+ *
+ * @param postId 신고할 게시글 id
+ * @param options
+ * @returns
+ */
+export const useCreateReport = (
+  postId: string,
+  options?: Omit<
+    UseMutationOptions<PostReportResponse, unknown, PostReportRequest, unknown>,
+    'mutationFn'
+  >
+) => {
+  return useMutation(
+    (reportData: PostReportRequest) => createReport(postId, reportData),
+    {
+      ...options,
+    }
   );
 };
 

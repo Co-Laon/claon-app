@@ -6,7 +6,7 @@ interface HeaderProps {
 
 export const SheetHeader = ({ headerTitle }: HeaderProps) => {
   return (
-    <div className="flex flex-col gap-4">
+    <div className="flex flex-col gap-[10px]">
       <h1 className="text-black font-bold text-sm">{headerTitle}</h1>
       {headerTitle == '' ? null : <Divder />}
     </div>

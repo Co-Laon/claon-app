@@ -12,6 +12,7 @@ import { BottomSheet } from 'react-spring-bottom-sheet';
 import { useRouter } from 'next/router';
 import { useCreateReport } from 'climbingweb/src/hooks/queries/post/queryKey';
 import { useToast } from 'climbingweb/src/hooks/useToast';
+import { useBnbHide } from 'climbingweb/src/hooks/useBnB';
 
 export default function ReportPage({}) {
   const router = useRouter();
@@ -27,8 +28,14 @@ export default function ReportPage({}) {
     '부적절한 게시글' | '부적절한 닉네임' | '잘못된 암장 선택'
   >('부적절한 게시글');
 
-  const { mutate: createCenterReportMutate, isSuccess } =
-    useCreateReport(feedId);
+  const { mutate: createCenterReportMutate } = useCreateReport(feedId, {
+    onSuccess: () => {
+      toast('입력 완료 되었습니다.');
+    },
+    onError: () => {
+      toast('신고글 게시에 실패하였습니다.');
+    },
+  });
 
   //바텀 시트 open/ close handler
   const handleOpen = () => {
@@ -53,13 +60,10 @@ export default function ReportPage({}) {
         reportType: reportType,
         content: contentInputRef.current.value,
       });
-      if (isSuccess) {
-        toast('입력 완료 되었습니다.');
-      } else {
-        toast('입력 실패 하였습니다.');
-      }
     }
   };
+  //Bottom Navigation Bar 가리기
+  useBnbHide();
 
   return (
     <section className="mb-footer">
@@ -70,16 +74,16 @@ export default function ReportPage({}) {
         className="h-[7.82vh]"
       />
       <div className="px-5 flex flex-col gap-4">
-        <div className="flex flex-col gap-2.5">
-          <h2 className="text-lg font-extrabold leading-6">신고 사유</h2>
+        <div className="flex flex-col gap-2.5 mt-[10px]">
+          <h2 className="text-base font-extrabold leading-6">신고 사유</h2>
           <DropDown
             value={reportType}
             onSheetOpen={handleOpen}
             placeholder="신고 사유를 선택해주세요"
           />
         </div>
-        <div className="flex flex-col gap-2.5">
-          <h2 className="text-lg font-extrabold leading-6">신고 내용</h2>
+        <div className="flex flex-col gap-2.5 h-[37vh] mb-[19px]">
+          <h2 className="text-base font-extrabold leading-6">신고 내용</h2>
           <TextArea
             refObj={contentInputRef}
             placeholder="요청 내용을 자세히 입력해주세요."
