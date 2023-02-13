@@ -7,7 +7,7 @@ interface ButtonProps {
 export const NormalButton = ({ onClick, children, disabled }: ButtonProps) => {
   return (
     <button
-      className="w-full bg-purple-500 rounded-lg w-30 h-12 text-white active:bg-purple-400 disabled:bg-gray-300 disabled:text-gray-500"
+      className="w-full bg-purple-500 rounded-lg w-30 h-[56px] text-white active:bg-purple-400 disabled:bg-gray-300 disabled:text-gray-500"
       disabled={disabled}
       onTouchEnd={onClick}
     >

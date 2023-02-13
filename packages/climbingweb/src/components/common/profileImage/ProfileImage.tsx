@@ -8,6 +8,7 @@ interface ProfileProps {
   icon?: 'default' | 'insta';
   onClickIcon?: () => void;
   size?: number;
+  className?: string
 }
 
 export const ProfileImage = ({
@@ -15,9 +16,10 @@ export const ProfileImage = ({
   icon,
   onClickIcon,
   size,
+  className,
 }: ProfileProps) => {
   return (
-    <div className="w-16 relative">
+    <div className={`w-16 relative ${className}`}>
       <div className="w-15 h-15 rounded-xl relative flex items-center justify-center">
         {src ? (
           <Image

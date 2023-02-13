@@ -1,5 +1,4 @@
 import { useNavigation } from '@react-navigation/native';
-import { AppBar } from 'climbingapp/src/component/appBar/AppBar';
 import {
   DefaultButton,
   NextButton,
@@ -13,7 +12,7 @@ import {
 import { ScreenView } from 'climbingapp/src/component/view/ScreenView';
 import { useAuth } from 'climbingapp/src/hooks/useAuth';
 import { colorStyles } from 'climbingapp/src/styles';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { vs } from 'react-native-size-matters';
 import styled from 'styled-components/native';
 import { LoginScreenProp } from './type';
@@ -60,6 +59,7 @@ const InstagramButton = ({ onPress }: { onPress: ({}: any) => void }) => {
 
 function ConnectWithInstagramScreen() {
   const navigation = useNavigation<LoginScreenProp>();
+
   const profileFile = useSelector(
     (state: RootState) => state.s3util.profileImage
   );
@@ -120,9 +120,15 @@ function ConnectWithInstagramScreen() {
       });
   };
 
+  useEffect(() => {
+    navigation.setOptions({
+      animation: 'slide_from_right',
+      headerRight: () => <Skip onPress={handleSignUp} />,
+    });
+  }, []);
+
   return (
     <ScreenView color="white">
-      <AppBar rightNode={<Skip onPress={handleSignUp} />} />
       <TitleContainer>
         <Title>인스타그램을</Title>
         <Title>연결해 주세요</Title>
@@ -130,7 +136,7 @@ function ConnectWithInstagramScreen() {
       </TitleContainer>
       <ProfileContainer>
         <InstaImage />
-        <Name>asdf</Name>
+        <Name></Name>
         <ButtonContainer>
           <InstagramButton onPress={handleConnectInstagram} />
         </ButtonContainer>

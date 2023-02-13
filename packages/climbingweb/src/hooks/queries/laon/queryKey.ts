@@ -1,5 +1,10 @@
 import { createQueryKeys } from '@lukemorales/query-key-factory';
-import { useInfiniteQuery, useMutation, useQueryClient } from 'react-query';
+import {
+  useInfiniteQuery,
+  useMutation,
+  UseMutationOptions,
+  useQueryClient,
+} from 'react-query';
 import { createLaon, deleteLaon, findAllLaon, getLaonPost } from './queries';
 
 /**
@@ -35,12 +40,22 @@ export const useFindAllLaon = () => {
 /**
  * createLaon api (라온 생성) 의 useMutation hooks
  *
+ * @param options useMutation 추가 옵션
  * @returns createLaon api (라온 생성) 의 useMutation return 값
  */
-export const useCreateLaon = () => {
+export const useCreateLaon = (
+  options?: Omit<
+    UseMutationOptions<void, unknown, string, unknown>,
+    'mutationFn'
+  >
+) => {
   const queryClient = useQueryClient();
   return useMutation(createLaon, {
-    onSuccess: () => {
+    ...options,
+    onSuccess: (data, variables, context) => {
+      if (options?.onSuccess) {
+        options.onSuccess(data, variables, context);
+      }
       queryClient.invalidateQueries({
         queryKey: laonQueries.list().queryKey,
         refetchInactive: true,
@@ -52,12 +67,22 @@ export const useCreateLaon = () => {
 /**
  * deleteLaon api (라온 삭제) 의 useMutation hooks
  *
+ * @param options useMutation 추가 옵션
  * @returns deleteLaon api (라온 삭제) 의 useMutation return 값
  */
-export const useDeleteLaon = () => {
+export const useDeleteLaon = (
+  options?: Omit<
+    UseMutationOptions<void, unknown, string, unknown>,
+    'mutationFn'
+  >
+) => {
   const queryClient = useQueryClient();
   return useMutation(deleteLaon, {
-    onSuccess: () => {
+    ...options,
+    onSuccess: (data, variables, context) => {
+      if (options?.onSuccess) {
+        options.onSuccess(data, variables, context);
+      }
       queryClient.invalidateQueries({
         queryKey: laonQueries.list().queryKey,
         refetchInactive: true,

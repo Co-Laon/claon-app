@@ -64,7 +64,7 @@ const HomeFeed = ({ postData }: HomeFeedProps) => {
 
   if (commentData)
     return (
-      <section className={'w-full mb-footer'}>
+      <section className={'w-full mb-[17px]'}>
         <FeedHeader
           userImage={postData.userProfile}
           userName={postData.userNickname}
@@ -87,6 +87,7 @@ const HomeFeed = ({ postData }: HomeFeedProps) => {
             headerTitle={''}
             list={['신고하기']}
             onSelect={handleBTSheetListClick}
+            className='text-center'
           />
         </BottomSheet>
       </section>
