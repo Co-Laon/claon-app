@@ -15,7 +15,7 @@ export function UploadImage({ id, src }: ImageProps) {
 
   return (
     <>
-      <div className="h-20 w-20 min-w-20 relative">
+      <div className="h-[72px] w-[72px] min-w-[72px] relative">
         <Image
           className="rounded-lg"
           layout="fill"

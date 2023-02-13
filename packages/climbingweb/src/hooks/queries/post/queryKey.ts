@@ -28,6 +28,8 @@ import {
   getPosts,
   updateComment,
 } from './queries';
+import { useRouter } from 'next/router';
+import { useToast } from '../../useToast';
 import {
   CommentResponse,
   LikeResponse,
@@ -154,6 +156,8 @@ export const useCreatePost = (
   >
 ) => {
   const queryClient = useQueryClient();
+  const { toast } = useToast();
+  const router = useRouter();
   return useMutation(
     (postCreateRequest: PostCreateRequest) => createPost(postCreateRequest),
     {
@@ -166,6 +170,15 @@ export const useCreatePost = (
           queryKey: postQueries.list().queryKey,
           refetchInactive: true,
         });
+        // alert('입력 완료 되었습니다.');
+        toast('게시글 작성 완료');
+        router.push('/');
+      },
+      onError: (error) => {
+        console.error(error);
+        toast('피드 작성에 실패했습니다. 다시 시도해주세요.');
+        window.location.reload();
+
       },
     }
   );

@@ -17,7 +17,7 @@ const HoldImage = ({
   handleDeleteHold,
 }: ImageProps) => {
   return (
-    <div className="rounded-lg border border-solid h-20 w-20 mx-1.5 min-w-20 relative">
+    <div className="rounded-lg border border-solid h-[72px] w-[72px] min-w-[72px] relative">
       <Image
         className="rounded-lg"
         layout="fill"
@@ -31,7 +31,9 @@ const HoldImage = ({
           <MinusButton onClick={handleDeleteHold} />
         </div>
       ) : null}
-      <div className="h-6 w-6 bottom-1 right-1 absolute">{count}</div>
+      <div className="h-6 w-6 bottom-0 right-0 absolute text-xs leading-[18px] text-[#5953FF] font-medium flex items-center justify-center">
+        {count}
+      </div>
     </div>
   );
 };
