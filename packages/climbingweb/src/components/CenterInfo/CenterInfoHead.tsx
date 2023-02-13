@@ -3,6 +3,7 @@ import InstaIcon from 'climbingweb/src/assets/icon/center_channel/ic_24_instagra
 import WebIcon from 'climbingweb/src/assets/icon/center_channel/ic_24_web_gray800.svg';
 import YoutubeIcon from 'climbingweb/src/assets/icon/center_channel/ic_24_youtube.svg';
 import PinIcon from 'climbingweb/src/assets/icon/ic_18_pin_gray600.svg';
+import { sendReactNativeMessage } from 'climbingweb/src/utils/reactNativeMessage';
 
 interface HeadProps {
   name: string;
@@ -21,25 +22,31 @@ export const CenterInfoHead = ({
   webUrl,
   youtubeUrl,
 }: HeadProps) => {
+
+  const sendLinkToRN = (link: string) => {
+    sendReactNativeMessage({ type: 'link', payload: link });
+  };
+
+
   //pinIcon click 핸들러
   const handlePinIconClick = () => {
     console.dir(address);
   };
   //telIcon click 핸들러
   const handleTelIconClick = () => {
-    location.href = `tel:${tel}`;
+    sendLinkToRN(`tel:${tel}`);
   };
   //webIcon click 핸들러
   const handleWebIconClick = () => {
-    location.href = `${webUrl}`;
+    sendLinkToRN(`${webUrl}`);
   };
   //instaIcon click 핸들러
   const handleInstaIconClick = () => {
-    location.href = `${instagramUrl}`;
+    sendLinkToRN(`${instagramUrl}`);
   };
   //youtubeIcon click핸들러
   const handleYoutubeIconClick = () => {
-    location.href = `${youtubeUrl}`;
+    sendLinkToRN(`${youtubeUrl}`);
   };
 
   return (

@@ -4,7 +4,7 @@ import { LoginScreenProp } from 'climbingapp/src/navigation/screens/auth/type';
 import { injectedScriptForWebViewBackButton } from 'climbingapp/src/utils/constants';
 import { storeData } from 'climbingapp/src/utils/storage';
 import React, { useEffect, useRef, useState } from 'react';
-import { BackHandler, Platform, ToastAndroid } from 'react-native';
+import { BackHandler, Linking, Platform, ToastAndroid } from 'react-native';
 import { WebView, WebViewMessageEvent } from 'react-native-webview';
 import { isJsonString } from 'climbingapp/src/utils/isJsonString';
 interface WebInfo {
@@ -75,6 +75,8 @@ export default function CustomWebView({ url }: WebInfo) {
             }
           })
           .then(() => navigation.reset({ routes: [{ name: 'login' }] }));
+      } else if (data.type === 'link') {
+        await Linking.openURL(data.payload);
       }
     } else if (state.data === 'navigationStateChange') {
       setIsCanGoBack(state.canGoBack);
