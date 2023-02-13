@@ -21,15 +21,15 @@ const FeedHeader = ({
     router.push(`/users/name/${userName}`);
   };
   return (
-    <header className={'flex w-full h-[56px] my-1 justify-between'}>
+    <header className={'flex w-full h-[69px]  justify-between'}>
       <div className={'flex items-center'} onClick={handleProfileClick}>
-        <ProfileImage src={userImage} />
+        <ProfileImage src={userImage} className="w-[40px] ml-[20px] mr-2" />
         <div>
-          <p className={'text-sm'}>{userName}</p>
-          <p className={'text-sm text-gray-600'}>{userLocation}</p>
+          <p className={'text-sm font-bold'}>{userName}</p>
+          <p className={'text-sm text-[#666666] font-medium'}>{userLocation}</p>
         </div>
       </div>
-      <button className={'w-[24px] h-[24px] self-center'}>
+      <button className={'w-[24px] h-[24px] self-center mr-[19px]'}>
         <OptionDotImg onClick={handleOptionDotClick} />
       </button>
     </header>

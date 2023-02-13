@@ -2,6 +2,7 @@ export interface ListSheetProps {
   headerTitle: string;
   list: string[];
   onSelect: ({}: any) => void;
+  className?: string
 }
 
 export interface ConfirmSheetProps {

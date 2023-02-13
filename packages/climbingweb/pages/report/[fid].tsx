@@ -71,7 +71,7 @@ export default function ReportPage({}) {
         leftNode={<BackButton />}
         title=""
         rightNode={<Empty />}
-        className="h-[7vh]"
+        className="h-[7.82vh]"
       />
       <div className="px-5 flex flex-col gap-4">
         <div className="flex flex-col gap-2.5 mt-[10px]">
@@ -102,6 +102,7 @@ export default function ReportPage({}) {
           headerTitle={'신고 사유'}
           list={['부적절한 게시글', '부적절한 닉네임', '잘못된 암장 선택']}
           onSelect={handleSheetSelect}
+          className="text-left"
         />
       </BottomSheet>
     </section>
