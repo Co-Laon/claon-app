@@ -1,6 +1,6 @@
 import '../styles/globals.css';
 import type { AppProps } from 'next/app';
-import React, { useLayoutEffect, useState } from 'react';
+import React, { useState } from 'react';
 import store from '../src/store';
 import { Provider } from 'react-redux';
 import { QueryClient, QueryClientProvider } from 'react-query';
@@ -12,12 +12,12 @@ import { useToken } from 'climbingweb/src/hooks/useToken';
 import Login from 'climbingweb/src/components/dev/Login';
 import { isDesktop } from 'react-device-detect';
 import NavBarWrapper from 'climbingweb/src/components/common/bottomNav/NavBarWrapper';
+import useIsomorphicLayoutEffect from 'climbingweb/src/hooks/useIsomorphicLayoutEffect';
 
 function MyApp({ Component, pageProps }: AppProps) {
   const { token, sendReactNativeMessage } = useRNMessage();
   const { token: storageToken, isStorageLogin } = useToken();
-
-  useLayoutEffect(() => {
+  useIsomorphicLayoutEffect(() => {
     if (token) {
       axios.defaults.headers.common['access-token'] = token.accessToken;
       axios.defaults.headers.common['refresh-token'] = token.refreshToken;
