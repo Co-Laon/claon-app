@@ -14,6 +14,7 @@ import { api } from '../utils/constants';
 import axios from 'axios';
 import { AccessTokenType } from '@actbase/react-kakaosdk/lib/types';
 import { Alert } from 'react-native';
+import { ErrorResponse } from '../types/type';
 
 interface SignInType {
   code: string | AccessTokenType;
@@ -36,8 +37,50 @@ const useAuthActions = () => {
 export const useAuth = () => {
   const user = useUser();
   const auth = useAuthActions();
-  const { authorizeAction: authorize, logoutAction: logout } = auth;
+  const { authorizeAction: authorize, logoutAction: signOut } = auth;
   const userInfo = useUserInfo();
+
+  const logout = async () => {
+    await axios
+      .post(api + '/auth/sign-out')
+      .then((res) => {
+        if (res.data?.errorCode) {
+          const { errorCode, message }: ErrorResponse = res.data;
+          Alert.alert('에러' + errorCode, message + '');
+        } else {
+          signOut();
+        }
+      })
+      .catch((error) => {
+        console.log(error.response);
+        Alert.alert(
+          '에러',
+          '서버에 문제가 있습니다. 잠시 후 다시 시도해주세요.'
+        );
+        throw new Error(error);
+      });
+  };
+
+  const leaveClaon = async () => {
+    await axios
+      .delete(api + 'users/me')
+      .then((res) => {
+        if (res.data?.errorCode) {
+          const { errorCode, message }: ErrorResponse = res.data;
+          Alert.alert('에러' + errorCode, message + '');
+        } else {
+          signOut();
+        }
+      })
+      .catch((error) => {
+        console.log(error.response);
+        Alert.alert(
+          '에러',
+          '서버에 문제가 있습니다. 잠시 후 다시 시도해주세요.'
+        );
+        throw new Error(error);
+      });
+  };
 
   const signInWithProvider = async ({ code, provider }: SignInType) => {
     const signValue = await axios
@@ -60,7 +103,7 @@ export const useAuth = () => {
         return res;
       })
       .catch((error) => {
-        console.log(error);
+        console.log(error.response);
         Alert.alert(
           '에러',
           '서버에 문제가 있습니다. 잠시 후 다시 시도해주세요.'
@@ -97,5 +140,13 @@ export const useAuth = () => {
     }
   };
   // const AppleLogin = () => {}
-  return { user, userInfo, authorize, kakaoLogin, logout, googleLogin };
+  return {
+    user,
+    userInfo,
+    authorize,
+    leaveClaon,
+    kakaoLogin,
+    logout,
+    googleLogin,
+  };
 };

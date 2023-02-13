@@ -19,6 +19,7 @@ import {
   useFindHoldInfoByCenter,
   useSearchCenterName,
 } from 'climbingweb/src/hooks/queries/center/queryKey';
+import { useRouter } from 'next/router';
 
 export default function CreatePostPage() {
   const [page, setPage] = useState<string>('first');
@@ -29,11 +30,21 @@ export default function CreatePostPage() {
   const [searchInput, setSearchInput] = useState<string>('');
   const [selected, setSelected] = useState(false);
   const { data: centerList } = useSearchCenterName(searchInput);
+  const router = useRouter();
 
   //기준이 되는 hold 리스트 state
   const { data: holdListData } = useFindHoldInfoByCenter(postData.centerId);
 
-  const { isLoading } = useCreatePost();
+  const { isLoading } = useCreatePost({
+    onSuccess: () => {
+      alert('입력 완료 되었습니다.');
+      router.push('/');
+    },
+    onError: () => {
+      alert('피드 작성에 실패했습니다. 다시 시도해주세요.');
+      window.location.reload();
+    },
+  });
   const { mutate: getPostContentsList, isLoading: getPostContentsListLoading } =
     useGetPostContentsList();
 

@@ -4,16 +4,16 @@ import { LoginScreenProp } from 'climbingapp/src/navigation/screens/auth/type';
 import { injectedScriptForWebViewBackButton } from 'climbingapp/src/utils/constants';
 import { storeData } from 'climbingapp/src/utils/storage';
 import React, { useEffect, useRef, useState } from 'react';
-import { BackHandler } from 'react-native';
+import { BackHandler, Platform, ToastAndroid } from 'react-native';
 import { WebView, WebViewMessageEvent } from 'react-native-webview';
-
+import { isJsonString } from 'climbingapp/src/utils/isJsonString';
 interface WebInfo {
   url: string;
 }
 
 export default function CustomWebView({ url }: WebInfo) {
   const webviewRef = useRef<WebView>(null);
-  const { user, logout } = useAuth();
+  const { user, logout, leaveClaon } = useAuth();
   const navigation = useNavigation<LoginScreenProp>();
 
   const sendTokenToWebview = () => {
@@ -52,18 +52,31 @@ export default function CustomWebView({ url }: WebInfo) {
     }
   };
 
-  const onMessageHandler = ({ nativeEvent: state }: WebViewMessageEvent) => {
-    if (state.data === typeof JSON) {
+  const onMessageHandler = async ({ nativeEvent: state }: WebViewMessageEvent) => {
+    console.log(state.data);
+    if (isJsonString(state.data)) {
       const data = JSON.parse(state.data);
       if (data.type === 'updateToken') {
         handleUpdateToken(data);
+      } else if (data.type === 'logout') {
+        console.log('sdsdfsd');
+        await logout()
+          .then(() => {
+            if (Platform.OS === 'android') {
+              ToastAndroid.show('로그아웃 되었습니다', 3);
+            }
+          })
+          .then(() => navigation.reset({ routes: [{ name: 'login' }] }));
+      } else if (data.type === 'leave') {
+        await leaveClaon()
+          .then(() => {
+            if (Platform.OS === 'android') {
+              ToastAndroid.show('회원탈퇴 되었습니다', 3);
+            }
+          })
+          .then(() => navigation.reset({ routes: [{ name: 'login' }] }));
       }
-      if (data.type === 'logout') {
-        logout();
-        navigation.reset({ routes: [{ name: 'login' }] });
-      }
-    }
-    if (state.data === 'navigationStateChange') {
+    } else if (state.data === 'navigationStateChange') {
       setIsCanGoBack(state.canGoBack);
     }
   };
