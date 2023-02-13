@@ -12,7 +12,7 @@ import SignUpStepTwoScreen from './screens/auth/SignUpStepTwoScreen';
 import HomeScreen from './screens/main/HomeScreen';
 import { useAuth } from '../hooks/useAuth';
 import { useGetTokenFromStorage } from '../hooks/useGetTokenFromStorage';
-import { Back } from '../component/appBar/\bBack';
+import { Back } from '../component/appBar/Back';
 const Stack = createNativeStackNavigator();
 
 const LoginNavigator = () => {
