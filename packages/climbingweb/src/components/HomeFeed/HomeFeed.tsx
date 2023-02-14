@@ -90,7 +90,7 @@ const HomeFeed = ({ postData }: HomeFeedProps) => {
     } else {
       setOpenBTSheet(false);
       setOpenDelete(false);
-      router.push(`/edit/${postData.postId}`);
+      router.push(`/feed/edit/${postData.postId}`);
     }
   };
 
