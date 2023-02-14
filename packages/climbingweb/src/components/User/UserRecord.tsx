@@ -6,6 +6,10 @@ import MiniHold from './MiniHold';
 
 interface UserRecordProps extends CenterClimbingHistoryResponse {}
 
+const contentWidth = (global.innerWidth - 32) * (3 / 10);
+
+console.log(contentWidth);
+
 const UserRecord = ({
   center: { centerName, centerImage },
   climbingHistories,
@@ -15,15 +19,20 @@ const UserRecord = ({
   }
 
   return (
-    <span className="flex flex-col rounded-lg shadow-sm mr-2 shadow-gray-300 h-[155px] min-w-[90px] pb-[5px]">
+    <span
+      className={
+        'flex flex-col rounded-lg shadow-md mr-2 shadow-gray-300 min-w-[80px] min-h-[120px] pb-[5px]'
+      }
+    >
       <div className="aspect-square flex items-center justify-center mx-[5px] p-[5px]">
         <Image
           className="relative rounded-full"
           src={centerImage}
           alt={centerName}
-          height={80}
-          width={80}
+          height={contentWidth}
+          width={contentWidth}
           objectFit={'contain'}
+          priority
         />
       </div>
       <div className="pl-[5px] pr-2">

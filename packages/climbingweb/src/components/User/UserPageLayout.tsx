@@ -22,15 +22,17 @@ const UserPageLayout = ({
   userRecordList,
   userFeedList,
 }: UserPageProps) => (
-  <section className="mx-4 mb-footer">
+  <section className="mb-footer">
     {appBar}
-    {userHead}
-    <PageSubTitle title="기록" />
-    <div className="flex overflow-auto scrollbar-hide h-40">
-      {userRecordList}
+    <div className="mx-4">
+      {userHead}
+      <PageSubTitle title="기록" />
+      <div className="flex overflow-auto scrollbar-hide my-2 mb-4">
+        {userRecordList}
+      </div>
+      <PageSubTitle title="게시글" />
+      {userFeedList}
     </div>
-    <PageSubTitle title="게시글" />
-    {userFeedList}
   </section>
 );
 
