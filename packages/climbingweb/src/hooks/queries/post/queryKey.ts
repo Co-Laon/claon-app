@@ -27,6 +27,7 @@ import {
   getPost,
   getPosts,
   updateComment,
+  deletePost,
 } from './queries';
 import { useRouter } from 'next/router';
 import { useToast } from '../../useToast';
@@ -34,6 +35,7 @@ import {
   CommentResponse,
   LikeResponse,
   PostContents,
+  PostDeleteResponse,
   PostReportResponse,
   PostResponse,
 } from 'climbingweb/types/response/post';
@@ -178,7 +180,6 @@ export const useCreatePost = (
         console.error(error);
         toast('피드 작성에 실패했습니다. 다시 시도해주세요.');
         window.location.reload();
-
       },
     }
   );
@@ -404,6 +405,35 @@ export const useDeleteComment = (
         });
       }
     },
+  });
+};
+
+/**
+ * delete post api useMutation hooks
+ *
+ * @param postId
+ * @param options
+ * @returns
+ */
+export const useDeletePost = (
+  postId: string,
+  options?: Omit<
+    UseMutationOptions<PostDeleteResponse, unknown, void, unknown>,
+    'mutationFn'
+  >
+) => {
+  const queryClient = useQueryClient();
+  return useMutation(() => deletePost(postId), {
+    onSuccess: (data, variables, context) => {
+      if (options?.onSuccess) {
+        options.onSuccess(data, variables, context);
+      }
+      queryClient.invalidateQueries({
+        queryKey: ['delete', postId],
+        refetchInactive: true,
+      });
+    },
+    ...options
   });
 };
 

@@ -27,6 +27,20 @@ export interface PostDetailResponse {
   userProfile: string;
 }
 
+export interface PostDeleteResponse {
+  centerId: string;
+  centerName: string;
+  climbingHistories: ClimbingHistoryResponse[];
+  content: string;
+  contentList: string[];
+  createdAt: string;
+  isDeleted: boolean;
+  likeCount: number;
+  postId: string;
+  userNickname: string;
+  userProfile: string;
+}
+
 export interface PostContents {
   url: string;
 }
