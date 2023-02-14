@@ -15,6 +15,7 @@ import {
   useFindAllParentComment,
   useUpdateComment,
 } from 'climbingweb/src/hooks/queries/post/queryKey';
+import { useBnbHide } from 'climbingweb/src/hooks/useBnB';
 import { useIntersectionObserver } from 'climbingweb/src/hooks/useIntersectionObserver';
 import {
   CommentCreateRequest,
@@ -35,6 +36,8 @@ export default function CommentDetailPage() {
   const { fid, cid } = router.query;
   const feedId = fid as string;
   const parentCommentId = cid as string;
+
+  useBnbHide();
 
   //바텀시트 open state
   const [openBTSheet, setOpenBTSheet] = useState<boolean>(false);

@@ -17,6 +17,21 @@ export const CommentInput = ({
   //등록 버튼 클릭 핸들러
   const [inputFocus, setInputFocus] = useState<boolean>(false);
 
+  /**
+   * textarea 높이를 지정하는 함수
+   *
+   * @param lineNumber textarea 높이를 지정할 줄 수, 지정하지 않을 경우 textarea.scrollHeight 로 지정 (현재 입력된 내용에 따라 높이가 달라짐)
+   */
+  const setTextAreatLine = (lineNumber?: number) => {
+    const textarea = refObj.current;
+    if (textarea) {
+      textarea.style.height = 'auto';
+      textarea.style.height = lineNumber
+        ? INIT_TEXTAREA_SCROLL_HEIGHT * lineNumber + 'px'
+        : textarea.scrollHeight + 'px';
+    }
+  };
+
   const handleInputFocus = () => {
     setInputFocus(true);
   };
@@ -34,6 +49,7 @@ export const CommentInput = ({
         content: refObj.current?.value,
       });
       refObj.current.value = '';
+      setTextAreatLine();
     }
     setInputFocus(false);
   };
@@ -41,16 +57,14 @@ export const CommentInput = ({
   const handleTextareaChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     const textarea = e.target;
     if (textarea.scrollHeight > INPUT_FONT_SIZE * 5) {
-      textarea.style.height = 'auto';
-      textarea.style.height = INIT_TEXTAREA_SCROLL_HEIGHT * 3 + 'px';
+      setTextAreatLine(3);
       return;
     }
-    textarea.style.height = 'auto';
-    textarea.style.height = textarea.scrollHeight + 'px';
+    setTextAreatLine();
   };
 
   return (
-    <div className={'bg-gray-100 w-full flex p-4 fixed bottom-0 mb-footer '}>
+    <div className={'bg-gray-100 w-full flex p-4 fixed bottom-0'}>
       <div
         className={`w-full z-10 border-[1px] rounded-lg bg-white flex ${
           inputFocus ? 'border-purple-500' : 'border-gray-300'
