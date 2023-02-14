@@ -314,6 +314,10 @@ export const useCreateChildComment = (
           options.onSuccess(data, variables, context);
         }
         queryClient.invalidateQueries({
+          queryKey: postQueries.detail(postId).queryKey,
+          refetchInactive: true,
+        });
+        queryClient.invalidateQueries({
           queryKey: postQueries.childrenComment(parentId).queryKey,
           refetchInactive: true,
         });

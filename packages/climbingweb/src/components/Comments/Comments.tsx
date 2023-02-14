@@ -1,4 +1,5 @@
 import { useRouter } from 'next/router';
+import { useState } from 'react';
 import { ProfileImage } from '../common/profileImage/ProfileImage';
 import { CommentSkeleton } from '../common/skeleton/CommentSkeleton';
 
@@ -47,8 +48,14 @@ export const Comment = ({
   handleDeleteCommentClick,
 }: CommentProps) => {
   const router = useRouter();
-  const hanedleCreateChildComment = () => {
+  const [moreRead, setMoreRead] = useState(false);
+
+  const handleCreateChildComment = () => {
     router.push(`/feed/${postId}/comments/${commentId}`);
+  };
+
+  const handleMoreReadClick = () => {
+    setMoreRead(true);
   };
 
   if (!(postId && commentId && content)) {
@@ -56,48 +63,57 @@ export const Comment = ({
   }
 
   return (
-    <div className="w-screen flex flex-row mr-5">
-      <div className="flex flex-row py-4 gap-2">
-        <div className="w-10 mr-3 relative">
-          <ProfileImage src={writerProfileImage} />
-        </div>
-        <div className="w-screen gap-2">
-          <div className="h-10">
-            <p className="text-sm font-bold">{writerNickname}</p>
-            <p className="text-gray-400 ">
-              {updatedAt ? updatedAt : createdAt}
-              {isParent && (
+    <div className="w-full flex flex-row mb-4 pr-4 gap-2">
+      <div className="w-10 ml-1 mr-3 relative">
+        <ProfileImage size={40} src={writerProfileImage} />
+      </div>
+      <div className="w-full">
+        <div className="h-10 mb-2">
+          <p className="text-base font-bold">{writerNickname}</p>
+          <p className="text-gray-400 text-sm">
+            {updatedAt ? updatedAt : createdAt}
+            {isParent && (
+              <span
+                className="hover:text-black text-sm"
+                onClick={handleCreateChildComment}
+              >
+                ·대댓글 달기
+              </span>
+            )}
+            {isOwner && (
+              <>
                 <span
-                  className="hover:text-black"
-                  onClick={hanedleCreateChildComment}
+                  className="hover:text-black text-sm"
+                  onClick={() => handleModifyCommentClick(commentId, content)}
                 >
-                  ·대댓글 달기
+                  ·수정
                 </span>
-              )}
-              {isOwner && (
-                <>
-                  <span
-                    className="hover:text-black"
-                    onClick={() => handleModifyCommentClick(commentId, content)}
-                  >
-                    ·수정
-                  </span>
-                  <span
-                    className="hover:text-black"
-                    onClick={() => handleDeleteCommentClick(commentId)}
-                  >
-                    ·삭제
-                  </span>
-                </>
-              )}
-            </p>
-          </div>
-          <div className="w-screen">
-            <p className="text-sm line-clamp-3 inline">
-              {isDeleted ? '삭제된 게시글 입니다' : content}
-            </p>
-          </div>
+                <span
+                  className="hover:text-black text-sm"
+                  onClick={() => handleDeleteCommentClick(commentId)}
+                >
+                  ·삭제
+                </span>
+              </>
+            )}
+          </p>
         </div>
+        {content.length > 75 && !moreRead ? (
+          <div className="w-full text-sm break-all mr-2">
+            <span>
+              {isDeleted
+                ? '삭제된 게시글 입니다'
+                : content.substring(0, 75) + '...'}
+            </span>
+            <span className="text-gray-400" onClick={handleMoreReadClick}>
+              더보기
+            </span>
+          </div>
+        ) : (
+          <div className="w-full text-sm break-all mr-2">
+            {isDeleted ? '삭제된 게시글 입니다' : content}
+          </div>
+        )}
       </div>
     </div>
   );
@@ -146,9 +162,12 @@ export function ParentComment({
         handleDeleteCommentClick={() => handleDeleteCommentClick(commentId)}
       />
       {childrenCommentCount > 0 ? (
-        <div className="flex flex-row pl-10 h-10 content-center items-center">
+        <div className="flex flex-row ml-16 mb-4 content-center items-center">
           <div className="bg-gray-400 h-px w-8 mr-3" />
-          <span className="text-gray-400" onClick={handleMoreCommentClick}>
+          <span
+            className="text-gray-400 text-sm"
+            onClick={handleMoreCommentClick}
+          >
             대댓글 {childrenCommentCount}개 더 보기
           </span>
         </div>
