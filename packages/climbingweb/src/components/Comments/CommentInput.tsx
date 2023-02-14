@@ -64,7 +64,7 @@ export const CommentInput = ({
   };
 
   return (
-    <div className={'bg-gray-100 w-full flex p-4 fixed bottom-0 mb-footer '}>
+    <div className={'bg-gray-100 w-full flex p-4 fixed bottom-0'}>
       <div
         className={`w-full z-10 border-[1px] rounded-lg bg-white flex ${
           inputFocus ? 'border-purple-500' : 'border-gray-300'
