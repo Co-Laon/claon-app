@@ -1,6 +1,7 @@
 import {
   ChildCommentResponse,
   CommentResponse,
+  PostDeleteResponse,
 } from './../../../../types/response/post/index.d';
 import axios from 'axios';
 import { Pagination } from 'climbingweb/types/common';
@@ -228,6 +229,23 @@ export const deleteComment = async (commentId: string) => {
     throw error.response.data;
   }
 };
+
+
+/**
+ * Delete /api/v1/posts/{postId} api query 함수
+ * 
+ * @param postId 
+ * @returns axiosResponse.data   
+ */
+export const deletePost = async (postId: string) => {
+  try {
+    const { data } = await axios.delete<PostDeleteResponse>(`/posts/${postId}`);
+    return data;
+  } catch (error: any) {
+    throw error.response.data;
+  }
+};
+
 export const getPostContentsList = async (fileList: File[]) => {
   const data = await axios
     .all(

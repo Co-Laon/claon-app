@@ -7,11 +7,15 @@ export const ButtonSheet = ({
   text,
 }: ConfirmSheetProps) => {
   return (
-    <div className="flex flex-col gap-6 mb-4 p-4">
+    <div className="flex flex-col gap-[10px] pt-[10px] pb-[20px] px-[15px]">
       <p className="text-base text-gray-600 font-normal text-center">{text}</p>
-      <div className="flex flex-row justify-center text-center text-base font-bold px-4 gap-4">
-        <WhiteButton onClick={onCancel}>취소</WhiteButton>
-        <NormalButton onClick={onConfirm}>확인</NormalButton>
+      <div className="flex flex-row justify-center text-center text-base font-bold gap-4 h-[5.6vh]">
+        <WhiteButton className="h-[5.6vh] text-base" onClick={onCancel}>
+          취소
+        </WhiteButton>
+        <NormalButton className="h-[5.6vh] text-base" onClick={onConfirm}>
+          확인
+        </NormalButton>
       </div>
     </div>
   );
