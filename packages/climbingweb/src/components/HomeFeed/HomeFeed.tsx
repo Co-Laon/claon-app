@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { useState } from 'react';
 import FeedContent from './FeedContent/FeedContent';
 import FeedHeader from './FeedHeader/FeedHeader';
@@ -19,6 +19,8 @@ import {
 import { FeedSkeleton } from '../common/skeleton/FeedSkeleton';
 import { ButtonSheet } from '../common/BottomSheetContents/ButtonSheet';
 import { useToast } from 'climbingweb/src/hooks/useToast';
+import { useCreatePostForm } from 'climbingweb/src/hooks/useCreatePostForm';
+import { PostCreateRequest } from 'climbingweb/types/request/post';
 
 interface HomeFeedProps {
   postData: PostDetailResponse | UserPostDetailResponse;
@@ -32,6 +34,7 @@ const HomeFeed = ({ postData }: HomeFeedProps) => {
   const [openDelete, setOpenDelete] = useState<boolean>(false);
   //Toast
   const { toast } = useToast();
+  const { setPostData, selectImageList } = useCreatePostForm();
   //삭제 mutation
   const { mutate: deleteFeedMutate } = useDeletePost(postData.postId, {
     onSuccess: () => {
@@ -59,6 +62,20 @@ const HomeFeed = ({ postData }: HomeFeedProps) => {
 
   //좋아요 취소 useMutation
   const { mutate: deleteLikeMutate } = useDeleteLike(postData.postId);
+
+  //redux에 postData를 저장하기 위하여 postData를 PostCreateRequest로 변환
+  const responseToRequest: PostCreateRequest = useMemo(
+    () => ({
+      centerId: postData.centerId,
+      climbingHistories: postData.climbingHistories.map((history) => ({
+        climbingCount: history.climbingCount,
+        holdId: history.holdId,
+      })),
+      content: postData.content,
+      contentsList: postData.contentsList.map((c) => ({ url: c })),
+    }),
+    [postData]
+  );
 
   //좋아요 아이콘 클릭 핸들러
   const handleLikeButtonClick = () => {
@@ -90,6 +107,7 @@ const HomeFeed = ({ postData }: HomeFeedProps) => {
     } else {
       setOpenBTSheet(false);
       setOpenDelete(false);
+      setPostData(responseToRequest);
       router.push(`/feed/edit/${postData.postId}`);
     }
   };
