@@ -13,6 +13,7 @@ import {
 } from 'climbingweb/src/hooks/queries/center/queryKey';
 import { useEditContentsList } from 'climbingweb/src/hooks/queries/post/queryKey';
 import { useCreatePostForm } from 'climbingweb/src/hooks/useCreatePostForm';
+import { ClimbingHistoryRequest } from 'climbingweb/types/request/post';
 import { useRouter } from 'next/router';
 import { useCallback, useEffect, useRef, useState } from 'react';
 
@@ -20,7 +21,7 @@ function EditFeed() {
   const router = useRouter();
   const { fid } = router.query;
   const [page, setPage] = useState<string>('first');
-  const { postData, initPost } = useCreatePostForm();
+  const { postData, initPost, setPostData } = useCreatePostForm();
   const searchInputRef = useRef<HTMLInputElement>(null);
   const [searchInput, setSearchInput] = useState<string>('');
   const [selected, setSelected] = useState(false);
@@ -47,10 +48,17 @@ function EditFeed() {
       );
     }
   }, [getEditContentsList]);
-  const handleContentInput = useCallback(() => {}, []);
+  const handleContentInput = useCallback((content: string) => {
+    setPostData({ ...postData, content });
+  }, []);
   const handleCenterIdInput = useCallback(() => {}, []);
   const handleSearchInputChange = useCallback(() => {}, []);
-  const handleClimbingHistoriesInput = useCallback(() => {}, []);
+  const handleClimbingHistoriesInput = useCallback(
+    (climbingHistories: ClimbingHistoryRequest[]) => {
+      setPostData({ ...postData, climbingHistories });
+    },
+    [setPostData, postData]
+  );
 
   //뒤로가기 버튼 핸들링 함수
   const handleOnClickBackButton = useCallback(() => {
@@ -108,6 +116,7 @@ function EditFeed() {
               centerList={centerList}
               onChange={handleSearchInputChange}
               className="px-[4px] min-h-[52px]"
+              disable={true}
             />
             <PageSubTitle
               title={'완등 횟수'}

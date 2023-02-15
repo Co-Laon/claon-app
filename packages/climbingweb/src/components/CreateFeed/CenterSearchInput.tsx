@@ -11,6 +11,7 @@ interface CenterSearchInputProps {
   centerList?: CenterNameResponse[];
   onChange: any;
   className?: string;
+  disable?: boolean;
 }
 
 export const CenterSearchInput = ({
@@ -22,6 +23,7 @@ export const CenterSearchInput = ({
   centerList,
   onChange,
   className,
+  disable = false,
 }: CenterSearchInputProps) => {
   //focus 관련 state
   const [focused, setFocused] = useState(false);
@@ -31,7 +33,6 @@ export const CenterSearchInput = ({
   const [inputValue, setInputValue] = useState<string>(
     initialValue ? initialValue : ''
   );
-  const [disable, setDisable] = useState<boolean>(false);
   const [disableCss, setDisableCss] = useState<string>('');
 
   const inputCss = `border-2 border-gray-300 h-[7.8vh] w-full bg-white relative flex flex-col justify-between px-[21px] focused:border-purple-500 ${
@@ -39,11 +40,10 @@ export const CenterSearchInput = ({
   } ${isOptionOpen ? 'rounded-t-lg' : 'rounded-lg'}`;
 
   useEffect(() => {
-    if (initialValue) {
-      setDisable(true);
+    if (disable) {
       setDisableCss('bg-[#E6E6E6]');
     }
-  }, [initialValue, disable, disableCss]);
+  }, [disable]);
 
   //focus 관련 handler
   const handleFocused = () => {
