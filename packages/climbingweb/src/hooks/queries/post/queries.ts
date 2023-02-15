@@ -1,6 +1,7 @@
 import {
   ChildCommentResponse,
   CommentResponse,
+  PostContents,
   PostDeleteResponse,
 } from './../../../../types/response/post/index.d';
 import axios from 'axios';
@@ -9,6 +10,7 @@ import {
   CommentCreateRequest,
   CommentUpdateRequest,
   PostCreateRequest,
+  PostEditRequest,
   PostReportRequest,
 } from 'climbingweb/types/request/post';
 import {
@@ -18,6 +20,7 @@ import {
   PostReportResponse,
   PostResponse,
 } from 'climbingweb/types/response/post';
+import { PostImage } from 'climbingweb/src/store/slices/createFeed';
 
 /**
  * POST /api/v1/posts/{postId}/like api query 함수
@@ -44,6 +47,21 @@ export const createPost = async (postCreateRequest: PostCreateRequest) => {
     const { data } = await axios.post<PostResponse>(
       '/posts',
       postCreateRequest
+    );
+    return data;
+  } catch (error: any) {
+    throw error.response.data;
+  }
+};
+
+export const editPost = async (
+  postEditRequest: PostEditRequest,
+  postId: string
+) => {
+  try {
+    const { data } = await axios.put<PostResponse>(
+      `/posts/${postId}`,
+      postEditRequest
     );
     return data;
   } catch (error: any) {
@@ -230,12 +248,11 @@ export const deleteComment = async (commentId: string) => {
   }
 };
 
-
 /**
  * Delete /api/v1/posts/{postId} api query 함수
- * 
- * @param postId 
- * @returns axiosResponse.data   
+ *
+ * @param postId
+ * @returns axiosResponse.data
  */
 export const deletePost = async (postId: string) => {
   try {
@@ -268,4 +285,25 @@ export const getPostContentsList = async (fileList: File[]) => {
       throw error.response;
     });
   return data;
+};
+
+//파일 단건 등록
+export const getEditContentList = async (fileList: PostImage[]) => {
+  const data = await fileList.map((file) => {
+    if (file.file == null) {
+      return { url: file.thumbNail };
+    } else {
+      axios
+        .post<string>('/posts/contents', FormData, {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        })
+        .then((res: any) => ({ url: res.data }))
+        .catch((error: any) => {
+          throw error.response;
+        });
+    }
+  });
+  return data as PostContents[];
 };

@@ -31,10 +31,19 @@ export const CenterSearchInput = ({
   const [inputValue, setInputValue] = useState<string>(
     initialValue ? initialValue : ''
   );
+  const [disable, setDisable] = useState<boolean>(false);
+  const [disableCss, setDisableCss] = useState<string>('');
 
   const inputCss = `border-2 border-gray-300 h-[7.8vh] w-full bg-white relative flex flex-col justify-between px-[21px] focused:border-purple-500 ${
     focused ? 'border-purple-500' : ''
   } ${isOptionOpen ? 'rounded-t-lg' : 'rounded-lg'}`;
+
+  useEffect(() => {
+    if (initialValue) {
+      setDisable(true);
+      setDisableCss('bg-[#E6E6E6]');
+    }
+  }, [initialValue, disable, disableCss]);
 
   //focus 관련 handler
   const handleFocused = () => {
@@ -76,7 +85,7 @@ export const CenterSearchInput = ({
 
   return (
     <div className={`relative ${className} `}>
-      <form className={inputCss} id="searchInputForm">
+      <form className={`${inputCss} ${disableCss}`} id="searchInputForm">
         <input
           ref={refObj}
           value={inputValue}
@@ -84,6 +93,7 @@ export const CenterSearchInput = ({
           onFocus={handleFocused}
           onBlur={handleFocusedOut}
           className="h-full w-full outline-0 text-sm font-medium"
+          disabled={disable}
         />
       </form>
       {isOptionOpen && centerList ? (

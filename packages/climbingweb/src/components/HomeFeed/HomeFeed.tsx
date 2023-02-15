@@ -20,7 +20,7 @@ import { FeedSkeleton } from '../common/skeleton/FeedSkeleton';
 import { ButtonSheet } from '../common/BottomSheetContents/ButtonSheet';
 import { useToast } from 'climbingweb/src/hooks/useToast';
 import { useCreatePostForm } from 'climbingweb/src/hooks/useCreatePostForm';
-import { PostCreateRequest } from 'climbingweb/types/request/post';
+import { PostDetailRequest } from 'climbingweb/types/request/post';
 
 interface HomeFeedProps {
   postData: PostDetailResponse | UserPostDetailResponse;
@@ -34,7 +34,7 @@ const HomeFeed = ({ postData }: HomeFeedProps) => {
   const [openDelete, setOpenDelete] = useState<boolean>(false);
   //Toast
   const { toast } = useToast();
-  const { setPostData, selectImageList } = useCreatePostForm();
+  const { setPostData, addExistedImageList } = useCreatePostForm();
   //삭제 mutation
   const { mutate: deleteFeedMutate } = useDeletePost(postData.postId, {
     onSuccess: () => {
@@ -64,7 +64,7 @@ const HomeFeed = ({ postData }: HomeFeedProps) => {
   const { mutate: deleteLikeMutate } = useDeleteLike(postData.postId);
 
   //redux에 postData를 저장하기 위하여 postData를 PostCreateRequest로 변환
-  const responseToRequest: PostCreateRequest = useMemo(
+  const responseToRequest: PostDetailRequest = useMemo(
     () => ({
       centerId: postData.centerId,
       climbingHistories: postData.climbingHistories.map((history) => ({
@@ -73,6 +73,8 @@ const HomeFeed = ({ postData }: HomeFeedProps) => {
       })),
       content: postData.content,
       contentsList: postData.contentsList.map((c) => ({ url: c })),
+      postId: postData.postId,
+      centerName: postData.centerName,
     }),
     [postData]
   );
@@ -108,6 +110,8 @@ const HomeFeed = ({ postData }: HomeFeedProps) => {
       setOpenBTSheet(false);
       setOpenDelete(false);
       setPostData(responseToRequest);
+      addExistedImageList(postData.contentsList);
+
       router.push(`/feed/edit/${postData.postId}`);
     }
   };

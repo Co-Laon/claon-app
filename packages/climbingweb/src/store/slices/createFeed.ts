@@ -1,14 +1,14 @@
-import { PostCreateRequest } from './../../../types/request/post/index.d';
+import { PostDetailRequest } from './../../../types/request/post/index.d';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 export interface PostImage {
-  file: File;
+  file: File | null;
   thumbNail: string;
 }
 
 const defaultPostImageList: PostImage[] = [];
 
-const defaultPostData: PostCreateRequest = {
+const defaultPostData: PostDetailRequest = {
   centerId: '',
   climbingHistories: [
     {
@@ -22,6 +22,8 @@ const defaultPostData: PostCreateRequest = {
       url: '',
     },
   ],
+  postId: '',
+  centerName: '',
 };
 
 const initialState = {
@@ -33,7 +35,7 @@ const createPostSlice = createSlice({
   name: 'createFeed',
   initialState,
   reducers: {
-    setReduxPostData(state, action: PayloadAction<PostCreateRequest>) {
+    setReduxPostData(state, action: PayloadAction<PostDetailRequest>) {
       state.postData = action.payload;
     },
     addReduxPostImage(state, action: PayloadAction<PostImage>) {

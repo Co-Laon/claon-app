@@ -1,6 +1,7 @@
 import { AppBar } from 'climbingweb/src/components/common/AppBar';
 import { BackButton } from 'climbingweb/src/components/common/AppBar/IconButton';
 import { NextButton } from 'climbingweb/src/components/common/AppBar/NextButton';
+import Loading from 'climbingweb/src/components/common/Loading/Loading';
 import PageSubTitle from 'climbingweb/src/components/common/PageSubTitle/PageSubTitle';
 import TextArea from 'climbingweb/src/components/common/TextArea/TextArea';
 import { CenterSearchInput } from 'climbingweb/src/components/CreateFeed/CenterSearchInput';
@@ -10,34 +11,66 @@ import {
   useFindHoldInfoByCenter,
   useSearchCenterName,
 } from 'climbingweb/src/hooks/queries/center/queryKey';
+import { useEditContentsList } from 'climbingweb/src/hooks/queries/post/queryKey';
 import { useCreatePostForm } from 'climbingweb/src/hooks/useCreatePostForm';
-import { useRef, useState } from 'react';
+import { useRouter } from 'next/router';
+import { useCallback, useEffect, useRef, useState } from 'react';
 
 function EditFeed() {
+  const router = useRouter();
+  const { fid } = router.query;
   const [page, setPage] = useState<string>('first');
-  const { postData, setPostData, postImageList, initPost } =
-    useCreatePostForm();
+  const { postData, initPost } = useCreatePostForm();
   const searchInputRef = useRef<HTMLInputElement>(null);
   const [searchInput, setSearchInput] = useState<string>('');
   const [selected, setSelected] = useState(false);
   const { data: centerList } = useSearchCenterName(searchInput);
   const { data: holdListData } = useFindHoldInfoByCenter(postData.centerId);
+  const { mutate: getEditContentsList, isLoading } = useEditContentsList(
+    fid as string
+  );
 
-  const handlePostDataSubmit = () => {};
-  const handleContentInput = () => {};
-  const handleCenterIdInput = () => {};
-  const handleSearchInputChange = () => {};
-  const handleClimbingHistoriesInput = () => {};
+  useEffect(() => {
+    return () => {
+      initPost();
+    };
+  }, []);
+
+  const handleDataSubmit = useCallback(() => {
+    getEditContentsList();
+
+    if (isLoading) {
+      return (
+        <section className=" h-screen flex justify-center items-center">
+          <Loading />
+        </section>
+      );
+    }
+  }, [getEditContentsList]);
+  const handleContentInput = useCallback(() => {}, []);
+  const handleCenterIdInput = useCallback(() => {}, []);
+  const handleSearchInputChange = useCallback(() => {}, []);
+  const handleClimbingHistoriesInput = useCallback(() => {}, []);
+
+  //뒤로가기 버튼 핸들링 함수
+  const handleOnClickBackButton = useCallback(() => {
+    setPage('first');
+  }, []);
+
   return (
     <div className="mb-footer overflow-auto scrollbar-hide">
       <AppBar
         title="게시글 수정"
-        leftNode={<BackButton onClick={() => {}} />}
+        leftNode={
+          <BackButton
+            onClick={page === 'second' ? handleOnClickBackButton : undefined}
+          />
+        }
         rightNode={
           <NextButton
             pageState={page}
             setPageState={setPage}
-            onSubmit={page === 'second' ? handlePostDataSubmit : null}
+            onSubmit={page === 'second' ? handleDataSubmit : null}
           />
         }
       />
@@ -71,7 +104,7 @@ function EditFeed() {
               selected={selected}
               setSelected={setSelected}
               setData={handleCenterIdInput}
-              initialValue={searchInput}
+              initialValue={postData.centerName}
               centerList={centerList}
               onChange={handleSearchInputChange}
               className="px-[4px] min-h-[52px]"

@@ -1,5 +1,5 @@
 import { RootState } from '../store/slices/index';
-import { useMemo } from 'react';
+import { useMemo, useCallback } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import {
   deleteReduxPostImageList,
@@ -65,6 +65,13 @@ export const useCreatePostForm = () => {
     deletePostImageList(id);
   };
 
+  const addExistedImageList = useCallback((urls: string[]) => {
+    urls.forEach((url) => {
+      const existedImage: PostImage = { file: null, thumbNail: url };
+      addPostImage(existedImage);
+    });
+  }, []);
+
   return {
     postData,
     setPostData,
@@ -72,5 +79,6 @@ export const useCreatePostForm = () => {
     selectImageList,
     deleteImageList,
     initPost,
+    addExistedImageList
   };
 };

@@ -5,6 +5,7 @@ import {
   CommentCreateRequest,
   CommentUpdateRequest,
   PostCreateRequest,
+  PostEditRequest,
   PostReportRequest,
 } from 'climbingweb/types/request/post';
 import {
@@ -28,6 +29,8 @@ import {
   getPosts,
   updateComment,
   deletePost,
+  editPost,
+  getEditContentList,
 } from './queries';
 import { useRouter } from 'next/router';
 import { useToast } from '../../useToast';
@@ -180,6 +183,33 @@ export const useCreatePost = (
         console.error(error);
         toast('피드 작성에 실패했습니다. 다시 시도해주세요.');
         window.location.reload();
+      },
+    }
+  );
+};
+
+export const useEditPost = (
+  postId: string,
+  options?: Omit<
+    UseMutationOptions<PostResponse, unknown, PostEditRequest, unknown>,
+    'mutationFn'
+  >
+) => {
+  const queryClient = useQueryClient();
+
+  return useMutation(
+    (postEditRequest: PostEditRequest) => editPost(postEditRequest, postId),
+    {
+      ...options,
+      onSuccess: (data, variables, context) => {
+        if (options?.onSuccess) {
+          options.onSuccess(data, variables, context);
+        }
+
+        queryClient.invalidateQueries({
+          queryKey: postQueries.list().queryKey,
+          refetchInactive: true,
+        });
       },
     }
   );
@@ -433,7 +463,7 @@ export const useDeletePost = (
         refetchInactive: true,
       });
     },
-    ...options
+    ...options,
   });
 };
 
@@ -469,6 +499,23 @@ export const useGetPostContentsList = () => {
     },
     onError: (error) => {
       console.error(error);
+      alert('이미지 업로드에 실패했습니다.');
+    },
+  });
+};
+
+export const useEditContentsList = (postId: string) => {
+  const { postData, postImageList } = useCreatePostForm();
+
+  const { mutate } = useEditPost(postId);
+  const { centerId, ...editData } = postData;
+  return useMutation(() => getEditContentList(postImageList), {
+    onSuccess: (data: PostContents[]) => {
+      console.log(data);
+      mutate({ ...editData, contentsList: data });
+    },
+    onError: (error) => {
+      console.log(error);
       alert('이미지 업로드에 실패했습니다.');
     },
   });
