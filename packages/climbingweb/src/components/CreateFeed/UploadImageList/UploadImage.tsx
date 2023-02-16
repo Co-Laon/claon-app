@@ -8,8 +8,12 @@ interface ImageProps {
 }
 
 export function UploadImage({ id, src }: ImageProps) {
-  const { deleteImageList } = useCreatePostForm();
+  const { deleteImageList, postImageList, addInActiveImage } =
+    useCreatePostForm();
   const handleDeleteMedia = () => {
+    if (postImageList[id].file === null) {
+      addInActiveImage(postImageList[id].thumbNail);
+    }
     deleteImageList(id);
   };
 

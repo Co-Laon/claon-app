@@ -7,9 +7,10 @@ export function UploadImageList() {
   return (
     <div className="w-full flex flex-row gap-2 overflow-x-auto scrollbar-hide ">
       <UploadImageButton />
-      {postImageList?.map(({ thumbNail }, idx) => (
-        <UploadImage key={`key${idx}`} src={thumbNail} id={idx} />
-      ))}
+      {postImageList?.map(
+        ({ thumbNail, active }, idx) =>
+          active && <UploadImage key={`key${idx}`} src={thumbNail} id={idx} />
+      )}
     </div>
   );
 }

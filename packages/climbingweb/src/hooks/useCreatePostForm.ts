@@ -54,6 +54,7 @@ export const useCreatePostForm = () => {
           const image: PostImage = {
             file,
             thumbNail: base64,
+            active: true,
           };
           addPostImage(image);
         }
@@ -67,9 +68,21 @@ export const useCreatePostForm = () => {
 
   const addExistedImageList = useCallback((urls: string[]) => {
     urls.forEach((url) => {
-      const existedImage: PostImage = { file: null, thumbNail: url };
+      const existedImage: PostImage = {
+        file: null,
+        thumbNail: url,
+        active: true,
+      };
       addPostImage(existedImage);
     });
+  }, []);
+  const addInActiveImage = useCallback((url: string) => {
+    const inActiveImage: PostImage = {
+      file: null,
+      thumbNail: url,
+      active: false,
+    };
+    addPostImage(inActiveImage);
   }, []);
 
   return {
@@ -79,6 +92,7 @@ export const useCreatePostForm = () => {
     selectImageList,
     deleteImageList,
     initPost,
-    addExistedImageList
+    addExistedImageList,
+    addInActiveImage,
   };
 };

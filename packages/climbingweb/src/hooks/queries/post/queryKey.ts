@@ -30,7 +30,7 @@ import {
   updateComment,
   deletePost,
   editPost,
-  getEditContentList,
+  editContentList,
 } from './queries';
 import { useRouter } from 'next/router';
 import { useToast } from '../../useToast';
@@ -196,6 +196,8 @@ export const useEditPost = (
   >
 ) => {
   const queryClient = useQueryClient();
+  const router = useRouter();
+  const { toast } = useToast();
 
   return useMutation(
     (postEditRequest: PostEditRequest) => editPost(postEditRequest, postId),
@@ -207,9 +209,18 @@ export const useEditPost = (
         }
 
         queryClient.invalidateQueries({
-          queryKey: postQueries.list().queryKey,
+          queryKey: postQueries.detail(postId).queryKey,
           refetchInactive: true,
         });
+        queryClient.invalidateQueries({
+          queryKey: postQueries.list().queryKey,
+          refetchActive: true,
+        });
+        router.push(`/feed/${postId}`);
+        toast('수정 완료');
+      },
+      onError: () => {
+        toast('수정에 실패하였습니다.');
       },
     }
   );
@@ -503,13 +514,17 @@ export const useGetPostContentsList = () => {
     },
   });
 };
-
+/**
+ * 게시글을 수정할 때 사용하는 함수
+ * @param postId
+ * @returns
+ */
 export const useEditContentsList = (postId: string) => {
   const { postData, postImageList } = useCreatePostForm();
 
   const { mutate } = useEditPost(postId);
   const { centerId, ...editData } = postData;
-  return useMutation(() => getEditContentList(postImageList), {
+  return useMutation(() => editContentList(postImageList, postId).then(), {
     onSuccess: (data: PostContents[]) => {
       console.log(data);
       mutate({ ...editData, contentsList: data });

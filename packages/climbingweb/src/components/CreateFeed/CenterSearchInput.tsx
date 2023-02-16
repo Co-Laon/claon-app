@@ -4,12 +4,12 @@ import { ChangeEvent, useState, useEffect } from 'react';
 
 interface CenterSearchInputProps {
   refObj?: React.RefObject<HTMLInputElement>;
-  selected: boolean;
-  setSelected: any;
-  setData: (centerName: string, centerId: string) => void;
+  selected?: boolean;
+  setSelected?: any;
+  setData?: (centerName: string, centerId: string) => void;
   initialValue?: string;
   centerList?: CenterNameResponse[];
-  onChange: any;
+  onChange?: any;
   className?: string;
   disable?: boolean;
 }
@@ -67,7 +67,7 @@ export const CenterSearchInput = ({
   // option list 중 하나를 선택 했을 때 handler
   const handleSelected = (val: CenterNameResponse) => {
     setInputValue(val.name);
-    setData(val.name, val.id);
+    if (setData) setData(val.name, val.id);
     setSelected(true);
   };
 
@@ -78,7 +78,7 @@ export const CenterSearchInput = ({
 
   useEffect(() => {
     if (!selected) {
-      setData('', '');
+      if (setData) setData('', '');
       setIsOptionOpen(false);
     }
   }, [selected]);

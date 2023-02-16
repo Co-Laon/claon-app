@@ -63,6 +63,7 @@ export const editPost = async (
       `/posts/${postId}`,
       postEditRequest
     );
+    console.log(data);
     return data;
   } catch (error: any) {
     throw error.response.data;
@@ -263,6 +264,23 @@ export const deletePost = async (postId: string) => {
   }
 };
 
+/**
+ * Delete /api/v1/posts/{postId}/contents api query 함수
+ * @param postId
+ * @param url
+ * @returns
+ */
+export const deleteContent = async (postId: string, url: string) => {
+  try {
+    const { data } = await axios.delete(`/posts/${postId}/contents`, {
+      headers: { 'contents-url': url },
+    });
+    return data;
+  } catch (error: any) {
+    throw error.response.data;
+  }
+};
+
 export const getPostContentsList = async (fileList: File[]) => {
   const data = await axios
     .all(
@@ -288,22 +306,52 @@ export const getPostContentsList = async (fileList: File[]) => {
 };
 
 //파일 단건 등록
-export const getEditContentList = async (fileList: PostImage[]) => {
-  const data = await fileList.map((file) => {
-    if (file.file == null) {
-      return { url: file.thumbNail };
-    } else {
-      axios
-        .post<string>('/posts/contents', FormData, {
-          headers: {
-            'Content-Type': 'multipart/form-data',
-          },
-        })
-        .then((res: any) => ({ url: res.data }))
-        .catch((error: any) => {
-          throw error.response;
-        });
-    }
-  });
+export const editContentList = async (
+  fileList: PostImage[],
+  postId: string
+) => {
+  console.log(fileList);
+  const data = await axios
+    .all(
+      fileList.map((file) => {
+        if (file.file == null) {
+          if (file.active) return file.thumbNail;
+          else {
+            axios
+              .delete(`/posts/${postId}/contents`, {
+                headers: { 'contents-url': file.thumbNail },
+              })
+              .then(() => null)
+              .catch((error: any) => {
+                throw error.response;
+              });
+          }
+        } else {
+          console.log('aaa');
+          const formData = new FormData();
+          formData.append('image', file.file);
+          axios
+            .post<string>('/posts/contents', formData, {
+              headers: {
+                'Content-Type': 'multipart/form-data',
+              },
+            })
+            .then((res) => {
+              console.log(`post response: ${res}`);
+              return res.data;
+            })
+            .catch((error: any) => {
+              console.log(error);
+              throw error.response;
+            });
+        }
+      })
+    )
+    .then((...response: any[]) => {
+      console.log(response);
+      return response
+        .filter((res) => res !== null)
+        .map((res) => ({ url: res }));
+    });
   return data as PostContents[];
 };

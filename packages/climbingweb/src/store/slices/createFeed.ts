@@ -4,6 +4,7 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 export interface PostImage {
   file: File | null;
   thumbNail: string;
+  active: boolean;
 }
 
 const defaultPostImageList: PostImage[] = [];

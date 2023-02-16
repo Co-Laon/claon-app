@@ -7,10 +7,7 @@ import TextArea from 'climbingweb/src/components/common/TextArea/TextArea';
 import { CenterSearchInput } from 'climbingweb/src/components/CreateFeed/CenterSearchInput';
 import HoldListModal from 'climbingweb/src/components/CreateFeed/SelectHoldList/HoldListModal';
 import { UploadImageList } from 'climbingweb/src/components/CreateFeed/UploadImageList';
-import {
-  useFindHoldInfoByCenter,
-  useSearchCenterName,
-} from 'climbingweb/src/hooks/queries/center/queryKey';
+import { useFindHoldInfoByCenter } from 'climbingweb/src/hooks/queries/center/queryKey';
 import { useEditContentsList } from 'climbingweb/src/hooks/queries/post/queryKey';
 import { useCreatePostForm } from 'climbingweb/src/hooks/useCreatePostForm';
 import { ClimbingHistoryRequest } from 'climbingweb/types/request/post';
@@ -23,9 +20,6 @@ function EditFeed() {
   const [page, setPage] = useState<string>('first');
   const { postData, initPost, setPostData } = useCreatePostForm();
   const searchInputRef = useRef<HTMLInputElement>(null);
-  const [searchInput, setSearchInput] = useState<string>('');
-  const [selected, setSelected] = useState(false);
-  const { data: centerList } = useSearchCenterName(searchInput);
   const { data: holdListData } = useFindHoldInfoByCenter(postData.centerId);
   const { mutate: getEditContentsList, isLoading } = useEditContentsList(
     fid as string
@@ -51,8 +45,6 @@ function EditFeed() {
   const handleContentInput = useCallback((content: string) => {
     setPostData({ ...postData, content });
   }, []);
-  const handleCenterIdInput = useCallback(() => {}, []);
-  const handleSearchInputChange = useCallback(() => {}, []);
   const handleClimbingHistoriesInput = useCallback(
     (climbingHistories: ClimbingHistoryRequest[]) => {
       setPostData({ ...postData, climbingHistories });
@@ -109,12 +101,7 @@ function EditFeed() {
             />
             <CenterSearchInput
               refObj={searchInputRef}
-              selected={selected}
-              setSelected={setSelected}
-              setData={handleCenterIdInput}
               initialValue={postData.centerName}
-              centerList={centerList}
-              onChange={handleSearchInputChange}
               className="px-[4px] min-h-[52px]"
               disable={true}
             />
