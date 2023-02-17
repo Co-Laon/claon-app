@@ -4,10 +4,11 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 export interface PostImage {
   file: File | null;
   thumbNail: string;
-  active: boolean;
 }
 
 const defaultPostImageList: PostImage[] = [];
+
+const defaultDeleteImageList: string[] = [];
 
 const defaultPostData: PostDetailRequest = {
   centerId: '',
@@ -30,6 +31,7 @@ const defaultPostData: PostDetailRequest = {
 const initialState = {
   postImageList: defaultPostImageList,
   postData: defaultPostData,
+  deleteQueue: defaultDeleteImageList,
 };
 
 const createPostSlice = createSlice({
@@ -42,6 +44,9 @@ const createPostSlice = createSlice({
     addReduxPostImage(state, action: PayloadAction<PostImage>) {
       state.postImageList.push(action.payload);
     },
+    addReduxDeleteImage(state, action: PayloadAction<string>) {
+      state.deleteQueue.push(action.payload);
+    },
     deleteReduxPostImageList(state, action: PayloadAction<number>) {
       state.postImageList = state.postImageList.filter(
         ({}, idx) => action.payload !== idx
@@ -50,6 +55,7 @@ const createPostSlice = createSlice({
     initReduxPost(state) {
       state.postData = defaultPostData;
       state.postImageList = defaultPostImageList;
+      state.deleteQueue = defaultDeleteImageList;
     },
   },
 });
@@ -60,4 +66,5 @@ export const {
   addReduxPostImage,
   deleteReduxPostImageList,
   initReduxPost,
+  addReduxDeleteImage,
 } = createPostSlice.actions;

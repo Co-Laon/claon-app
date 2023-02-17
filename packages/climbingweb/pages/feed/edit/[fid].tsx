@@ -11,26 +11,23 @@ import { useFindHoldInfoByCenter } from 'climbingweb/src/hooks/queries/center/qu
 import { useEditContentsList } from 'climbingweb/src/hooks/queries/post/queryKey';
 import { useCreatePostForm } from 'climbingweb/src/hooks/useCreatePostForm';
 import { ClimbingHistoryRequest } from 'climbingweb/types/request/post';
-import { useRouter } from 'next/router';
 import { useCallback, useEffect, useRef, useState } from 'react';
 
 function EditFeed() {
-  const router = useRouter();
-  const { fid } = router.query;
   const [page, setPage] = useState<string>('first');
   const { postData, initPost, setPostData } = useCreatePostForm();
   const searchInputRef = useRef<HTMLInputElement>(null);
   const { data: holdListData } = useFindHoldInfoByCenter(postData.centerId);
-  const { mutate: getEditContentsList, isLoading } = useEditContentsList(
-    fid as string
-  );
+  const { mutate: getEditContentsList, isLoading } = useEditContentsList();
 
+  //화면 렌더링될 때 초기화
   useEffect(() => {
     return () => {
       initPost();
     };
   }, []);
 
+  //submit
   const handleDataSubmit = useCallback(() => {
     getEditContentsList();
 
@@ -42,9 +39,13 @@ function EditFeed() {
       );
     }
   }, [getEditContentsList]);
+
+  //content 수정
   const handleContentInput = useCallback((content: string) => {
     setPostData({ ...postData, content });
   }, []);
+
+  //Clibming History 수정
   const handleClimbingHistoriesInput = useCallback(
     (climbingHistories: ClimbingHistoryRequest[]) => {
       setPostData({ ...postData, climbingHistories });

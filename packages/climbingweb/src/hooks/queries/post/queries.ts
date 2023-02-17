@@ -20,7 +20,6 @@ import {
   PostReportResponse,
   PostResponse,
 } from 'climbingweb/types/response/post';
-import { PostImage } from 'climbingweb/src/store/slices/createFeed';
 
 /**
  * POST /api/v1/posts/{postId}/like api query 함수
@@ -270,18 +269,22 @@ export const deletePost = async (postId: string) => {
  * @param url
  * @returns
  */
-export const deleteContent = async (postId: string, url: string) => {
-  try {
-    const { data } = await axios.delete(`/posts/${postId}/contents`, {
-      headers: { 'contents-url': url },
+export const deleteContent = async (postId: string, urls: string[]) => {
+  await axios
+    .all(
+      urls.map((url) => {
+        axios.delete(`/posts/${postId}/contents`, {
+          headers: { 'contents-url': url },
+        });
+      })
+    )
+    .catch((error: any) => {
+      throw error.response();
     });
-    return data;
-  } catch (error: any) {
-    throw error.response.data;
-  }
 };
 
 export const getPostContentsList = async (fileList: File[]) => {
+  if (fileList.length == 0) return [] as PostContents[];
   const data = await axios
     .all(
       fileList.map((file) => {
@@ -303,55 +306,4 @@ export const getPostContentsList = async (fileList: File[]) => {
       throw error.response;
     });
   return data;
-};
-
-//파일 단건 등록
-export const editContentList = async (
-  fileList: PostImage[],
-  postId: string
-) => {
-  console.log(fileList);
-  const data = await axios
-    .all(
-      fileList.map((file) => {
-        if (file.file == null) {
-          if (file.active) return file.thumbNail;
-          else {
-            axios
-              .delete(`/posts/${postId}/contents`, {
-                headers: { 'contents-url': file.thumbNail },
-              })
-              .then(() => null)
-              .catch((error: any) => {
-                throw error.response;
-              });
-          }
-        } else {
-          console.log('aaa');
-          const formData = new FormData();
-          formData.append('image', file.file);
-          axios
-            .post<string>('/posts/contents', formData, {
-              headers: {
-                'Content-Type': 'multipart/form-data',
-              },
-            })
-            .then((res) => {
-              console.log(`post response: ${res}`);
-              return res.data;
-            })
-            .catch((error: any) => {
-              console.log(error);
-              throw error.response;
-            });
-        }
-      })
-    )
-    .then((...response: any[]) => {
-      console.log(response);
-      return response
-        .filter((res) => res !== null)
-        .map((res) => ({ url: res }));
-    });
-  return data as PostContents[];
 };

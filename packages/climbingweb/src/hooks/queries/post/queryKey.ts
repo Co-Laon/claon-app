@@ -30,7 +30,7 @@ import {
   updateComment,
   deletePost,
   editPost,
-  editContentList,
+  deleteContent,
 } from './queries';
 import { useRouter } from 'next/router';
 import { useToast } from '../../useToast';
@@ -42,6 +42,7 @@ import {
   PostReportResponse,
   PostResponse,
 } from 'climbingweb/types/response/post';
+import { useRetrieveMe, userQueries } from '../user/queryKey';
 
 /**
  * 추후 성능 개선 필요!!
@@ -188,6 +189,12 @@ export const useCreatePost = (
   );
 };
 
+/**
+ * edit post api useMutation Hooks
+ * @param postId
+ * @param options
+ * @returns
+ */
 export const useEditPost = (
   postId: string,
   options?: Omit<
@@ -198,6 +205,7 @@ export const useEditPost = (
   const queryClient = useQueryClient();
   const router = useRouter();
   const { toast } = useToast();
+  const { data: userData } = useRetrieveMe();
 
   return useMutation(
     (postEditRequest: PostEditRequest) => editPost(postEditRequest, postId),
@@ -214,6 +222,10 @@ export const useEditPost = (
         });
         queryClient.invalidateQueries({
           queryKey: postQueries.list().queryKey,
+          refetchActive: true,
+        });
+        queryClient.invalidateQueries({
+          queryKey: userQueries.name(userData?.nickname as string).queryKey,
           refetchActive: true,
         });
         router.push(`/feed/${postId}`);
@@ -515,23 +527,48 @@ export const useGetPostContentsList = () => {
   });
 };
 /**
+ * content List 삭제하는 api 호출하는 함수
+ * @returns
+ */
+export const useDeleteContentsList = () => {
+  const { postData, deleteQueue } = useCreatePostForm();
+  const { mutate } = useEditPost(postData.postId);
+
+  return useMutation(() => deleteContent(postData.postId, deleteQueue), {
+    onSuccess: () => {
+      mutate({
+        climbingHistories: postData.climbingHistories,
+        content: postData.content,
+        contentsList: postData.contentsList,
+      });
+    },
+  });
+};
+
+/**
  * 게시글을 수정할 때 사용하는 함수
  * @param postId
  * @returns
  */
-export const useEditContentsList = (postId: string) => {
-  const { postData, postImageList } = useCreatePostForm();
+export const useEditContentsList = () => {
+  const { mutate } = useDeleteContentsList();
+  const { postData, postImageList, setPostData } = useCreatePostForm();
 
-  const { mutate } = useEditPost(postId);
-  const { centerId, ...editData } = postData;
-  return useMutation(() => editContentList(postImageList, postId).then(), {
-    onSuccess: (data: PostContents[]) => {
-      console.log(data);
-      mutate({ ...editData, contentsList: data });
-    },
-    onError: (error) => {
-      console.log(error);
-      alert('이미지 업로드에 실패했습니다.');
-    },
-  });
+  const existImageList: PostContents[] = postImageList
+    .filter((res) => res.file === null)
+    .map((res) => ({ url: res.thumbNail }));
+  const newImageList = postImageList
+    .filter((res) => res.file != null)
+    .map((res) => res.file);
+
+  return useMutation(
+    () => getPostContentsList(newImageList ? (newImageList as File[]) : []),
+    {
+      onSuccess: (data: PostContents[]) => {
+        const contents = [...existImageList, ...data];
+        setPostData({ ...postData, contentsList: contents });
+        mutate();
+      },
+    }
+  );
 };

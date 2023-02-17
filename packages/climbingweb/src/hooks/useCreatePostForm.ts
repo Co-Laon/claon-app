@@ -7,13 +7,14 @@ import {
   setReduxPostData,
   addReduxPostImage,
   initReduxPost,
+  addReduxDeleteImage,
 } from '../store/slices/createFeed';
 import { bindActionCreators } from 'redux';
 
 const MAX_COUNT = 10;
 
 export const useCreatePostForm = () => {
-  const { postData, postImageList } = useSelector(
+  const { postData, postImageList, deleteQueue } = useSelector(
     (state: RootState) => state.createFeed
   );
 
@@ -26,6 +27,7 @@ export const useCreatePostForm = () => {
           addReduxPostImage,
           deleteReduxPostImageList,
           initReduxPost,
+          addReduxDeleteImage,
         },
         dispatch
       ),
@@ -37,6 +39,7 @@ export const useCreatePostForm = () => {
     addReduxPostImage: addPostImage,
     deleteReduxPostImageList: deletePostImageList,
     initReduxPost: initPost,
+    addReduxDeleteImage: addDeleteImage,
   } = boundActionCreators;
 
   const selectImageList = (files: File[]) => {
@@ -54,7 +57,6 @@ export const useCreatePostForm = () => {
           const image: PostImage = {
             file,
             thumbNail: base64,
-            active: true,
           };
           addPostImage(image);
         }
@@ -71,18 +73,12 @@ export const useCreatePostForm = () => {
       const existedImage: PostImage = {
         file: null,
         thumbNail: url,
-        active: true,
       };
       addPostImage(existedImage);
     });
   }, []);
-  const addInActiveImage = useCallback((url: string) => {
-    const inActiveImage: PostImage = {
-      file: null,
-      thumbNail: url,
-      active: false,
-    };
-    addPostImage(inActiveImage);
+  const addDeleteQueue = useCallback((url: string) => {
+    addDeleteImage(url);
   }, []);
 
   return {
@@ -93,6 +89,7 @@ export const useCreatePostForm = () => {
     deleteImageList,
     initPost,
     addExistedImageList,
-    addInActiveImage,
+    addDeleteQueue,
+    deleteQueue,
   };
 };
