@@ -251,9 +251,14 @@ export const useGetCenterPosts = (centerId: string) => {
  * @returns seachCenter api useQuery return 값
  */
 export const useSearchCenter = (name: string) => {
-  return useQuery({
+  return useInfiniteQuery({
     ...centerQueries.search(name),
     enabled: Boolean(name),
+    getNextPageParam: (lastPageData) => {
+      return lastPageData.nextPageNum < 0
+        ? undefined
+        : lastPageData.nextPageNum;
+    },
   });
 };
 
