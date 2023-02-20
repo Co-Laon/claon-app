@@ -40,12 +40,15 @@ export default function CenterPage({}) {
   if (newSettingData && bookmarkData && newlyRegisteredData)
     return (
       <section className="mb-footer">
-        <AppBar leftNode={<AppLogo />} title=" " rightNode={<Empty />} />
-        <div className="pl-4 flex flex-col gap-6">
-          <div className="flex flex-col gap-4">
-            <h2 className="text-lg font-extrabold leading-6">
-              {'새로운 세팅'}
-            </h2>
+        <AppBar
+          leftNode={<AppLogo />}
+          title=" "
+          rightNode={<Empty />}
+          className="h-[7.82vh] pl-[20px]"
+        />
+        <div className="pl-4 flex flex-col gap-[23px] pt-[13px]">
+          <div className="flex flex-col gap-[13px]">
+            <h2 className="text-base font-bold ">{'새로운 세팅'}</h2>
             {isNewSettingLoading ? (
               <Loading />
             ) : newSettingData.totalCount !== 0 ? (
@@ -54,10 +57,8 @@ export default function CenterPage({}) {
               <EmptyContent message="새로운 세팅을 한 암장이 없습니다." />
             )}
           </div>
-          <div className="flex flex-col gap-4">
-            <h2 className="text-lg font-extrabold leading-6">
-              {'즐겨찾는 암장'}
-            </h2>
+          <div className="flex flex-col gap-[13px]">
+            <h2 className="text-base font-bold ">{'즐겨찾는 암장'}</h2>
             {isBookmarkLoading ? (
               <Loading />
             ) : bookmarkData.totalCount !== 0 ? (
@@ -66,10 +67,8 @@ export default function CenterPage({}) {
               <EmptyContent message="즐겨찾기 한 암장이 없습니다." />
             )}
           </div>
-          <div className="flex flex-col gap-4">
-            <h2 className="text-lg font-extrabold leading-6">
-              {'새로운 암장'}
-            </h2>
+          <div className="flex flex-col gap-[13px]">
+            <h2 className="text-base font-bold ">{'새로운 암장'}</h2>
             {isNewlyRegisteredLoading ? (
               <Loading />
             ) : newlyRegisteredData.totalCount !== 0 ? (

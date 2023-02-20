@@ -7,7 +7,7 @@ interface CenterListProps {
 
 const CenterResultList = ({ centerList }: CenterListProps) => {
   return (
-    <div className="w-full flex flex-row gap-1 overflow-x-auto scrollbar-hide">
+    <div className="w-full flex flex-row gap-[5px] overflow-x-auto scrollbar-hide">
       {centerList.map(({ id, name, thumbnailUrl, reviewRank }) => (
         <CenterResult
           key={name}
