@@ -1,6 +1,6 @@
 import { useDeleteReview } from 'climbingweb/src/hooks/queries/center/queryKey';
 import { useToast } from 'climbingweb/src/hooks/useToast';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { ProfileImage } from '../common/profileImage/ProfileImage';
 import { StarRating } from '../common/StarRating';
 
@@ -24,29 +24,40 @@ export const ReviewComment = ({
   updatedAt,
 }: ReviewCommentProps) => {
   const [readMore, setReadMore] = useState(false);
+  const [realContent, setRealContent] = useState(content);
+
+  useEffect(() => {
+    if (content.length > 67 && !readMore) {
+      setRealContent(content.slice(0, 68));
+    } else {
+      setRealContent(content);
+    }
+  }, [readMore]);
 
   return (
     <div className="flex flex-row py-2 pr-1 gap-2 w-full">
-      <ProfileImage src={reviewerProfileImage} />
+      <ProfileImage src={reviewerProfileImage} size={30} />
       <div className="w-full gap-2">
         <div className="h-10 flex flex-row justify-between items-center ">
           <div>
-            <p className="text-sm font-bold">{reviewerNickname}</p>
-            <span className="text-gray-400 text-sm">
+            <p className="text-xs font-bold leading-[18px]">
+              {reviewerNickname}
+            </p>
+            <span className="text-[#808080] text-xs leading-[18px] font-medium">
               {updatedAt ? updatedAt : createdAt}{' '}
             </span>
           </div>
-          <StarRating readOnly size="sm" count={5} initialValue={rank} />
+          <StarRating disabled size="sm" count={5} initialValue={rank} />
         </div>
-        <div className="">
-          <p className={`text-sm ${readMore ? '' : 'line-clamp-3'}`}>
-            {content}
+        <div className="flex">
+          <p className="text-xs leading-[18px] font-medium">
+            {readMore ? `${realContent}... ` : realContent}
           </p>
           <span
             className="text-gray-400 inline float-right text-sm"
             onTouchEnd={() => setReadMore(!readMore)}
           >
-            {readMore ? '접기' : '더보기'}
+            {content.length > 67 ? (readMore ? '접기' : '더보기') : null}
           </span>
         </div>
       </div>
@@ -103,7 +114,7 @@ export const MyReviewComment = ({
               ·삭제
             </span>
           </div>
-          <StarRating readOnly size="sm" count={5} initialValue={rank} />
+          <StarRating disabled size="sm" count={5} initialValue={rank} />
         </div>
         <div className="">
           <p className={`text-sm ${readMore ? '' : 'line-clamp-3'}`}>
