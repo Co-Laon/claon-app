@@ -22,3 +22,8 @@ export interface ServerBusinessError {
   timeStamp: string;
   violations?: string[];
 }
+
+export interface SvgProps {
+  width?: number;
+  height?: number;
+}

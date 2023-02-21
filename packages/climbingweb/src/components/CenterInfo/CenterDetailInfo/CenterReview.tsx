@@ -48,10 +48,11 @@ export const CenterReview = ({ centerId }: ReviewProps) => {
       <div className="w-full px-5">
         <div className="flex flex-row justify-between items-center py-5">
           <div className="flex items-center gap-2">
-            <span className="text-black text-sm">
+            <span className="text-black text-sm font-normal tracking-widest">
               <span className="text-purple-500">
-                {data.pages[0].rank ? data.pages[0].rank : 0}/{count}
+                {data.pages[0].rank ? data.pages[0].rank : 0}
               </span>
+              /{count}
             </span>
             <StarRating
               initialValue={data.pages[0].rank ? data.pages[0].rank : 0}

@@ -7,11 +7,11 @@ export const TabBar = ({ tabList }: TabBarProps) => {
     <>
       <div className="flex flex-wrap">
         <div className="w-full">
-          <ul className="flex list-none flex-wrap pt-3 flex-row" role="tablist">
-            {tabList.map(({ id, tabName }, index) => (
+          <ul className="flex list-none flex-wrap pt-4 flex-row" role="tablist">
+            {tabList.map(({ id, tabName, ...rest }, index) => (
               <li key={id} className=" flex-auto text-center">
                 <p
-                  className={`text-xs font-bold uppercase px-5 py-3 border-gray-300 border-[1px] block leading-normal ${
+                  className={`text-sm font-normal text-black flex items-center justify-center uppercase border-[1px] block  h-[4.19vh] ${
                     openTab === index + 1 ? 'border-b-0' : ''
                   } active:bg-gray-500`}
                   onClick={(e) => {
@@ -22,6 +22,11 @@ export const TabBar = ({ tabList }: TabBarProps) => {
                   role="tablist"
                 >
                   {tabName}
+                  {rest.contentCount ? (
+                    <span className="ml-[4px] text-xs leading-[18px] font-bold">
+                      {rest.contentCount}
+                    </span>
+                  ) : null}
                 </p>
               </li>
             ))}

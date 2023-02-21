@@ -3,7 +3,7 @@ import CenterCharge from './CenterCharge';
 import CenterFacilities from './CenterFacilities';
 import CenterHoldList from './CenterHoldList';
 import CenterOperatingTime from './CenterOperatingTime';
-import CenterSectorList from './CenterSectorList';
+// import CenterSectorList from './CenterSectorList';
 
 interface CenterDetailInfoProps {
   data: CenterDetailResponse;
@@ -17,16 +17,16 @@ export const CenterDetailInfo = ({ data }: CenterDetailInfoProps) => {
     chargeList,
     holdInfoList,
     holdInfoImg,
-    sectorInfoList,
+    // sectorInfoList,
   } = data;
 
   return (
-    <div className="flex flex-col p-7 gap-8">
+    <div className="flex flex-col p-7 ">
       <CenterOperatingTime operatingTimeList={operatingTimeList} />
       <CenterFacilities facilities={facilities} />
       <CenterCharge chargeList={chargeList} />
       <CenterHoldList holdInfoList={holdInfoList} holdInfoImg={holdInfoImg} />
-      <CenterSectorList sectorInfoList={sectorInfoList} />
+      {/* <CenterSectorList sectorInfoList={sectorInfoList} /> */}
     </div>
   );
 };

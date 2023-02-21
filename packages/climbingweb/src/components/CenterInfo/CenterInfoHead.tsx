@@ -80,11 +80,11 @@ export const CenterInfoHead = ({
         <StarButton onClick={handleLikeIconClick} isBookMarked={isBookMarked} />
         <h2 className="text-base font-extrabold ">{name}</h2>
       </div>
-      <p className="text-sm flex items-center">
+      <p className="text-xs font-normal leading-[18px] flex items-center mt-[10.5px]">
         <PinIcon onClick={handlePinIconClick} />
         {address}
       </p>
-      <div className="w-full rounded-lg border flex flex-row justify-evenly mx-1 mt-5">
+      <div className="w-full rounded-lg border flex flex-row justify-evenly mx-0.5 mt-[16px] h-[4.19vh]">
         {tel ? (
           <div className="w-full my-1 border-x flex items-center justify-center p-1.5">
             <TelIcon onClick={handleTelIconClick} />

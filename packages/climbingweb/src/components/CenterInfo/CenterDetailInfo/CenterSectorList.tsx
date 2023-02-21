@@ -6,7 +6,7 @@ interface CenterSectorListProps {
 }
 
 const CenterSectorList = ({ sectorInfoList }: CenterSectorListProps) => (
-  <div className="flex flex-col gap-2">
+  <div className="flex flex-col gap-2 mt-[36px]">
     <h2 className="font-semibold text-sm">섹터 정보</h2>
     <ul>
       {sectorInfoList.map((value) => (
