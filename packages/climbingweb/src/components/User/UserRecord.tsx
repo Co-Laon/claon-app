@@ -4,9 +4,11 @@ import React from 'react';
 import { UserRecordSkeleton } from '../common/skeleton/UserRecordSkeleton';
 import MiniHold from './MiniHold';
 
+const PADDING = 16;
+
 interface UserRecordProps extends CenterClimbingHistoryResponse {}
 
-const contentWidth = (global.innerWidth - 32) * (3 / 10);
+const contentWidth = (global.innerWidth - PADDING * 2) * (3 / 10);
 
 console.log(contentWidth);
 

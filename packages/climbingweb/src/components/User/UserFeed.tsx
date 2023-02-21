@@ -5,6 +5,7 @@ import React from 'react';
 import { UserFeedSkeleton } from '../common/skeleton/UserFeedSkeleton';
 import MiniHold from './MiniHold';
 
+const PADDING = 16;
 interface UserFeedProps {
   postId: string;
   centerName: string;
@@ -12,7 +13,7 @@ interface UserFeedProps {
   climbingHistories: ClimbingHistoryResponse[];
 }
 
-const contentWidth = global.innerWidth - 32;
+const contentWidth = global.innerWidth - PADDING * 2;
 
 const UserFeed = ({
   postId,
