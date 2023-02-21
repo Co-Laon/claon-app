@@ -213,8 +213,13 @@ export const useRetrieveMe = () => {
  * @returns searchUser api (회원 검색) 의 useQuery return 값
  */
 export const useSearchUser = (name: string) => {
-  return useQuery({
+  return useInfiniteQuery({
     ...userQueries.search(name),
     enabled: Boolean(name),
+    getNextPageParam: (lastPageData) => {
+      return lastPageData.nextPageNum < 0
+        ? undefined
+        : lastPageData.nextPageNum;
+    },
   });
 };
