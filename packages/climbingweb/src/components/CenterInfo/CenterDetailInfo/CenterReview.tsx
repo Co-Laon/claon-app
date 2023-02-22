@@ -50,7 +50,9 @@ export const CenterReview = ({ centerId }: ReviewProps) => {
           <div className="flex items-center gap-2">
             <span className="text-black text-sm font-normal tracking-widest">
               <span className="text-purple-500">
-                {data.pages[0].rank ? data.pages[0].rank : 0}
+                {data.pages[0].rank
+                  ? Math.floor(data.pages[0].rank * 10) / 10      //버림
+                  : 0}
               </span>
               /{count}
             </span>

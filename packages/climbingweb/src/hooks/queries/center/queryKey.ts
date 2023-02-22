@@ -60,9 +60,14 @@ export const centerQueries = createQueryKeys('centers', {
         queryKey: ['review'],
         queryFn: (context) => findReviewByCenter(centerId, context?.pageParam),
       }),
-      getCenterPosts: () => ({
-        queryKey: ['posts'],
-        queryFn: (context) => getCenterPosts(centerId, context?.pageParam),
+      getCenterPosts: (holdId: string) => ({
+        queryKey: [holdId],
+        queryFn: (context) =>
+          getCenterPosts(
+            centerId,
+            context?.pageParam,
+            holdId === 'null' ? undefined : holdId
+          ),
       }),
     },
   }),
@@ -232,9 +237,9 @@ export const useCreateCenterReport = (
  * @param centerId 게시글을 검색할 센터의 id
  * @returns getCenterPosts api useInfiniteQuery return 값
  */
-export const useGetCenterPosts = (centerId: string) => {
+export const useGetCenterPosts = (centerId: string, holdId: string) => {
   return useInfiniteQuery({
-    ...centerQueries.detail(centerId)._ctx.getCenterPosts(),
+    ...centerQueries.detail(centerId)._ctx.getCenterPosts(holdId),
     enabled: Boolean(centerId),
     getNextPageParam: (lastPageData) => {
       return lastPageData.nextPageNum < 0
