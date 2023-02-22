@@ -8,7 +8,7 @@ interface RatingProps {
   setData?: Dispatch<SetStateAction<number>>;
 }
 
-export const StarRating = ({
+export const StarRatingHalf = ({
   count,
   readOnly = false,
   size = 'md',
@@ -41,7 +41,43 @@ export const StarRating = ({
           readOnly={readOnly}
           checked={value * 2 >= idx + 1}
           onChange={() => handleCheck(idx + 1)}
+          onClick={() => handleCheck(idx + 1)}
           className={star % 2 === 0 ? rightHalf : leftHalf}
+        />
+      ))}
+    </form>
+  );
+};
+
+export const StarRating = ({
+  count,
+  readOnly = false,
+  size = 'md',
+  initialValue,
+  setData,
+}: RatingProps) => {
+  const stars = Array(count).fill(1);
+
+  const [value, setValue] = useState(initialValue);
+
+  const handleCheck = (num: number) => {
+    if (!readOnly) setValue(num);
+    if (setData) setData(num);
+  };
+
+  return (
+    <form className={`rating rating-${size} rating relative`}>
+      {stars.map((star, idx) => (
+        <input
+          key={`rating${idx}`}
+          type="radio"
+          name="rating"
+          multiple
+          readOnly={readOnly}
+          checked={value === idx + 1}
+          onChange={() => handleCheck(idx + 1)}
+          onClick={() => handleCheck(idx + 1)}
+          className={'bg-yellow-500 mask mask-star-2'}
         />
       ))}
     </form>

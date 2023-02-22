@@ -31,6 +31,7 @@ import {
   searchCenterName,
   updateReview,
 } from './queries';
+import { ServerBusinessError } from 'climbingweb/types/common';
 
 /**
  * center-controller api 의 query key factory
@@ -285,7 +286,12 @@ export const useSearchCenterName = (centerName: string) => {
 export const useCreateReview = (
   centerId: string,
   options?: Omit<
-    UseMutationOptions<ReviewResponse, unknown, ReviewCreateRequest, unknown>,
+    UseMutationOptions<
+      ReviewResponse,
+      ServerBusinessError,
+      ReviewCreateRequest,
+      unknown
+    >,
     'mutationFn'
   >
 ) => {
