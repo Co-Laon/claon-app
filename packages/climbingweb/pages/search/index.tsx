@@ -11,6 +11,7 @@ import ErrorContent from 'climbingweb/src/components/common/Error/ErrorContent';
 import { useSearchCenter } from 'climbingweb/src/hooks/queries/center/queryKey';
 import { useSearchUser } from 'climbingweb/src/hooks/queries/user/queryKey';
 import { debounce } from 'lodash';
+import { useIntersectionObserver } from 'climbingweb/src/hooks/useIntersectionObserver';
 
 const SearchPage = () => {
   const searchInputRef = React.useRef<HTMLInputElement>(null);
@@ -19,18 +20,24 @@ const SearchPage = () => {
 
   //search 유저 결과 state
   const {
-    isLoading: isUserDataListLoading,
-    data: userDataList,
-    isError: isUserDataListError,
-    error: userDataListError,
+    isLoading: isSearchUserListLoading,
+    data: searchUserList,
+    isError: isSearchUserListError,
+    error: searchUserError,
+    fetchNextPage: fetchNextSearchUser,
+    isFetchingNextPage: isFetchingSearchUser,
+    hasNextPage: hasNextSearchUser,
   } = useSearchUser(inputValue);
 
   //search 암장 결과 state
   const {
-    isLoading: isCenterDataListLoading,
-    data: centerDataList,
-    isError: isCenterDataListError,
-    error: centerDataListError,
+    isLoading: isSearchCenterListLoading,
+    data: searchCenterList,
+    isError: isSearchCenterListError,
+    error: searchCenterListError,
+    fetchNextPage: fetchNextSearchCenter,
+    isFetchingNextPage: isFetchingSearchCenter,
+    hasNextPage: hasNextSearchCenter,
   } = useSearchCenter(inputValue);
 
   //search input value change handler
@@ -39,6 +46,30 @@ const SearchPage = () => {
       setInputValue(searchInputRef.current.value);
     }
   }, 500);
+
+  //intersect 핸들러
+  const searchUserTarget = useIntersectionObserver(
+    async (entry, observer) => {
+      observer.unobserve(entry.target);
+      if (hasNextSearchUser) {
+        fetchNextSearchUser();
+      }
+    },
+    { threshold: 1 }
+  );
+
+  //intersect 핸들러
+  const searchCenterTarget = useIntersectionObserver(
+    async (entry, observer) => {
+      observer.unobserve(entry.target);
+      if (hasNextSearchCenter) {
+        fetchNextSearchCenter();
+      }
+    },
+    { threshold: 1 }
+  );
+
+  console.dir(searchCenterList);
 
   return (
     <div className="w-full flex flex-col item-center 'mb-footer overflow-auto scrollbar-hide'">
@@ -50,49 +81,63 @@ const SearchPage = () => {
           leftNode={<SearchIcon />}
         />
       </div>
-      {isCenterDataListLoading ? (
+      {isSearchCenterListLoading ? (
         <Loading />
-      ) : isCenterDataListError ? (
-        <ErrorContent error={centerDataListError} />
-      ) : centerDataList !== undefined &&
-        centerDataList.results.length !== 0 ? (
+      ) : isSearchCenterListError ? (
+        <ErrorContent error={searchCenterListError} />
+      ) : searchCenterList !== undefined &&
+        searchCenterList.pages.length !== 0 ? (
         <div className="flex flex-col ml-5 mt-5">
           <span className="mb-3">암장</span>
           <div className="flex 'mb-footer overflow-auto scrollbar-hide'">
-            {centerDataList.results.map((value, index) => (
-              <CenterResult
-                key={`CenterResult${index}`}
-                reviewRank={value.reviewRank}
-                thumbnailUrl={value.thumbnailUrl}
-                name={value.name}
-                id={value.id}
-              />
-            ))}
+            {searchCenterList.pages.map((page) => {
+              return page.results.map((value, index) => (
+                <CenterResult
+                  key={`CenterResult${index}`}
+                  reviewRank={value.reviewRank}
+                  thumbnailUrl={value.thumbnailUrl}
+                  name={value.name}
+                  id={value.id}
+                />
+              ));
+            })}
+            {!isFetchingSearchCenter ? (
+              <div className="w-[1px]" ref={searchCenterTarget} />
+            ) : (
+              <Loading />
+            )}
           </div>
         </div>
       ) : null}
-      {centerDataList !== undefined &&
-      centerDataList.results.length !== 0 &&
-      userDataList !== undefined &&
-      userDataList.results.length !== 0 ? (
+      {searchCenterList !== undefined &&
+      searchCenterList.pages[0].results.length !== 0 &&
+      searchUserList !== undefined &&
+      searchUserList.pages[0].results.length !== 0 ? (
         <div className="bg-gray-400 w-full h-[1px] mx-[20px] my-3"></div>
       ) : null}
-      {isUserDataListLoading ? (
+      {isSearchUserListLoading ? (
         <Loading />
-      ) : isUserDataListError ? (
-        <ErrorContent error={userDataListError} />
-      ) : userDataList !== undefined && userDataList.results.length !== 0 ? (
+      ) : isSearchUserListError ? (
+        <ErrorContent error={searchUserError} />
+      ) : searchUserList !== undefined && searchUserList.pages.length !== 0 ? (
         <div className="flex flex-col ml-2 mt-5">
           <span className="mb-3">라온</span>
           <div className="flex mb-footer overflow-auto scrollbar-hide">
-            {userDataList.results.map((value, index) => (
-              <UserResult
-                key={`RaonResult${index}`}
-                imagePath={value.imagePath}
-                isLaon={value.isLaon}
-                nickname={value.nickname}
-              />
-            ))}
+            {searchUserList.pages.map((page) => {
+              return page.results.map((value, index) => (
+                <UserResult
+                  key={`RaonResult${index}`}
+                  imagePath={value.imagePath}
+                  isLaon={value.isLaon}
+                  nickname={value.nickname}
+                />
+              ));
+            })}
+            {!isFetchingSearchUser ? (
+              <div className="w-[1px]" ref={searchUserTarget} />
+            ) : (
+              <Loading />
+            )}
           </div>
         </div>
       ) : null}

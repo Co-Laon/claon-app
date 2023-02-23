@@ -1,21 +1,28 @@
 import { AppBar } from 'climbingweb/src/components/common/AppBar';
 import { BackButton } from 'climbingweb/src/components/common/AppBar/IconButton';
+import { ButtonSheet } from 'climbingweb/src/components/common/BottomSheetContents/ButtonSheet';
 import { ListSheet } from 'climbingweb/src/components/common/BottomSheetContents/ListSheet/ListSheet';
 import ErrorContent from 'climbingweb/src/components/common/Error/ErrorContent';
 import Loading from 'climbingweb/src/components/common/Loading/Loading';
 import HomeFeed from 'climbingweb/src/components/HomeFeed/HomeFeed';
-import { useGetPost } from 'climbingweb/src/hooks/queries/post/queryKey';
+import {
+  useDeletePost,
+  useGetPost,
+} from 'climbingweb/src/hooks/queries/post/queryKey';
+import { useToast } from 'climbingweb/src/hooks/useToast';
 import { useRouter } from 'next/router';
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 import { BottomSheet } from 'react-spring-bottom-sheet';
 
 export default function FeedPage({}) {
   //바텀시트 open state
-  const [openBTSheet, setOpenBTSheet] = useState<boolean>(false);
+  const [open, setOpen] = useState<boolean>(false);
+  const [openDelete, setOpenDelete] = useState<boolean>(false);
   const router = useRouter();
   const { fid } = router.query;
   //fid string 거르는 로직, useRouter 에 대해 자세히 보고 추후 반드시 변경 해야함
   const feedId = fid as string;
+  const { toast } = useToast();
 
   const {
     data: postData,
@@ -23,8 +30,58 @@ export default function FeedPage({}) {
     error: postError,
   } = useGetPost(feedId);
 
+  const { mutate: deleteFeedMutate } = useDeletePost(feedId, {
+    onSuccess: () => {
+      setOpenDelete(false);
+      router.back();
+      toast('삭제 완료');
+    },
+    onError: () => {
+      setOpenDelete(false);
+      toast('게시글 삭제에 실패하였습니다.');
+    },
+  });
+
+  const openBtSheet = useCallback(() => {
+    setOpen(true);
+  }, []);
+
+  const onDismiss = useCallback(() => {
+    setOpen(false);
+  }, []);
+
+  //바텀 시트 리스트 클릭 핸들러(본인 게시물 클릭 시)
+  const handleEditRemoveBTSheetListClick = useCallback(
+    (selectionData: '수정하기' | '삭제하기') => {
+      if (selectionData == '삭제하기') {
+        setOpenDelete(true);
+      } else {
+        setOpenDelete(false);
+        router.push(`/edit/${feedId}`);
+      }
+    },
+    [feedId]
+  );
+  //삭제 취소 버튼 눌렀을 시
+  const onClickDeleteCancelButton = useCallback(() => {
+    setOpen(false);
+    setOpenDelete(false);
+  }, []);
+
   //뒤로가기 버튼 클릭 핸들러
-  const handleBackButtonClick = () => window.history.back();
+  const handleBackButtonClick = useCallback(() => {
+    window.history.back();
+  }, []);
+
+  //삭제 버튼 눌렀을 시
+  const onClickDeleteButton = useCallback(() => {
+    deleteFeedMutate();
+  }, []);
+
+  //신고하기 버튼을 눌렀을 경우
+  const handleBtSheetListClick = useCallback(() => {
+    router.push(`/report/${feedId}`);
+  }, [feedId]);
 
   if (isPostError) return <ErrorContent error={postError} />;
 
@@ -32,13 +89,39 @@ export default function FeedPage({}) {
     return (
       <section>
         <AppBar leftNode={<BackButton onClick={handleBackButtonClick} />} />
-        <HomeFeed postData={postData} />
-        <BottomSheet open={openBTSheet} onDismiss={() => setOpenBTSheet(false)}>
+        <HomeFeed postData={postData} openBtSheet={openBtSheet} />
+        <BottomSheet open={open} onDismiss={onDismiss}>
           <ListSheet
             headerTitle={''}
             list={['신고하기']}
             onSelect={() => router.push(`/report/${postData.postId}`)}
           />
+        </BottomSheet>
+
+        <BottomSheet open={open} onDismiss={onDismiss}>
+          {'isOwner' in postData && postData.isOwner ? (
+            openDelete ? (
+              <ButtonSheet
+                text="게시글을 삭제하겠습니까?"
+                onCancel={onClickDeleteCancelButton}
+                onConfirm={onClickDeleteButton}
+              />
+            ) : (
+              <ListSheet
+                headerTitle={''}
+                list={['삭제하기', '수정하기']}
+                onSelect={handleEditRemoveBTSheetListClick}
+                className="text-center"
+              />
+            )
+          ) : (
+            <ListSheet
+              headerTitle={''}
+              list={['신고하기']}
+              onSelect={handleBtSheetListClick}
+              className="text-center"
+            />
+          )}
         </BottomSheet>
       </section>
     );

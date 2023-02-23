@@ -5,12 +5,15 @@ import React from 'react';
 import { UserFeedSkeleton } from '../common/skeleton/UserFeedSkeleton';
 import MiniHold from './MiniHold';
 
+const PADDING = 16;
 interface UserFeedProps {
   postId: string;
   centerName: string;
   image: string;
   climbingHistories: ClimbingHistoryResponse[];
 }
+
+const contentWidth = global.innerWidth - PADDING * 2;
 
 const UserFeed = ({
   postId,
@@ -30,7 +33,9 @@ const UserFeed = ({
 
   return (
     <div
-      className="flex flex-col my-1 mr-2 pb-[5px] rounded-lg shadow-lg max-w-[160px] h-[230px]"
+      className={
+        'place-self-center flex flex-col my-1 pb-[5px] rounded-lg shadow-lg'
+      }
       onClick={handleFeedClick}
     >
       <div className="relative flex rounded-t-lg">
@@ -38,9 +43,10 @@ const UserFeed = ({
           className="rounded-t-lg"
           src={image}
           alt={'UserFeedImage'}
-          height={160}
-          width={160}
+          height={contentWidth / 2}
+          width={contentWidth / 2}
           objectFit={'contain'}
+          priority
         />
       </div>
       <div className="ml-3 my-1 text-gray-500 text-xs scrollbar-hide">

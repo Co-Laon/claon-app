@@ -87,6 +87,7 @@ export default function ReportPage({}) {
           <TextArea
             refObj={contentInputRef}
             placeholder="요청 내용을 자세히 입력해주세요."
+            className="h-[32.1vh]"
           />
         </div>
         <NormalButton
