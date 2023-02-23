@@ -23,7 +23,3 @@ export interface ServerBusinessError {
   violations?: string[];
 }
 
-export interface SvgProps {
-  width?: number;
-  height?: number;
-}

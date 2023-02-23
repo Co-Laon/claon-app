@@ -5,9 +5,9 @@ import Setting from 'climbingweb/src/assets/icon/ic_24_setting_gray_800.svg';
 import BookMarkWhite from 'climbingweb/src/assets/icon/ic_24_bookmark_white.svg';
 import BookMarkYellow from 'climbingweb/src/assets/icon/ic_24_bookmark_yellow.svg';
 import Option from 'climbingweb/src/assets/icon/ic_24_option_gray800.svg';
-import StarGray from 'climbingweb/src/assets/icon/star_rating/ic_normal_star_gray.svg';
-import StarYellow from 'climbingweb/src/assets/icon/star_rating/ic_normal_star_yellow.svg';
 import { useRouter } from 'next/router';
+import { StarGray } from 'climbingweb/src/assets/icon/star_rating/StarGray';
+import StarYellow from 'climbingweb/src/assets/icon/star_rating/StarYellow';
 
 interface ButtonProps {
   onClick?: ({}: any) => void;
@@ -51,9 +51,9 @@ export const BookMarkButton = ({ onClick, isBookMarked }: BookMark) => {
 
 export const StarButton = ({ onClick, isBookMarked }: BookMark) => {
   return isBookMarked ? (
-    <StarYellow onClick={onClick} />
+    <StarYellow onClick={onClick} width={20} height={20} />
   ) : (
-    <StarGray onClick={onClick} alt="bookmark" />
+    <StarGray onClick={onClick} width={20} height={20} />
   );
 };
 
