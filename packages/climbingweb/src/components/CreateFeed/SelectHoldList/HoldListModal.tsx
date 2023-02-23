@@ -181,7 +181,7 @@ const HoldListModal = ({
         <div className="modal flex">
           <div className="modal-box pt-[28px] ">
             {centerId ? (
-              <div className="w-full grid grid-cols-3 gap-y-[21px]">
+              <div className="w-full grid grid-cols-3 gap-y-5 justify-items-center">
                 {selectedHoldList.map((item) => (
                   <div
                     key={`HoldListModal_Hold${item.id}`}
