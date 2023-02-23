@@ -85,6 +85,7 @@ export default function CenterDetailPage() {
             headerTitle={''}
             list={['수정 요청']}
             onSelect={() => router.push(`/center/request/${centerId}`)}
+            className="text-sm font-normal"
           />
         </BottomSheet>
       </section>

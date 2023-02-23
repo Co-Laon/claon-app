@@ -33,11 +33,15 @@ export default function ReportPage({}) {
   >('사진');
 
   // 수정 요청 useMutation
-  const {
-    mutate: createCenterReportMutate,
-    isSuccess,
-    isError,
-  } = useCreateCenterReport(centerId);
+  const { mutate: createCenterReportMutate } = useCreateCenterReport(centerId, {
+    onSuccess: () => {
+      toast('요청 완료');
+      router.back();
+    },
+    onError: () => {
+      toast('수정 요청에 실패하였습니다.');
+    },
+  });
 
   // 바텀 시트 on/off state
   const [open, setOpen] = useState<boolean>(false);
@@ -89,11 +93,6 @@ export default function ReportPage({}) {
         content: contentInputRef.current?.value,
         reportType: reportType,
       });
-      if (isSuccess) {
-        router.back();
-        toast('수정 요청이 완료되었습니다.');
-      }
-      if (isError) toast('수정 요청에 실패했습니다.');
     }
   };
 
@@ -105,28 +104,35 @@ export default function ReportPage({}) {
         rightNode={<Empty />}
       />
       <div className="px-5 flex flex-col gap-4">
-        <div className="flex flex-col gap-2.5">
-          <h2 className="text-lg font-extrabold leading-6">요청 부분</h2>
+        <div className="flex flex-col gap-2">
+          <h2 className="text-base font-bold ">요청 부분</h2>
           <DropDown
             onSheetOpen={handleOpen}
             placeholder="요청 부분을 선택해주세요"
             value={reportType}
           />
         </div>
-        <div className="flex flex-col gap-2.5">
-          <h2 className="text-lg font-extrabold leading-6">요청 내용</h2>
+        <div className="flex flex-col gap-2">
+          <h2 className="text-base font-bold ">요청 내용</h2>
           <TextArea
             refObj={contentInputRef}
             placeholder="요청 내용을 자세히 입력해주세요."
+            className="h-[32.4vh]"
           />
         </div>
-        <NormalButton onClick={handleSubmitButtonClick}>완료</NormalButton>
+        <NormalButton
+          onClick={handleSubmitButtonClick}
+          className="text-base font-bold"
+        >
+          완료
+        </NormalButton>
       </div>
       <BottomSheet open={open} onDismiss={handleDismiss}>
         <ListSheet
           headerTitle={header}
           list={reportList}
           onSelect={handleReportTypeInputChange}
+          className="text-sm font-normal text-left"
         />
       </BottomSheet>
     </section>
