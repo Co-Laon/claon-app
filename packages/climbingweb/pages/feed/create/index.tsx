@@ -152,6 +152,7 @@ export default function CreatePostPage() {
               setData={handleContentInput}
               placeholder="500자 이내 글 입력"
               className="w-[89vw] h-[32.4vh] ml-[4px] mr-[4px]"
+              limitLength={500}
             />
           </div>
         ) : (
