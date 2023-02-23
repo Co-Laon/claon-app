@@ -133,6 +133,7 @@ export default function ReportPage({}) {
           headerTitle={header}
           list={reportList}
           onSelect={handleReportTypeInputChange}
+          className="text-sm font-normal text-left"
         />
       </BottomSheet>
     </section>
