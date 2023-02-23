@@ -63,7 +63,7 @@ function MyApp({ Component, pageProps }: AppProps) {
         },
       })
   );
-  if (!token && !isDesktop && !isStorageLogin()) {
+  if (!token && isDesktop && !isStorageLogin()) {
     return (
       <section className=" h-screen flex justify-center items-center">
         <Login />

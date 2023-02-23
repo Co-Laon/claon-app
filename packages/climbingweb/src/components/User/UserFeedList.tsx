@@ -16,7 +16,7 @@ const UserFeedList = ({
   isPostDataHasNextPage,
   infiniteScrollTarget,
 }: UserFeedListProps) => (
-  <div className="w-full grid grid-cols-2 mb-footer overflow-auto scrollbar-hide">
+  <div className="w-full grid grid-cols-2 mb-footer overflow-auto scrollbar-hide my-2 gap-3">
     {userPostData.pages.map((page, pIndex) =>
       page.results.map((result, rIndex) => (
         <UserFeed

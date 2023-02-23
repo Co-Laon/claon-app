@@ -11,9 +11,14 @@ import Loading from 'climbingweb/src/components/common/Loading/Loading';
 import { useRouter } from 'next/router';
 import { useGetLaonPost } from 'climbingweb/src/hooks/queries/laon/queryKey';
 import { useGetPosts } from 'climbingweb/src/hooks/queries/post/queryKey';
+import { BottomSheet } from 'react-spring-bottom-sheet';
+import { ListSheet } from 'climbingweb/src/components/common/BottomSheetContents/ListSheet/ListSheet';
+import { useCallback, useState } from 'react';
 
 const Home: NextPage = () => {
   const router = useRouter();
+  const [postId, setPostId] = useState<string | null>(null);
+  const [open, setOpen] = useState<boolean>(false);
   //laon feed data useQuery
   const {
     data: laonPostsData,
@@ -33,6 +38,27 @@ const Home: NextPage = () => {
     isFetchingNextPage: isFetchingPosts,
     hasNextPage: hasNextPosts,
   } = useGetPosts();
+
+  //Bottom Sheet hide
+  const onDismiss = useCallback(() => {
+    setOpen(false);
+    setPostId(null);
+  }, []);
+
+  //BtSheet open
+  const openBtSheet = useCallback(() => {
+    setOpen(true);
+  }, []);
+
+  //postId 설정
+  const onChangePostId = useCallback((id: string | null) => {
+    setPostId(id);
+  }, []);
+
+  //신고하기 버튼을 눌렀을 경우
+  const handleBtSheetListClick = useCallback(() => {
+    if (postId) router.push(`/report/${postId}`);
+  }, [postId, setPostId]);
 
   //피드 추가 버튼 클릭 핸들러
   const onClickCreateFeed = () => {
@@ -66,7 +92,12 @@ const Home: NextPage = () => {
         <div className="h-16"></div>
         {laonPostsData.pages.map((page) => {
           return page.results.map((result, index) => (
-            <HomeFeed key={`laonPostsDataFeed_${index}`} postData={result} />
+            <HomeFeed
+              key={`laonPostsDataFeed_${index}`}
+              postData={result}
+              openBtSheet={openBtSheet}
+              onChangePostId={onChangePostId}
+            />
           ));
         })}
         {!hasNextLaonPosts ? (
@@ -74,7 +105,12 @@ const Home: NextPage = () => {
         ) : null}
         {postsData.pages.map((page) => {
           return page.results.map((result, index) => (
-            <HomeFeed key={`postsDataFeed_${index}`} postData={result} />
+            <HomeFeed
+              key={`postsDataFeed_${index}`}
+              postData={result}
+              onChangePostId={onChangePostId}
+              openBtSheet={openBtSheet}
+            />
           ));
         })}
         {!isFetchingPosts && !isFetchingLaonPosts ? (
@@ -82,6 +118,14 @@ const Home: NextPage = () => {
         ) : (
           <Loading />
         )}
+        <BottomSheet open={open} onDismiss={onDismiss}>
+          <ListSheet
+            headerTitle={''}
+            list={['신고하기']}
+            onSelect={handleBtSheetListClick}
+            className="text-center"
+          />
+        </BottomSheet>
       </div>
     );
 
