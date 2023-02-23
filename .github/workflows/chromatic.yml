@@ -9,9 +9,20 @@ jobs:
   test:
     # the operating system it will run on
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [16.x]
     # the list of steps that the action will go through
     steps:
-      - uses: actions/checkout@v1
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+
       - run: yarn
       - uses: chromaui/action@v1
         # options required to the GitHub chromatic action
