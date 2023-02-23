@@ -23,7 +23,7 @@ export const TabBar = ({ tabList }: TabBarProps) => {
                 >
                   {tabName}
                   {rest.contentCount ? (
-                    <span className="ml-[4px] text-xs leading-[18px] font-bold">
+                    <span className="ml-1 text-xs leading-[18px] font-bold">
                       {rest.contentCount}
                     </span>
                   ) : null}

@@ -35,7 +35,7 @@ const CenterHoldList = ({ holdInfoList, holdInfoImg }: CenterHoldListProps) => {
         {holdInfoList.map((value, index) => (
           <div
             key={`centerHoldListImage_${index}`}
-            className={`h-8 w-8  relative right-[${index * 20}px]`}
+            className={`h-8 w-8 relative z-[${index}]`}
           >
             <Image
               layout="fill"

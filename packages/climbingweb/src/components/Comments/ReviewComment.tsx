@@ -36,7 +36,7 @@ export const ReviewComment = ({
 
   return (
     <div className="flex flex-row py-2 pr-1 gap-2 w-full">
-      <ProfileImage src={reviewerProfileImage} size={30} />
+      <ProfileImage src={reviewerProfileImage} size={32} />
       <div className="w-full gap-2">
         <div className="h-10 flex flex-row justify-between items-center ">
           <div>

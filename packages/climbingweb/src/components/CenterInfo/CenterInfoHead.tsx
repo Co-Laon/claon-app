@@ -75,33 +75,33 @@ export const CenterInfoHead = ({
   }, [isBookMarked, deleteCenterBookmarkMutate, createCenterBookmarkMutate]);
 
   return (
-    <div className="p-[18px] pt-[3px]">
-      <div className="flex items-center gap-[5px]">
+    <div className="p-4 pt-1">
+      <div className="flex items-center gap-1">
         <StarButton onClick={handleLikeIconClick} isBookMarked={isBookMarked} />
         <h2 className="text-base font-extrabold ">{name}</h2>
       </div>
-      <p className="text-xs font-normal leading-[18px] flex items-center mt-[10.5px]">
+      <p className="text-xs font-normal leading-[18px] flex items-center mt-3">
         <PinIcon onClick={handlePinIconClick} />
         {address}
       </p>
-      <div className="w-full rounded-lg border flex flex-row justify-evenly mx-0.5 mt-[16px] h-[4.19vh]">
+      <div className="w-full rounded-lg border flex flex-row justify-evenly mx-1 mt-4 h-[4.19vh]">
         {tel ? (
-          <div className="w-full my-1 border-x flex items-center justify-center p-1.5">
+          <div className="w-full my-1 border-x flex items-center justify-center p-2">
             <TelIcon onClick={handleTelIconClick} />
           </div>
         ) : null}
         {webUrl ? (
-          <div className="w-full my-1 border-x flex items-center justify-center p-1.5">
+          <div className="w-full my-1 border-x flex items-center justify-center p-2">
             <WebIcon onClick={handleWebIconClick} />
           </div>
         ) : null}
         {instagramUrl ? (
-          <div className="w-full my-1 border-x flex items-center justify-center p-1.5">
+          <div className="w-full my-1 border-x flex items-center justify-center p-2">
             <InstaIcon onClick={handleInstaIconClick} />
           </div>
         ) : null}
         {youtubeUrl ? (
-          <div className="w-full my-1 border-x flex items-center justify-center p-1.5">
+          <div className="w-full my-1 border-x flex items-center justify-center p-2">
             <YoutubeIcon onClick={handleYoutubeIconClick} />
           </div>
         ) : null}
