@@ -17,6 +17,7 @@ interface CenterPostsProps {
 
 export const CenterPost = ({ centerId }: CenterPostsProps) => {
   const [filter, setFilter] = useState<string>('null');
+  const [focus, setFocus] = useState<number>(-1);
   const {
     data,
     isError,
@@ -31,6 +32,10 @@ export const CenterPost = ({ centerId }: CenterPostsProps) => {
 
   const changeHoldFilter = useCallback((id: string) => {
     setFilter(id);
+  }, []);
+
+  const changeFocus = useCallback((idx: number) => {
+    setFocus(idx);
   }, []);
 
   const handleThumbnailClick = (id: string) => {
@@ -56,6 +61,8 @@ export const CenterPost = ({ centerId }: CenterPostsProps) => {
         <CenterPostFilter
           holdList={holdData || []}
           setFilter={changeHoldFilter}
+          focus={focus}
+          setFocus={changeFocus}
         />
         {data.pages[0].totalCount !== 0 ? (
           <>
