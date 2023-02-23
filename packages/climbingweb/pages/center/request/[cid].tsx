@@ -105,22 +105,28 @@ export default function ReportPage({}) {
         rightNode={<Empty />}
       />
       <div className="px-5 flex flex-col gap-4">
-        <div className="flex flex-col gap-2.5">
-          <h2 className="text-lg font-extrabold leading-6">요청 부분</h2>
+        <div className="flex flex-col gap-2">
+          <h2 className="text-base font-bold ">요청 부분</h2>
           <DropDown
             onSheetOpen={handleOpen}
             placeholder="요청 부분을 선택해주세요"
             value={reportType}
           />
         </div>
-        <div className="flex flex-col gap-2.5">
-          <h2 className="text-lg font-extrabold leading-6">요청 내용</h2>
+        <div className="flex flex-col gap-2">
+          <h2 className="text-base font-bold ">요청 내용</h2>
           <TextArea
             refObj={contentInputRef}
             placeholder="요청 내용을 자세히 입력해주세요."
+            className="h-[32.4vh]"
           />
         </div>
-        <NormalButton onClick={handleSubmitButtonClick}>완료</NormalButton>
+        <NormalButton
+          onClick={handleSubmitButtonClick}
+          className="text-base font-bold"
+        >
+          완료
+        </NormalButton>
       </div>
       <BottomSheet open={open} onDismiss={handleDismiss}>
         <ListSheet

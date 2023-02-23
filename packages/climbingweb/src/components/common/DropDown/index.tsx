@@ -19,7 +19,7 @@ export const DropDown = ({
       <input
         value={value}
         disabled
-        className="h-full w-full outline-0 disabled:bg-white"
+        className="h-full w-full outline-0 disabled:bg-white text-sm font-medium"
         placeholder={placeholder}
       />
       <ArrowDown alt="arrow_down" />
