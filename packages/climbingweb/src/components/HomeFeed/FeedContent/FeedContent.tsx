@@ -60,10 +60,10 @@ const FeedContent = ({
         <span className="font-medium text-[#BFBFBF]">{createdAt}</span>
       </div>
       {content.length > 50 && !moreRead ? (
-        <div className="h-10 pl-[6px] my-2">
+        <div className="min-h-10 pl-[6px] my-2">
           <span className={' inline'}>{`${realContent}... `}</span>
           <span
-            className="text-[#BFBFBF] tinline float-right"
+            className="text-[#BFBFBF] inline block"
             onTouchEnd={onTouchMoreRead}
           >
             더 보기

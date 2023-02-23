@@ -11,11 +11,11 @@ const CenterCharge = ({ chargeList }: CenterChargeProps) => {
     console.dir(chargeList.map((value) => value.image));
   };
   return (
-    <div className="flex flex-col gap-2">
+    <div className="flex flex-col gap-2 mt-[24px]">
       <div className={'flex justify-between'}>
-        <h2 className={'font-semibold text-sm'}>이용 요금</h2>
+        <h2 className={'font-medium text-sm'}>이용 요금</h2>
         <button
-          className={'bg-none text-sm text-purple-500'}
+          className={'bg-none text-xs leading-[18px] text-[#5953ff]'}
           onClick={handleShowImageButtonClick}
         >
           이미지로 보기
@@ -29,7 +29,9 @@ const CenterCharge = ({ chargeList }: CenterChargeProps) => {
           >
             {outer.chargeList.map((inner, innerIdx) => (
               <li
-                className={'flex justify-between items-center'}
+                className={
+                  'flex justify-between items-center text-xs leading-[18px] font-normal'
+                }
                 key={`chargeListInner_${innerIdx}`}
               >
                 <span className={'w-[60%]'}>{inner.name}</span>

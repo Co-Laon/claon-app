@@ -13,7 +13,7 @@ const Template: ComponentStory<typeof StarRating> = (args) => (
 export const Default = Template.bind({});
 Default.args = {
   count: 5,
-  readOnly: false,
+  disabled: false,
   size: 'xs',
   initialValue: 2.5,
 };

@@ -45,23 +45,27 @@ export const CenterReview = ({ centerId }: ReviewProps) => {
 
   if (data)
     return (
-      <div className="w-full px-5">
+      <div className="w-full pl-4 pr-6">
         <div className="flex flex-row justify-between items-center py-5">
           <div className="flex items-center gap-2">
-            <span className="text-black text-sm">
+            <span className="text-black text-sm font-normal tracking-widest">
               <span className="text-purple-500">
-                {data.pages[0].rank ? data.pages[0].rank : 0}/{count}
+                {data.pages[0].rank
+                  ? Math.floor(data.pages[0].rank * 10) / 10      //버림
+                  : 0}
               </span>
+              /{count}
             </span>
             <StarRating
               initialValue={data.pages[0].rank ? data.pages[0].rank : 0}
               count={count}
-              readOnly
+              disabled
+              size="sm"
             />
           </div>
           {!data.pages[0].selfReview ? (
             <button
-              className="w-16 h-6 bg-purple-500 rounded-lg text-white text-xs"
+              className="w-[72px] h-6 bg-purple-500 rounded-lg text-white text-xs leading-[18px] font-bold"
               onClick={handleWriteReviewButtonClick}
             >
               리뷰 작성
@@ -82,12 +86,10 @@ export const CenterReview = ({ centerId }: ReviewProps) => {
           />
         ) : data.pages[0].otherReviewsPagination.totalCount === 0 ? (
           <EmptyContent message="아직 리뷰가 없습니다." />
-        ) : (
-          <EmptyContent message="아직 내가 리뷰를 남기지 않았습니다." />
-        )}
+        ) : null}
         {
           <>
-            <div>
+            <div className="flex flex-col gap-4">
               {data.pages.map((page) => {
                 return page.otherReviewsPagination.results.map(
                   ({
