@@ -22,17 +22,23 @@ export default function ReportPage() {
 
   const textAreaRef = useRef<HTMLTextAreaElement>(null);
 
-  const [rating, setRating] = useState(5);
+  const [rating, setRating] = useState<number>(5);
 
-  const { mutate: createReviewMutate } = useCreateReview(centerId);
+  const { mutate: createReviewMutate, isLoading } = useCreateReview(centerId, {
+    onSuccess: () => {
+      window.history.back();
+      toast('리뷰가 작성되었습니다.');
+    },
+    onError(error) {
+      toast(error.message);
+    },
+  });
 
   const handleSubmitClick = () => {
     createReviewMutate({
       content: textAreaRef.current?.value + '',
-      rank: rating,
+      rank: Math.floor(rating),
     });
-    toast('리뷰가 작성되었습니다.');
-    window.history.back();
   };
 
   const handleBackButtonClick = () => {
@@ -46,23 +52,25 @@ export default function ReportPage() {
         title=""
         rightNode={<Empty />}
       />
-      <div className="px-5 flex flex-col gap-4">
-        <div className="flex flex-col gap-2.5">
-          <h2 className="text-xl font-extrabold leading-6">
-            리뷰를 작성해주세요
-          </h2>
-          <StarRating
-            size="md"
-            count={count}
-            initialValue={5}
-            setData={setRating}
-          />
-          <TextArea
-            refObj={textAreaRef}
-            placeholder="요청 내용을 자세히 입력해주세요."
-          />
-        </div>
-        <NormalButton onClick={handleSubmitClick}>완료</NormalButton>
+      <div className="px-5">
+        <h2 className="text-xl font-extrabold leading-6 my-4">
+          리뷰를 작성해주세요
+        </h2>
+        <StarRating
+          size="md"
+          count={count}
+          initialValue={5}
+          setData={setRating}
+        />
+        <TextArea
+          className="h-[232px] text-sm my-5"
+          refObj={textAreaRef}
+          placeholder="500자 이내 리뷰 작성"
+          limitLength={500}
+        />
+        <NormalButton onClick={handleSubmitClick} disabled={isLoading}>
+          완료
+        </NormalButton>
       </div>
     </section>
   );
