@@ -33,11 +33,15 @@ export default function ReportPage({}) {
   >('사진');
 
   // 수정 요청 useMutation
-  const {
-    mutate: createCenterReportMutate,
-    isSuccess,
-    isError,
-  } = useCreateCenterReport(centerId);
+  const { mutate: createCenterReportMutate } = useCreateCenterReport(centerId, {
+    onSuccess: () => {
+      toast('요청 완료');
+      router.back();
+    },
+    onError: () => {
+      toast('수정 요청에 실패하였습니다.');
+    },
+  });
 
   // 바텀 시트 on/off state
   const [open, setOpen] = useState<boolean>(false);
@@ -89,11 +93,6 @@ export default function ReportPage({}) {
         content: contentInputRef.current?.value,
         reportType: reportType,
       });
-      if (isSuccess) {
-        router.back();
-        toast('수정 요청이 완료되었습니다.');
-      }
-      if (isError) toast('수정 요청에 실패했습니다.');
     }
   };
 
