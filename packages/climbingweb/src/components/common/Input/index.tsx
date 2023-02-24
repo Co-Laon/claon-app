@@ -1,4 +1,4 @@
-import { ChangeEvent, useState } from 'react';
+import { ChangeEvent, KeyboardEvent, useCallback, useState } from 'react';
 
 interface InputProps {
   refObj?: React.RefObject<HTMLInputElement>;
@@ -6,6 +6,7 @@ interface InputProps {
   onChange?: any;
   leftNode?: JSX.Element;
   rightNode?: JSX.Element;
+  onKeyDown?: any;
 }
 
 export const Input = ({
@@ -14,6 +15,7 @@ export const Input = ({
   onChange,
   leftNode,
   rightNode,
+  onKeyDown,
 }: InputProps) => {
   const [borderColor, setBorderColor] = useState('');
   const containerCss = `border-2 border-gray-300 h-12 w-full bg-white rounded-lg relative flex flex-row items-center justify-between px-4 focused:border-purple-500 ${borderColor}`;
@@ -24,8 +26,14 @@ export const Input = ({
     setBorderColor('');
   };
   const handleChangeValue = (e: ChangeEvent<HTMLInputElement>) => {
-    onChange(e.target.value);
+    if (onChange) onChange(e.target.value);
   };
+  const handleEnterPressed = useCallback(
+    (e: KeyboardEvent<HTMLInputElement>) => {
+      if (onKeyDown && e.code === 'Enter') onKeyDown();
+    },
+    []
+  );
 
   return (
     <div className={containerCss}>
@@ -37,6 +45,7 @@ export const Input = ({
         onFocus={handleFocused}
         onBlur={handleFocusedOut}
         className="h-full w-full outline-0"
+        onKeyDown={(e) => handleEnterPressed(e)}
       />
       {rightNode}
     </div>

@@ -1,7 +1,7 @@
 import CenterResult from 'climbingweb/src/components/common/CenterResult/CenterResult';
 import { Input } from 'climbingweb/src/components/common/Input';
 import UserResult from 'climbingweb/src/components/SearchResult/UserResult/UserResult';
-import React from 'react';
+import React, { useCallback } from 'react';
 import { useState } from 'react';
 import SearchIcon from 'climbingweb/src/assets/icon/ic_24_search_gray800.svg';
 import { AppBar } from 'climbingweb/src/components/common/AppBar';
@@ -10,7 +10,6 @@ import Loading from 'climbingweb/src/components/common/Loading/Loading';
 import ErrorContent from 'climbingweb/src/components/common/Error/ErrorContent';
 import { useSearchCenter } from 'climbingweb/src/hooks/queries/center/queryKey';
 import { useSearchUser } from 'climbingweb/src/hooks/queries/user/queryKey';
-import { debounce } from 'lodash';
 import { useIntersectionObserver } from 'climbingweb/src/hooks/useIntersectionObserver';
 
 const SearchPage = () => {
@@ -41,11 +40,11 @@ const SearchPage = () => {
   } = useSearchCenter(inputValue);
 
   //search input value change handler
-  const handleSearchInputChange = debounce(() => {
+  const handleSearchInputChange = useCallback(() => {
     if (searchInputRef.current) {
       setInputValue(searchInputRef.current.value);
     }
-  }, 500);
+  }, []);
 
   //intersect 핸들러
   const searchUserTarget = useIntersectionObserver(
@@ -77,7 +76,7 @@ const SearchPage = () => {
       <div className="px-5">
         <Input
           refObj={searchInputRef}
-          onChange={handleSearchInputChange}
+          onKeyDown={handleSearchInputChange}
           leftNode={<SearchIcon />}
         />
       </div>
