@@ -464,12 +464,10 @@ export const useDeletePost = (
 ) => {
   const queryClient = useQueryClient();
   const { data: myData } = useRetrieveMe();
-  console.dir(options);
 
   return useMutation(() => deletePost(postId), {
     ...options,
     onSuccess: (data, variables, context) => {
-      console.dir('onSuccess');
       if (options?.onSuccess) {
         options.onSuccess(data, variables, context);
       }
@@ -478,7 +476,6 @@ export const useDeletePost = (
         refetchInactive: true,
       });
       if (myData) {
-        console.dir('test');
         queryClient.invalidateQueries({
           queryKey: userQueries.name(myData.nickname)._ctx.posts().queryKey,
           refetchInactive: true,
