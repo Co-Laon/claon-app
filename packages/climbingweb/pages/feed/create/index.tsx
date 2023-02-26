@@ -13,7 +13,6 @@ import {
   useGetPostContentsList,
 } from 'climbingweb/src/hooks/queries/post/queryKey';
 import { useCreatePostForm } from 'climbingweb/src/hooks/useCreatePostForm';
-import Loading from 'climbingweb/src/components/common/Loading/Loading';
 import { debounce } from 'lodash';
 import {
   useFindHoldInfoByCenter,
