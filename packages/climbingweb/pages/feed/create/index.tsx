@@ -22,6 +22,7 @@ import {
 import { useRouter } from 'next/router';
 import { useToast } from 'climbingweb/src/hooks/useToast';
 import { PostContents } from 'climbingweb/types/response/post';
+import PageLoading from 'climbingweb/src/components/common/Loading/PageLoading';
 
 export default function CreatePostPage() {
   const [page, setPage] = useState<string>('first');
@@ -128,9 +129,7 @@ export default function CreatePostPage() {
   return (
     <div className="mb-footer overflow-auto scrollbar-hide">
       {getPostContentsListLoading || isCreatePostLoading ? (
-        <div className="h-screen flex justify-center items-center opacity-50 z-10">
-          <Loading />
-        </div>
+        <PageLoading />
       ) : null}
       <AppBar
         title="새 게시글"
