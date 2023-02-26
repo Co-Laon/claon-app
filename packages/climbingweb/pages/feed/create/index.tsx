@@ -20,6 +20,8 @@ import {
   useSearchCenterName,
 } from 'climbingweb/src/hooks/queries/center/queryKey';
 import { useRouter } from 'next/router';
+import { useToast } from 'climbingweb/src/hooks/useToast';
+import { PostContents } from 'climbingweb/types/response/post';
 
 export default function CreatePostPage() {
   const [page, setPage] = useState<string>('first');
@@ -30,23 +32,33 @@ export default function CreatePostPage() {
   const [searchInput, setSearchInput] = useState<string>('');
   const [selected, setSelected] = useState(false);
   const { data: centerList } = useSearchCenterName(searchInput);
+  const { toast } = useToast();
   const router = useRouter();
 
   //기준이 되는 hold 리스트 state
   const { data: holdListData } = useFindHoldInfoByCenter(postData.centerId);
 
-  const { isLoading } = useCreatePost({
-    onSuccess: () => {
-      alert('입력 완료 되었습니다.');
-      router.push('/');
-    },
-    onError: () => {
-      alert('피드 작성에 실패했습니다. 다시 시도해주세요.');
-      window.location.reload();
-    },
-  });
+  const { isLoading: isCreatePostLoading, mutate: createPostMutate } =
+    useCreatePost({
+      onSuccess: () => {
+        router.push('/');
+        toast('입력 완료 되었습니다.');
+      },
+      onError: () => {
+        window.location.reload();
+        toast('피드 작성에 실패했습니다. 다시 시도해주세요.');
+      },
+    });
+
   const { mutate: getPostContentsList, isLoading: getPostContentsListLoading } =
-    useGetPostContentsList();
+    useGetPostContentsList({
+      onSuccess: (data: PostContents[]) => {
+        createPostMutate({ ...postData, contentsList: data });
+      },
+      onError: () => {
+        toast('이미지 업로드에 실패했습니다.');
+      },
+    });
 
   useEffect(() => {
     return () => {
@@ -113,16 +125,13 @@ export default function CreatePostPage() {
     getPostContentsList(urlList);
   }, [postImageList, getPostContentsList]);
 
-  if (getPostContentsListLoading && isLoading) {
-    return (
-      <section className=" h-screen flex justify-center items-center">
-        <Loading />
-      </section>
-    );
-  }
-
   return (
     <div className="mb-footer overflow-auto scrollbar-hide">
+      {getPostContentsListLoading || isCreatePostLoading ? (
+        <div className="h-screen flex justify-center items-center opacity-50 z-10">
+          <Loading />
+        </div>
+      ) : null}
       <AppBar
         title="새 게시글"
         leftNode={<BackButton onClick={handleBackButtonClick} />}

@@ -40,7 +40,7 @@ export default function FeedPage({}) {
   const { mutate: deleteFeedMutate } = useDeletePost(feedId, {
     onSuccess: () => {
       setOpenDelete(false);
-      router.back();
+      router.push('/users/me');
       toast('삭제 완료');
     },
     onError: () => {
