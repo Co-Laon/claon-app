@@ -34,11 +34,13 @@ import {
 import {
   CommentResponse,
   LikeResponse,
+  PostContents,
   PostDeleteResponse,
   PostReportResponse,
   PostResponse,
 } from 'climbingweb/types/response/post';
 import { useRetrieveMe, userQueries } from '../user/queryKey';
+import { useCreatePostForm } from '../../useCreatePostForm';
 
 /**
  * 추후 성능 개선 필요!!
