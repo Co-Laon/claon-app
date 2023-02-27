@@ -222,12 +222,15 @@ export const useEditPost = (
         });
         queryClient.invalidateQueries({
           queryKey: postQueries.list().queryKey,
-          refetchActive: true,
+          refetchInactive: true,
         });
-        queryClient.invalidateQueries({
-          queryKey: userQueries.name(userData?.nickname as string).queryKey,
-          refetchActive: true,
-        });
+        if (userData) {
+          console.log(userData);
+          queryClient.invalidateQueries({
+            queryKey: userQueries.name(userData.nickname)._ctx.posts().queryKey,
+            refetchInactive: true,
+          });
+        }
         router.push(`/feed/${postId}`);
         toast('수정 완료');
       },

@@ -70,6 +70,7 @@ export const useCreatePostForm = () => {
 
   const addExistedImageList = useCallback((urls: string[]) => {
     urls.forEach((url) => {
+      console.log(`url: ${url}`);
       const existedImage: PostImage = {
         file: null,
         thumbNail: url,
