@@ -109,7 +109,7 @@ export default function CreatePostPage() {
    * 포스트 입력 완료 핸들링 함수
    */
   const handlePostDataSubmit = useCallback(() => {
-    const urlList = postImageList.map(({ file }) => file);
+    const urlList = postImageList.map(({ file }) => file as File);
     getPostContentsList(urlList);
   }, [postImageList, getPostContentsList]);
 

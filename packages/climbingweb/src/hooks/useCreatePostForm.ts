@@ -1,5 +1,5 @@
 import { RootState } from '../store/slices/index';
-import { useMemo } from 'react';
+import { useMemo, useCallback } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import {
   deleteReduxPostImageList,
@@ -7,13 +7,14 @@ import {
   setReduxPostData,
   addReduxPostImage,
   initReduxPost,
+  addReduxDeleteImage,
 } from '../store/slices/createFeed';
 import { bindActionCreators } from 'redux';
 
 const MAX_COUNT = 10;
 
 export const useCreatePostForm = () => {
-  const { postData, postImageList } = useSelector(
+  const { postData, postImageList, deleteQueue } = useSelector(
     (state: RootState) => state.createFeed
   );
 
@@ -26,6 +27,7 @@ export const useCreatePostForm = () => {
           addReduxPostImage,
           deleteReduxPostImageList,
           initReduxPost,
+          addReduxDeleteImage,
         },
         dispatch
       ),
@@ -37,6 +39,7 @@ export const useCreatePostForm = () => {
     addReduxPostImage: addPostImage,
     deleteReduxPostImageList: deletePostImageList,
     initReduxPost: initPost,
+    addReduxDeleteImage: addDeleteImage,
   } = boundActionCreators;
 
   const selectImageList = (files: File[]) => {
@@ -65,6 +68,20 @@ export const useCreatePostForm = () => {
     deletePostImageList(id);
   };
 
+  const addExistedImageList = useCallback((urls: string[]) => {
+    urls.forEach((url) => {
+      console.log(`url: ${url}`);
+      const existedImage: PostImage = {
+        file: null,
+        thumbNail: url,
+      };
+      addPostImage(existedImage);
+    });
+  }, []);
+  const addDeleteQueue = useCallback((url: string) => {
+    addDeleteImage(url);
+  }, []);
+
   return {
     postData,
     setPostData,
@@ -72,5 +89,8 @@ export const useCreatePostForm = () => {
     selectImageList,
     deleteImageList,
     initPost,
+    addExistedImageList,
+    addDeleteQueue,
+    deleteQueue,
   };
 };

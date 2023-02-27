@@ -5,6 +5,7 @@ import {
   CommentCreateRequest,
   CommentUpdateRequest,
   PostCreateRequest,
+  PostEditRequest,
   PostReportRequest,
 } from 'climbingweb/types/request/post';
 import {
@@ -28,6 +29,8 @@ import {
   getPosts,
   updateComment,
   deletePost,
+  editPost,
+  deleteContent,
 } from './queries';
 import { useRouter } from 'next/router';
 import { useToast } from '../../useToast';
@@ -39,6 +42,7 @@ import {
   PostReportResponse,
   PostResponse,
 } from 'climbingweb/types/response/post';
+import { useRetrieveMe, userQueries } from '../user/queryKey';
 
 /**
  * 추후 성능 개선 필요!!
@@ -180,6 +184,58 @@ export const useCreatePost = (
         console.error(error);
         toast('피드 작성에 실패했습니다. 다시 시도해주세요.');
         window.location.reload();
+      },
+    }
+  );
+};
+
+/**
+ * edit post api useMutation Hooks
+ * @param postId
+ * @param options
+ * @returns
+ */
+export const useEditPost = (
+  postId: string,
+  options?: Omit<
+    UseMutationOptions<PostResponse, unknown, PostEditRequest, unknown>,
+    'mutationFn'
+  >
+) => {
+  const queryClient = useQueryClient();
+  const router = useRouter();
+  const { toast } = useToast();
+  const { data: userData } = useRetrieveMe();
+
+  return useMutation(
+    (postEditRequest: PostEditRequest) => editPost(postEditRequest, postId),
+    {
+      ...options,
+      onSuccess: (data, variables, context) => {
+        if (options?.onSuccess) {
+          options.onSuccess(data, variables, context);
+        }
+
+        queryClient.invalidateQueries({
+          queryKey: postQueries.detail(postId).queryKey,
+          refetchInactive: true,
+        });
+        queryClient.invalidateQueries({
+          queryKey: postQueries.list().queryKey,
+          refetchInactive: true,
+        });
+        if (userData) {
+          console.log(userData);
+          queryClient.invalidateQueries({
+            queryKey: userQueries.name(userData.nickname)._ctx.posts().queryKey,
+            refetchInactive: true,
+          });
+        }
+        router.push(`/feed/${postId}`);
+        toast('수정 완료');
+      },
+      onError: () => {
+        toast('수정에 실패하였습니다.');
       },
     }
   );
@@ -433,7 +489,7 @@ export const useDeletePost = (
         refetchInactive: true,
       });
     },
-    ...options
+    ...options,
   });
 };
 
@@ -472,4 +528,50 @@ export const useGetPostContentsList = () => {
       alert('이미지 업로드에 실패했습니다.');
     },
   });
+};
+/**
+ * content List 삭제하는 api 호출하는 함수
+ * @returns
+ */
+export const useDeleteContentsList = () => {
+  const { postData, deleteQueue } = useCreatePostForm();
+  const { mutate } = useEditPost(postData.postId);
+
+  return useMutation(() => deleteContent(postData.postId, deleteQueue), {
+    onSuccess: () => {
+      mutate({
+        climbingHistories: postData.climbingHistories,
+        content: postData.content,
+        contentsList: postData.contentsList,
+      });
+    },
+  });
+};
+
+/**
+ * 게시글을 수정할 때 사용하는 함수
+ * @param postId
+ * @returns
+ */
+export const useEditContentsList = () => {
+  const { mutate } = useDeleteContentsList();
+  const { postData, postImageList, setPostData } = useCreatePostForm();
+
+  const existImageList: PostContents[] = postImageList
+    .filter((res) => res.file === null)
+    .map((res) => ({ url: res.thumbNail }));
+  const newImageList = postImageList
+    .filter((res) => res.file != null)
+    .map((res) => res.file);
+
+  return useMutation(
+    () => getPostContentsList(newImageList ? (newImageList as File[]) : []),
+    {
+      onSuccess: (data: PostContents[]) => {
+        const contents = [...existImageList, ...data];
+        setPostData({ ...postData, contentsList: contents });
+        mutate();
+      },
+    }
+  );
 };

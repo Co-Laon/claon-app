@@ -10,11 +10,22 @@ export interface PostCreateRequest {
   contentsList: PostContents[];
 }
 
+export interface PostEditRequest {
+  climbingHistories?: ClimbingHistoryRequest[];
+  content?: string;
+  contentsList: PostContents[];
+}
+
 export interface PostRequest {
   centerId: string;
   climbingHistories?: ClimbingHistoryRequest[];
   content?: string;
   contentsList: PostContents[];
+}
+
+export interface PostDetailRequest extends PostCreateRequest {
+  centerName: string;
+  postId: string;
 }
 
 export interface ClimbingHistoryRequest {
