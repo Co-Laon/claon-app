@@ -88,6 +88,10 @@ export const MyReviewComment = ({
     useReviewActions();
 
   useEffect(() => {
+    console.log(`rank: ${rank}`);
+  }, [rank]);
+
+  useEffect(() => {
     reviewInit();
   }, []);
 
@@ -100,7 +104,6 @@ export const MyReviewComment = ({
   }, [readMore, content]);
 
   const handleModifyReviewClick = () => {
-    console.log(content);
     changeReview({ content, rank });
     router.push(`/center/${centerId}/review/${reviewId}`);
   };

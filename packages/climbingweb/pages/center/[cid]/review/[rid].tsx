@@ -22,9 +22,7 @@ export default function ReportEditPage() {
   const reviewId = rid as string;
   const { toast } = useToast();
 
-  useEffect(() => {
-    console.log(centerId);
-  }, []);
+  useEffect(() => {}, []);
 
   const { mutate: updateReviewMutate, isLoading } = useUpdateReview(
     centerId,
