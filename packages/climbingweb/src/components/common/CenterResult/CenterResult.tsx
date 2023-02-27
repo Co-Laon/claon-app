@@ -34,7 +34,7 @@ const CenterResult = ({ id, name, thumbnailUrl, reviewRank }: CenterProps) => {
     >
       <div className="flex items-center justify-between m-1 px-2 py-[2px] z-10 gap-1 absolute bg-yellow-500 rounded-full text-xs font-bold">
         <StarIcon />
-        {reviewRank}
+        {Math.floor(reviewRank * 10) / 10}
       </div>
       <Image
         className="rounded-xl"

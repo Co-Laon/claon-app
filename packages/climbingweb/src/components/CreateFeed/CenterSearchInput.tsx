@@ -35,8 +35,8 @@ export const CenterSearchInput = ({
   );
   const [disableCss, setDisableCss] = useState<string>('');
 
-  const inputCss = `border-2 border-gray-300 h-[7.8vh] w-full bg-white relative flex flex-col justify-between px-[21px] focused:border-purple-500 ${
-    focused ? 'border-purple-500' : ''
+  const inputCss = `border-2  h-12 w-full bg-white relative flex flex-col justify-between px-[21px]  ${
+    focused ? 'border-purple-500' : 'border-gray-300'
   } ${isOptionOpen ? 'rounded-t-lg' : 'rounded-lg'}`;
 
   useEffect(() => {
@@ -51,7 +51,9 @@ export const CenterSearchInput = ({
     setIsOptionOpen(centerList ? centerList.length !== 0 : false);
   };
   const handleFocusedOut = () => {
-    setFocused(false);
+    if (!selected) {
+      setFocused(false);
+    }
     setIsOptionOpen(false);
   };
 
@@ -69,6 +71,7 @@ export const CenterSearchInput = ({
     setInputValue(val.name);
     if (setData) setData(val.name, val.id);
     setSelected(true);
+    setFocused(true);
   };
 
   // centerList 가 비어있는 경우 option list 를 닫는 상태로 변경
@@ -99,13 +102,13 @@ export const CenterSearchInput = ({
       {isOptionOpen && centerList ? (
         <div
           className={
-            'absolute border-x-2 border-b-2 rounded-b-lg w-[88.8vw] bg-white flex flex-col justify-evenly px-[21px] focused:border-purple-500 border-purple-500  py-[10px]'
+            'absolute border-x-2 border-b-2 rounded-b-lg w-[88.8vw] bg-white flex flex-col justify-evenly  focused:border-purple-500 border-purple-500 pt-1'
           }
         >
           {centerList.map((val: any, index: number) => (
             <div
               key={`searchInputForm_${index}`}
-              className="my-2 text-sm font-medium"
+              className="text-sm font-medium hover:bg-[#EEEEEE] active:bg-[#EEEEEE] px-[21px] py-2"
               onTouchEnd={() => handleSelected(val)}
             >
               {val.name}

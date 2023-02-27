@@ -3,17 +3,12 @@ import { CenterInfoHead } from 'climbingweb/src/components/CenterInfo/CenterInfo
 import { AppBar } from 'climbingweb/src/components/common/AppBar';
 import {
   AppLogo,
-  BookMarkButton,
   OptionButton,
 } from 'climbingweb/src/components/common/AppBar/IconButton';
 import { ListSheet } from 'climbingweb/src/components/common/BottomSheetContents/ListSheet/ListSheet';
 import ErrorContent from 'climbingweb/src/components/common/Error/ErrorContent';
 import Loading from 'climbingweb/src/components/common/Loading/Loading';
-import {
-  useCreateCenterBookmark,
-  useDeleteCenterBookmark,
-  useFindCenter,
-} from 'climbingweb/src/hooks/queries/center/queryKey';
+import { useFindCenter } from 'climbingweb/src/hooks/queries/center/queryKey';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 import { BottomSheet } from 'react-spring-bottom-sheet';
@@ -34,23 +29,6 @@ export default function CenterDetailPage() {
     error: CenterDetailerror,
   } = useFindCenter(centerId);
 
-  //암장 즐겨찾기 useMutation
-  const { mutate: createCenterBookmarkMutate } =
-    useCreateCenterBookmark(centerId);
-
-  //암장 즐겨찾기 취소 useMutation
-  const { mutate: deleteCenterBookmarkMutate } =
-    useDeleteCenterBookmark(centerId);
-
-  //암장 즐겨찾기 아이콘 클릭 핸들러
-  const handleLikeIconClick = () => {
-    if (CenterDetailData?.isBookmarked) {
-      deleteCenterBookmarkMutate();
-    } else {
-      createCenterBookmarkMutate();
-    }
-  };
-
   //암장 옵션 아이콘 클릭 핸들러
   const handleOptionIconClick = () => setOpenBTSheet(true);
 
@@ -63,13 +41,14 @@ export default function CenterDetailPage() {
           leftNode={<AppLogo />}
           rightNode={
             <div className="flex flex-row gap-x-3">
-              <BookMarkButton
+              {/* <BookMarkButton
                 onClick={handleLikeIconClick}
                 isBookMarked={CenterDetailData.isBookmarked}
-              />
+              /> */}
               <OptionButton onClick={handleOptionIconClick} />
             </div>
           }
+          className="h-[7.82vh] pl-[20px] pr-[21px] pb-[10px] pt-[15px]"
         />
         <CenterInfoHead
           name={CenterDetailData.name}
@@ -78,6 +57,8 @@ export default function CenterDetailPage() {
           instagramUrl={CenterDetailData.instagramUrl}
           webUrl={CenterDetailData.webUrl}
           youtubeUrl={CenterDetailData.youtubeUrl}
+          isBookMarked={CenterDetailData.isBookmarked}
+          centerId={centerId}
         />
         <CenterInfoContent data={CenterDetailData} />
         <BottomSheet open={openBTSheet} onDismiss={() => setOpenBTSheet(false)}>
@@ -85,6 +66,7 @@ export default function CenterDetailPage() {
             headerTitle={''}
             list={['수정 요청']}
             onSelect={() => router.push(`/center/request/${centerId}`)}
+            className="text-sm font-normal"
           />
         </BottomSheet>
       </section>

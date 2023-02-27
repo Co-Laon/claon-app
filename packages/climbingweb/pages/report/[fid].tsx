@@ -30,10 +30,11 @@ export default function ReportPage({}) {
 
   const { mutate: createCenterReportMutate } = useCreateReport(feedId, {
     onSuccess: () => {
-      toast('입력 완료 되었습니다.');
+      router.push('/');
+      toast('신고 완료');
     },
-    onError: () => {
-      toast('신고글 게시에 실패하였습니다.');
+    onError: (data: any) => {
+      toast(data.message);
     },
   });
 

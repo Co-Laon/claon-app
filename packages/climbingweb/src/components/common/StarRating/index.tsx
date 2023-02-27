@@ -2,15 +2,15 @@ import { Dispatch, SetStateAction, useState } from 'react';
 
 interface RatingProps {
   count: number;
-  readOnly?: boolean;
+  disabled?: boolean;
   size?: 'xs' | 'sm' | 'md' | 'lg';
   initialValue: number;
   setData?: Dispatch<SetStateAction<number>>;
 }
 
-export const StarRating = ({
+export const StarRatingHalf = ({
   count,
-  readOnly = false,
+  disabled = false,
   size = 'md',
   initialValue,
   setData,
@@ -26,7 +26,7 @@ export const StarRating = ({
   const [value, setValue] = useState(initialValue);
 
   const handleCheck = (num: number) => {
-    if (!readOnly) setValue(num / 2);
+    if (!disabled) setValue(num / 2);
     if (setData) setData(num / 2);
   };
 
@@ -38,10 +38,46 @@ export const StarRating = ({
           type="radio"
           name="rating"
           multiple
-          readOnly={readOnly}
+          disabled={disabled}
           checked={value * 2 >= idx + 1}
           onChange={() => handleCheck(idx + 1)}
+          onClick={() => handleCheck(idx + 1)}
           className={star % 2 === 0 ? rightHalf : leftHalf}
+        />
+      ))}
+    </form>
+  );
+};
+
+export const StarRating = ({
+  count,
+  disabled = false,
+  size = 'md',
+  initialValue,
+  setData,
+}: RatingProps) => {
+  const stars = Array(count).fill(1);
+
+  const [value, setValue] = useState(initialValue);
+
+  const handleCheck = (num: number) => {
+    if (!disabled) setValue(num);
+    if (setData) setData(num);
+  };
+
+  return (
+    <form className={`rating rating-${size} rating relative`}>
+      {stars.map((star, idx) => (
+        <input
+          key={`rating${idx}`}
+          type="radio"
+          name="rating"
+          multiple
+          readOnly={disabled}
+          checked={value === idx + 1}
+          onChange={() => handleCheck(idx + 1)}
+          onClick={() => handleCheck(idx + 1)}
+          className={'bg-yellow-500 mask mask-star-2'}
         />
       ))}
     </form>

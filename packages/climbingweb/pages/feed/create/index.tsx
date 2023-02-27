@@ -124,7 +124,7 @@ export default function CreatePostPage() {
   return (
     <div className="mb-footer overflow-auto scrollbar-hide">
       <AppBar
-        title="새 게시물"
+        title="새 게시글"
         leftNode={<BackButton onClick={handleBackButtonClick} />}
         rightNode={
           <NextButton
@@ -168,7 +168,7 @@ export default function CreatePostPage() {
               initialValue={searchInput}
               centerList={centerList}
               onChange={handleSearchInputChange}
-              className="px-[4px] min-h-[52px]"
+              className="px-[4px] h-[52px]"
             />
             <PageSubTitle
               title={'완등 횟수'}

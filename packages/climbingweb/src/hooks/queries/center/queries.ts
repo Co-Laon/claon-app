@@ -113,13 +113,18 @@ export const findHoldInfoByCenter = async (centerId: string) => {
  * @param centerId 검색할 암장의 id
  * @returns axiosReponse.data
  */
-export const getCenterPosts = async (centerId: string, pageParam: number) => {
+export const getCenterPosts = async (
+  centerId: string,
+  pageParam: number,
+  hold: string | undefined
+) => {
   try {
     const { data } = await axios.get<Pagination<CenterPostThumbnailResponse>>(
       `/centers/${centerId}/posts`,
       {
         params: {
           page: pageParam,
+          holdId: hold,
         },
       }
     );
