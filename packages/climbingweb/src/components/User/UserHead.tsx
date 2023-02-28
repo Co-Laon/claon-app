@@ -48,6 +48,7 @@ export const UserHead = ({
             onClickIcon={handleProfileIconClick}
             size={60}
             className="w-[60px]"
+            isPrivate={isPrivate}
           />
         </div>
         <div className="flex flex-col gap-1.5 w-52 ml-9">
