@@ -1,5 +1,6 @@
 import { UserDetailResponse } from 'climbingweb/types/response/user';
 import { useRouter } from 'next/router';
+import { useMemo } from 'react';
 import { ProfileImage } from '../common/profileImage/ProfileImage';
 
 interface HeaderProps {
@@ -38,6 +39,11 @@ export const UserHead = ({
     if (instagramUrl) router.push(instagramUrl);
   };
 
+  const laonCss = useMemo(
+    () => (isLaon ? 'bg-[#E6E6E6]' : 'bg-[#5953FF]'),
+    [isLaon]
+  );
+
   return (
     <div className="flex flex-col gap-4 px-4 py-3 shadow-sm mb-4 rounded-lg border border-[#FAFAFA] shadow-[0px_2px_4px_0px_rgba(0,0,0,0.1)]">
       <div className="flex flex-row items-center justify-between p-2">
@@ -68,7 +74,7 @@ export const UserHead = ({
             ))}
           </div>
           <button
-            className="w-full h-5 bg-[#5953FF] font-medium text-xs rounded-xl  text-white disabled:bg-slate-300 leading-[18px]"
+            className={`w-full h-5 font-medium text-xs rounded-xl  text-white disabled:bg-slate-300 leading-[18px] ${laonCss}`}
             onClick={onClickHeaderButton}
             disabled={isLaon}
           >
