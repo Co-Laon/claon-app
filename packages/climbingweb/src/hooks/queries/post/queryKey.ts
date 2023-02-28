@@ -216,7 +216,6 @@ export const useEditPost = (
           refetchInactive: true,
         });
         if (userData) {
-          console.log(userData);
           queryClient.invalidateQueries({
             queryKey: userQueries.name(userData.nickname)._ctx.posts().queryKey,
             refetchInactive: true,
