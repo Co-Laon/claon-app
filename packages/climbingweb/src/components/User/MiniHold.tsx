@@ -8,7 +8,7 @@ interface MiniHoldProps {
 
 const MiniHold = ({ hold }: MiniHoldProps) => {
   return (
-    <div className="relative flex items-center text-xs min-w-fi gap-1">
+    <div className="relative flex items-center text-[8px] leading-[14px] font-bold min-w-fi gap-1">
       <Image height={12} width={12} src={hold.holdImage} alt={hold.holdId} />
       {hold.climbingCount}
     </div>

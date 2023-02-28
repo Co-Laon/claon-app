@@ -1,3 +1,4 @@
+import RecordDetailSvg from 'climbingweb/src/assets/icon/RecordDetailISvg';
 import React from 'react';
 import PageSubTitle from '../common/PageSubTitle/PageSubTitle';
 
@@ -26,11 +27,14 @@ const UserPageLayout = ({
     {appBar}
     <div className="mx-4">
       {userHead}
-      <PageSubTitle title="기록" />
+      <div className="flex justify-between mt-5">
+        <PageSubTitle title="기록" className="text-base" />
+        <RecordDetailSvg />
+      </div>
       <div className="flex overflow-auto scrollbar-hide my-2 mb-4">
         {userRecordList}
       </div>
-      <PageSubTitle title="게시글" />
+      <PageSubTitle title="게시글" className="text-base my-2" />
       {userFeedList}
     </div>
   </section>
