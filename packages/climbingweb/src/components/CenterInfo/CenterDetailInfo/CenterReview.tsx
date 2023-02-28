@@ -5,7 +5,7 @@ import { MyReviewComment, ReviewComment } from '../../Comments/ReviewComment';
 import EmptyContent from '../../common/EmptyContent/EmptyContent';
 import ErrorContent from '../../common/Error/ErrorContent';
 import Loading from '../../common/Loading/Loading';
-import { StarRating } from '../../common/StarRating';
+import { StarRatingHalf } from '../../common/StarRating';
 
 interface ReviewProps {
   centerId: string;
@@ -51,12 +51,12 @@ export const CenterReview = ({ centerId }: ReviewProps) => {
             <span className="text-black text-sm font-normal tracking-widest">
               <span className="text-purple-500">
                 {data.pages[0].rank
-                  ? Math.floor(data.pages[0].rank * 10) / 10      //버림
+                  ? Math.floor(data.pages[0].rank * 10) / 10 //버림
                   : 0}
               </span>
               /{count}
             </span>
-            <StarRating
+            <StarRatingHalf
               initialValue={data.pages[0].rank ? data.pages[0].rank : 0}
               count={count}
               disabled

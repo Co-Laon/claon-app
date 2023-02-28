@@ -2,7 +2,7 @@ import { useDeleteReview } from 'climbingweb/src/hooks/queries/center/queryKey';
 import { useToast } from 'climbingweb/src/hooks/useToast';
 import { useEffect, useState } from 'react';
 import { ProfileImage } from '../common/profileImage/ProfileImage';
-import { StarRating } from '../common/StarRating';
+import { StarRatingHalf } from '../common/StarRating';
 
 interface ReviewCommentProps {
   reviewId: string;
@@ -47,7 +47,7 @@ export const ReviewComment = ({
               {updatedAt ? updatedAt : createdAt}{' '}
             </span>
           </div>
-          <StarRating disabled size="sm" count={5} initialValue={rank} />
+          <StarRatingHalf disabled size="sm" count={5} initialValue={rank} />
         </div>
         <div className="flex">
           <p className="text-xs leading-[18px] font-medium">
@@ -126,7 +126,7 @@ export const MyReviewComment = ({
               ·삭제
             </span>
           </div>
-          <StarRating disabled size="sm" count={5} initialValue={rank} />
+          <StarRatingHalf disabled size="sm" count={5} initialValue={rank} />
         </div>
         <div className="">
           <span className={'text-xs leading-[18px] font-medium inline'}>
