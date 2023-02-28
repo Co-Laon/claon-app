@@ -8,7 +8,7 @@ const PADDING = 16;
 
 interface UserRecordProps extends CenterClimbingHistoryResponse {}
 
-const contentWidth = (global.innerWidth - PADDING * 2) * (3 / 10);
+const contentWidth = Math.floor((global.innerWidth - PADDING * 2) * (3 / 10));
 
 console.log(contentWidth);
 
@@ -23,7 +23,7 @@ const UserRecord = ({
   return (
     <span
       className={
-        'flex flex-col rounded-lg shadow-md mr-2  border border-[#FAFAFA] shadow-[0px_1px_4px_0px_rgba(0,0,0,0.1)] min-w-[80px] min-h-[120px] pb-[5px]'
+        'flex flex-col rounded-lg shadow-md mr-2  border border-[#FAFAFA] shadow-[0px_1px_4px_0px_rgba(0,0,0,0.1)] min-w-[27.7vw] w-[27.7vw] min-h-[120px] pb-[5px]'
       }
     >
       <div className="aspect-square flex items-center justify-center mx-[5px] p-[5px]">

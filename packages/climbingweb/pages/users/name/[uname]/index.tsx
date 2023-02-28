@@ -130,13 +130,14 @@ export default function UserPage({}) {
           appBar={
             <AppBar
               leftNode={
-                <div className="flex">
+                <div className="flex gap-3">
                   <BackButton onClick={handleGoToBack} />
                   <PageSubTitle title={getUserData.nickname} />
                 </div>
               }
               title=""
               rightNode={<OptionButton onClick={handleOptionButtonClick} />}
+              className="px-5"
             />
           }
           userHead={
