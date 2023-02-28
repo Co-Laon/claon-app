@@ -576,7 +576,10 @@ export const useEditContentsList = (
     () => getPostContentsList(newImageList ? (newImageList as File[]) : []),
     {
       ...options,
-      onSuccess: (data: PostContents[]) => {
+      onSuccess: (data, variables, context) => {
+        if (options?.onSuccess) {
+          options.onSuccess(data, variables, context);
+        }
         const contents = [...existImageList, ...data];
         setPostData({ ...postData, contentsList: contents });
         mutate();
