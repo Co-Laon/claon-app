@@ -1,7 +1,7 @@
 import { AppBar } from 'climbingweb/src/components/common/AppBar';
 import { BackButton } from 'climbingweb/src/components/common/AppBar/IconButton';
 import { NextButton } from 'climbingweb/src/components/common/AppBar/NextButton';
-import Loading from 'climbingweb/src/components/common/Loading/Loading';
+import PageLoading from 'climbingweb/src/components/common/Loading/PageLoading';
 import PageSubTitle from 'climbingweb/src/components/common/PageSubTitle/PageSubTitle';
 import TextArea from 'climbingweb/src/components/common/TextArea/TextArea';
 import { CenterSearchInput } from 'climbingweb/src/components/CreateFeed/CenterSearchInput';
@@ -10,15 +10,31 @@ import { UploadImageList } from 'climbingweb/src/components/CreateFeed/UploadIma
 import { useFindHoldInfoByCenter } from 'climbingweb/src/hooks/queries/center/queryKey';
 import { useEditContentsList } from 'climbingweb/src/hooks/queries/post/queryKey';
 import { useCreatePostForm } from 'climbingweb/src/hooks/useCreatePostForm';
+import { useToast } from 'climbingweb/src/hooks/useToast';
 import { ClimbingHistoryRequest } from 'climbingweb/types/request/post';
+import { useRouter } from 'next/router';
 import { useCallback, useEffect, useRef, useState } from 'react';
 
 function EditFeed() {
   const [page, setPage] = useState<string>('first');
   const { postData, initPost, setPostData } = useCreatePostForm();
   const searchInputRef = useRef<HTMLInputElement>(null);
+  const { toast } = useToast();
+  const router = useRouter();
   const { data: holdListData } = useFindHoldInfoByCenter(postData.centerId);
-  const { mutate: getEditContentsList, isLoading } = useEditContentsList();
+  const {
+    mutate: getEditContentsListMutate,
+    isLoading: isGetEditContentsListLoading,
+  } = useEditContentsList({
+    onSuccess: () => {
+      router.push('/');
+      toast('수정 완료 되었습니다.');
+    },
+    onError: () => {
+      window.location.reload();
+      toast('피드 수정에 실패했습니다. 다시 시도해주세요.');
+    },
+  });
 
   //화면 렌더링될 때 초기화
   useEffect(() => {
@@ -29,16 +45,8 @@ function EditFeed() {
 
   //submit
   const handleDataSubmit = useCallback(() => {
-    getEditContentsList();
-
-    if (isLoading) {
-      return (
-        <section className=" h-screen flex justify-center items-center">
-          <Loading />
-        </section>
-      );
-    }
-  }, [getEditContentsList]);
+    getEditContentsListMutate();
+  }, [getEditContentsListMutate]);
 
   //content 수정
   const handleContentInput = useCallback((content: string) => {
@@ -60,6 +68,7 @@ function EditFeed() {
 
   return (
     <div className="mb-footer overflow-auto scrollbar-hide">
+      {isGetEditContentsListLoading ? <PageLoading /> : null}
       <AppBar
         title="게시글 수정"
         leftNode={

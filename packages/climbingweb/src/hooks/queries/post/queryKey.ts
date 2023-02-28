@@ -556,7 +556,12 @@ export const useDeleteContentsList = () => {
  * @param postId
  * @returns
  */
-export const useEditContentsList = () => {
+export const useEditContentsList = (
+  options?: Omit<
+    UseMutationOptions<PostContents[], unknown, void, unknown>,
+    'mutationFn'
+  >
+) => {
   const { mutate } = useDeleteContentsList();
   const { postData, postImageList, setPostData } = useCreatePostForm();
 
@@ -570,6 +575,7 @@ export const useEditContentsList = () => {
   return useMutation(
     () => getPostContentsList(newImageList ? (newImageList as File[]) : []),
     {
+      ...options,
       onSuccess: (data: PostContents[]) => {
         const contents = [...existImageList, ...data];
         setPostData({ ...postData, contentsList: contents });
