@@ -73,7 +73,7 @@ export const StarRating = ({
           type="radio"
           name="rating"
           multiple
-          readOnly={disabled}
+          disabled={disabled}
           checked={value === idx + 1}
           onChange={() => handleCheck(idx + 1)}
           onClick={() => handleCheck(idx + 1)}

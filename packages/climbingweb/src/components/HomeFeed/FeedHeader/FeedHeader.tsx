@@ -8,6 +8,7 @@ interface FeedHeaderProps {
   userName: string;
   userLocation: string;
   handleOptionDotClick: () => void;
+  isOwner?: boolean;
 }
 
 const FeedHeader = ({
@@ -15,10 +16,12 @@ const FeedHeader = ({
   userName,
   userLocation,
   handleOptionDotClick,
+  isOwner = false,
 }: FeedHeaderProps) => {
   const router = useRouter();
   const handleProfileClick = () => {
-    router.push(`/users/name/${userName}`);
+    if (isOwner) router.push('/users/me');
+    else router.push(`/users/name/${userName}`);
   };
   return (
     <header className={'flex w-full h-[69px]  justify-between'}>
