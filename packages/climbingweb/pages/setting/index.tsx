@@ -18,6 +18,7 @@ import {
   useRetrieveMe,
 } from 'climbingweb/src/hooks/queries/user/queryKey';
 import { useToken } from 'climbingweb/src/hooks/useToken';
+import { useBnbHide } from 'climbingweb/src/hooks/useBnB';
 // import { useDeleteUser } from 'climbingweb/src/hooks/queries/user/useDeleteUser';
 
 export default function SettingPage() {
@@ -98,6 +99,8 @@ export default function SettingPage() {
     }
   };
 
+  useBnbHide();
+
   if (isUserDataError) return <ErrorContent error={userDataError} />;
 
   if (userData)
@@ -107,11 +110,12 @@ export default function SettingPage() {
           leftNode={<BackButton onClick={handleGoToBack} />}
           title={titleName}
           rightNode={<Empty />}
+          className="pl-5"
         />
-        <div className="p-4">
+        <div className="pl-11 pt-10 pr-6">
           {titleName === '설정' && (
-            <ul className="mt-10 h-screen w-screen pl-7 flex flex-col flex-end gap-y-6">
-              <li className="flex w-full justify-between pr-6 font-normal text-sm">
+            <ul className="h-screen flex flex-col flex-end gap-y-6">
+              <li className="flex w-full justify-between font-normal text-sm">
                 <div>프로필 비공개</div>
                 <input
                   type={'checkbox'}
