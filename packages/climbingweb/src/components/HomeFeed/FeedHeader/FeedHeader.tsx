@@ -26,7 +26,7 @@ const FeedHeader = ({
   return (
     <header className={'flex w-full h-[69px]  justify-between'}>
       <div className={'flex items-center'} onClick={handleProfileClick}>
-        <ProfileImage src={userImage} className="w-[40px] ml-[20px] mr-2" />
+        <ProfileImage src={userImage} className="w-[40px]  mx-2" />
         <div>
           <p className={'text-sm font-bold'}>{userName}</p>
           <p className={'text-sm text-[#666666] font-medium'}>{userLocation}</p>
