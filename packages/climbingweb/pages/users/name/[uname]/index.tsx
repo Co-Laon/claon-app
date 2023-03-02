@@ -86,7 +86,6 @@ export default function UserPage({}) {
 
   // 유저 라온 버튼 클릭 핸들러
   const handleLaonButtonClick = () => {
-    console.log('laon');
     if (getUserData?.isLaon === false) {
       createLaonMutate(userNickname);
     }

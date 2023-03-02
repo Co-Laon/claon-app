@@ -10,7 +10,6 @@ interface UserRecordProps extends CenterClimbingHistoryResponse {}
 
 const contentWidth = Math.floor((global.innerWidth - PADDING * 2) * (3 / 10));
 
-console.log(contentWidth);
 
 const UserRecord = ({
   center: { centerName, centerImage },
