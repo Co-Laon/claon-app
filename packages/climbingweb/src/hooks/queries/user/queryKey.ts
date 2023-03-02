@@ -73,7 +73,10 @@ export const useChangePublicScope = (
       if (options?.onSuccess) {
         options.onSuccess(data, variables, context);
       }
-      queryClient.invalidateQueries(userQueries.me());
+      queryClient.invalidateQueries({
+        queryKey: userQueries.me().queryKey,
+        refetchInactive: true,
+      });
     },
   });
 };
