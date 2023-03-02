@@ -49,14 +49,14 @@ export const NotificationList = () => {
           return page.results.map(({ title, createdAt, content }, rindex) => (
             <div
               key={`${title}${pIndex}${rindex}`}
-              className="w-full flex flex-col gap-2"
+              className="w-full flex flex-col"
               onClick={() => handleGotoDetail({ title, createdAt, content })}
             >
-              <h2 className="text-base font-medium leading-6">{title}</h2>
-              <p className="text-xs font-medium leading-4 text-gray-500">
+              <h2 className="text-sm font-medium leading-6">{title}</h2>
+              <p className="text-xs font-medium leading-4 text-[#808080]">
                 {createdAt}
               </p>
-              <Divder />
+              <Divder className="mt-2" />
             </div>
           ));
         })}
