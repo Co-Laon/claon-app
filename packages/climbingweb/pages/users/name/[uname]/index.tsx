@@ -61,7 +61,10 @@ export default function UserPage({}) {
   const { mutate: createLaonMutate } = useCreateLaon({
     onSuccess: () => {
       toast('라온 신청하였습니다.');
-      queryClient.invalidateQueries(userQueries.name(userNickname));
+      queryClient.invalidateQueries({
+        queryKey: userQueries.name(userNickname).queryKey,
+        refetchInactive: true,
+      });
     },
   });
 
