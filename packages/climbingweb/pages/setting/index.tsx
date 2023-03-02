@@ -112,9 +112,9 @@ export default function SettingPage() {
           rightNode={<Empty />}
           className="pl-5"
         />
-        <div className="p-5">
+        <div className="p-5 h-full">
           {titleName === '설정' && (
-            <ul className="h-screen flex flex-col flex-end gap-y-6 pl-6 pr-1 pt-5">
+            <ul className="flex flex-col flex-end gap-y-6 pl-6 pr-1 pt-5">
               <li className="flex w-full justify-between font-normal text-sm">
                 <div>프로필 비공개</div>
                 <input
