@@ -13,6 +13,5 @@ export const getNoticeList = async (pageParam = 0) => {
       page: pageParam,
     },
   });
-
   return data;
 };
