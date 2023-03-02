@@ -25,7 +25,7 @@ export const VersionInfo = () => {
 
   if (appVersionData)
     return (
-      <div className="h-full overscroll-none flex flex-col justify-center items-center">
+      <div className="h-full overscroll-none flex flex-col justify-center items-center pl-2">
         <div className="flex flex-col items-center gap-3 text-sm font-normal">
           <VersionLogo alt="version_logo" />
           <p>현재버전: {clientAppVersion}</p>

@@ -44,7 +44,7 @@ export const NotificationList = () => {
 
   if (noticeListData)
     return (
-      <div className="w-full flex flex-col gap-2 overflow-auto scrollbar-hide">
+      <div className="w-full flex flex-col gap-2 overflow-auto scrollbar-hide pr-1 pl-3">
         {noticeListData.pages.map((page, pIndex) => {
           return page.results.map(({ title, createdAt, content }, rindex) => (
             <div
