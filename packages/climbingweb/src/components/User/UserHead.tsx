@@ -44,6 +44,20 @@ export const UserHead = ({
     [isLaon]
   );
 
+  const laonButton = useMemo(
+    () =>
+      isPrivate && !isMyPage ? null : (
+        <button
+          className={`w-full h-5 font-medium text-xs rounded-xl  text-white disabled:bg-slate-300 leading-[18px] ${laonCss}`}
+          onClick={onClickHeaderButton}
+          disabled={isLaon}
+        >
+          {isMyPage ? '내 라온' : '라온'}
+        </button>
+      ),
+    [isMyPage, isPrivate]
+  );
+
   return (
     <div className="flex flex-col gap-4 px-4 py-3 shadow-sm mb-4 rounded-lg border border-[#FAFAFA] shadow-[0px_2px_4px_0px_rgba(0,0,0,0.1)]">
       <div className="flex flex-row items-center justify-between p-2">
@@ -55,6 +69,7 @@ export const UserHead = ({
             size={60}
             className="w-[60px]"
             isPrivate={isPrivate}
+            isMyPage={isMyPage}
           />
         </div>
         <div className="flex flex-col gap-1.5 w-52 ml-9">
@@ -73,13 +88,7 @@ export const UserHead = ({
               </div>
             ))}
           </div>
-          <button
-            className={`w-full h-5 font-medium text-xs rounded-xl  text-white disabled:bg-slate-300 leading-[18px] ${laonCss}`}
-            onClick={onClickHeaderButton}
-            disabled={isLaon}
-          >
-            {isMyPage ? '내 라온' : '라온'}
-          </button>
+          {laonButton}
         </div>
       </div>
       {!isPrivate || isMyPage ? (

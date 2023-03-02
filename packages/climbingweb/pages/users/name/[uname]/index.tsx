@@ -121,10 +121,13 @@ export default function UserPage({}) {
   );
 
   if (isGetUserDataError) return <ErrorContent error={getUserDataError} />;
-  if (isFindPostsByUserDataError)
+  if (!getUserData?.isPrivate && isFindPostsByUserDataError)
     return <ErrorContent error={findPostsByUserDataError} />;
 
-  if (getUserData && findPostsByUserData) {
+  if (
+    (getUserData && findPostsByUserData && !getUserData.isPrivate) ||
+    (getUserData && getUserData.isPrivate && !findPostsByUserData)
+  ) {
     return (
       <section>
         <UserPageLayout
@@ -149,14 +152,16 @@ export default function UserPage({}) {
             />
           }
           userRecordList={
-            getUserData.centerClimbingHistories.length !== 0 ? (
+            getUserData.isPrivate ? null : getUserData.centerClimbingHistories
+                .length !== 0 ? (
               <UserRecordList userDetailData={getUserData} />
             ) : (
               <EmptyContent message="아직 기록이 없습니다." />
             )
           }
           userFeedList={
-            findPostsByUserData.pages[0].totalCount !== 0 ? (
+            getUserData.isPrivate ? null : findPostsByUserData?.pages[0]
+                .totalCount !== 0 ? (
               <UserFeedList
                 userPostData={findPostsByUserData}
                 isPostDataHasNextPage={isFetchingFindPostsByUserDataNextPage}
@@ -166,6 +171,7 @@ export default function UserPage({}) {
               <EmptyContent message="아직 게시글이 없습니다." />
             )
           }
+          isPrivate={getUserData.isPrivate}
         />
         <BottomSheet open={openSheet} onDismiss={() => onBottomSheetDismiss()}>
           <ListSheet

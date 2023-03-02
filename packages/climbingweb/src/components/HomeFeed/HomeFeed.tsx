@@ -72,6 +72,7 @@ const HomeFeed = ({ postData, openBtSheet, onChangePostId }: HomeFeedProps) => {
           userLocation={postData.centerName}
           handleOptionDotClick={handleOptionDotClick}
           isOwner={isOwner}
+          className="pl-3"
         />
         <ImageSlider imageList={postData.contentsList} />
         <FeedSectorInfo holdList={postData.climbingHistories} />

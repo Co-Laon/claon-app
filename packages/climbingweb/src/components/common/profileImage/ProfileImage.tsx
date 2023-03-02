@@ -2,7 +2,7 @@ import Image from 'next/image';
 import CameraIcon from 'climbingweb/src/assets/icon/ic_24_camera_gray800.svg';
 import InstaIcon from 'climbingweb/src/assets/icon/ic_24_instagram.svg';
 import ProfileSkeleton from 'climbingweb/src/assets/icon/ic_72_profile_gray400.svg';
-import LockIcon from 'climbingweb/src/assets/icon/ic_24_lock.svg';
+import LockSvg from 'climbingweb/src/assets/icon/LockSvg';
 
 interface ProfileProps {
   src?: string;
@@ -11,6 +11,7 @@ interface ProfileProps {
   size?: number;
   isPrivate?: boolean;
   className?: string;
+  isMyPage?: boolean;
 }
 
 export const ProfileImage = ({
@@ -20,6 +21,7 @@ export const ProfileImage = ({
   size,
   className,
   isPrivate,
+  isMyPage,
 }: ProfileProps) => {
   return (
     <div className={`w-16 relative ${className}`}>
@@ -37,9 +39,11 @@ export const ProfileImage = ({
         )}
       </div>
       {isPrivate ? (
-        <div className="absolute bottom-0 right-0">
-          <LockIcon onClick={onClickIcon} />
-        </div>
+        isMyPage ? (
+          <div className="absolute bottom-0 right-0">
+            <LockSvg onClick={onClickIcon} />
+          </div>
+        ) : null
       ) : icon ? (
         icon == 'default' ? (
           <div className="absolute bottom-0 right-0">

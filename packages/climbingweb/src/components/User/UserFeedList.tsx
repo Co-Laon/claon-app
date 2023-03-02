@@ -6,7 +6,7 @@ import Loading from '../common/Loading/Loading';
 import UserFeed from './UserFeed';
 
 interface UserFeedListProps {
-  userPostData: InfiniteData<Pagination<UserPostThumbnailResponse>>;
+  userPostData?: InfiniteData<Pagination<UserPostThumbnailResponse>>;
   isPostDataHasNextPage: boolean;
   infiniteScrollTarget: React.RefObject<HTMLDivElement>;
 }
@@ -17,7 +17,7 @@ const UserFeedList = ({
   infiniteScrollTarget,
 }: UserFeedListProps) => (
   <div className="w-full grid grid-cols-2 mb-footer overflow-auto scrollbar-hide gap-3">
-    {userPostData.pages.map((page, pIndex) =>
+    {userPostData?.pages.map((page, pIndex) =>
       page.results.map((result, rIndex) => (
         <UserFeed
           key={`userPost${pIndex}${rIndex}`}

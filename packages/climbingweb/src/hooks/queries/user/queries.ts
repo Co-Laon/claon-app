@@ -31,6 +31,7 @@ export const changePublicScope = async () => {
  * @returns axiosResponse.data
  */
 export const createBlock = async (blockNickname: string) => {
+  console.log(blockNickname);
   try {
     const { data } = await axios.post<void>(
       `/users/name/${blockNickname}/block`
