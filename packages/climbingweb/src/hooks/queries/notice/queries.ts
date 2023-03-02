@@ -14,6 +14,5 @@ export const getNoticeList = async (pageParam = 0) => {
     },
   });
 
-  console.log(data);
   return data;
 };
