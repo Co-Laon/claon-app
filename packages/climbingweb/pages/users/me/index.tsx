@@ -119,6 +119,7 @@ export default function MyPage({}) {
             <EmptyContent message="아직 게시글이 없습니다." />
           )
         }
+        isPrivate={false}
       />
     );
   }
