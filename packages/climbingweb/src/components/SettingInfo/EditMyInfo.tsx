@@ -123,9 +123,11 @@ export const EditMyInfo = ({ userRequest }: InfoProps) => {
         <div className="flex flex-col gap-2 mx-3">
           <h2 className="font-bold text-gray-800">프로필 사진</h2>
           <div className="relative h-[72px] w-[72px]">
-            <div className="h-6 w-6 top-1 right-1 absolute z-10">
-              <DelButton alt="delete" onClick={handleDeleteMedia} />
-            </div>
+            {userImage ? (
+              <div className="h-6 w-6 top-1 right-1 absolute z-10">
+                <DelButton alt="delete" onClick={handleDeleteMedia} />
+              </div>
+            ) : null}
             <label
               htmlFor="upload"
               className="rounded-lg h-[72px] w-[72px] min-w-[72px] border-[#E6E6E6] flex items-center justify-center"
