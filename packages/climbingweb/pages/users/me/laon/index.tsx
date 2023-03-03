@@ -39,7 +39,7 @@ export const MyLaonList = ({}) => {
   // 라온 취소 버튼 클릭 핸들러
   const handleDeleteLaonClick = (nickname: string) => {
     deleteLaonMutate(nickname);
-    toast('라온이 취소되었습니다.');
+    toast('취소 완료');
   };
 
   // InfiniteScroll 을 위한 로직
