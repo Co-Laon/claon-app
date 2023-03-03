@@ -62,8 +62,9 @@ export const MyLaonList = ({}) => {
           leftNode={<BackButton onClick={handleGoToBack} />}
           title={'내 라온 리스트'}
           rightNode={<Empty />}
+          className="p-5"
         />
-        <div className="p-4 overflow-auto scrollbar-hide">
+        <div className="pl-5 p-4 overflow-auto scrollbar-hide">
           {laonUserData.pages[0].totalCount !== 0 ? (
             laonUserData.pages.map((page, pIndex) => {
               const laonList = page.results.map((value) => {
