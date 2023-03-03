@@ -1,7 +1,7 @@
 export interface UserRequest {
   armReach?: number;
   height?: number;
-  imagePath?: string;
+  imagePath?: string | null;
   instagramOAuthId?: string;
   instagramUserName?: string;
   nickname?: string;
