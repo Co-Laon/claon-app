@@ -37,7 +37,7 @@ export const SmmallNodeButton = ({ onClick, children }: ButtonProps) => {
   return (
     <button
       onTouchEnd={onClick}
-      className=" w-10 h-6 bg-white border border-gray-300 rounded-lg text-xs"
+      className="w-10 h-6 bg-white border border-gray-300 rounded-lg text-xs"
     >
       {children}
     </button>
