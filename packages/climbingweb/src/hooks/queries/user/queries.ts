@@ -3,6 +3,7 @@ import { Pagination } from 'climbingweb/types/common';
 import { UserRequest } from 'climbingweb/types/request/user';
 import {
   BlockUserFindResponse,
+  HistoryDateResponse,
   PublicScopeResponse,
   UserDetailResponse,
   UserPostThumbnailResponse,
@@ -189,6 +190,30 @@ export const searchUser = async (searchUserName: string) => {
 export const retrieveMyAccount = async () => {
   try {
     const { data } = await axios.get<UserResponse>('/users/me/account');
+    return data;
+  } catch (error: any) {
+    throw error.response.data;
+  }
+};
+
+/**
+ * GET /users/{nickname}/history api의 query 함수
+ */
+export const getHistoryByDate = async (
+  nickname: string,
+  year: number,
+  month: number
+) => {
+  try {
+    const { data } = await axios.get<HistoryDateResponse[]>(
+      `/users/${nickname}/history/`,
+      {
+        params: {
+          year: year,
+          month: month,
+        },
+      }
+    );
     return data;
   } catch (error: any) {
     throw error.response.data;

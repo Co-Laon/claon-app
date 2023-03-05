@@ -28,6 +28,21 @@ export interface UserPostThumbnailResponse {
   thumbnailUrl: string;
 }
 
+export interface CenterInfoResponse {
+  centerId: string;
+  centerImg: string;
+  centerName: string;
+}
+export interface HistoryResponse {
+  climbingCount: number;
+  holdId: string;
+  holdImage: string;
+}
+export interface HistoryDateResponse {
+  centerInfo: CenterInfoResponse;
+  histories: HistoryResponse[];
+}
+
 export interface UserDetailResponse {
   apeIndex: number;
   armReach: number;

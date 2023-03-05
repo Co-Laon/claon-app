@@ -13,6 +13,7 @@ import {
   createBlock,
   findBlockUser,
   findPostsByUser,
+  getHistoryByDate,
   getPublicUser,
   modifyUser,
   retrieveMe,
@@ -49,6 +50,15 @@ export const userQueries = createQueryKeys('users', {
       posts: () => ({
         queryKey: ['posts'],
         queryFn: (context) => findPostsByUser(context?.pageParam, nickname),
+      }),
+      historyYear: (year: number) => ({
+        queryKey: [year],
+        contextQueries: {
+          historyMonth: (month: number) => ({
+            queryKey: [month],
+            queryFn: () => getHistoryByDate(nickname, year, month),
+          }),
+        },
       }),
     },
   }),
@@ -221,5 +231,22 @@ export const useSearchUser = (name: string) => {
         ? undefined
         : lastPageData.nextPageNum;
     },
+  });
+};
+
+/**
+ * 날짜로 history 찾기 useQuery hooks
+ */
+
+export const useHistoryByDate = (
+  nickName: string,
+  year: number,
+  month: number
+) => {
+  return useQuery({
+    ...userQueries
+      .name(nickName)
+      ._ctx.historyYear(year)
+      ._ctx.historyMonth(month),
   });
 };

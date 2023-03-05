@@ -1,4 +1,6 @@
 import ArrowBack from 'climbingweb/src/assets/icon/ic_24_appbar_back_gray800.svg';
+import ArrowRight from 'climbingweb/src/assets/icon/ic_24_arrow_right_gray800.svg';
+import ArrowLeft from 'climbingweb/src/assets/icon/ic_24_arrow_left_gray800.svg';
 import Pencil from 'climbingweb/src/assets/icon/ic_24_pencil_gray800.svg';
 import Logo from 'climbingweb/src/assets/icon/appbar_logo.svg';
 import Setting from 'climbingweb/src/assets/icon/ic_24_setting_gray_800.svg';
@@ -23,6 +25,14 @@ export const BackButton = ({ onClick }: ButtonProps) => {
     router.back();
   };
   return <ArrowBack onClick={onClick || handleBackTouch} alt="back" />;
+};
+
+export const LeftButton = ({ onClick }: ButtonProps) => {
+  return <ArrowLeft onClick={onClick} />;
+};
+
+export const RightButton = ({ onClick }: ButtonProps) => {
+  return <ArrowRight onClick={onClick} />;
 };
 
 export const ModifiedButton = ({ onClick }: ButtonProps) => {
