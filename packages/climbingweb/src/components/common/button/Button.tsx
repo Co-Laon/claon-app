@@ -33,11 +33,15 @@ export const WhiteButton = ({ onClick, children, className }: ButtonProps) => {
   );
 };
 
-export const SmmallNodeButton = ({ onClick, children }: ButtonProps) => {
+export const SmmallNodeButton = ({
+  onClick,
+  children,
+  className,
+}: ButtonProps) => {
   return (
     <button
       onTouchEnd={onClick}
-      className="w-10 h-6 bg-white border border-gray-300 rounded-lg text-xs"
+      className={` w-10 h-6 bg-white border border-gray-300 rounded-lg text-xs ${className}`}
     >
       {children}
     </button>

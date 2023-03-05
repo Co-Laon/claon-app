@@ -74,8 +74,9 @@ export const BanList = ({}) => {
                     onClick={() =>
                       handleDeleteBlockButtonClick(value.blockUserNickName)
                     }
+                    className="leading-[18px]"
                   >
-                    취소
+                    해제
                   </SmmallNodeButton>
                 ),
               };
