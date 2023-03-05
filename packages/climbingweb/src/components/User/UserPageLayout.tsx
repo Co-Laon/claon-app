@@ -1,11 +1,14 @@
+import RecordDetailSvg from 'climbingweb/src/assets/icon/RecordDetailISvg';
 import React from 'react';
 import PageSubTitle from '../common/PageSubTitle/PageSubTitle';
+import LockSvg from 'climbingweb/src/assets/icon/LockSvg';
 
 interface UserPageProps {
   appBar: React.ReactNode;
   userHead: React.ReactNode;
-  userRecordList: React.ReactNode;
-  userFeedList: React.ReactNode;
+  userRecordList?: React.ReactNode;
+  userFeedList?: React.ReactNode;
+  isPrivate: boolean;
 }
 
 /**
@@ -21,17 +24,29 @@ const UserPageLayout = ({
   userHead,
   userRecordList,
   userFeedList,
+  isPrivate,
 }: UserPageProps) => (
   <section className="mb-footer">
     {appBar}
     <div className="mx-4">
       {userHead}
-      <PageSubTitle title="기록" />
-      <div className="flex overflow-auto scrollbar-hide my-2 mb-4">
-        {userRecordList}
-      </div>
-      <PageSubTitle title="게시글" />
-      {userFeedList}
+      {isPrivate ? (
+        <div className="h-[60vh] flex justify-center items-center">
+          <LockSvg width={80} height={80} />
+        </div>
+      ) : (
+        <>
+          <div className="flex justify-between mt-5">
+            <PageSubTitle title="기록" className="text-base" />
+            <RecordDetailSvg />
+          </div>
+          <div className="flex overflow-auto scrollbar-hide my-2 mb-4">
+            {userRecordList}
+          </div>
+          <PageSubTitle title="게시글" className="text-base my-2" />
+          {userFeedList}
+        </>
+      )}
     </div>
   </section>
 );

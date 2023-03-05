@@ -78,7 +78,10 @@ export default function MyPage({}) {
             leftNode={
               <div className="flex">
                 <BackButton onClick={handleGoToBack} />
-                <PageSubTitle title={getUserData.nickname} />
+                <PageSubTitle
+                  title={getUserData.nickname}
+                  className="ml-3 text-base"
+                />
               </div>
             }
             title=""
@@ -88,6 +91,7 @@ export default function MyPage({}) {
                 <SettingButton onClick={handleGoToSetting} />
               </div>
             }
+            className="px-5"
           />
         }
         userHead={
@@ -115,6 +119,7 @@ export default function MyPage({}) {
             <EmptyContent message="아직 게시글이 없습니다." />
           )
         }
+        isPrivate={false}
       />
     );
   }
