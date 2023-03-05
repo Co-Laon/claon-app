@@ -39,7 +39,7 @@ export const MyLaonList = ({}) => {
   // 라온 취소 버튼 클릭 핸들러
   const handleDeleteLaonClick = (nickname: string) => {
     deleteLaonMutate(nickname);
-    toast('라온이 취소되었습니다.');
+    toast('취소 완료');
   };
 
   // InfiniteScroll 을 위한 로직
@@ -62,8 +62,9 @@ export const MyLaonList = ({}) => {
           leftNode={<BackButton onClick={handleGoToBack} />}
           title={'내 라온 리스트'}
           rightNode={<Empty />}
+          className="p-5"
         />
-        <div className="p-4 overflow-auto scrollbar-hide">
+        <div className="pl-5 p-4 overflow-auto scrollbar-hide">
           {laonUserData.pages[0].totalCount !== 0 ? (
             laonUserData.pages.map((page, pIndex) => {
               const laonList = page.results.map((value) => {

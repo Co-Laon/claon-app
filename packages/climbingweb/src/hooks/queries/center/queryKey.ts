@@ -346,8 +346,7 @@ export const useUpdateReview = (
           options.onSuccess(data, variables, context);
         }
         queryClient.invalidateQueries({
-          queryKey: centerQueries.detail(centerId)._ctx.findReviewByCenter()
-            .queryKey,
+          queryKey: centerQueries.detail(centerId).queryKey,
           refetchInactive: true,
         });
       },

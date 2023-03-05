@@ -1,5 +1,7 @@
 import { useDeleteReview } from 'climbingweb/src/hooks/queries/center/queryKey';
+import { useReviewActions } from 'climbingweb/src/hooks/useReview';
 import { useToast } from 'climbingweb/src/hooks/useToast';
+import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import { ProfileImage } from '../common/profileImage/ProfileImage';
 import { StarRatingHalf } from '../common/StarRating';
@@ -77,13 +79,23 @@ export const MyReviewComment = ({
 }: ReviewCommentProps) => {
   const [readMore, setReadMore] = useState(false);
   const [realContent, setRealContent] = useState(content);
+  const router = useRouter();
 
   const { toast } = useToast();
 
   const { mutate: deleteReview } = useDeleteReview(centerId, reviewId);
+  const { initReview: reviewInit, setReview: changeReview } =
+    useReviewActions();
 
   useEffect(() => {
-    console.log(content.length);
+    console.log(`rank: ${rank}`);
+  }, [rank]);
+
+  useEffect(() => {
+    reviewInit();
+  }, []);
+
+  useEffect(() => {
     if (content.length > 67 && !readMore) {
       setRealContent(content.slice(0, 68));
     } else {
@@ -92,7 +104,8 @@ export const MyReviewComment = ({
   }, [readMore, content]);
 
   const handleModifyReviewClick = () => {
-    console.log('수정');
+    changeReview({ content, rank });
+    router.push(`/center/${centerId}/review/${reviewId}`);
   };
 
   const handleDeleteReviewClick = () => {
