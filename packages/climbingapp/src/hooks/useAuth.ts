@@ -43,12 +43,15 @@ export const useAuth = () => {
   const logout = async () => {
     await axios
       .post(api + '/auth/sign-out')
-      .then((res) => {
+      .then(async (res) => {
         if (res.data?.errorCode) {
           const { errorCode, message }: ErrorResponse = res.data;
           Alert.alert('에러' + errorCode, message + '');
         } else {
           signOut();
+          await storeData('access-token', '');
+          await storeData('refresh-token', '');
+          await storeData('isCompletedSignUp', '');
         }
       })
       .catch((error) => {
@@ -64,12 +67,15 @@ export const useAuth = () => {
   const leaveClaon = async () => {
     await axios
       .delete(api + 'users/me')
-      .then((res) => {
+      .then(async (res) => {
         if (res.data?.errorCode) {
           const { errorCode, message }: ErrorResponse = res.data;
           Alert.alert('에러' + errorCode, message + '');
         } else {
           signOut();
+          await storeData('access-token', '');
+          await storeData('refresh-token', '');
+          await storeData('isCompletedSignUp', '');
         }
       })
       .catch((error) => {
