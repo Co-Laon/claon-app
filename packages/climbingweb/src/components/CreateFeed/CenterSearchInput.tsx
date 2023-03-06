@@ -109,7 +109,7 @@ export const CenterSearchInput = ({
             <div
               key={`searchInputForm_${index}`}
               className="text-sm font-medium hover:bg-[#EEEEEE] active:bg-[#EEEEEE] px-[21px] py-2"
-              onTouchEnd={() => handleSelected(val)}
+              onClick={() => handleSelected(val)}
             >
               {val.name}
             </div>
