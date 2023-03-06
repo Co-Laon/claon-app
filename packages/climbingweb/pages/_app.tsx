@@ -4,52 +4,34 @@ import React, { useState } from 'react';
 import store from '../src/store';
 import { Provider } from 'react-redux';
 import { QueryClient, QueryClientProvider } from 'react-query';
-import axios from 'axios';
 import 'react-spring-bottom-sheet/dist/style.css';
-import { useRNMessage } from 'climbingweb/src/hooks/useRNMessage';
 import { ToastClient } from 'climbingweb/src/components/common/Toast/ToastClient';
-import { useToken } from 'climbingweb/src/hooks/useToken';
-import Login from 'climbingweb/src/components/dev/Login';
-import { isDesktop } from 'react-device-detect';
+//import axios from 'axios';
+//import { useToken } from 'climbingweb/src/hooks/useToken';
+//import Login from 'climbingweb/src/components/dev/Login';
+//import { isDesktop } from 'react-device-detect';
 import NavBarWrapper from 'climbingweb/src/components/common/bottomNav/NavBarWrapper';
-import useIsomorphicLayoutEffect from 'climbingweb/src/hooks/useIsomorphicLayoutEffect';
+import { useAppToken } from 'climbingweb/src/hooks/useAppToken';
+import Loading from 'climbingweb/src/components/common/Loading/Loading';
 import { AnimatePresence } from 'framer-motion';
 function MyApp({ Component, pageProps, router }: AppProps) {
-  const { token, sendReactNativeMessage } = useRNMessage();
-  const { token: storageToken, isStorageLogin } = useToken();
-  useIsomorphicLayoutEffect(() => {
-    if (token) {
-      axios.defaults.headers.common['access-token'] = token.accessToken;
-      axios.defaults.headers.common['refresh-token'] = token.refreshToken;
-    }
-    if (isDesktop) {
-      axios.defaults.headers.common['access-token'] =
-        '' + process.env.NEXT_PUBLIC_ACCESS_TOKEN;
-      axios.defaults.headers.common['refresh-token'] =
-        '' + process.env.NEXT_PUBLIC_REFRESH_TOKEN;
-    }
-    if (isStorageLogin()) {
-      axios.defaults.headers.common['access-token'] = storageToken.accessToken;
-      axios.defaults.headers.common['refresh-token'] =
-        storageToken.refreshToken;
-    }
+  // const { token: storageToken, isStorageLogin } = useToken();
+  // useEffect(() => {
+  //   if (isDesktop) {
+  //     axios.defaults.headers.common['access-token'] =
+  //       '' + process.env.NEXT_PUBLIC_ACCESS_TOKEN;
+  //     axios.defaults.headers.common['refresh-token'] =
+  //       '' + process.env.NEXT_PUBLIC_REFRESH_TOKEN;
+  //   }
+  //   if (isStorageLogin()) {
+  //     axios.defaults.headers.common['access-token'] = storageToken.accessToken;
+  //     axios.defaults.headers.common['refresh-token'] =
+  //       storageToken.refreshToken;
+  //   }
+  //   //eslint-disable-next-line
+  // }, []);
 
-    axios.defaults.baseURL = '' + process.env.NEXT_PUBLIC_API;
-    axios.interceptors.response.use(function (response) {
-      if (response.headers?.hasOwnProperty('access-token')) {
-        sendReactNativeMessage({
-          type: 'updateToken',
-          payload: JSON.stringify({
-            'access-token': response.headers['access-token'],
-            'refresh-token': response.headers['refresh-token'],
-          }),
-        });
-      }
-      return response;
-    });
-
-    //eslint-disable-next-line
-  }, [token]);
+  const { token } = useAppToken();
 
   const [queryClient] = useState(
     () =>
@@ -63,10 +45,18 @@ function MyApp({ Component, pageProps, router }: AppProps) {
         },
       })
   );
-  if (!token && isDesktop && !isStorageLogin()) {
+  // if (!token && !isDesktop && !isStorageLogin()) {
+  //   return (
+  //     <section className=" h-screen flex justify-center items-center">
+  //       <Login />
+  //     </section>
+  //   );
+  // }
+
+  if (!token) {
     return (
       <section className=" h-screen flex justify-center items-center">
-        <Login />
+        <Loading />
       </section>
     );
   }
