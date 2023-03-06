@@ -1,4 +1,4 @@
-import { Dispatch, SetStateAction, useState } from 'react';
+import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 
 interface RatingProps {
   count: number;
@@ -59,6 +59,10 @@ export const StarRating = ({
   const stars = Array(count).fill(1);
 
   const [value, setValue] = useState(initialValue);
+
+  useEffect(() => {
+    setValue(initialValue);
+  }, [initialValue]);
 
   const handleCheck = (num: number) => {
     if (!disabled) setValue(num);

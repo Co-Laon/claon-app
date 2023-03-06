@@ -18,6 +18,7 @@ import {
   useRetrieveMe,
 } from 'climbingweb/src/hooks/queries/user/queryKey';
 import { useToken } from 'climbingweb/src/hooks/useToken';
+import { useBnbHide } from 'climbingweb/src/hooks/useBnB';
 // import { useDeleteUser } from 'climbingweb/src/hooks/queries/user/useDeleteUser';
 
 export default function SettingPage() {
@@ -98,6 +99,8 @@ export default function SettingPage() {
     }
   };
 
+  useBnbHide();
+
   if (isUserDataError) return <ErrorContent error={userDataError} />;
 
   if (userData)
@@ -107,11 +110,12 @@ export default function SettingPage() {
           leftNode={<BackButton onClick={handleGoToBack} />}
           title={titleName}
           rightNode={<Empty />}
+          className="pl-5"
         />
-        <div className="p-4">
+        <div className="p-5 pl-2 pr-4 h-full">
           {titleName === '설정' && (
-            <ul className="mt-10 h-screen w-screen pl-7 flex flex-col flex-end gap-y-6">
-              <li className="flex w-full justify-between pr-6 font-normal text-sm">
+            <ul className="flex flex-col flex-end gap-y-6 pl-9 pr-2 pt-5">
+              <li className="flex w-full justify-between font-normal text-sm">
                 <div>프로필 비공개</div>
                 <input
                   type={'checkbox'}
@@ -132,7 +136,7 @@ export default function SettingPage() {
             </ul>
           )}
           {titleName === '개인 정보 수정' && (
-            <EditMyInfo userRequest={userData} setTitleName={setTitleName} />
+            <EditMyInfo userRequest={userData} />
           )}
           {titleName === '차단 리스트' && <BanList />}
           {titleName === '공지 사항' && <NotificationList />}

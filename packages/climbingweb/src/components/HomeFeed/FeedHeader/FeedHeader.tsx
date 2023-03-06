@@ -9,6 +9,7 @@ interface FeedHeaderProps {
   userLocation: string;
   handleOptionDotClick: () => void;
   isOwner?: boolean;
+  className?: string;
 }
 
 const FeedHeader = ({
@@ -16,6 +17,7 @@ const FeedHeader = ({
   userName,
   userLocation,
   handleOptionDotClick,
+  className,
   isOwner = false,
 }: FeedHeaderProps) => {
   const router = useRouter();
@@ -24,9 +26,9 @@ const FeedHeader = ({
     else router.push(`/users/name/${userName}`);
   };
   return (
-    <header className={'flex w-full h-[69px]  justify-between'}>
+    <header className={`flex w-full h-[69px]  justify-between ${className}`}>
       <div className={'flex items-center'} onClick={handleProfileClick}>
-        <ProfileImage src={userImage} className="w-[40px] ml-[20px] mr-2" />
+        <ProfileImage src={userImage} className="w-[40px]  mx-2" />
         <div>
           <p className={'text-sm font-bold'}>{userName}</p>
           <p className={'text-sm text-[#666666] font-medium'}>{userLocation}</p>

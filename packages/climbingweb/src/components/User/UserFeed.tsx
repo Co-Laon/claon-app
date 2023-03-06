@@ -38,7 +38,7 @@ const UserFeed = ({
       }
       onClick={handleFeedClick}
     >
-      <div className="relative flex rounded-t-lg">
+      <div className="relative flex rounded-t-lg bg-[#F3F3F3]">
         <Image
           className="rounded-t-lg"
           src={image}
@@ -49,7 +49,7 @@ const UserFeed = ({
           priority
         />
       </div>
-      <div className="ml-3 my-1 text-gray-500 text-xs scrollbar-hide">
+      <div className="ml-3 my-1 text-[#666666] font-medium text-[10px] leading-4 scrollbar-hide">
         {centerName}
         <div className="grid grid-cols-4">
           {climbingHistories.map((value, index) => (
