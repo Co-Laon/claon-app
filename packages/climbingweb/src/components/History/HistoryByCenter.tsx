@@ -1,4 +1,4 @@
-function RecordByCenter() {
+function HistoryByCenter() {
   return <div></div>;
 }
-export default RecordByCenter;
+export default HistoryByCenter;

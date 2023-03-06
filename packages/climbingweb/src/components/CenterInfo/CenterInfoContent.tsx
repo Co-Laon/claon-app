@@ -38,7 +38,9 @@ export const CenterInfoContent = ({ data }: ContentProps) => {
   return (
     <div>
       <ImageList imageList={data.imgList.map((value) => value.url)} />
-      <TabBar tabList={tabList} />
+      <div className="pt-2">
+        <TabBar tabList={tabList} />
+      </div>
     </div>
   );
 };

@@ -25,7 +25,7 @@ import {
 import { useIntersectionObserver } from 'climbingweb/src/hooks/useIntersectionObserver';
 import { useToast } from 'climbingweb/src/hooks/useToast';
 import { useRouter } from 'next/router';
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 import { useQueryClient } from 'react-query';
 import { BottomSheet } from 'react-spring-bottom-sheet';
 
@@ -122,6 +122,10 @@ export default function UserPage({}) {
     { threshold: 1 }
   );
 
+  const onClickHistory = useCallback(() => {
+    router.push(`/users/history/${userNickname}`);
+  }, [userNickname]);
+
   if (isGetUserDataError) return <ErrorContent error={getUserDataError} />;
   if (!getUserData?.isPrivate && isFindPostsByUserDataError)
     return <ErrorContent error={findPostsByUserDataError} />;
@@ -174,6 +178,7 @@ export default function UserPage({}) {
             )
           }
           isPrivate={getUserData.isPrivate}
+          onClickHistory={onClickHistory}
         />
         <BottomSheet open={openSheet} onDismiss={() => onBottomSheetDismiss()}>
           <ListSheet

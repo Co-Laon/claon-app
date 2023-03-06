@@ -4,9 +4,11 @@ import { useCallback, useState } from 'react';
 import { useHistoryByDate } from 'climbingweb/src/hooks/queries/user/queryKey';
 import CenterHistory from './CenterHistory';
 
-function RecordByDate({ nickName }: { nickName: string }) {
+function HistoryByDate({ nickName }: { nickName: string }) {
   const [year, setYear] = useState<number>(new Date().getFullYear() as number);
-  const [month, setMonth] = useState<number>(new Date().getMonth() as number);
+  const [month, setMonth] = useState<number>(
+    (new Date().getMonth() + 1) as number
+  );
 
   const { data: historyDatas } = useHistoryByDate(nickName, year, month);
 
@@ -25,23 +27,25 @@ function RecordByDate({ nickName }: { nickName: string }) {
   }, [year, month]);
 
   return (
-    <>
-      <div className="flex">
+    <div className="p-3 pt-8 ">
+      <div className="flex items-center justify-center gap-11">
         <LeftButton onClick={onClickLeft} />
-        <div className="flex">
+        <div className="flex gap-3">
           <CalenderIcon />
           {`${year}.${month}`}
         </div>
         <RightButton onClick={onClickRight} />
       </div>
-      {historyDatas?.map((history, idx) => (
-        <CenterHistory
-          key={idx}
-          centerInfo={history.centerInfo}
-          histories={history.histories}
-        />
-      ))}
-    </>
+      <div className="pt-10 flex flex-col gap-3">
+        {historyDatas?.map((history, idx) => (
+          <CenterHistory
+            key={idx}
+            centerInfo={history.centerInfo}
+            histories={history.histories}
+          />
+        ))}
+      </div>
+    </div>
   );
 }
-export default RecordByDate;
+export default HistoryByDate;

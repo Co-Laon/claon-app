@@ -7,7 +7,7 @@ export const TabBar = ({ tabList, className }: TabBarProps) => {
     <>
       <div className="flex flex-wrap">
         <div className="w-full">
-          <ul className="flex list-none flex-wrap pt-4 flex-row" role="tablist">
+          <ul className="flex list-none flex-wrap pt-2 flex-row" role="tablist">
             {tabList.map(({ id, tabName, tabIcon, ...rest }, index) => (
               <li key={id} className=" flex-auto text-center">
                 <p

@@ -9,6 +9,7 @@ interface UserPageProps {
   userRecordList?: React.ReactNode;
   userFeedList?: React.ReactNode;
   isPrivate: boolean;
+  onClickHistory: () => void;
 }
 
 /**
@@ -25,6 +26,7 @@ const UserPageLayout = ({
   userRecordList,
   userFeedList,
   isPrivate,
+  onClickHistory,
 }: UserPageProps) => (
   <section className="mb-footer">
     {appBar}
@@ -38,7 +40,7 @@ const UserPageLayout = ({
         <>
           <div className="flex justify-between mt-5">
             <PageSubTitle title="기록" className="text-base" />
-            <RecordDetailSvg />
+            <RecordDetailSvg onClick={onClickHistory} />
           </div>
           <div className="flex overflow-auto scrollbar-hide my-2 mb-4">
             {userRecordList}
