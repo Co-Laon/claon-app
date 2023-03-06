@@ -33,6 +33,13 @@ export interface CenterInfoResponse {
   centerImg: string;
   centerName: string;
 }
+
+export interface CenterListResponse {
+  centerId: string;
+  centerName: string;
+  centerThumbnailUrl: string;
+}
+
 export interface HistoryResponse {
   climbingCount: number;
   holdId: string;

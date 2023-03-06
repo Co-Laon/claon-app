@@ -13,6 +13,7 @@ import {
   createBlock,
   deleteBlock,
   findBlockUser,
+  findCenterHistoryByUser,
   findPostsByUser,
   getHistoryByDate,
   getPublicUser,
@@ -61,6 +62,11 @@ export const userQueries = createQueryKeys('users', {
             queryFn: () => getHistoryByDate(nickname, year, month),
           }),
         },
+      }),
+      centers: () => ({
+        queryKey: ['centers'],
+        queryFn: (context) =>
+          findCenterHistoryByUser(context?.pageParam, nickname),
       }),
     },
   }),
@@ -245,6 +251,19 @@ export const useSearchUser = (name: string) => {
   return useInfiniteQuery({
     ...userQueries.search(name),
     enabled: Boolean(name),
+    getNextPageParam: (lastPageData) => {
+      return lastPageData.nextPageNum < 0
+        ? undefined
+        : lastPageData.nextPageNum;
+    },
+  });
+};
+
+/** */
+export const useCenterByUser = (nickName: string) => {
+  return useInfiniteQuery({
+    ...userQueries.name(nickName)._ctx.centers(),
+    enabled: Boolean(nickName),
     getNextPageParam: (lastPageData) => {
       return lastPageData.nextPageNum < 0
         ? undefined

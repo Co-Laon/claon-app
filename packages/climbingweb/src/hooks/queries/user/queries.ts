@@ -3,6 +3,7 @@ import { Pagination } from 'climbingweb/types/common';
 import { UserRequest } from 'climbingweb/types/request/user';
 import {
   BlockUserFindResponse,
+  CenterListResponse,
   HistoryDateResponse,
   PublicScopeResponse,
   UserDetailResponse,
@@ -106,6 +107,28 @@ export const findPostsByUser = async (pageParam = 0, nickname?: string) => {
       {
         params: {
           page: pageParam,
+        },
+      }
+    );
+    return data;
+  } catch (error: any) {
+    throw error.response.data;
+  }
+};
+
+/**
+ * GET /users/name/{nickname}/history/centers api의 query 함수
+ */
+export const findCenterHistoryByUser = async (
+  pageParm = 0,
+  nickname?: string
+) => {
+  try {
+    const { data } = await axios.get<Pagination<CenterListResponse>>(
+      `/users/${nickname}/history/centers`,
+      {
+        params: {
+          page: pageParm,
         },
       }
     );
