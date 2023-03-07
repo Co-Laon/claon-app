@@ -1,6 +1,7 @@
 import {
   ChildCommentResponse,
   CommentResponse,
+  PostContents,
   PostDeleteResponse,
 } from './../../../../types/response/post/index.d';
 import axios from 'axios';
@@ -9,6 +10,7 @@ import {
   CommentCreateRequest,
   CommentUpdateRequest,
   PostCreateRequest,
+  PostEditRequest,
   PostReportRequest,
 } from 'climbingweb/types/request/post';
 import {
@@ -45,6 +47,22 @@ export const createPost = async (postCreateRequest: PostCreateRequest) => {
       '/posts',
       postCreateRequest
     );
+    return data;
+  } catch (error: any) {
+    throw error.response.data;
+  }
+};
+
+export const editPost = async (
+  postEditRequest: PostEditRequest,
+  postId: string
+) => {
+  try {
+    const { data } = await axios.put<PostResponse>(
+      `/posts/${postId}`,
+      postEditRequest
+    );
+    console.log(data);
     return data;
   } catch (error: any) {
     throw error.response.data;
@@ -230,12 +248,11 @@ export const deleteComment = async (commentId: string) => {
   }
 };
 
-
 /**
  * Delete /api/v1/posts/{postId} api query 함수
- * 
- * @param postId 
- * @returns axiosResponse.data   
+ *
+ * @param postId
+ * @returns axiosResponse.data
  */
 export const deletePost = async (postId: string) => {
   try {
@@ -246,7 +263,28 @@ export const deletePost = async (postId: string) => {
   }
 };
 
+/**
+ * Delete /api/v1/posts/{postId}/contents api query 함수
+ * @param postId
+ * @param url
+ * @returns
+ */
+export const deleteContent = async (postId: string, urls: string[]) => {
+  await axios
+    .all(
+      urls.map((url) => {
+        axios.delete(`/posts/${postId}/contents`, {
+          headers: { 'contents-url': url },
+        });
+      })
+    )
+    .catch((error: any) => {
+      throw error.response();
+    });
+};
+
 export const getPostContentsList = async (fileList: File[]) => {
+  if (fileList.length == 0) return [] as PostContents[];
   const data = await axios
     .all(
       fileList.map((file) => {

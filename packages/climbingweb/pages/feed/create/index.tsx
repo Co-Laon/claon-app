@@ -13,13 +13,16 @@ import {
   useGetPostContentsList,
 } from 'climbingweb/src/hooks/queries/post/queryKey';
 import { useCreatePostForm } from 'climbingweb/src/hooks/useCreatePostForm';
-import Loading from 'climbingweb/src/components/common/Loading/Loading';
 import { debounce } from 'lodash';
 import {
   useFindHoldInfoByCenter,
   useSearchCenterName,
 } from 'climbingweb/src/hooks/queries/center/queryKey';
 import { useRouter } from 'next/router';
+import { useToast } from 'climbingweb/src/hooks/useToast';
+import { PostContents } from 'climbingweb/types/response/post';
+import PageLoading from 'climbingweb/src/components/common/Loading/PageLoading';
+import { SlideRight } from 'climbingweb/src/components/Transition/SlideRight';
 
 export default function CreatePostPage() {
   const [page, setPage] = useState<string>('first');
@@ -30,23 +33,33 @@ export default function CreatePostPage() {
   const [searchInput, setSearchInput] = useState<string>('');
   const [selected, setSelected] = useState(false);
   const { data: centerList } = useSearchCenterName(searchInput);
+  const { toast } = useToast();
   const router = useRouter();
 
   //기준이 되는 hold 리스트 state
   const { data: holdListData } = useFindHoldInfoByCenter(postData.centerId);
 
-  const { isLoading } = useCreatePost({
-    onSuccess: () => {
-      alert('입력 완료 되었습니다.');
-      router.push('/');
-    },
-    onError: () => {
-      alert('피드 작성에 실패했습니다. 다시 시도해주세요.');
-      window.location.reload();
-    },
-  });
+  const { isLoading: isCreatePostLoading, mutate: createPostMutate } =
+    useCreatePost({
+      onSuccess: () => {
+        router.push('/');
+        toast('입력 완료 되었습니다.');
+      },
+      onError: () => {
+        window.location.reload();
+        toast('피드 작성에 실패했습니다. 다시 시도해주세요.');
+      },
+    });
+
   const { mutate: getPostContentsList, isLoading: getPostContentsListLoading } =
-    useGetPostContentsList();
+    useGetPostContentsList({
+      onSuccess: (data: PostContents[]) => {
+        createPostMutate({ ...postData, contentsList: data });
+      },
+      onError: () => {
+        toast('이미지 업로드에 실패했습니다.');
+      },
+    });
 
   useEffect(() => {
     return () => {
@@ -109,81 +122,79 @@ export default function CreatePostPage() {
    * 포스트 입력 완료 핸들링 함수
    */
   const handlePostDataSubmit = useCallback(() => {
-    const urlList = postImageList.map(({ file }) => file);
+    const urlList = postImageList.map(({ file }) => file as File);
     getPostContentsList(urlList);
   }, [postImageList, getPostContentsList]);
 
-  if (getPostContentsListLoading && isLoading) {
-    return (
-      <section className=" h-screen flex justify-center items-center">
-        <Loading />
-      </section>
-    );
-  }
-
   return (
     <div className="mb-footer overflow-auto scrollbar-hide">
-      <AppBar
-        title="새 게시글"
-        leftNode={<BackButton onClick={handleBackButtonClick} />}
-        rightNode={
-          <NextButton
-            pageState={page}
-            setPageState={setPage}
-            onSubmit={page === 'second' ? handlePostDataSubmit : null}
-          />
-        }
-        className="pl-[20px] pr-[18px] text-base items-center"
-      />
-      <div className="p-4">
-        {page === 'first' ? (
-          <div className="flex flex-col gap-4">
-            <PageSubTitle
-              title={'사진'}
-              className="px-[4px] text-base font-bold"
+      {getPostContentsListLoading || isCreatePostLoading ? (
+        <PageLoading />
+      ) : null}
+      <SlideRight>
+        <AppBar
+          title="새 게시글"
+          leftNode={<BackButton onClick={handleBackButtonClick} />}
+          rightNode={
+            <NextButton
+              pageState={page}
+              setPageState={setPage}
+              onSubmit={page === 'second' ? handlePostDataSubmit : null}
             />
-            <UploadImageList />
-            <PageSubTitle
-              title={'내용'}
-              className="px-[4px] text-base font-bold"
-            />
-            <TextArea
-              data={postData.content}
-              setData={handleContentInput}
-              placeholder="500자 이내 글 입력"
-              className="w-[89vw] h-[32.4vh] ml-[4px] mr-[4px]"
-            />
-          </div>
-        ) : (
-          <div className="flex flex-col gap-4">
-            <PageSubTitle
-              title={'암장 이름'}
-              className="px-[4px] text-base font-bold"
-            />
-            <CenterSearchInput
-              refObj={searchInputRef}
-              selected={selected}
-              setSelected={setSelected}
-              setData={handleCenterIdInput}
-              initialValue={searchInput}
-              centerList={centerList}
-              onChange={handleSearchInputChange}
-              className="px-[4px] h-[52px]"
-            />
-            <PageSubTitle
-              title={'완등 횟수'}
-              className="px-[4px] text-base font-bold"
-            />
-            <HoldListModal
-              maxCount={10}
-              centerId={postData.centerId}
-              standardHoldList={holdListData}
-              preSelectedHoldList={postData.climbingHistories}
-              setData={handleClimbingHistoriesInput}
-            />
-          </div>
-        )}
-      </div>
+          }
+          className="pl-[20px] pr-[18px] text-base items-center"
+        />
+        <div className="p-4">
+          {page === 'first' ? (
+            <div className="flex flex-col gap-4">
+              <PageSubTitle
+                title={'사진'}
+                className="px-[4px] text-base font-bold"
+              />
+              <UploadImageList />
+              <PageSubTitle
+                title={'내용'}
+                className="px-[4px] text-base font-bold"
+              />
+              <TextArea
+                data={postData.content}
+                setData={handleContentInput}
+                placeholder="500자 이내 글 입력"
+                className="w-[89vw] h-[32.4vh] ml-[4px] mr-[4px]"
+                limitLength={500}
+              />
+            </div>
+          ) : (
+            <div className="flex flex-col gap-4">
+              <PageSubTitle
+                title={'암장 이름'}
+                className="px-[4px] text-base font-bold"
+              />
+              <CenterSearchInput
+                refObj={searchInputRef}
+                selected={selected}
+                setSelected={setSelected}
+                setData={handleCenterIdInput}
+                initialValue={searchInput}
+                centerList={centerList}
+                onChange={handleSearchInputChange}
+                className="px-[4px] h-[52px]"
+              />
+              <PageSubTitle
+                title={'완등 횟수'}
+                className="px-[4px] text-base font-bold"
+              />
+              <HoldListModal
+                maxCount={10}
+                centerId={postData.centerId}
+                standardHoldList={holdListData}
+                preSelectedHoldList={postData.climbingHistories}
+                setData={handleClimbingHistoriesInput}
+              />
+            </div>
+          )}
+        </div>
+      </SlideRight>
     </div>
   );
 }

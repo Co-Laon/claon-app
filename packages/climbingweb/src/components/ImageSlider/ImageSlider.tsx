@@ -30,7 +30,7 @@ const ImageSlider = ({ imageList }: { imageList: string[] }) => {
       onTouchEnd={onTouchEnd}
     >
       <div
-        className={'w-[1000%] relative'}
+        className={'w-[1000%] relative bg-[#F3F3F3]'}
         style={{
           transform: `translateX(-${selectedImageIndex * imageWidth}px)`,
           transition: 'transform 0.5s',

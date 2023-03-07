@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useMemo } from 'react';
 import FeedContent from './FeedContent/FeedContent';
 import FeedHeader from './FeedHeader/FeedHeader';
 import FeedSectorInfo from './FeedSectorInfo/FeedSectorInfo';
@@ -22,6 +22,11 @@ interface HomeFeedProps {
 
 const HomeFeed = ({ postData, openBtSheet, onChangePostId }: HomeFeedProps) => {
   const router = useRouter();
+
+  const isOwner = useMemo(() => {
+    if ('isOwner' in postData && postData.isOwner) return true;
+    else return false;
+  }, [postData]);
 
   //피드 댓글 정보 fetch useQuery
   const {
@@ -66,6 +71,8 @@ const HomeFeed = ({ postData, openBtSheet, onChangePostId }: HomeFeedProps) => {
           userName={postData.userNickname}
           userLocation={postData.centerName}
           handleOptionDotClick={handleOptionDotClick}
+          isOwner={isOwner}
+          className="pl-3"
         />
         <ImageSlider imageList={postData.contentsList} />
         <FeedSectorInfo holdList={postData.climbingHistories} />

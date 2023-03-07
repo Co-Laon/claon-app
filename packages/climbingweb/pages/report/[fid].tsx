@@ -13,6 +13,7 @@ import { useRouter } from 'next/router';
 import { useCreateReport } from 'climbingweb/src/hooks/queries/post/queryKey';
 import { useToast } from 'climbingweb/src/hooks/useToast';
 import { useBnbHide } from 'climbingweb/src/hooks/useBnB';
+import PageLoading from 'climbingweb/src/components/common/Loading/PageLoading';
 
 export default function ReportPage({}) {
   const router = useRouter();
@@ -28,7 +29,10 @@ export default function ReportPage({}) {
     '부적절한 게시글' | '부적절한 닉네임' | '잘못된 암장 선택'
   >('부적절한 게시글');
 
-  const { mutate: createCenterReportMutate } = useCreateReport(feedId, {
+  const {
+    mutate: createCenterReportMutate,
+    isLoading: isCreateCenterReportLoading,
+  } = useCreateReport(feedId, {
     onSuccess: () => {
       router.push('/');
       toast('신고 완료');
@@ -68,6 +72,7 @@ export default function ReportPage({}) {
 
   return (
     <section className="mb-footer">
+      {isCreateCenterReportLoading && <PageLoading />}
       <AppBar
         leftNode={<BackButton />}
         title=""

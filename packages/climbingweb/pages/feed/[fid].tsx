@@ -9,10 +9,13 @@ import {
   useDeletePost,
   useGetPost,
 } from 'climbingweb/src/hooks/queries/post/queryKey';
+import { useCreatePostForm } from 'climbingweb/src/hooks/useCreatePostForm';
 import { useToast } from 'climbingweb/src/hooks/useToast';
+import { SlideRight } from 'climbingweb/src/components/Transition/SlideRight';
 import { useRouter } from 'next/router';
-import { useCallback, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { BottomSheet } from 'react-spring-bottom-sheet';
+import { PostDetailRequest } from 'climbingweb/types/request/post';
 
 export default function FeedPage({}) {
   //바텀시트 open state
@@ -23,12 +26,18 @@ export default function FeedPage({}) {
   //fid string 거르는 로직, useRouter 에 대해 자세히 보고 추후 반드시 변경 해야함
   const feedId = fid as string;
   const { toast } = useToast();
+  const { setPostData, addExistedImageList, initPost } = useCreatePostForm();
 
   const {
     data: postData,
     isError: isPostError,
     error: postError,
   } = useGetPost(feedId);
+
+  useEffect(() => {
+    initPost();
+    //eslint-disable-next-line
+  }, []);
 
   const { mutate: deleteFeedMutate } = useDeletePost(feedId, {
     onSuccess: () => {
@@ -50,6 +59,42 @@ export default function FeedPage({}) {
     setOpen(false);
   }, []);
 
+  //redux에 postData를 저장하기 위하여 postData를 PostDetailRequest로 변환
+  const responseToRequest: PostDetailRequest = useMemo(() => {
+    if (postData) {
+      return {
+        centerId: postData.centerId,
+        climbingHistories: postData.climbingHistories.map((history) => ({
+          climbingCount: history.climbingCount,
+          holdId: history.holdId,
+        })),
+        content: postData.content,
+        contentsList: postData.contentsList.map((c) => ({ url: c })),
+        postId: feedId,
+        centerName: postData.centerName,
+      };
+    } else {
+      return {
+        centerId: '',
+        climbingHistories: [
+          {
+            climbingCount: 0,
+            holdId: '',
+          },
+        ],
+        content: '',
+        contentsList: [
+          {
+            url: '',
+          },
+        ],
+        postId: '',
+        centerName: '',
+      };
+    }
+    //eslint-disable-next-line
+  }, [postData]);
+
   //바텀 시트 리스트 클릭 핸들러(본인 게시물 클릭 시)
   const handleEditRemoveBTSheetListClick = useCallback(
     (selectionData: '수정하기' | '삭제하기') => {
@@ -57,10 +102,13 @@ export default function FeedPage({}) {
         setOpenDelete(true);
       } else {
         setOpenDelete(false);
-        router.push(`/edit/${feedId}`);
+        setPostData(responseToRequest);
+        addExistedImageList(postData?.contentsList || []);
+        router.push(`/feed/edit/${feedId}`);
       }
     },
-    [feedId]
+    //eslint-disable-next-line
+    [feedId, postData]
   );
   //삭제 취소 버튼 눌렀을 시
   const onClickDeleteCancelButton = useCallback(() => {
@@ -76,28 +124,23 @@ export default function FeedPage({}) {
   //삭제 버튼 눌렀을 시
   const onClickDeleteButton = useCallback(() => {
     deleteFeedMutate();
+    //eslint-disable-next-line
   }, []);
 
   //신고하기 버튼을 눌렀을 경우
   const handleBtSheetListClick = useCallback(() => {
     router.push(`/report/${feedId}`);
-  }, [feedId]);
+  }, [feedId, router]);
 
   if (isPostError) return <ErrorContent error={postError} />;
 
   if (postData)
     return (
-      <section>
-        <AppBar leftNode={<BackButton onClick={handleBackButtonClick} />} />
-        <HomeFeed postData={postData} openBtSheet={openBtSheet} />
-        <BottomSheet open={open} onDismiss={onDismiss}>
-          <ListSheet
-            headerTitle={''}
-            list={['신고하기']}
-            onSelect={() => router.push(`/report/${postData.postId}`)}
-          />
-        </BottomSheet>
-
+      <section className="overflow-auto">
+        <SlideRight>
+          <AppBar leftNode={<BackButton onClick={handleBackButtonClick} />} />
+          <HomeFeed postData={postData} openBtSheet={openBtSheet} />
+        </SlideRight>
         <BottomSheet open={open} onDismiss={onDismiss}>
           {'isOwner' in postData && postData.isOwner ? (
             openDelete ? (

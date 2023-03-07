@@ -34,10 +34,10 @@ export default function TextArea({
       <textarea
         ref={refObj}
         onChange={onChangeValue}
-        value={data}
         placeholder={placeholder}
         className=" w-full h-full placeholder:text-gray focus:outline-none resize-none"
         maxLength={limitLength}
+        defaultValue={data}
       />
     </div>
   );

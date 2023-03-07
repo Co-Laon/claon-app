@@ -30,9 +30,9 @@ const CenterResult = ({ id, name, thumbnailUrl, reviewRank }: CenterProps) => {
   return (
     <div
       onClick={handleGoToCenterDetail}
-      className="relative min-w-[150px] min-h-[120px] bg-transparent mr-[5px]"
+      className="relative min-w-[152px] min-h-[120px] bg-transparent "
     >
-      <div className="flex items-center justify-between m-1 px-2 py-[2px] z-10 gap-1 absolute bg-yellow-500 rounded-full text-xs font-bold">
+      <div className="flex items-center justify-between m-1 px-2 py-0.5 z-10 gap-1 absolute bg-yellow-500 rounded-full text-xs font-bold">
         <StarIcon />
         {Math.floor(reviewRank * 10) / 10}
       </div>
@@ -42,7 +42,7 @@ const CenterResult = ({ id, name, thumbnailUrl, reviewRank }: CenterProps) => {
         alt={'centerImage'}
         layout="fill"
       />
-      <div className="m-1 px-2 py-[2px] right-0 bottom-0 absolute bg-purple-500 text-white rounded-full text-xs">
+      <div className="mx-0.5 my-0.5 px-1 py-0.5 right-0 bottom-0 absolute bg-purple-500 text-white rounded-full text-[8px] leading-[14px] font-bold">
         {name}
       </div>
     </div>

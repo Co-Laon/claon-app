@@ -1,10 +1,10 @@
 import { laonQueries } from './../laon/queryKey';
-import { useCreatePostForm } from 'climbingweb/src/hooks/useCreatePostForm';
 import { createQueryKeys } from '@lukemorales/query-key-factory';
 import {
   CommentCreateRequest,
   CommentUpdateRequest,
   PostCreateRequest,
+  PostEditRequest,
   PostReportRequest,
 } from 'climbingweb/types/request/post';
 import {
@@ -28,9 +28,9 @@ import {
   getPosts,
   updateComment,
   deletePost,
+  editPost,
+  deleteContent,
 } from './queries';
-import { useRouter } from 'next/router';
-import { useToast } from '../../useToast';
 import {
   CommentResponse,
   LikeResponse,
@@ -39,6 +39,8 @@ import {
   PostReportResponse,
   PostResponse,
 } from 'climbingweb/types/response/post';
+import { useRetrieveMe, userQueries } from '../user/queryKey';
+import { useCreatePostForm } from '../../useCreatePostForm';
 
 /**
  * 추후 성능 개선 필요!!
@@ -158,28 +160,67 @@ export const useCreatePost = (
   >
 ) => {
   const queryClient = useQueryClient();
-  const { toast } = useToast();
-  const router = useRouter();
+  const { data: myData } = useRetrieveMe();
+
+  return useMutation(createPost, {
+    ...options,
+    onSuccess: (data, variables, context) => {
+      if (options?.onSuccess) {
+        options.onSuccess(data, variables, context);
+      }
+      queryClient.invalidateQueries({
+        queryKey: postQueries.list().queryKey,
+        refetchInactive: true,
+      });
+      if (myData) {
+        queryClient.invalidateQueries({
+          queryKey: userQueries.name(myData.nickname)._ctx.posts().queryKey,
+          refetchInactive: true,
+        });
+      }
+    },
+  });
+};
+
+/**
+ * edit post api useMutation Hooks
+ * @param postId
+ * @param options
+ * @returns
+ */
+export const useEditPost = (
+  postId: string,
+  options?: Omit<
+    UseMutationOptions<PostResponse, unknown, PostEditRequest, unknown>,
+    'mutationFn'
+  >
+) => {
+  const queryClient = useQueryClient();
+  const { data: userData } = useRetrieveMe();
+
   return useMutation(
-    (postCreateRequest: PostCreateRequest) => createPost(postCreateRequest),
+    (postEditRequest: PostEditRequest) => editPost(postEditRequest, postId),
     {
       ...options,
       onSuccess: (data, variables, context) => {
         if (options?.onSuccess) {
           options.onSuccess(data, variables, context);
         }
+
+        queryClient.invalidateQueries({
+          queryKey: postQueries.detail(postId).queryKey,
+          refetchInactive: true,
+        });
         queryClient.invalidateQueries({
           queryKey: postQueries.list().queryKey,
           refetchInactive: true,
         });
-        // alert('입력 완료 되었습니다.');
-        toast('게시글 작성 완료');
-        router.push('/');
-      },
-      onError: (error) => {
-        console.error(error);
-        toast('피드 작성에 실패했습니다. 다시 시도해주세요.');
-        window.location.reload();
+        if (userData) {
+          queryClient.invalidateQueries({
+            queryKey: userQueries.name(userData.nickname)._ctx.posts().queryKey,
+            refetchInactive: true,
+          });
+        }
       },
     }
   );
@@ -423,7 +464,10 @@ export const useDeletePost = (
   >
 ) => {
   const queryClient = useQueryClient();
+  const { data: myData } = useRetrieveMe();
+
   return useMutation(() => deletePost(postId), {
+    ...options,
     onSuccess: (data, variables, context) => {
       if (options?.onSuccess) {
         options.onSuccess(data, variables, context);
@@ -432,8 +476,13 @@ export const useDeletePost = (
         queryKey: ['delete', postId],
         refetchInactive: true,
       });
+      if (myData) {
+        queryClient.invalidateQueries({
+          queryKey: userQueries.name(myData.nickname)._ctx.posts().queryKey,
+          refetchInactive: true,
+        });
+      }
     },
-    ...options
   });
 };
 
@@ -459,17 +508,81 @@ export const useCreateReport = (
   );
 };
 
-export const useGetPostContentsList = () => {
-  const { mutate } = useCreatePost();
-  const { postData } = useCreatePostForm();
+/**
+ * uploadContents api useMutation hooks
+ *
+ * @param options 추가적인 옵션
+ * @returns uploadContents api useMutation return 값
+ */
+export const useGetPostContentsList = (
+  options?: Omit<
+    UseMutationOptions<
+      {
+        url: any;
+      }[],
+      unknown,
+      File[],
+      unknown
+    >,
+    'mutationFn'
+  >
+) => {
   return useMutation((fileList: File[]) => getPostContentsList(fileList), {
-    onSuccess: (data: PostContents[]) => {
-      console.log(data);
-      mutate({ ...postData, contentsList: data });
-    },
-    onError: (error) => {
-      console.error(error);
-      alert('이미지 업로드에 실패했습니다.');
+    ...options,
+  });
+};
+/**
+ * content List 삭제하는 api 호출하는 함수
+ * @returns
+ */
+export const useDeleteContentsList = () => {
+  const { postData, deleteQueue } = useCreatePostForm();
+  const { mutate } = useEditPost(postData.postId);
+
+  return useMutation(() => deleteContent(postData.postId, deleteQueue), {
+    onSuccess: () => {
+      mutate({
+        climbingHistories: postData.climbingHistories,
+        content: postData.content,
+        contentsList: postData.contentsList,
+      });
     },
   });
+};
+
+/**
+ * 게시글을 수정할 때 사용하는 함수
+ * @param postId
+ * @returns
+ */
+export const useEditContentsList = (
+  options?: Omit<
+    UseMutationOptions<PostContents[], unknown, void, unknown>,
+    'mutationFn'
+  >
+) => {
+  const { mutate } = useDeleteContentsList();
+  const { postData, postImageList, setPostData } = useCreatePostForm();
+
+  const existImageList: PostContents[] = postImageList
+    .filter((res) => res.file === null)
+    .map((res) => ({ url: res.thumbNail }));
+  const newImageList = postImageList
+    .filter((res) => res.file != null)
+    .map((res) => res.file);
+
+  return useMutation(
+    () => getPostContentsList(newImageList ? (newImageList as File[]) : []),
+    {
+      ...options,
+      onSuccess: (data, variables, context) => {
+        if (options?.onSuccess) {
+          options.onSuccess(data, variables, context);
+        }
+        const contents = [...existImageList, ...data];
+        setPostData({ ...postData, contentsList: contents });
+        mutate();
+      },
+    }
+  );
 };

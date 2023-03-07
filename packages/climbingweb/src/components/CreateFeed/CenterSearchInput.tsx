@@ -4,13 +4,14 @@ import { ChangeEvent, useState, useEffect } from 'react';
 
 interface CenterSearchInputProps {
   refObj?: React.RefObject<HTMLInputElement>;
-  selected: boolean;
-  setSelected: any;
-  setData: (centerName: string, centerId: string) => void;
+  selected?: boolean;
+  setSelected?: any;
+  setData?: (centerName: string, centerId: string) => void;
   initialValue?: string;
   centerList?: CenterNameResponse[];
-  onChange: any;
+  onChange?: any;
   className?: string;
+  disable?: boolean;
 }
 
 export const CenterSearchInput = ({
@@ -22,6 +23,7 @@ export const CenterSearchInput = ({
   centerList,
   onChange,
   className,
+  disable = false,
 }: CenterSearchInputProps) => {
   //focus 관련 state
   const [focused, setFocused] = useState(false);
@@ -31,10 +33,17 @@ export const CenterSearchInput = ({
   const [inputValue, setInputValue] = useState<string>(
     initialValue ? initialValue : ''
   );
+  const [disableCss, setDisableCss] = useState<string>('');
 
   const inputCss = `border-2  h-12 w-full bg-white relative flex flex-col justify-between px-[21px]  ${
     focused ? 'border-purple-500' : 'border-gray-300'
   } ${isOptionOpen ? 'rounded-t-lg' : 'rounded-lg'}`;
+
+  useEffect(() => {
+    if (disable) {
+      setDisableCss('bg-[#E6E6E6]');
+    }
+  }, [disable]);
 
   //focus 관련 handler
   const handleFocused = () => {
@@ -60,7 +69,7 @@ export const CenterSearchInput = ({
   // option list 중 하나를 선택 했을 때 handler
   const handleSelected = (val: CenterNameResponse) => {
     setInputValue(val.name);
-    setData(val.name, val.id);
+    if (setData) setData(val.name, val.id);
     setSelected(true);
     setFocused(true);
   };
@@ -72,14 +81,14 @@ export const CenterSearchInput = ({
 
   useEffect(() => {
     if (!selected) {
-      setData('', '');
+      if (setData) setData('', '');
       setIsOptionOpen(false);
     }
   }, [selected]);
 
   return (
     <div className={`relative ${className} `}>
-      <form className={inputCss} id="searchInputForm">
+      <form className={`${inputCss} ${disableCss}`} id="searchInputForm">
         <input
           ref={refObj}
           value={inputValue}
@@ -87,6 +96,7 @@ export const CenterSearchInput = ({
           onFocus={handleFocused}
           onBlur={handleFocusedOut}
           className="h-full w-full outline-0 text-sm font-medium"
+          disabled={disable}
         />
       </form>
       {isOptionOpen && centerList ? (

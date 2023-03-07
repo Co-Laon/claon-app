@@ -17,13 +17,13 @@ export const Input = ({
   rightNode,
   onKeyDown,
 }: InputProps) => {
-  const [borderColor, setBorderColor] = useState('');
-  const containerCss = `border-2 border-gray-300 h-12 w-full bg-white rounded-lg relative flex flex-row items-center justify-between px-4 focused:border-purple-500 ${borderColor}`;
+  const [borderColor, setBorderColor] = useState('border-gray-300');
+  const containerCss = `border-2 h-12 w-full bg-white rounded-lg relative flex flex-row items-center justify-between px-4 ${borderColor}`;
   const handleFocused = () => {
     setBorderColor('border-purple-500');
   };
   const handleFocusedOut = () => {
-    setBorderColor('');
+    setBorderColor('border-gray-300');
   };
   const handleChangeValue = (e: ChangeEvent<HTMLInputElement>) => {
     if (onChange) onChange(e.target.value);

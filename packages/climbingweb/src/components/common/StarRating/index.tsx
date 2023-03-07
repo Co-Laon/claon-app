@@ -1,4 +1,4 @@
-import { Dispatch, SetStateAction, useState } from 'react';
+import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 
 interface RatingProps {
   count: number;
@@ -60,6 +60,10 @@ export const StarRating = ({
 
   const [value, setValue] = useState(initialValue);
 
+  useEffect(() => {
+    setValue(initialValue);
+  }, [initialValue]);
+
   const handleCheck = (num: number) => {
     if (!disabled) setValue(num);
     if (setData) setData(num);
@@ -73,7 +77,7 @@ export const StarRating = ({
           type="radio"
           name="rating"
           multiple
-          readOnly={disabled}
+          disabled={disabled}
           checked={value === idx + 1}
           onChange={() => handleCheck(idx + 1)}
           onClick={() => handleCheck(idx + 1)}

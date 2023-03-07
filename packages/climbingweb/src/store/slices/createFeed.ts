@@ -1,14 +1,16 @@
-import { PostCreateRequest } from './../../../types/request/post/index.d';
+import { PostDetailRequest } from './../../../types/request/post/index.d';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 export interface PostImage {
-  file: File;
+  file: File | null;
   thumbNail: string;
 }
 
 const defaultPostImageList: PostImage[] = [];
 
-const defaultPostData: PostCreateRequest = {
+const defaultDeleteImageList: string[] = [];
+
+const defaultPostData: PostDetailRequest = {
   centerId: '',
   climbingHistories: [
     {
@@ -22,22 +24,28 @@ const defaultPostData: PostCreateRequest = {
       url: '',
     },
   ],
+  postId: '',
+  centerName: '',
 };
 
 const initialState = {
   postImageList: defaultPostImageList,
   postData: defaultPostData,
+  deleteQueue: defaultDeleteImageList,
 };
 
 const createPostSlice = createSlice({
   name: 'createFeed',
   initialState,
   reducers: {
-    setReduxPostData(state, action: PayloadAction<PostCreateRequest>) {
+    setReduxPostData(state, action: PayloadAction<PostDetailRequest>) {
       state.postData = action.payload;
     },
     addReduxPostImage(state, action: PayloadAction<PostImage>) {
       state.postImageList.push(action.payload);
+    },
+    addReduxDeleteImage(state, action: PayloadAction<string>) {
+      state.deleteQueue.push(action.payload);
     },
     deleteReduxPostImageList(state, action: PayloadAction<number>) {
       state.postImageList = state.postImageList.filter(
@@ -47,6 +55,7 @@ const createPostSlice = createSlice({
     initReduxPost(state) {
       state.postData = defaultPostData;
       state.postImageList = defaultPostImageList;
+      state.deleteQueue = defaultDeleteImageList;
     },
   },
 });
@@ -57,4 +66,5 @@ export const {
   addReduxPostImage,
   deleteReduxPostImageList,
   initReduxPost,
+  addReduxDeleteImage,
 } = createPostSlice.actions;

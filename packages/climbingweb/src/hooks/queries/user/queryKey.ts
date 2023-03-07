@@ -11,6 +11,7 @@ import {
 import {
   changePublicScope,
   createBlock,
+  deleteBlock,
   findBlockUser,
   findPostsByUser,
   getPublicUser,
@@ -19,6 +20,7 @@ import {
   retrieveMyAccount,
   searchUser,
 } from './queries';
+import { postQueries } from '../post/queryKey';
 
 /**
  * user-controller api 의 query key factory
@@ -73,7 +75,10 @@ export const useChangePublicScope = (
       if (options?.onSuccess) {
         options.onSuccess(data, variables, context);
       }
-      queryClient.invalidateQueries(userQueries.me());
+      queryClient.invalidateQueries({
+        queryKey: userQueries.me().queryKey,
+        refetchInactive: true,
+      });
     },
   });
 };
@@ -97,7 +102,14 @@ export const useCreateBlock = (
       if (options?.onSuccess) {
         options.onSuccess(data, variables, context);
       }
-      queryClient.invalidateQueries(userQueries.block());
+      queryClient.invalidateQueries({
+        queryKey: userQueries.block().queryKey,
+        refetchInactive: true,
+      });
+      queryClient.invalidateQueries({
+        queryKey: postQueries.list().queryKey,
+        refetchInactive: true,
+      });
     },
   });
 };
@@ -115,13 +127,20 @@ export const useDeleteBlock = (
   >
 ) => {
   const queryClient = useQueryClient();
-  return useMutation(createBlock, {
+  return useMutation(deleteBlock, {
     ...options,
     onSuccess: (data, variables, context) => {
       if (options?.onSuccess) {
         options.onSuccess(data, variables, context);
       }
-      queryClient.invalidateQueries(userQueries.block());
+      queryClient.invalidateQueries({
+        queryKey: userQueries.block().queryKey,
+        refetchInactive: true,
+      });
+      queryClient.invalidateQueries({
+        queryKey: postQueries.list().queryKey,
+        refetchInactive: true,
+      });
     },
   });
 };
