@@ -13,8 +13,8 @@ import Login from 'climbingweb/src/components/dev/Login';
 import { isDesktop } from 'react-device-detect';
 import NavBarWrapper from 'climbingweb/src/components/common/bottomNav/NavBarWrapper';
 import useIsomorphicLayoutEffect from 'climbingweb/src/hooks/useIsomorphicLayoutEffect';
-
-function MyApp({ Component, pageProps }: AppProps) {
+import { AnimatePresence } from 'framer-motion';
+function MyApp({ Component, pageProps, router }: AppProps) {
   const { token, sendReactNativeMessage } = useRNMessage();
   const { token: storageToken, isStorageLogin } = useToken();
   useIsomorphicLayoutEffect(() => {
@@ -75,9 +75,11 @@ function MyApp({ Component, pageProps }: AppProps) {
     <Provider store={store}>
       <QueryClientProvider client={queryClient}>
         <ToastClient>
-          <Component {...pageProps} />
-          <NavBarWrapper />
-          {/* <NavBar navButtons={navButtons} /> */}
+          <AnimatePresence key={router.route} exitBeforeEnter>
+            <Component {...pageProps} />
+            <NavBarWrapper />
+            {/* <NavBar navButtons={navButtons} /> */}
+          </AnimatePresence>
         </ToastClient>
       </QueryClientProvider>
     </Provider>

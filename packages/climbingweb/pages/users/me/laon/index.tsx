@@ -8,6 +8,7 @@ import EmptyContent from 'climbingweb/src/components/common/EmptyContent/EmptyCo
 import ErrorContent from 'climbingweb/src/components/common/Error/ErrorContent';
 import { LaonList } from 'climbingweb/src/components/common/LaonList';
 import Loading from 'climbingweb/src/components/common/Loading/Loading';
+import { SlideRight } from 'climbingweb/src/components/Transition/SlideRight';
 import {
   useDeleteLaon,
   useFindAllLaon,
@@ -57,45 +58,49 @@ export const MyLaonList = ({}) => {
 
   if (laonUserData)
     return (
-      <div className="h-screen flex flex-col">
-        <AppBar
-          leftNode={<BackButton onClick={handleGoToBack} />}
-          title={'내 라온 리스트'}
-          rightNode={<Empty />}
-          className="p-5"
-        />
-        <div className="pl-5 p-4 overflow-auto scrollbar-hide">
-          {laonUserData.pages[0].totalCount !== 0 ? (
-            laonUserData.pages.map((page, pIndex) => {
-              const laonList = page.results.map((value) => {
-                return {
-                  laonNickName: value.laonNickname,
-                  laonProfileImage: value.laonProfileImage,
-                  rightNode: (
-                    <SmmallNodeButton
-                      onClick={() => handleDeleteLaonClick(value.laonNickname)}
-                    >
-                      취소
-                    </SmmallNodeButton>
-                  ),
-                };
-              });
-              return (
-                <LaonList
-                  key={`laonUserDataPage_${pIndex}`}
-                  laonList={laonList}
-                />
-              );
-            })
-          ) : (
-            <EmptyContent message="아직 라온이 없습니다." />
-          )}
-          {!isFetchLaonUserDataNextPage ? (
-            <div className="h-[1px]" ref={target}></div>
-          ) : (
-            <Loading />
-          )}
-        </div>
+      <div className="h-screen overflow-auto flex flex-col">
+        <SlideRight>
+          <AppBar
+            leftNode={<BackButton onClick={handleGoToBack} />}
+            title={'내 라온 리스트'}
+            rightNode={<Empty />}
+            className="p-5"
+          />
+          <div className="pl-5 p-4 overflow-auto scrollbar-hide">
+            {laonUserData.pages[0].totalCount !== 0 ? (
+              laonUserData.pages.map((page, pIndex) => {
+                const laonList = page.results.map((value) => {
+                  return {
+                    laonNickName: value.laonNickname,
+                    laonProfileImage: value.laonProfileImage,
+                    rightNode: (
+                      <SmmallNodeButton
+                        onClick={() =>
+                          handleDeleteLaonClick(value.laonNickname)
+                        }
+                      >
+                        취소
+                      </SmmallNodeButton>
+                    ),
+                  };
+                });
+                return (
+                  <LaonList
+                    key={`laonUserDataPage_${pIndex}`}
+                    laonList={laonList}
+                  />
+                );
+              })
+            ) : (
+              <EmptyContent message="아직 라온이 없습니다." />
+            )}
+            {!isFetchLaonUserDataNextPage ? (
+              <div className="h-[1px]" ref={target}></div>
+            ) : (
+              <Loading />
+            )}
+          </div>
+        </SlideRight>
       </div>
     );
 

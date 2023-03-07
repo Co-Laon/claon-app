@@ -8,6 +8,7 @@ import {
 import { ButtonSheet } from 'climbingweb/src/components/common/BottomSheetContents/ButtonSheet';
 import ErrorContent from 'climbingweb/src/components/common/Error/ErrorContent';
 import Loading from 'climbingweb/src/components/common/Loading/Loading';
+import { SlideRight } from 'climbingweb/src/components/Transition/SlideRight';
 import {
   useCreateChildComment,
   useDeleteComment,
@@ -165,53 +166,55 @@ export default function CommentDetailPage() {
 
     return (
       <div className="mb-footer overflow-auto scrollbar-hide">
-        <AppBar
-          leftNode={<BackButton onClick={handleBackButtonClick} />}
-          title={`대댓글 ${childrenCommentData.pages[0].totalCount}`}
-          rightNode={<Empty />}
-        />
-        <Comment
-          postId={feedId}
-          commentId={parentCommentId}
-          content={content}
-          isDeleted={isDeleted}
-          writerNickname={writerNickname}
-          writerProfileImage={writerProfileImage}
-          createdAt={createdAt}
-          updatedAt={updatedAt}
-          isOwner={isOwner}
-          isParent={false}
-          handleModifyCommentClick={handleModifyCommentClick}
-          handleDeleteCommentClick={handleDeleteCommentClick}
-        />
-        <div className="pl-10">
-          {childrenCommentData.pages.map((page) => {
-            return page.results.map((comment) => {
-              return (
-                <Comment
-                  key={comment.commentId}
-                  postId={comment.postId}
-                  commentId={comment.commentId}
-                  content={comment.content}
-                  isDeleted={comment.isDeleted}
-                  writerNickname={comment.writerNickname}
-                  writerProfileImage={comment.writerProfileImage}
-                  createdAt={comment.createdAt}
-                  updatedAt={comment.updatedAt}
-                  isParent={false}
-                  isOwner={comment.isOwner}
-                  handleModifyCommentClick={handleModifyCommentClick}
-                  handleDeleteCommentClick={handleDeleteCommentClick}
-                />
-              );
-            });
-          })}
-          {!isFetchingChildrenCommentNextPage ? (
-            <div className="h-[1px]" ref={target}></div>
-          ) : (
-            <Loading />
-          )}
-        </div>
+        <SlideRight>
+          <AppBar
+            leftNode={<BackButton onClick={handleBackButtonClick} />}
+            title={`대댓글 ${childrenCommentData.pages[0].totalCount}`}
+            rightNode={<Empty />}
+          />
+          <Comment
+            postId={feedId}
+            commentId={parentCommentId}
+            content={content}
+            isDeleted={isDeleted}
+            writerNickname={writerNickname}
+            writerProfileImage={writerProfileImage}
+            createdAt={createdAt}
+            updatedAt={updatedAt}
+            isOwner={isOwner}
+            isParent={false}
+            handleModifyCommentClick={handleModifyCommentClick}
+            handleDeleteCommentClick={handleDeleteCommentClick}
+          />
+          <div className="pl-10">
+            {childrenCommentData.pages.map((page) => {
+              return page.results.map((comment) => {
+                return (
+                  <Comment
+                    key={comment.commentId}
+                    postId={comment.postId}
+                    commentId={comment.commentId}
+                    content={comment.content}
+                    isDeleted={comment.isDeleted}
+                    writerNickname={comment.writerNickname}
+                    writerProfileImage={comment.writerProfileImage}
+                    createdAt={comment.createdAt}
+                    updatedAt={comment.updatedAt}
+                    isParent={false}
+                    isOwner={comment.isOwner}
+                    handleModifyCommentClick={handleModifyCommentClick}
+                    handleDeleteCommentClick={handleDeleteCommentClick}
+                  />
+                );
+              });
+            })}
+            {!isFetchingChildrenCommentNextPage ? (
+              <div className="h-[1px]" ref={target}></div>
+            ) : (
+              <Loading />
+            )}
+          </div>
+        </SlideRight>
         <CommentInput
           refObj={commentInputRef}
           parentCommentId={parentCommentId}
@@ -224,6 +227,7 @@ export default function CommentDetailPage() {
             onConfirm={handleConfirmBTSheet}
           />
         </BottomSheet>
+
       </div>
     );
   }

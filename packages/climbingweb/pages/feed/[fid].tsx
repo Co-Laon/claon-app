@@ -11,6 +11,7 @@ import {
 } from 'climbingweb/src/hooks/queries/post/queryKey';
 import { useCreatePostForm } from 'climbingweb/src/hooks/useCreatePostForm';
 import { useToast } from 'climbingweb/src/hooks/useToast';
+import { SlideRight } from 'climbingweb/src/components/Transition/SlideRight';
 import { useRouter } from 'next/router';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { BottomSheet } from 'react-spring-bottom-sheet';
@@ -35,6 +36,7 @@ export default function FeedPage({}) {
 
   useEffect(() => {
     initPost();
+    //eslint-disable-next-line
   }, []);
 
   const { mutate: deleteFeedMutate } = useDeletePost(feedId, {
@@ -90,6 +92,7 @@ export default function FeedPage({}) {
         centerName: '',
       };
     }
+    //eslint-disable-next-line
   }, [postData]);
 
   //바텀 시트 리스트 클릭 핸들러(본인 게시물 클릭 시)
@@ -104,6 +107,7 @@ export default function FeedPage({}) {
         router.push(`/feed/edit/${feedId}`);
       }
     },
+    //eslint-disable-next-line
     [feedId, postData]
   );
   //삭제 취소 버튼 눌렀을 시
@@ -120,28 +124,23 @@ export default function FeedPage({}) {
   //삭제 버튼 눌렀을 시
   const onClickDeleteButton = useCallback(() => {
     deleteFeedMutate();
+    //eslint-disable-next-line
   }, []);
 
   //신고하기 버튼을 눌렀을 경우
   const handleBtSheetListClick = useCallback(() => {
     router.push(`/report/${feedId}`);
-  }, [feedId]);
+  }, [feedId, router]);
 
   if (isPostError) return <ErrorContent error={postError} />;
 
   if (postData)
     return (
-      <section>
-        <AppBar leftNode={<BackButton onClick={handleBackButtonClick} />} />
-        <HomeFeed postData={postData} openBtSheet={openBtSheet} />
-        <BottomSheet open={open} onDismiss={onDismiss}>
-          <ListSheet
-            headerTitle={''}
-            list={['신고하기']}
-            onSelect={() => router.push(`/report/${postData.postId}`)}
-          />
-        </BottomSheet>
-
+      <section className="overflow-auto">
+        <SlideRight>
+          <AppBar leftNode={<BackButton onClick={handleBackButtonClick} />} />
+          <HomeFeed postData={postData} openBtSheet={openBtSheet} />
+        </SlideRight>
         <BottomSheet open={open} onDismiss={onDismiss}>
           {'isOwner' in postData && postData.isOwner ? (
             openDelete ? (

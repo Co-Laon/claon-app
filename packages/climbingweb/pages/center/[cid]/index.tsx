@@ -9,6 +9,7 @@ import { ListSheet } from 'climbingweb/src/components/common/BottomSheetContents
 import ErrorContent from 'climbingweb/src/components/common/Error/ErrorContent';
 import Loading from 'climbingweb/src/components/common/Loading/Loading';
 import { useFindCenter } from 'climbingweb/src/hooks/queries/center/queryKey';
+import { SlideRight } from 'climbingweb/src/components/Transition/SlideRight';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 import { BottomSheet } from 'react-spring-bottom-sheet';
@@ -37,30 +38,32 @@ export default function CenterDetailPage() {
   if (CenterDetailData)
     return (
       <section className="mb-footer overflow-auto scrollbar-hide">
-        <AppBar
-          leftNode={<AppLogo />}
-          rightNode={
-            <div className="flex flex-row gap-x-3">
-              {/* <BookMarkButton
+        <SlideRight>
+          <AppBar
+            leftNode={<AppLogo />}
+            rightNode={
+              <div className="flex flex-row gap-x-3">
+                {/* <BookMarkButton
                 onClick={handleLikeIconClick}
                 isBookMarked={CenterDetailData.isBookmarked}
               /> */}
-              <OptionButton onClick={handleOptionIconClick} />
-            </div>
-          }
-          className="h-[7.82vh] pl-[20px] pr-[21px] pb-[10px] pt-[15px]"
-        />
-        <CenterInfoHead
-          name={CenterDetailData.name}
-          address={CenterDetailData.address}
-          tel={CenterDetailData.tel}
-          instagramUrl={CenterDetailData.instagramUrl}
-          webUrl={CenterDetailData.webUrl}
-          youtubeUrl={CenterDetailData.youtubeUrl}
-          isBookMarked={CenterDetailData.isBookmarked}
-          centerId={centerId}
-        />
-        <CenterInfoContent data={CenterDetailData} />
+                <OptionButton onClick={handleOptionIconClick} />
+              </div>
+            }
+            className="h-[7.82vh] pl-[20px] pr-[21px] pb-[10px] pt-[15px]"
+          />
+          <CenterInfoHead
+            name={CenterDetailData.name}
+            address={CenterDetailData.address}
+            tel={CenterDetailData.tel}
+            instagramUrl={CenterDetailData.instagramUrl}
+            webUrl={CenterDetailData.webUrl}
+            youtubeUrl={CenterDetailData.youtubeUrl}
+            isBookMarked={CenterDetailData.isBookmarked}
+            centerId={centerId}
+          />
+          <CenterInfoContent data={CenterDetailData} />
+        </SlideRight>
         <BottomSheet open={openBTSheet} onDismiss={() => setOpenBTSheet(false)}>
           <ListSheet
             headerTitle={''}

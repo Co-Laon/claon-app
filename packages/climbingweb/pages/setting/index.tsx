@@ -19,6 +19,7 @@ import {
 } from 'climbingweb/src/hooks/queries/user/queryKey';
 import { useToken } from 'climbingweb/src/hooks/useToken';
 import { useBnbHide } from 'climbingweb/src/hooks/useBnB';
+import { SlideRight } from 'climbingweb/src/components/Transition/SlideRight';
 // import { useDeleteUser } from 'climbingweb/src/hooks/queries/user/useDeleteUser';
 
 export default function SettingPage() {
@@ -105,45 +106,47 @@ export default function SettingPage() {
 
   if (userData)
     return (
-      <div className="h-screen flex flex-col">
-        <AppBar
-          leftNode={<BackButton onClick={handleGoToBack} />}
-          title={titleName}
-          rightNode={<Empty />}
-          className="pl-5"
-        />
-        <div className="p-5 pl-2 pr-4 h-full">
-          {titleName === '설정' && (
-            <ul className="flex flex-col flex-end gap-y-6 pl-9 pr-2 pt-5">
-              <li className="flex w-full justify-between font-normal text-sm">
-                <div>프로필 비공개</div>
-                <input
-                  type={'checkbox'}
-                  className="toggle toggle-primary"
-                  defaultChecked={userData.isPrivate}
-                  onClick={handleToggleClick}
-                ></input>
-              </li>
-              {titleList.map((title, idx) => (
-                <li
-                  key={`title${idx}`}
-                  className="font-normal text-sm"
-                  onClick={() => handleListClick(title)}
-                >
-                  {title}
+      <div className="h-screen overflow-auto flex flex-col">
+        <SlideRight>
+          <AppBar
+            leftNode={<BackButton onClick={handleGoToBack} />}
+            title={titleName}
+            rightNode={<Empty />}
+            className="pl-5"
+          />
+          <div className="p-5 pl-2 pr-4 h-full">
+            {titleName === '설정' && (
+              <ul className="flex flex-col flex-end gap-y-6 pl-9 pr-2 pt-5">
+                <li className="flex w-full justify-between font-normal text-sm">
+                  <div>프로필 비공개</div>
+                  <input
+                    type={'checkbox'}
+                    className="toggle toggle-primary"
+                    defaultChecked={userData.isPrivate}
+                    onClick={handleToggleClick}
+                  ></input>
                 </li>
-              ))}
-            </ul>
-          )}
-          {titleName === '개인 정보 수정' && (
-            <EditMyInfo userRequest={userData} />
-          )}
-          {titleName === '차단 리스트' && <BanList />}
-          {titleName === '공지 사항' && <NotificationList />}
-          {titleName === '버전 정보' && <VersionInfo />}
-          {titleName === '이용 약관' && <>이용 약관</>}
-          {titleName === '개인정보 처리 방침' && <>개인정보 처리 방침</>}
-        </div>
+                {titleList.map((title, idx) => (
+                  <li
+                    key={`title${idx}`}
+                    className="font-normal text-sm"
+                    onClick={() => handleListClick(title)}
+                  >
+                    {title}
+                  </li>
+                ))}
+              </ul>
+            )}
+            {titleName === '개인 정보 수정' && (
+              <EditMyInfo userRequest={userData} />
+            )}
+            {titleName === '차단 리스트' && <BanList />}
+            {titleName === '공지 사항' && <NotificationList />}
+            {titleName === '버전 정보' && <VersionInfo />}
+            {titleName === '이용 약관' && <>이용 약관</>}
+            {titleName === '개인정보 처리 방침' && <>개인정보 처리 방침</>}
+          </div>
+        </SlideRight>
         <BottomSheet open={openSheet} onDismiss={onBottomSheetDismiss}>
           <ButtonSheet
             text={
