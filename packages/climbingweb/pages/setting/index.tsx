@@ -95,7 +95,7 @@ export default function SettingPage() {
       setOpenSheet(false);
     } else if (sheetKey === 'leave') {
       //회원 탈퇴
-      //deleteUserMutate();
+      sendReactNativeMessage({ type: 'leave' });
       setOpenSheet(false);
     }
   };

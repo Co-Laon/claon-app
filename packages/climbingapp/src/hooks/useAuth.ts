@@ -66,7 +66,7 @@ export const useAuth = () => {
 
   const leaveClaon = async () => {
     await axios
-      .delete(api + 'users/me')
+      .delete(api + '/users/me')
       .then(async (res) => {
         if (res.data?.errorCode) {
           const { errorCode, message }: ErrorResponse = res.data;
