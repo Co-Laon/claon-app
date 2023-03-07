@@ -44,6 +44,9 @@ const authInfoSlice = createSlice({
     setImagePath(state, action: PayloadAction<string>) {
       state.userInfo.imagePath = action.payload;
     },
+    initUserInfo(state) {
+      state.userInfo = initialState.userInfo;
+    },
   },
 });
 
@@ -54,4 +57,5 @@ export const {
   setInstagram,
   setImagePath,
   setNickName,
+  initUserInfo,
 } = authInfoSlice.actions;

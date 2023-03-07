@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import LottieView from 'lottie-react-native';
 import { ScreenView } from 'climbingapp/src/component/view/ScreenView';
 import Assets from 'climbingapp/src/assets/lottie';
@@ -8,6 +8,8 @@ import { Title } from 'climbingapp/src/component/text/AuthTitle';
 import { TouchableHighlight } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { LoginScreenProp } from './type';
+import { initUserInfo } from 'climbingapp/src/store/slices/authInfo';
+import { useDispatch } from 'react-redux';
 
 const Container = styled.View`
   flex: 0.8;
@@ -25,6 +27,13 @@ const Text = styled.Text`
 function WelcomeScreen() {
   const name = '닉네임';
   const navigation = useNavigation<LoginScreenProp>();
+  const dispatch = useDispatch();
+
+  // 회원가입 입력 정보 초기화
+  useEffect(() => {
+    dispatch(initUserInfo());
+  }, []);
+
   const handleGoToMain = () => {
     navigation.reset({ routes: [{ name: 'home' }] });
   };
