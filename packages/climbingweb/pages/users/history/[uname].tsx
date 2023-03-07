@@ -32,7 +32,7 @@ function RecordPage() {
       {
         id: 2,
         tabIcon: (focus: boolean) => (focus ? <MapPurple /> : <MapWhite />),
-        tabContent: <HistoryByCenter />,
+        tabContent: <HistoryByCenter nickName={nickName} />,
       },
     ],
     [nickName]

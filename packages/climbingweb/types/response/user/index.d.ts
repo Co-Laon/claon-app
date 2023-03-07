@@ -75,3 +75,14 @@ export interface UserPreviewResponse {
   isLaon: boolean;
   nickname: string;
 }
+
+export interface CenterHistory {
+  createdAt: string;
+  histories: HistoryResponse[];
+  postId: string;
+}
+
+export interface HistoryByCenterResponse {
+  date: string;
+  histories: CenterHistory[];
+}

@@ -13,8 +13,9 @@ import {
   createBlock,
   deleteBlock,
   findBlockUser,
-  findCenterHistoryByUser,
+  findHistoryByCenter,
   findPostsByUser,
+  getCenterHistory,
   getHistoryByDate,
   getPublicUser,
   modifyUser,
@@ -65,8 +66,11 @@ export const userQueries = createQueryKeys('users', {
       }),
       centers: () => ({
         queryKey: ['centers'],
-        queryFn: (context) =>
-          findCenterHistoryByUser(context?.pageParam, nickname),
+        queryFn: (context) => getCenterHistory(context?.pageParam, nickname),
+      }),
+      historyCenters: (centerId: string) => ({
+        queryKey: [centerId],
+        queryFn: () => findHistoryByCenter(nickname, centerId),
       }),
     },
   }),
@@ -286,5 +290,15 @@ export const useHistoryByDate = (
       .name(nickName)
       ._ctx.historyYear(year)
       ._ctx.historyMonth(month),
+  });
+};
+
+/**
+ * Center로 history 찾기 useQueryHooks
+ */
+export const useHistoryByCenter = (nickName: string, centerId: string) => {
+  return useQuery({
+    ...userQueries.name(nickName)._ctx.historyCenters(centerId),
+    enabled: Boolean(centerId),
   });
 };
