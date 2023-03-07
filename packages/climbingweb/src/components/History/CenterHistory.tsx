@@ -1,5 +1,6 @@
 import { HistoryDateResponse } from 'climbingweb/types/response/user';
 import Image from 'next/image';
+import HistoryHoldImg from './HistoryHoldImg';
 
 function CenterHistory({ centerInfo, histories }: HistoryDateResponse) {
   return (
@@ -17,10 +18,12 @@ function CenterHistory({ centerInfo, histories }: HistoryDateResponse) {
         />
         <div className="flex gap-2">
           {histories.map(({ holdImage, climbingCount, holdId }) => (
-            <div key={holdId} className="flex">
-              <Image width={24} height={24} src={holdImage} alt={holdId} />
-              <div className="text-sm font-bold">{climbingCount}</div>
-            </div>
+            <HistoryHoldImg
+              climbingCount={climbingCount}
+              holdId={holdId}
+              holdImage={holdImage}
+              key={holdId}
+            />
           ))}
         </div>
       </div>

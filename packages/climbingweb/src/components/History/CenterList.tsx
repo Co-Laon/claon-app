@@ -23,7 +23,7 @@ function CenterList({
     console.log(border);
   }, [border]);
   return (
-    <div onClick={() => onClick(centerId)}>
+    <div onClick={() => onClick(centerId)} className=" flex flex-col  gap-1">
       <div
         className={`w-14 h-14 flex justify-center items-center rounded-full ${border}`}
       >
@@ -35,7 +35,9 @@ function CenterList({
           className="rounded-full"
         />
       </div>
-      <p>{centerName}</p>
+      <p className="text-[8px] leading-[14px] font-bold text-center tracking-tighter">
+        {centerName.length > 6 ? `${centerName.slice(0, 6)}...` : centerName}
+      </p>
     </div>
   );
 }

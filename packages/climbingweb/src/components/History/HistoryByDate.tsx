@@ -5,13 +5,17 @@ import { useHistoryByDate } from 'climbingweb/src/hooks/queries/user/queryKey';
 import CenterHistory from './CenterHistory';
 
 function HistoryByDate({ nickName }: { nickName: string }) {
+  //현재 년도로 초기화
   const [year, setYear] = useState<number>(new Date().getFullYear() as number);
   const [month, setMonth] = useState<number>(
+    //Date().getMont()의 경우 0~11이기 때문에 +1을 해줌.
     (new Date().getMonth() + 1) as number
   );
 
+ //year month nickname에 따라서 data fetch하는 함수 call 
   const { data: historyDatas } = useHistoryByDate(nickName, year, month);
 
+  //달력 왼쪽 버튼을 눌렀을 때 실행하는 함수
   const onClickLeft = useCallback(() => {
     if (month - 1 == 0) {
       setYear(year - 1);
@@ -21,6 +25,7 @@ function HistoryByDate({ nickName }: { nickName: string }) {
     }
   }, [year, month]);
 
+  //달력 오른쪽 버튼을 눌렀을 때 실행하는 함수
   const onClickRight = useCallback(() => {
     setYear(year + Math.floor((month + 1) / 13));
     setMonth((month + 1) % 13 || 1);
