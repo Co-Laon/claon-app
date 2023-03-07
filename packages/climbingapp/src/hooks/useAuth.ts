@@ -129,13 +129,17 @@ export const useAuth = () => {
     }
   };
 
-  const googleLogin = async () => {
+  const googleConfigure = () => {
     GoogleSignin.configure({
       offlineAccess: true,
       hostedDomain: '',
       webClientId: Config.GOOGLE_WEB_CLIENT_ID,
       iosClientId: Config.GOOGLE_IOS_CLIENT_ID,
     });
+  };
+
+  const googleLogin = async () => {
+    googleConfigure();
     try {
       await GoogleSignin.hasPlayServices();
       const { idToken: code } = await GoogleSignin.signIn();
@@ -144,6 +148,15 @@ export const useAuth = () => {
       }
     } catch (err) {
       console.log(err);
+    }
+  };
+
+  // google 로그인 기록 취소 함수
+  const googleSignOut = async () => {
+    googleConfigure();
+    const isSignedIn = await GoogleSignin.isSignedIn();
+    if (isSignedIn) {
+      await GoogleSignin.signOut();
     }
   };
   // const AppleLogin = () => {}
@@ -155,5 +168,6 @@ export const useAuth = () => {
     kakaoLogin,
     logout,
     googleLogin,
+    googleSignOut,
   };
 };
