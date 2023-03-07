@@ -8,6 +8,7 @@ import EmptyContent from 'climbingweb/src/components/common/EmptyContent/EmptyCo
 import ErrorContent from 'climbingweb/src/components/common/Error/ErrorContent';
 import Loading from 'climbingweb/src/components/common/Loading/Loading';
 import PageSubTitle from 'climbingweb/src/components/common/PageSubTitle/PageSubTitle';
+import { SlideRight } from 'climbingweb/src/components/Transition/SlideRight';
 import UserFeedList from 'climbingweb/src/components/User/UserFeedList';
 import { UserHead } from 'climbingweb/src/components/User/UserHead';
 import UserPageLayout from 'climbingweb/src/components/User/UserPageLayout';
@@ -135,51 +136,53 @@ export default function UserPage({}) {
     (getUserData && getUserData.isPrivate && !findPostsByUserData)
   ) {
     return (
-      <section>
-        <UserPageLayout
-          appBar={
-            <AppBar
-              leftNode={
-                <div className="flex gap-3">
-                  <BackButton onClick={handleGoToBack} />
-                  <PageSubTitle title={getUserData.nickname} />
-                </div>
-              }
-              title=""
-              rightNode={<OptionButton onClick={handleOptionButtonClick} />}
-              className="px-5"
-            />
-          }
-          userHead={
-            <UserHead
-              userDetailData={getUserData}
-              onClickHeaderButton={handleLaonButtonClick}
-              isMyPage={false}
-            />
-          }
-          userRecordList={
-            getUserData.isPrivate ? null : getUserData.centerClimbingHistories
-                .length !== 0 ? (
-              <UserRecordList userDetailData={getUserData} />
-            ) : (
-              <EmptyContent message="아직 기록이 없습니다." />
-            )
-          }
-          userFeedList={
-            getUserData.isPrivate ? null : findPostsByUserData?.pages[0]
-                .totalCount !== 0 ? (
-              <UserFeedList
-                userPostData={findPostsByUserData}
-                isPostDataHasNextPage={isFetchingFindPostsByUserDataNextPage}
-                infiniteScrollTarget={target}
+      <section className="overflow-auto">
+        <SlideRight>
+          <UserPageLayout
+            appBar={
+              <AppBar
+                leftNode={
+                  <div className="flex gap-3">
+                    <BackButton onClick={handleGoToBack} />
+                    <PageSubTitle title={getUserData.nickname} />
+                  </div>
+                }
+                title=""
+                rightNode={<OptionButton onClick={handleOptionButtonClick} />}
+                className="px-5"
               />
-            ) : (
-              <EmptyContent message="아직 게시글이 없습니다." />
-            )
-          }
-          isPrivate={getUserData.isPrivate}
-          onClickHistory={onClickHistory}
-        />
+            }
+            userHead={
+              <UserHead
+                userDetailData={getUserData}
+                onClickHeaderButton={handleLaonButtonClick}
+                isMyPage={false}
+              />
+            }
+            userRecordList={
+              getUserData.isPrivate ? null : getUserData.centerClimbingHistories
+                  .length !== 0 ? (
+                <UserRecordList userDetailData={getUserData} />
+              ) : (
+                <EmptyContent message="아직 기록이 없습니다." />
+              )
+            }
+            userFeedList={
+              getUserData.isPrivate ? null : findPostsByUserData?.pages[0]
+                  .totalCount !== 0 ? (
+                <UserFeedList
+                  userPostData={findPostsByUserData}
+                  isPostDataHasNextPage={isFetchingFindPostsByUserDataNextPage}
+                  infiniteScrollTarget={target}
+                />
+              ) : (
+                <EmptyContent message="아직 게시글이 없습니다." />
+              )
+            }
+            isPrivate={getUserData.isPrivate}
+            onClickHistory={onClickHistory}
+          />
+        </SlideRight>
         <BottomSheet open={openSheet} onDismiss={() => onBottomSheetDismiss()}>
           <ListSheet
             headerTitle=""
