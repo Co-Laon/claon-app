@@ -8,6 +8,7 @@ import {
 import { ButtonSheet } from 'climbingweb/src/components/common/BottomSheetContents/ButtonSheet';
 import ErrorContent from 'climbingweb/src/components/common/Error/ErrorContent';
 import Loading from 'climbingweb/src/components/common/Loading/Loading';
+import { SlideRight } from 'climbingweb/src/components/Transition/SlideRight';
 import {
   useCreateComment,
   useDeleteComment,
@@ -130,38 +131,41 @@ export default function CommentPage() {
 
   if (commentData)
     return (
-      <div className="mb-footer overflow-auto scrollbar-hide">
-        <div className="mb-footer">
-          <AppBar
-            leftNode={<BackButton onClick={handleBackButtonClick} />}
-            title={`댓글 ${commentData.pages[0].totalCount}`}
-            rightNode={<Empty />}
-          />
-          {commentData.pages.map((page) =>
-            page.results.map((comment) => (
-              <ParentComment
-                key={comment.commentId}
-                postId={comment.postId}
-                commentId={comment.commentId}
-                content={comment.content}
-                isDeleted={comment.isDeleted}
-                writerNickname={comment.writerNickname}
-                writerProfileImage={comment.writerProfileImage}
-                createdAt={comment.createdAt}
-                updatedAt={comment.updatedAt}
-                childrenCommentCount={comment.childrenCommentCount}
-                isOwner={comment.isOwner}
-                handleModifyCommentClick={handleModifyCommentClick}
-                handleDeleteCommentClick={handleDeleteCommentClick}
-              />
-            ))
-          )}
-          {!isFetchingCommentNextPage ? (
-            <div className="h-[1px]" ref={target}></div>
-          ) : (
-            <Loading />
-          )}
-        </div>
+      <div
+        className="mb-footer overflow-auto scrollbar-hide">
+        <SlideRight>
+          <div className="mb-footer">
+            <AppBar
+              leftNode={<BackButton onClick={handleBackButtonClick} />}
+              title={`댓글 ${commentData.pages[0].totalCount}`}
+              rightNode={<Empty />}
+            />
+            {commentData.pages.map((page) =>
+              page.results.map((comment) => (
+                <ParentComment
+                  key={comment.commentId}
+                  postId={comment.postId}
+                  commentId={comment.commentId}
+                  content={comment.content}
+                  isDeleted={comment.isDeleted}
+                  writerNickname={comment.writerNickname}
+                  writerProfileImage={comment.writerProfileImage}
+                  createdAt={comment.createdAt}
+                  updatedAt={comment.updatedAt}
+                  childrenCommentCount={comment.childrenCommentCount}
+                  isOwner={comment.isOwner}
+                  handleModifyCommentClick={handleModifyCommentClick}
+                  handleDeleteCommentClick={handleDeleteCommentClick}
+                />
+              ))
+            )}
+            {!isFetchingCommentNextPage ? (
+              <div className="h-[1px]" ref={target}></div>
+            ) : (
+              <Loading />
+            )}
+          </div>
+        </SlideRight>
         <CommentInput
           refObj={commentInputRef}
           onClickSubmit={handleSubmitComment}
