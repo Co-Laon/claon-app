@@ -28,6 +28,8 @@ export const ReviewComment = ({
   const [readMore, setReadMore] = useState(false);
   const [realContent, setRealContent] = useState(content);
 
+  const handleReadMoreClick = () => setReadMore(!readMore);
+
   useEffect(() => {
     if (content.length > 67 && !readMore) {
       setRealContent(content.slice(0, 68));
@@ -57,7 +59,7 @@ export const ReviewComment = ({
           </p>
           <span
             className="text-gray-400 inline float-right text-sm"
-            onTouchEnd={() => setReadMore(!readMore)}
+            onClick={handleReadMoreClick}
           >
             {content.length > 67 ? (readMore ? '접기' : '더보기') : null}
           </span>
@@ -102,6 +104,8 @@ export const MyReviewComment = ({
       setRealContent(content);
     }
   }, [readMore, content]);
+
+  const handleReadMoreClick = () => setReadMore(!readMore);
 
   const handleModifyReviewClick = () => {
     changeReview({ content, rank });
@@ -153,7 +157,7 @@ export const MyReviewComment = ({
             className={`text-gray-400 inline text-sm ${
               readMore ? 'float-right' : null
             }`}
-            onTouchEnd={() => setReadMore(!readMore)}
+            onClick={handleReadMoreClick}
           >
             {content.length > 67 ? (readMore ? '접기' : '더보기') : null}
           </span>

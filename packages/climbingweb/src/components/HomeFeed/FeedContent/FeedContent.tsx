@@ -40,7 +40,7 @@ const FeedContent = ({
         <span className={'flex font-medium items-center'}>
           {isLiked ? (
             <SolidHeart
-              onTouchEnd={onClickHeartIcon}
+              onClick={onClickHeartIcon}
               className="animate-larger mr-1"
               width="32px"
               height="32px"
@@ -48,7 +48,7 @@ const FeedContent = ({
             />
           ) : (
             <LineHeart
-              onTouchEnd={onClickHeartIcon}
+              onClick={onClickHeartIcon}
               className="animate-none mr-1 w-[32px] h-[32px]"
               width="32px"
               height="32px"
@@ -64,7 +64,7 @@ const FeedContent = ({
           <span className={' inline'}>{`${realContent}... `}</span>
           <span
             className="text-[#BFBFBF] inline block"
-            onTouchEnd={onTouchMoreRead}
+            onClick={onTouchMoreRead}
           >
             더 보기
           </span>
@@ -74,10 +74,7 @@ const FeedContent = ({
       )}
       {
         <div className="flex">
-          <p
-            onTouchEnd={onClickMoreComment}
-            className="font-medium text-gray-400"
-          >
+          <p onClick={onClickMoreComment} className="font-medium text-gray-400">
             {replyCount === 0 ? '댓글 달기' : `댓글 ${replyCount}개 더 보기`}
           </p>
         </div>

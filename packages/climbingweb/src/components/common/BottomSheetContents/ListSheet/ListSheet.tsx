@@ -14,7 +14,7 @@ export const ListSheet = ({
         {list?.map((area) => (
           <p
             className={`${className}`}
-            onTouchEnd={() => onSelect(area)}
+            onClick={() => onSelect(area)}
             key={`areaKey${area}`}
           >
             {area}
