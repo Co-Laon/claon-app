@@ -68,7 +68,6 @@ export const CenterSearchInput = ({
 
   // option list 중 하나를 선택 했을 때 handler
   const handleSelected = (val: CenterNameResponse) => {
-    console.dir('handleSelected');
     setInputValue(val.name);
     if (setData) setData(val.name, val.id);
     setSelected(true);
