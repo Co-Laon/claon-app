@@ -10,6 +10,7 @@ import { useRouter } from 'next/router';
 import { useCreateReview } from 'climbingweb/src/hooks/queries/center/queryKey';
 import { useRef, useState } from 'react';
 import { useToast } from 'climbingweb/src/hooks/useToast';
+import { getErrorMessageToResponse } from 'climbingweb/src/utils/getErrorMessageToResponse';
 
 export default function ReportPage() {
   const router = useRouter();
@@ -30,7 +31,7 @@ export default function ReportPage() {
       toast('리뷰가 작성되었습니다.');
     },
     onError(error) {
-      toast(error.message);
+      toast(getErrorMessageToResponse(error));
     },
   });
 

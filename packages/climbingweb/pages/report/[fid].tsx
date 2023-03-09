@@ -14,6 +14,7 @@ import { useCreateReport } from 'climbingweb/src/hooks/queries/post/queryKey';
 import { useToast } from 'climbingweb/src/hooks/useToast';
 import { useBnbHide } from 'climbingweb/src/hooks/useBnB';
 import PageLoading from 'climbingweb/src/components/common/Loading/PageLoading';
+import { getErrorMessageToResponse } from 'climbingweb/src/utils/getErrorMessageToResponse';
 
 export default function ReportPage({}) {
   const router = useRouter();
@@ -38,7 +39,7 @@ export default function ReportPage({}) {
       toast('신고 완료');
     },
     onError: (data: any) => {
-      toast(data.message);
+      toast(getErrorMessageToResponse(data));
     },
   });
 

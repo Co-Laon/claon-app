@@ -9,6 +9,7 @@ import TextArea from 'climbingweb/src/components/common/TextArea/TextArea';
 import { useUpdateReview } from 'climbingweb/src/hooks/queries/center/queryKey';
 import { useGetReview } from 'climbingweb/src/hooks/useReview';
 import { useToast } from 'climbingweb/src/hooks/useToast';
+import { getErrorMessageToResponse } from 'climbingweb/src/utils/getErrorMessageToResponse';
 import router from 'next/router';
 import { useCallback, useEffect, useRef, useState } from 'react';
 
@@ -33,7 +34,7 @@ export default function ReportEditPage() {
         toast('리뷰가 수정되었습니다.');
       },
       onError(error: any) {
-        toast(error.message);
+        toast(getErrorMessageToResponse(error));
       },
     }
   );
