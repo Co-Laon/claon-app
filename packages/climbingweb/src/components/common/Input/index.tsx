@@ -30,7 +30,7 @@ export const Input = ({
   };
   const handleEnterPressed = useCallback(
     (e: KeyboardEvent<HTMLInputElement>) => {
-      if (onKeyDown && e.code === 'Enter') onKeyDown();
+      if (onKeyDown && e.key === 'Enter') onKeyDown();
     },
     []
   );
