@@ -38,8 +38,8 @@ export default function ReportPage({}) {
       router.push('/');
       toast('신고 완료');
     },
-    onError: (data: any) => {
-      toast(getErrorMessageToResponse(data));
+    onError: (error) => {
+      toast(getErrorMessageToResponse(error));
     },
   });
 
