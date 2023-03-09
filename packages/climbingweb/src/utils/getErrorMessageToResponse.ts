@@ -4,9 +4,8 @@ export const getErrorMessageToResponse = (error: unknown) => {
   const target = error as ServerError | ServerBusinessError;
   if (target.hasOwnProperty('errorCode')) {
     const serverBusinessError = target as ServerBusinessError;
-    console.dir('serverBusinessError');
     if (serverBusinessError.violations) {
-      return serverBusinessError.violations.join(', ');
+      return serverBusinessError.violations[0];
     } else {
       return serverBusinessError.message;
     }
