@@ -97,7 +97,11 @@ export const BanList = ({}) => {
         ) : (
           <Loading />
         )}
-        <BottomSheet open={openSheet} onDismiss={handleDismiss}>
+        <BottomSheet
+          style={{ pointerEvents: 'auto' }}
+          open={openSheet}
+          onDismiss={handleDismiss}
+        >
           <ButtonSheet
             text={`${selectedUser} 님을 차단 해제 하시겠습니까?`}
             onConfirm={handleDeleteBlockConfirmButtonClick}

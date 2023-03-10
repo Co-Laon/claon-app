@@ -118,7 +118,11 @@ const Home: NextPage = () => {
         ) : (
           <Loading />
         )}
-        <BottomSheet open={open} onDismiss={onDismiss}>
+        <BottomSheet
+          style={{ pointerEvents: 'auto' }}
+          open={open}
+          onDismiss={onDismiss}
+        >
           <ListSheet
             headerTitle={''}
             list={['신고하기']}

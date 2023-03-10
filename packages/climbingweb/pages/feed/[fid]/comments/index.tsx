@@ -131,8 +131,7 @@ export default function CommentPage() {
 
   if (commentData)
     return (
-      <div
-        className="mb-footer overflow-auto scrollbar-hide">
+      <div className="mb-footer overflow-auto scrollbar-hide">
         <SlideRight>
           <div className="mb-footer">
             <AppBar
@@ -170,7 +169,11 @@ export default function CommentPage() {
           refObj={commentInputRef}
           onClickSubmit={handleSubmitComment}
         />
-        <BottomSheet open={openBTSheet} onDismiss={() => setOpenBTSheet(false)}>
+        <BottomSheet
+          style={{ pointerEvents: 'auto' }}
+          open={openBTSheet}
+          onDismiss={() => setOpenBTSheet(false)}
+        >
           <ButtonSheet
             text="댓글을 삭제하시겠습니까?"
             onCancel={() => setOpenBTSheet(false)}
