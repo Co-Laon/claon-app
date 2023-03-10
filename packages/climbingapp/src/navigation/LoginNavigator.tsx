@@ -77,7 +77,11 @@ const LoginNavigator = () => {
         component={ConnectWithInstagramScreen}
         options={{ animation: 'slide_from_right' }}
       />
-      <Stack.Screen name="welcome" component={WelcomeScreen} />
+      <Stack.Screen
+        name="welcome"
+        component={WelcomeScreen}
+        options={{ headerShown: false }}
+      />
       <Stack.Screen
         name="instagram"
         initialParams={instagramInitalValue}
