@@ -24,7 +24,9 @@ function CenterPostFilter({
     <div className="flex h-14 items-center px-3 gap-1">
       <div
         onClick={() => onClickHold('null', -1)}
-        className="border w-[40px] h-[28px] text-xs leading-[18px] font-normal flex items-center justify-center rounded-lg"
+        className={`border w-[40px] h-[28px] text-xs leading-[18px] font-normal flex items-center justify-center rounded-lg ${
+          focus == -1 ? 'bg-[#5953FF]' : null
+        }`}
       >
         전체
       </div>
