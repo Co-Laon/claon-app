@@ -7,6 +7,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { BackHandler, Linking, Platform, ToastAndroid } from 'react-native';
 import { WebView, WebViewMessageEvent } from 'react-native-webview';
 import { isJsonString } from 'climbingapp/src/utils/isJsonString';
+import axios from 'axios';
 interface WebInfo {
   url: string;
 }
@@ -39,6 +40,10 @@ export default function CustomWebView({ url }: WebInfo) {
   };
 
   useEffect(() => {
+    if (user) {
+      axios.defaults.headers.common['access-token'] = user.accessToken;
+      axios.defaults.headers.common['refresh-token'] = user.refreshToken;
+    }
     sendTokenToWebview();
   }, []);
 
@@ -52,7 +57,9 @@ export default function CustomWebView({ url }: WebInfo) {
     }
   };
 
-  const onMessageHandler = async ({ nativeEvent: state }: WebViewMessageEvent) => {
+  const onMessageHandler = async ({
+    nativeEvent: state,
+  }: WebViewMessageEvent) => {
     console.log(state.data);
     if (isJsonString(state.data)) {
       const data = JSON.parse(state.data);
@@ -84,9 +91,15 @@ export default function CustomWebView({ url }: WebInfo) {
   };
 
   useEffect(() => {
-    BackHandler.addEventListener('hardwareBackPress', onPressHardwareBackButton);
+    BackHandler.addEventListener(
+      'hardwareBackPress',
+      onPressHardwareBackButton
+    );
     return () => {
-      BackHandler.removeEventListener('hardwareBackPress', onPressHardwareBackButton);
+      BackHandler.removeEventListener(
+        'hardwareBackPress',
+        onPressHardwareBackButton
+      );
     };
   }, [isCanGoBack]);
 

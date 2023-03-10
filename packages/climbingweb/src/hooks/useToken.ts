@@ -1,3 +1,4 @@
+import axios from 'axios';
 import { useEffect, useState } from 'react';
 
 interface Token {
@@ -53,6 +54,8 @@ export const useToken = () => {
     try {
       window.localStorage.removeItem('accessToken');
       window.localStorage.removeItem('refreshToken');
+      axios.defaults.headers.common['access-token'] = '';
+      axios.defaults.headers.common['refresh-token'] = '';
       location.reload();
     } catch (error) {
       console.log(error);
