@@ -35,7 +35,7 @@ const Title = styled.Text`
 `;
 
 const ButtonContainer = styled.View`
-  flex: 0.3;
+  flex: ${Platform.OS === 'ios' ? 0.5 : 0.3};
 `;
 
 const KakaoButton = ({ onPress }: { onPress: ({ }: any) => void }) => {
@@ -71,7 +71,7 @@ function LoginScreen() {
   };
 
   const handleSignApple = () => {
-    navigation.navigate('register');
+    Alert.alert('애플로그인은 현재 준비 중입니다.');
   };
 
   const handleSignGoogle = async () => {
