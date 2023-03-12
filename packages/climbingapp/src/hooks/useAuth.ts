@@ -1,6 +1,9 @@
 import { storeData } from './../utils/storage';
 import { RootState } from './../store/slices/index';
-import KakaoSDK from '@actbase/react-kakaosdk';
+import {
+  KakaoOAuthToken,
+  login as kakaoSDKLogin,
+} from '@react-native-seoul/kakao-login';
 import {
   authorizeAction,
   logoutAction,
@@ -12,12 +15,11 @@ import { GoogleSignin } from '@react-native-google-signin/google-signin';
 import Config from 'react-native-config';
 import { api } from '../utils/constants';
 import axios from 'axios';
-import { AccessTokenType } from '@actbase/react-kakaosdk/lib/types';
 import { Alert } from 'react-native';
 import { ErrorResponse } from '../types/type';
 
 interface SignInType {
-  code: string | AccessTokenType;
+  code: string;
   provider: 'KAKAO' | 'GOOGLE' | 'APPLE';
 }
 
@@ -120,9 +122,8 @@ export const useAuth = () => {
   };
 
   const kakaoLogin = async () => {
-    await KakaoSDK.init(Config.KAKAO_APP_KEY);
-    const token = await KakaoSDK.login();
-    const code = token?.access_token;
+    const token: KakaoOAuthToken = await kakaoSDKLogin();
+    const code = token.accessToken;
     if (code) {
       return signInWithProvider({ code, provider: 'KAKAO' });
     }

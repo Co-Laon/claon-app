@@ -38,14 +38,14 @@ const ButtonContainer = styled.View`
   flex: 0.3;
 `;
 
-const KakaoButton = ({ onPress }: { onPress: ({}: any) => void }) => {
+const KakaoButton = ({ onPress }: { onPress: ({ }: any) => void }) => {
   return <DefaultButton {...Kakao} onPress={onPress} />;
 };
 
-const AppleButton = ({ onPress }: { onPress: ({}: any) => void }) => {
+const AppleButton = ({ onPress }: { onPress: ({ }: any) => void }) => {
   return <DefaultButton {...Apple} onPress={onPress} />;
 };
-const GoogleButton = ({ onPress }: { onPress: ({}: any) => void }) => {
+const GoogleButton = ({ onPress }: { onPress: ({ }: any) => void }) => {
   return <DefaultButton {...Google} onPress={onPress} />;
 };
 function LoginScreen() {
@@ -78,6 +78,7 @@ function LoginScreen() {
     await googleLogin().then(handleAfterOAuth);
   };
   const handleSignKakao = async () => {
+    //Alert.alert('준비중입니다.');
     await kakaoLogin().then(handleAfterOAuth);
   };
 
