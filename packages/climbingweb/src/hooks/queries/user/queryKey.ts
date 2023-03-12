@@ -13,7 +13,10 @@ import {
   createBlock,
   deleteBlock,
   findBlockUser,
+  findHistoryByCenter,
   findPostsByUser,
+  getCenterHistory,
+  getHistoryByDate,
   getPublicUser,
   modifyUser,
   retrieveMe,
@@ -51,6 +54,23 @@ export const userQueries = createQueryKeys('users', {
       posts: () => ({
         queryKey: ['posts'],
         queryFn: (context) => findPostsByUser(context?.pageParam, nickname),
+      }),
+      historyYear: (year: number) => ({
+        queryKey: [year],
+        contextQueries: {
+          historyMonth: (month: number) => ({
+            queryKey: [month],
+            queryFn: () => getHistoryByDate(nickname, year, month),
+          }),
+        },
+      }),
+      centers: () => ({
+        queryKey: ['centers'],
+        queryFn: (context) => getCenterHistory(context?.pageParam, nickname),
+      }),
+      historyCenters: (centerId: string) => ({
+        queryKey: [centerId],
+        queryFn: () => findHistoryByCenter(nickname, centerId),
       }),
     },
   }),
@@ -240,5 +260,45 @@ export const useSearchUser = (name: string) => {
         ? undefined
         : lastPageData.nextPageNum;
     },
+  });
+};
+
+/** */
+export const useCenterByUser = (nickName: string) => {
+  return useInfiniteQuery({
+    ...userQueries.name(nickName)._ctx.centers(),
+    enabled: Boolean(nickName),
+    getNextPageParam: (lastPageData) => {
+      return lastPageData.nextPageNum < 0
+        ? undefined
+        : lastPageData.nextPageNum;
+    },
+  });
+};
+
+/**
+ * 날짜로 history 찾기 useQuery hooks
+ */
+
+export const useHistoryByDate = (
+  nickName: string,
+  year: number,
+  month: number
+) => {
+  return useQuery({
+    ...userQueries
+      .name(nickName)
+      ._ctx.historyYear(year)
+      ._ctx.historyMonth(month),
+  });
+};
+
+/**
+ * Center로 history 찾기 useQueryHooks
+ */
+export const useHistoryByCenter = (nickName: string, centerId: string) => {
+  return useQuery({
+    ...userQueries.name(nickName)._ctx.historyCenters(centerId),
+    enabled: Boolean(centerId),
   });
 };
