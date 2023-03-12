@@ -18,6 +18,7 @@ import {
 } from 'climbingweb/src/hooks/queries/user/queryKey';
 import { useIntersectionObserver } from 'climbingweb/src/hooks/useIntersectionObserver';
 import { useRouter } from 'next/router';
+import { useCallback } from 'react';
 
 export default function MyPage({}) {
   // 자신 정보 server state
@@ -65,6 +66,10 @@ export default function MyPage({}) {
     },
     { threshold: 1 }
   );
+
+  const onClickHistory = useCallback(() => {
+    router.push(`/users/history/${getUserData?.nickname}`);
+  }, [getUserData?.nickname]);
 
   if (isGetUserDataError) return <ErrorContent error={getUserDataError} />;
   if (isFindPostsByUserDataError)
@@ -120,6 +125,7 @@ export default function MyPage({}) {
           )
         }
         isPrivate={false}
+        onClickHistory={onClickHistory}
       />
     );
   }

@@ -28,6 +28,28 @@ export interface UserPostThumbnailResponse {
   thumbnailUrl: string;
 }
 
+export interface CenterInfoResponse {
+  centerId: string;
+  centerImg: string;
+  centerName: string;
+}
+
+export interface CenterListResponse {
+  centerId: string;
+  centerName: string;
+  centerThumbnailUrl: string;
+}
+
+export interface HistoryResponse {
+  climbingCount: number;
+  holdId: string;
+  holdImage: string;
+}
+export interface HistoryDateResponse {
+  centerInfo: CenterInfoResponse;
+  histories: HistoryResponse[];
+}
+
 export interface UserDetailResponse {
   apeIndex: number;
   armReach: number;
@@ -52,4 +74,15 @@ export interface UserPreviewResponse {
   imagePath: string;
   isLaon: boolean;
   nickname: string;
+}
+
+export interface CenterHistory {
+  createdAt: string;
+  histories: HistoryResponse[];
+  postId: string;
+}
+
+export interface HistoryByCenterResponse {
+  date: string;
+  histories: CenterHistory[];
 }
