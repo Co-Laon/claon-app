@@ -7,7 +7,7 @@ import {
 } from 'climbingapp/src/component/button/buttonProps';
 import { ScreenView } from 'climbingapp/src/component/view/ScreenView';
 import { colorStyles } from 'climbingapp/src/styles';
-import React from 'react';
+import React, { useEffect } from 'react';
 //import { Platform } from 'react-native';
 import styled from 'styled-components/native';
 import { LoginScreenProp } from './type';
@@ -38,20 +38,20 @@ const ButtonContainer = styled.View`
   flex: ${Platform.OS === 'ios' ? 0.5 : 0.3};
 `;
 
-const KakaoButton = ({ onPress }: { onPress: ({ }: any) => void }) => {
+const KakaoButton = ({ onPress }: { onPress: ({}: any) => void }) => {
   return <DefaultButton {...Kakao} onPress={onPress} />;
 };
 
-const AppleButton = ({ onPress }: { onPress: ({ }: any) => void }) => {
+const AppleButton = ({ onPress }: { onPress: ({}: any) => void }) => {
   return <DefaultButton {...Apple} onPress={onPress} />;
 };
-const GoogleButton = ({ onPress }: { onPress: ({ }: any) => void }) => {
+const GoogleButton = ({ onPress }: { onPress: ({}: any) => void }) => {
   return <DefaultButton {...Google} onPress={onPress} />;
 };
 function LoginScreen() {
   const navigation = useNavigation<LoginScreenProp>();
 
-  const { kakaoLogin, googleLogin } = useAuth();
+  const { kakaoLogin, googleLogin, googleSignOut } = useAuth();
 
   const handleAfterOAuth = (res: void | User | ErrorResponse) => {
     if (res) {
@@ -69,6 +69,10 @@ function LoginScreen() {
       }
     }
   };
+
+  useEffect(() => {
+    googleSignOut();
+  }, []);
 
   const handleSignApple = () => {
     Alert.alert('애플로그인은 현재 준비 중입니다.');
