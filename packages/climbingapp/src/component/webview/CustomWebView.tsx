@@ -60,13 +60,11 @@ export default function CustomWebView({ url }: WebInfo) {
   const onMessageHandler = async ({
     nativeEvent: state,
   }: WebViewMessageEvent) => {
-    console.log(state.data);
     if (isJsonString(state.data)) {
       const data = JSON.parse(state.data);
       if (data.type === 'updateToken') {
         handleUpdateToken(data);
       } else if (data.type === 'logout') {
-        console.log('sdsdfsd');
         await logout()
           .then(() => {
             if (Platform.OS === 'android') {
