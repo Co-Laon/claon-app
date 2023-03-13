@@ -183,7 +183,11 @@ export default function UserPage({}) {
             onClickHistory={onClickHistory}
           />
         </SlideRight>
-        <BottomSheet open={openSheet} onDismiss={() => onBottomSheetDismiss()}>
+        <BottomSheet
+          style={{ pointerEvents: 'auto' }}
+          open={openSheet}
+          onDismiss={() => onBottomSheetDismiss()}
+        >
           <ListSheet
             headerTitle=""
             list={[getUserData.isLaon ? '라온 취소 및 차단하기' : '차단하기']}

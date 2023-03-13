@@ -220,14 +220,17 @@ export default function CommentDetailPage() {
           parentCommentId={parentCommentId}
           onClickSubmit={handleSubmitCommentClick}
         />
-        <BottomSheet open={openBTSheet} onDismiss={() => setOpenBTSheet(false)}>
+        <BottomSheet
+          style={{ pointerEvents: 'auto' }}
+          open={openBTSheet}
+          onDismiss={() => setOpenBTSheet(false)}
+        >
           <ButtonSheet
             text="댓글을 삭제하시겠습니까?"
             onCancel={() => setOpenBTSheet(false)}
             onConfirm={handleConfirmBTSheet}
           />
         </BottomSheet>
-
       </div>
     );
   }

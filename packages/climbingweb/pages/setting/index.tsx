@@ -147,7 +147,11 @@ export default function SettingPage() {
             {titleName === '개인정보 처리 방침' && <>개인정보 처리 방침</>}
           </div>
         </SlideRight>
-        <BottomSheet open={openSheet} onDismiss={onBottomSheetDismiss}>
+        <BottomSheet
+          style={{ pointerEvents: 'auto' }}
+          open={openSheet}
+          onDismiss={onBottomSheetDismiss}
+        >
           <ButtonSheet
             text={
               sheetKey === 'leave'
