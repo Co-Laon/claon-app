@@ -68,8 +68,6 @@ const SearchPage = () => {
     { threshold: 1 }
   );
 
-  console.dir(searchCenterList);
-
   return (
     <div className="w-full flex flex-col item-center 'mb-footer overflow-auto scrollbar-hide'">
       <AppBar leftNode={<AppLogo />} />

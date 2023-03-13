@@ -109,7 +109,6 @@ export const EditMyInfo = ({ userRequest }: InfoProps) => {
   const handleModifyButtonClick = () => {
     if (userImageFile) uploadUserImageMutate([userImageFile]);
     else {
-      console.dir('no image');
       modifyUserMutate(userRequestData);
     }
   };
