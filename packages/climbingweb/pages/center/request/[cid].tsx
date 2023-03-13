@@ -127,7 +127,11 @@ export default function ReportPage({}) {
           완료
         </NormalButton>
       </div>
-      <BottomSheet open={open} onDismiss={handleDismiss}>
+      <BottomSheet
+        style={{ pointerEvents: 'auto' }}
+        open={open}
+        onDismiss={handleDismiss}
+      >
         <ListSheet
           headerTitle={header}
           list={reportList}

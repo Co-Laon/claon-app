@@ -64,7 +64,11 @@ export default function CenterDetailPage() {
           />
           <CenterInfoContent data={CenterDetailData} />
         </SlideRight>
-        <BottomSheet open={openBTSheet} onDismiss={() => setOpenBTSheet(false)}>
+        <BottomSheet
+          style={{ pointerEvents: 'auto' }}
+          open={openBTSheet}
+          onDismiss={() => setOpenBTSheet(false)}
+        >
           <ListSheet
             headerTitle={''}
             list={['수정 요청']}

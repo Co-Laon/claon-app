@@ -105,7 +105,11 @@ export default function ReportPage({}) {
           완료
         </NormalButton>
       </div>
-      <BottomSheet open={open} onDismiss={handleDismiss}>
+      <BottomSheet
+        style={{ pointerEvents: 'auto' }}
+        open={open}
+        onDismiss={handleDismiss}
+      >
         <ListSheet
           headerTitle={'신고 사유'}
           list={['부적절한 게시글', '부적절한 닉네임', '잘못된 암장 선택']}

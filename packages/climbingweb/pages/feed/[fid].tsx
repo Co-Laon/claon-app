@@ -141,7 +141,11 @@ export default function FeedPage({}) {
           <AppBar leftNode={<BackButton onClick={handleBackButtonClick} />} />
           <HomeFeed postData={postData} openBtSheet={openBtSheet} />
         </SlideRight>
-        <BottomSheet open={open} onDismiss={onDismiss}>
+        <BottomSheet
+          style={{ pointerEvents: 'auto' }}
+          open={open}
+          onDismiss={onDismiss}
+        >
           {'isOwner' in postData && postData.isOwner ? (
             openDelete ? (
               <ButtonSheet
