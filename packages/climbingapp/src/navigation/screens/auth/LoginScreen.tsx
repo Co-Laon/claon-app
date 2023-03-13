@@ -35,17 +35,17 @@ const Title = styled.Text`
 `;
 
 const ButtonContainer = styled.View`
-  flex: 0.3;
+  flex: ${Platform.OS === 'ios' ? 0.5 : 0.3};
 `;
 
-const KakaoButton = ({ onPress }: { onPress: ({}: any) => void }) => {
+const KakaoButton = ({ onPress }: { onPress: ({ }: any) => void }) => {
   return <DefaultButton {...Kakao} onPress={onPress} />;
 };
 
-const AppleButton = ({ onPress }: { onPress: ({}: any) => void }) => {
+const AppleButton = ({ onPress }: { onPress: ({ }: any) => void }) => {
   return <DefaultButton {...Apple} onPress={onPress} />;
 };
-const GoogleButton = ({ onPress }: { onPress: ({}: any) => void }) => {
+const GoogleButton = ({ onPress }: { onPress: ({ }: any) => void }) => {
   return <DefaultButton {...Google} onPress={onPress} />;
 };
 function LoginScreen() {
@@ -71,13 +71,14 @@ function LoginScreen() {
   };
 
   const handleSignApple = () => {
-    navigation.navigate('register');
+    Alert.alert('애플로그인은 현재 준비 중입니다.');
   };
 
   const handleSignGoogle = async () => {
     await googleLogin().then(handleAfterOAuth);
   };
   const handleSignKakao = async () => {
+    //Alert.alert('준비중입니다.');
     await kakaoLogin().then(handleAfterOAuth);
   };
 
