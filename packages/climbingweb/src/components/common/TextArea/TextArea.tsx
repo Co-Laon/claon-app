@@ -35,13 +35,13 @@ export default function TextArea({
     <div
       className={`border w-full ${
         isMaxLength ? 'border-red-500' : 'border-gray'
-      } resize-none rounded-lg p-4 ${className}`}
+      } resize-none rounded-lg p-1 ${className}`}
     >
       <textarea
         ref={refObj}
         onChange={onChangeValue}
         placeholder={placeholder}
-        className=" w-full h-full placeholder:text-gray focus:outline-none resize-none"
+        className=" w-full h-full placeholder:text-gray focus:outline-none resize-none p-3 scroll-m-0"
         maxLength={limitLength}
         defaultValue={data}
       />
